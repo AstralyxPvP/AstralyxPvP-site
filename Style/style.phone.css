@@ -1,131 +1,152 @@
-/* ==========================================================================
-   STABILIZED MOBILE OVERRIDES (style.phone.css)
-   Targeting: Footer Bounce Fix & Navbar Stickiness
-   ========================================================================== */
-
 @media screen and (max-width: 768px) {
-  
-  /* --- 1. THE STABILIZER (Prevents moving up/down) --- */
-  html {
-    height: -webkit-fill-available; /* Fixes iOS specific bounce */
+  :root {
+    --nav-height: 60px;
   }
 
+  /* General Layout */
   body {
-    display: block !important; /* Disabling flex-column on body stops the 'bounce' */
-    min-height: 100vh;
-    min-height: 100dvh;
-    margin: 0;
-    padding: 0;
-    position: relative;
+    font-size: 16px;
   }
 
-  /* Anchor the footer to the bottom of the page content, not the screen */
-  footer {
-    position: relative;
-    width: 100%;
-    margin-top: 100px !important; /* Keeps it away from content */
-    padding-bottom: env(safe-area-inset-bottom) !important; /* Adds padding for iPhone home bars */
-    background: #000 !important;
-    z-index: 10;
+  .hero,
+  .wrap,
+  .lb-section,
+  .credits-section,
+  .features-grid {
+    padding-top: 15px;
+    padding-bottom: 40px;
   }
 
-  /* --- 2. FIXED NAVBAR LOCK --- */
-  /* This ensures the navbar stays at the top of the screen even if the page content shifts */
+  /* Navbar */
   nav {
-    position: sticky !important; 
-    top: 10px !important;
-    left: 50% !important;
-    transform: translateX(-50%) !important;
-    width: 94% !important;
-    margin: 0 !important;
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 4px !important;
-    padding: 10px 15px !important;
-   overflow: hidden; /* Clips anything pushing outside the rounded corners */
-   box-sizing: border-box; /* Ensures padding doesn't add to the width */
+    width: 95%;
+    padding: 10px 20px;
+    top: 15px;
+    flex-direction: column;
+    gap: 15px;
+    border-radius: 20px;
+    height: auto;
+  }
+
+  .nav-left {
+    width: 100%;
+    justify-content: space-between;
+    gap: 10px;
   }
 
   .nav-links {
-    gap: 12px !important;
-    justify-content: center !important;
-    padding-top: 5px;
-    border-top: 1px solid rgba(255,255,255,0.1);
-  }
-  nav .links-container { 
-    display: flex;
-    flex-wrap: wrap; /* This is the magic property */
-    justify-content: center;
-    gap: 10px;
     width: 100%;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
   }
-  /* --- 3. HERO OVERLAP & CENTERING FIX --- */
+
+  .nav-links a {
+    font-size: 0.7rem;
+  }
+
+  .logo img {
+    height: 30px;
+  }
+
+  .server-pill {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+  }
+
+  /* Hero Section */
   .hero-inner-split {
-    margin-top: 120px !important; /* High enough to clear the fixed nav */
-    flex-direction: column-reverse !important;
-    text-align: center !important;
+    flex-direction: column-reverse;
+    gap: 30px;
+    text-align: center;
   }
 
   .hero-text {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
+    text-align: center;
   }
 
   .hero-text h1 {
-    font-size: 2rem !important;
-    width: 100% !important;
-    text-align: center !important;
-    background-size: 200% auto !important;
+    font-size: 2.2rem;
   }
 
-  .hero-text p {
-    text-align: center !important;
-    padding: 0 10px !important;
-    font-size: 0.9rem !important;
+  .hero-image {
+    justify-content: center;
   }
 
-  /* --- 4. GRID & PANEL OPTIMIZATION --- */
-  .features-grid, .credits-grid, .vote-grid {
-    grid-template-columns: 1fr !important;
-    gap: 20px !important;
-    padding: 0 15px !important;
+  .hero-logo-main {
+    max-width: 280px;
   }
 
-  .panel, .feature-card, .credit-card, .lb-panel {
-    width: auto !important;
-    margin: 10px 15px !important;
-    padding: 20px !important;
+  /* Features & Cards */
+  .features {
+    padding: 40px 5%;
   }
 
-  /* --- 5. TABLE OVERFLOW SAFETY --- */
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .feature-card {
+    padding: 25px 20px;
+  }
+
+  /* Leaderboard / Tables */
+  .lb-panel {
+    padding: 15px;
+    margin: 0 10px;
+  }
+
   table {
-    display: block !important;
-    overflow-x: auto !important;
-    width: 100% !important;
-  }
-
-  /* --- 6. DOCUMENTATION & EMBEDS --- */
-  .doc-embed {
-    height: 50vh !important;
-  }
-
-  /* --- 7. BUTTONS --- */
-  .hero-btn {
-    width: 100% !important;
-    max-width: 320px !important;
-  }
-
-  /* --- 8. FOOTER SPACING BUG --- */
-  /* If there is still a gap, this removes the ghost space below images */
-  footer img {
     display: block;
-    margin-bottom: 15px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  /* Footer Fix */
+  footer {
+    padding: 20px 5% 10px !important;
   }
 
   .footer-links {
-    flex-direction: column !important;
-    gap: 15px !important;
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 0.75rem;
+  }
+
+  /* Vote Grid */
+  .vote-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Credits Section */
+  .credits-grid {
+    grid-template-columns: 1fr;
+    padding: 0 15px;
+  }
+
+  .credit-card {
+    padding: 25px;
+  }
+
+  /* Doc Blocks */
+  .doc-block {
+    padding: 10px;
+  }
+
+  .doc-embed {
+    height: 50vh;
   }
 }
