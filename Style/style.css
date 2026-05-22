@@ -769,7 +769,7 @@ td {
 
 footer {
   background: #000000;
-  padding: 20px 9% !important; 
+  padding: 20px 9% 10px !important; 
   text-align: center;
   border-top: 1px solid var(--border);
   margin-top: auto;
@@ -813,10 +813,11 @@ footer img {
 }
 
 .credits {
-  margin-top: 25px;
+  margin-top: 15px;
   font-size: 0.6rem;
   color: #777;
   letter-spacing: 1px;
+  padding-bottom: 5px;
 }
 
 .credits a {
@@ -1253,5 +1254,3 @@ footer img {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 25px;
 }
-
-
