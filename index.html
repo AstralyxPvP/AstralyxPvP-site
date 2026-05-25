@@ -35,9 +35,9 @@
   <meta property="og:image" content="astralyxpvp.pages.dev/Assets/logo-compress.png" />
   <meta property="og:url" content="astralyxpvp.pages.dev" />
   <meta property="og:type" content="website" />
-  <meta property="og:type" content="website" />
   <link rel="stylesheet" href="Style/style.css">
   <link rel="stylesheet" href="Style/style.phone.css">
+  
   <script>
     async function loadHead() {
       try {
@@ -62,7 +62,35 @@
       }
     }
 
+    // --- SECURE AI COMPONENT LOADER ---
+    async function loadAI() {
+      try {
+        const response = await fetch('Assets/AI.html');
+        if (!response.ok) throw new Error('Failed to grab module');
+        const text = await response.text();
+        
+        // Inject structural layout markup and CSS variables
+        document.getElementById('ai-chatbot-container').innerHTML = text;
+
+        // Extract script parameters manually so the browser compiles the code runtime
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const embeddedScripts = doc.querySelectorAll('script');
+
+        embeddedScripts.forEach(oldScript => {
+          const newScript = document.createElement('script');
+          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+          newScript.textContent = oldScript.textContent;
+          document.body.appendChild(newScript);
+        });
+      } catch (err) {
+        console.error('Failed execution mapping on AI element framework:', err);
+      }
+    }
+
+    // Fire operations concurrently
     loadHead();
+    loadAI();
   </script>
 
 </head>
@@ -126,13 +154,17 @@
     </div>
     </section>
   </main>
-  <div>
-    <div class="context-menu" id="contextMenu" aria-hidden="true">
+  
+  <div class="context-menu" id="contextMenu" aria-hidden="true">
     <button type="button" data-menu-copy><i class="fa-solid fa-copy"></i>Copy server IP</button>
     <a href="/leaderboard"><i class="fa-solid fa-ranking-star"></i>Open leaderboard</a>
     <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i>Join Discord</a>
     <a href="/rules"><i class="fa-solid fa-scroll"></i>View rules</a>
   </div>
+
   <div id="footer"></div>
+  
+  <div id="ai-chatbot-container"></div>
+
 </body>
 </html>
