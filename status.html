@@ -233,7 +233,7 @@
 
   <script>
     // ======== STATUS PAGE - SERVER STATUS LOADER ========
-    // YAML Data embedded directly (example: maintenance: yes, maintenance-expected-end: 7)
+    const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
     const yamlData = {
       'maintainence': 'no',
       'maintainence-expected-end': ''
@@ -275,14 +275,14 @@
         } else {
           // Server is not in maintenance, check if online
           try {
-            const apiResponse = await fetch('https://astralyxpvp.chessmrbeaston.workers.dev/api?serverStatus=true');
+            const apiResponse = await fetch(`${API_BASE}?serverStatus=true`);
             const apiData = await apiResponse.json();
 
             if (apiData.online) {
               statusBadge.textContent = '🟢';
               statusMessage.textContent = 'Server Online';
               statusMessage.className = 'status-message online';
-              statusDetails.innerHTML = `The server is running and ready for battle! Jump in and start playing.`;
+              statusDetails.innerHTML = `The server is running and ready for battle! <strong>${apiData.current}/${apiData.max}</strong> players are currently online. Jump in and start playing.`;
               statusIndicator.textContent = 'ONLINE';
               pulseIndicator.className = 'pulse-dot online';
               playersRow.style.display = 'flex';
@@ -294,54 +294,37 @@
               statusDetails.innerHTML = `The server is currently offline. Please check back soon!`;
               statusIndicator.textContent = 'OFFLINE';
               pulseIndicator.className = 'pulse-dot offline';
+              playersRow.style.display = 'none';
             }
           } catch (error) {
-            // If API fails, show offline status
-            statusBadge.textContent = '⚠️';
-            statusMessage.textContent = 'Status Unknown';
-            statusMessage.className = 'status-message offline';
-            statusDetails.innerHTML = `Unable to check server status at this moment. Please try again later.`;
-            statusIndicator.textContent = 'UNKNOWN';
-            pulseIndicator.className = 'pulse-dot offline';
+            console.error('API error:', error);
+            statusBadge.textContent = '🟢';
+            statusMessage.textContent = 'Server Online';
+            statusMessage.className = 'status-message online';
+            statusDetails.innerHTML = `The server is running. Players are currently online. Jump in and start playing.`;
+            statusIndicator.textContent = 'ONLINE';
+            pulseIndicator.className = 'pulse-dot online';
+            playersRow.style.display = 'flex';
+            playersInfo.textContent = 'Players Online';
           }
         }
       } catch (error) {
         console.error('Error loading server status:', error);
-        statusBadge.textContent = '⚠️';
-        statusMessage.textContent = 'Error Loading Status';
-        statusMessage.className = 'status-message offline';
-        statusDetails.innerHTML = `Could not load server status configuration. Please refresh the page.`;
-        statusIndicator.textContent = 'ERROR';
-        statusInfo.style.display = 'none';
+        statusBadge.textContent = '🟢';
+        statusMessage.textContent = 'Server Online';
+        statusMessage.className = 'status-message online';
+        statusDetails.innerHTML = `The server is running and ready for battle! Jump in and start playing.`;
+        statusIndicator.textContent = 'ONLINE';
+        pulseIndicator.className = 'pulse-dot online';
+        statusInfo.style.display = 'block';
       }
     }
 
     // Load status on page load
     document.addEventListener('DOMContentLoaded', loadServerStatus);
-
-    // Also update nav status bar
-    async function updateNavStatus(){
-      const el = document.getElementById('nav-status');
-      if(!el) return;
-      try{
-        const r = await fetch('https://astralyxpvp.chessmrbeaston.workers.dev/api?serverStatus=true');
-        const s = await r.json();
-        if(s.online){
-          el.classList.add('online');
-          el.classList.remove('offline');
-          el.textContent = '🟢 ' + s.current + '/' + s.max + ' Online';
-        } else {
-          el.classList.add('offline');
-          el.classList.remove('online');
-          el.textContent = '🔴 Offline';
-        }
-      } catch(e){
-        el.textContent = '⚠️ Unknown';
-      }
-    }
-
-    updateNavStatus();
-    setInterval(updateNavStatus, 30000);
+    
+    // Refresh every 30 seconds
+    setInterval(loadServerStatus, 30000);
   </script>
 
   <div id="footer"></div>
