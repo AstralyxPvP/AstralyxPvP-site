@@ -27,12 +27,11 @@
         turnstileToken = token;
     }
 
-    async function sendAIMessage() {
+async function sendAIMessage() {
         const inputEl = document.getElementById('ai-user-input');
         const messageText = inputEl.value.trim();
         if (!messageText) return;
 
-        // Force a token reset/refresh for the next prompt to prevent replay attacks
         if (!turnstileToken) {
             alert("Security check pending. Please wait a moment.");
             return;
@@ -44,17 +43,32 @@
 
         const loadingId = appendMessage('Thinking...', 'ai-assistant');
 
+        // 1. Fetch your massive instructions file directly from the frontend browser context
+        let systemPromptText = "You are a helpful assistant.";
+        try {
+            const fileCheck = await fetch('/Assets/instructions.txt');
+            if (fileCheck.ok) {
+                systemPromptText = await fileCheck.text();
+            }
+        } catch (fileErr) {
+            console.error("Could not fetch instruction file locally, using default fallback.");
+        }
+
+        // 2. Dispatch everything securely to your Cloudflare Worker
         try {
             const response = await fetch(WORKER_URL, {
                 method: 'POST',
                 headers: { 
                     'Content-Type': 'application/json',
-                    'cf-turnstile-response': turnstileToken // Pass the security token here
+                    'cf-turnstile-response': turnstileToken 
                 },
-                body: JSON.stringify({ messages: conversationHistory })
+                body: JSON.stringify({ 
+                    messages: conversationHistory,
+                    // Sending the text file content directly inside the JSON payload
+                    config_prompt: systemPromptText 
+                })
             });
 
-            // Immediately reset Turnstile token so a bot can't reuse it
             turnstileToken = "";
             if (typeof turnstile !== "undefined") turnstile.reset('#my-turnstile-widget');
 
