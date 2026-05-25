@@ -1,6 +1,6 @@
 (async function() {
     const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
-    const IP = "none-subscribe.gl.joinmc.link";
+    const IP = "java.astralyx.int.it";
 
     const escapeHtml = (s) => (s ?? '').toString().replace(/[&<>"']/g, c => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -145,7 +145,7 @@
         out.innerHTML = '<div style="text-align:center;color:var(--muted);padding:14px 0">Loading...</div>';
 
         try {
-            const res = await fetch(`${API_BASE}?gamemode=${encodeURIComponent(gmSelect.value)}&leaderboard=true`);
+            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(gmSelect.value)}`);
             const data = await res.json();
 
             if (!Array.isArray(data) || data.length === 0) {
