@@ -37,62 +37,83 @@
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="Style/style.css">
   <link rel="stylesheet" href="Style/style.phone.css">
-  
-  <script>
-    async function loadHead() {
-      try {
-        const response = await fetch('Assets/head.html');
-        const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const newNodes = Array.from(doc.head.childNodes);
-
-        for (const node of newNodes) {
-          if (node.tagName === 'SCRIPT') {
-            const script = document.createElement('script');
-            Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
-            script.textContent = node.textContent;
-            document.head.appendChild(script);
-          } else {
-            document.head.appendChild(node);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load head:', err);
-      }
+  <style>
+    body {
+      background-color: #0f0f13;
+      color: white;
+      font-family: sans-serif;
+      margin: 0;
+      padding: 0;
     }
+  </style>
 
-    // --- SECURE AI COMPONENT LOADER ---
-    async function loadAI() {
+  <script>
+    // 1. Setup global variables for the AI script to access
+    window.turnstileWidgetId = null;
+    window.turnstileToken = "";
+
+    // 2. Define the exact Turnstile callback ON THE ROOT WINDOW
+    window.onloadTurnstileCallback = function() {
+        if (typeof turnstile !== "undefined") {
+            window.turnstileWidgetId = turnstile.render('#my-turnstile-widget', {
+                sitekey: '0x4AAAAAADWJPqtDres3ON2q', // The exact, correct Sitekey
+                callback: function(token) {
+                    window.turnstileToken = token;
+                },
+                size: 'invisible'
+            });
+        }
+    };
+
+    // 3. Dynamic component loader for the AI widget
+    async function loadAIWidget() {
       try {
-        const response = await fetch('Assets/AI.html');
-        if (!response.ok) throw new Error('Failed to grab module');
+        const response = await fetch('/Assets/AI.html');
+        if (!response.ok) throw new Error('Failed to load AI file');
         const text = await response.text();
         
-        // Inject structural layout markup and CSS variables
-        document.getElementById('ai-chatbot-container').innerHTML = text;
-
-        // Extract script parameters manually so the browser compiles the code runtime
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
-        const embeddedScripts = doc.querySelectorAll('script');
+        
+        // Extract styles and append to head
+        const inlineStyle = doc.querySelector('style');
+        if (inlineStyle) {
+          document.head.appendChild(inlineStyle.cloneNode(true));
+          inlineStyle.remove();
+        }
+        
+        // Extract scripts
+        const embeddedScript = doc.querySelector('script');
+        let scriptCode = "";
+        if (embeddedScript) {
+          scriptCode = embeddedScript.textContent;
+          embeddedScript.remove();
+        }
+        
+        // Inject HTML into the container
+        document.getElementById('ai-chatbot-container').innerHTML = doc.body.innerHTML;
 
-        embeddedScripts.forEach(oldScript => {
-          const newScript = document.createElement('script');
-          Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-          newScript.textContent = oldScript.textContent;
-          document.body.appendChild(newScript);
-        });
+        // Execute scripts in the global scope
+        if (scriptCode.trim() !== "") {
+          const globalScript = document.createElement('script');
+          globalScript.textContent = scriptCode;
+          document.body.appendChild(globalScript);
+        }
+
+        // Finally, load the Turnstile API *after* the widget div is securely in the DOM
+        const turnstileScript = document.createElement('script');
+        turnstileScript.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?onload=onloadTurnstileCallback";
+        turnstileScript.async = true;
+        turnstileScript.defer = true;
+        document.head.appendChild(turnstileScript);
+
       } catch (err) {
-        console.error('Failed execution mapping on AI element framework:', err);
+        console.error('AI Loader Error:', err);
       }
     }
 
-    // Fire operations concurrently
-    loadHead();
-    loadAI();
+    document.addEventListener("DOMContentLoaded", loadAIWidget);
   </script>
-
 </head>
 
 <body class="page-enter">
