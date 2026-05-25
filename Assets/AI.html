@@ -1,0 +1,77 @@
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
+<div id="ai-chat-window" class="ai-hidden">
+    <div class="ai-chat-header">
+        <h3>AstraBot AI</h3>
+        <button onclick="toggleAIChat()">&times;</button>
+    </div>
+    <div id="ai-chat-messages" class="ai-chat-messages">
+        <div class="ai-message ai-assistant">Hello! Welcome to AstralyxPvP. How can I help you today?</div>
+    </div>
+    
+    <div id="my-turnstile-widget" class="cf-turnstile" data-sitekey="0x4AAAAAADWJPqtDres3ON2q" data-callback="onTurnstileSuccess" data-size="invisible"></div>
+
+    <div class="ai-chat-input-container">
+        <input type="text" id="ai-user-input" placeholder="Ask about AstralyxPvP..." onkeypress="handleAIKeyPress(event)">
+        <button id="ai-send-btn" onclick="sendAIMessage()">Send</button>
+    </div>
+</div>
+
+<script>
+    const WORKER_URL = 'https://your-worker-name.your-subdomain.workers.dev'; 
+    let conversationHistory = [{ role: 'assistant', content: 'Hello! Welcome to AstralyxPvP.' }];
+    let turnstileToken = "";
+
+    // This runs automatically when Turnstile validates the user
+    function onTurnstileSuccess(token) {
+        turnstileToken = token;
+    }
+
+    async function sendAIMessage() {
+        const inputEl = document.getElementById('ai-user-input');
+        const messageText = inputEl.value.trim();
+        if (!messageText) return;
+
+        // Force a token reset/refresh for the next prompt to prevent replay attacks
+        if (!turnstileToken) {
+            alert("Security check pending. Please wait a moment.");
+            return;
+        }
+
+        inputEl.value = '';
+        appendMessage(messageText, 'ai-user');
+        conversationHistory.push({ role: 'user', content: messageText });
+
+        const loadingId = appendMessage('Thinking...', 'ai-assistant');
+
+        try {
+            const response = await fetch(WORKER_URL, {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'cf-turnstile-response': turnstileToken // Pass the security token here
+                },
+                body: JSON.stringify({ messages: conversationHistory })
+            });
+
+            // Immediately reset Turnstile token so a bot can't reuse it
+            turnstileToken = "";
+            if (typeof turnstile !== "undefined") turnstile.reset('#my-turnstile-widget');
+
+            const data = await response.json();
+            document.getElementById(loadingId).remove();
+
+            if (response.ok && data.reply) {
+                appendMessage(data.reply, 'ai-assistant');
+                conversationHistory.push({ role: 'assistant', content: data.reply });
+            } else {
+                appendMessage(data.error || 'Security verification failed.', 'ai-assistant');
+            }
+        } catch (error) {
+            document.getElementById(loadingId).remove();
+            appendMessage('Could not connect to secure verification server.', 'ai-assistant');
+        }
+    }
+
+    // ... keeping your existing layout functions (appendMessage, toggleAIChat, etc.)
+</script>
