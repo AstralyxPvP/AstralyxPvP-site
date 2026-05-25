@@ -390,9 +390,6 @@
     <h1>
       <i class="fa-solid fa-robot"></i> AstralyxAI
     </h1>
-    <button class="settings-btn" onclick="openSettings()">
-      <i class="fa-solid fa-gear"></i> Settings
-    </button>
   </div>
 
   <div class="chat-messages" id="chatMessages">
@@ -419,35 +416,7 @@
     <span id="modelStatus">Model: Gemini 3.1 Flash Lite | Ready</span>
   </div>
 
-  <!-- Settings Modal -->
-  <div id="settingsModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Settings</h2>
-        <button class="close-btn" onclick="closeSettings()">×</button>
-      </div>
 
-      <div class="setting-group">
-        <label for="apiKey">Google Gemini API Key *</label>
-        <input type="password" id="apiKey" placeholder="Enter your Gemini API key here">
-        <p class="info-text">Get your free API key from <a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--accent);">Google AI Studio</a></p>
-      </div>
-
-      <div class="setting-group">
-        <label for="tempToggle">Temperature (Creativity)</label>
-        <input type="range" id="tempToggle" min="0" max="2" step="0.1" value="0.7">
-        <p class="info-text">Lower = more focused, Higher = more creative</p>
-      </div>
-
-      <div class="setting-group">
-        <label for="maxTokens">Max Tokens (Response Length)</label>
-        <input type="number" id="maxTokens" min="100" max="4096" value="1000">
-        <p class="info-text">Maximum tokens per response</p>
-      </div>
-
-      <button class="save-settings-btn" onclick="saveSettings()">Save Settings</button>
-    </div>
-  </div>
 
   <div id="footer"></div>
 
@@ -520,41 +489,12 @@ CRITICAL RESPONSE RULES:
 
     let currentModel = MODELS.primary;
     let conversationHistory = [];
+    // === HARDCODE YOUR API KEY HERE ===
     let settings = {
-      apiKey: localStorage.getItem('astralyxai_apikey') || '',
-      temperature: parseFloat(localStorage.getItem('astralyxai_temp') || '0.7'),
-      maxTokens: parseInt(localStorage.getItem('astralyxai_tokens') || '1000')
+      apiKey: 'YOUR_GEMINI_API_KEY', // <-- PUT YOUR API KEY HERE
+      temperature: 1.0, // Medium creativity
+      maxTokens: undefined // No token limit
     };
-
-    // Load settings
-    window.addEventListener('load', () => {
-      if (settings.apiKey) {
-        document.getElementById('apiKey').value = settings.apiKey;
-      }
-      document.getElementById('tempToggle').value = settings.temperature;
-      document.getElementById('maxTokens').value = settings.maxTokens;
-    });
-
-    function openSettings() {
-      document.getElementById('settingsModal').classList.add('active');
-    }
-
-    function closeSettings() {
-      document.getElementById('settingsModal').classList.remove('active');
-    }
-
-    function saveSettings() {
-      settings.apiKey = document.getElementById('apiKey').value;
-      settings.temperature = parseFloat(document.getElementById('tempToggle').value);
-      settings.maxTokens = parseInt(document.getElementById('maxTokens').value);
-
-      localStorage.setItem('astralyxai_apikey', settings.apiKey);
-      localStorage.setItem('astralyxai_temp', settings.temperature);
-      localStorage.setItem('astralyxai_tokens', settings.maxTokens);
-
-      closeSettings();
-      alert('Settings saved!');
-    }
 
     function addMessage(content, isUser = false) {
       const messagesDiv = document.getElementById('chatMessages');
@@ -597,8 +537,8 @@ CRITICAL RESPONSE RULES:
     }
 
     async function callGeminiAPI(messages) {
-      if (!settings.apiKey) {
-        throw new Error('Please set your API key in settings');
+      if (!settings.apiKey || settings.apiKey === 'YOUR_GEMINI_API_KEY') {
+        throw new Error('API key not set. Please edit the HTML and add your Gemini API key.');
       }
 
       const url = `https://generativelanguage.googleapis.com/v1beta/models/${currentModel}:generateContent?key=${settings.apiKey}`;
@@ -609,8 +549,7 @@ CRITICAL RESPONSE RULES:
           parts: [{ text: msg.content }]
         })),
         generationConfig: {
-          temperature: settings.temperature,
-          maxOutputTokens: settings.maxTokens
+          temperature: settings.temperature
         }
       };
 
@@ -635,9 +574,9 @@ CRITICAL RESPONSE RULES:
 
       if (!message) return;
 
-      if (!settings.apiKey) {
-        alert('Please set your API key in settings first');
-        openSettings();
+
+      if (!settings.apiKey || settings.apiKey === 'YOUR_GEMINI_API_KEY') {
+        addMessage('<div class="error-message">API key not set. Please edit the HTML and add your Gemini API key.</div>', false);
         return;
       }
 
