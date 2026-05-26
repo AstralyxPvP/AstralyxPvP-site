@@ -204,6 +204,11 @@
   // =========================
   // CHAT (AI PART)
   // =========================
+
+  function toggleChatDock() {
+    const dock = document.getElementById('chatDock');
+    dock.classList.toggle('open');
+  }
   async function callAPI(messages) {
     const res = await fetch(`${API_BASE}chat`, {
       method: "POST",
