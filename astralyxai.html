@@ -515,8 +515,18 @@ NETWORK PUNISHMENTS REFERENCE:
       const queryLower = message.toLowerCase();
       const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
 
+      // Check if user is asking for stats, ranks, positioning, or mentions a gamemode explicitly
+      const matchesLeaderboardIntent = 
+        queryLower.includes("leaderboard") || 
+        queryLower.includes("top player") || 
+        queryLower.includes("rank") || 
+        queryLower.includes("best") ||
+        queryLower.includes("1st") || queryLower.includes("2nd") || queryLower.includes("3rd") ||
+        queryLower.includes("who is") || queryLower.includes("highest") ||
+        queryLower.includes("maceffa") || queryLower.includes("nethpotffa") || queryLower.includes("swordffa1");
+
       // 1. Fetch Dynamic Leaderboard context matching gamemode intents
-      if (queryLower.includes("leaderboard") || queryLower.includes("top player") || queryLower.includes("rank") || queryLower.includes("best")) {
+      if (matchesLeaderboardIntent) {
         try {
           let targetGamemode = "swordffa1"; // Default Fallback
           
