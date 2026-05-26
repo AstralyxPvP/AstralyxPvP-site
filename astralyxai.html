@@ -421,7 +421,6 @@ NETWORK PUNISHMENTS REFERENCE:
     let conversationHistory = [];
     
     let settings = {
-      // apiKey: 'REPLACED', // <---- We will use Cloudflare environmental variables to secure our key (yes, this breaks local testing, but it's worth it)
       temperature: 0.7
     };
 
@@ -482,7 +481,6 @@ NETWORK PUNISHMENTS REFERENCE:
     }
 
     async function callGeminiAPI(messages) {
-      // Instead of calling Google directly, we hit our local Cloudflare background script
       const url = `/chat`;
 
       const payload = {
@@ -511,11 +509,42 @@ NETWORK PUNISHMENTS REFERENCE:
 
       if (!message) return;
 
-// Remove this thing check else BOOM NO API KEY
-//      if (!settings.apiKey || settings.apiKey === '') {
-//        addMessage('<div class="error-message">Configuration error: API Key missing.</div>', false);
-//        return;
-//      }
+      // Real-Time context variables injected right before API call
+      let injectedContext = "";
+      const queryLower = message.toLowerCase();
+      const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
+
+      // 1. Fetch Leaderboard context if relevant
+      if (queryLower.includes("leaderboard") || queryLower.includes("top player") || queryLower.includes("rank") || queryLower.includes("best")) {
+        try {
+          // Fetching standard sword ffa ladders as baseline context
+          const response = await fetch(`${API_BASE}?leaderboard=swordffa1`);
+          if (response.ok) {
+            const data = await response.json();
+            if (Array.isArray(data) && data.length > 0) {
+              const elements = data.slice(0, 5).map((p, index) => `#${index + 1} ${p.username} (${p.elo} ELO)`).join(", ");
+              injectedContext += `\n[LIVE LEADERBOARD DATA (Sword FFA 1): ${elements}]`;
+            }
+          }
+        } catch (err) {
+          console.error("Context injection failed for leaderboard:", err);
+        }
+      }
+
+      // 2. Fetch Active Player Count / Network Status context if relevant
+      if (queryLower.includes("online") || queryLower.includes("players") || queryLower.includes("status") || queryLower.includes("active")) {
+        try {
+          const response = await fetch(`${API_BASE}?serverStatus=true`);
+          if (response.ok) {
+            const data = await response.json();
+            if (data && typeof data.online !== 'undefined') {
+              injectedContext += `\n[LIVE STATUS DATA: Online=${data.online}, Current Players=${data.current || 0}, Max Limit=${data.max || 100}]`;
+            }
+          }
+        } catch (err) {
+          console.error("Context injection failed for server status:", err);
+        }
+      }
 
       addMessage(message, true);
       input.value = '';
@@ -525,7 +554,9 @@ NETWORK PUNISHMENTS REFERENCE:
       showTyping();
 
       try {
-        conversationHistory.push({ role: 'user', content: message });
+        // Build payload message with runtime tracking data context appended
+        const contextualMessage = message + injectedContext;
+        conversationHistory.push({ role: 'user', content: contextualMessage });
 
         const messages = [
           { role: 'user', content: SYSTEM_PROMPT },
