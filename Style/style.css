@@ -166,7 +166,16 @@ img {
 
 
 #navbar-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
+    height: 100%; /* Gives the sticky nav a "track" to stay in */
+    pointer-events: none; /* Allows you to click things behind the placeholder */
+}
+
+#navbar-placeholder nav {
+    pointer-events: auto; /* Re-enables clicking on the actual nav links */
 }
 
 
