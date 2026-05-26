@@ -382,21 +382,21 @@
     const isMaintenanceActive = false;
     const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
 
-    // AstralyxAI System Prompt with Explicit Function Calling Schema Setup
+    // Updated System Prompt keeping all original punishments/details with Multi-Query configurations
     const SYSTEM_PROMPT = `You are AstralyxAI 1.0, an elite, respectful web-based AI assistant for the AstralyxPvP Minecraft server. You are developed by IndianCoder3. Note: AstralyxBot was our Discord bot, but you are the Web AI helper. Differenciate between AstralyxAI (web assistant) and AstralyxBot (discord assistant).
 
 THINKING FEATURE RULE:
 Before generating your response text, you MUST always output your logical thinking process inside <thinking>...</thinking> tags. Then put your final answers inside <answer>...</answer> tags. Keep your inner thoughts sharp, analytic, and relevant to the user query.
 You may use HTML formatting inside your answer for better presentation, but never break the <thinking> and <answer> tags.
 
-FUNCTION CALLING SYSTEM:
-You have access to real-time tools. If you need live statistics to answer the user, you must request it by placing a clean JSON directive at the very top of your <thinking> space formatted exactly like this:
-CALL_FUNCTION: {"function": "fetchLeaderboard", "gamemode": "swordffa1"} 
-OR 
+MULTI-FUNCTION CALLING SYSTEM:
+You have access to real-time tools. If a user query requires multiple logs or items (e.g., asking about BOTH server status AND leaderboard ranks), you can request MULTIPLE functions at once. Simply list each function directive on its own separate line inside your <thinking> space.
+Examples:
 CALL_FUNCTION: {"function": "fetchServerStatus"}
+CALL_FUNCTION: {"function": "fetchLeaderboard", "gamemode": "maceffa"}
 
 Available Gamemodes for leaderboard: "swordffa1", "maceffa", "nethpotffa".
-Once you receive the data block back from the system, read it and synthesize your final output inside your <answer> tags.
+Once the system executes all calls and feeds the data blocks back to you, read them thoroughly and write your combined dynamic response inside the <answer> tags.
 
 CRITICAL RULES FOR RESPONDING:
 1. ONLY answer the specific question asked. Never dump irrelevant links.
@@ -437,25 +437,19 @@ NETWORK PUNISHMENTS REFERENCE:
 
     let currentModel = MODELS.primary;
     let conversationHistory = [];
-
-    // Helper: Generate Unique Element IDs to facilitate live Message Editing
     let messageCounter = 0;
+
     function generateId() {
       return `msg-id-${Date.now()}-${messageCounter++}`;
     }
 
-    /**
-     * Add or Update messages dynamically within the DOM tree
-     */
     function renderOrUpdateMessage(msgId, content, isUser = false, thinkingContent = "", toolLog = "") {
       const messagesDiv = document.getElementById('chatMessages');
-
       const welcome = messagesDiv.querySelector('.welcome-message');
       if (welcome) welcome.remove();
 
       let messageDiv = document.getElementById(msgId);
       
-      // If element doesn't exist, build it (Initial generation)
       if (!messageDiv) {
         messageDiv = document.createElement('div');
         messageDiv.id = msgId;
@@ -473,11 +467,9 @@ NETWORK PUNISHMENTS REFERENCE:
         messagesDiv.appendChild(messageDiv);
       }
 
-      // Target Content Container for live editing updates
       const contentDiv = messageDiv.querySelector('.message-content');
-      contentDiv.innerHTML = ''; // Wipe old state
+      contentDiv.innerHTML = '';
 
-      // Append tool log if executing function calls
       if (toolLog) {
         const logBox = document.createElement('div');
         logBox.className = 'tool-log-container';
@@ -485,7 +477,6 @@ NETWORK PUNISHMENTS REFERENCE:
         contentDiv.appendChild(logBox);
       }
 
-      // Insert Thinking box if present
       if (!isUser && thinkingContent) {
         const thinkBox = document.createElement('div');
         thinkBox.className = 'thinking-container';
@@ -524,7 +515,6 @@ NETWORK PUNISHMENTS REFERENCE:
       if (typing) typing.remove();
     }
 
-    // --- FUNCTION CALL REGISTRY ---
     const FunctionRegistry = {
       async fetchLeaderboard(args) {
         const gamemode = args.gamemode || "swordffa1";
@@ -565,7 +555,6 @@ NETWORK PUNISHMENTS REFERENCE:
       return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
 
-    // Formatting markdown links and linebreaks helper
     const formatText = (text) => {
       return text
         .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
@@ -577,7 +566,6 @@ NETWORK PUNISHMENTS REFERENCE:
       const message = input.value.trim();
       if (!message) return;
 
-      // Render user block
       const userMsgId = generateId();
       renderOrUpdateMessage(userMsgId, message, true);
       
@@ -586,7 +574,6 @@ NETWORK PUNISHMENTS REFERENCE:
       document.getElementById('sendBtn').disabled = true;
       showTyping();
 
-      // Create tracking instance for AI response block editing
       const aiMsgId = generateId();
       conversationHistory.push({ role: 'user', content: message });
 
@@ -599,46 +586,49 @@ NETWORK PUNISHMENTS REFERENCE:
 
         let responseText = await callGeminiAPI(messagesPayload);
         
-        // --- PARSING & NATIVE FUNCTION ROUTING LAYER ---
         let thinkMatch = responseText.match(/<thinking>([\s\S]*?)<\/thinking>/);
         let thinkingOutput = thinkMatch ? thinkMatch[1].trim() : "";
 
-        if (thinkingOutput.includes("CALL_FUNCTION:")) {
+        // --- NEW MULTI-QUERY PARSING LOOP LAYER ---
+        const toolLines = thinkingOutput.split("\n").filter(line => line.includes("CALL_FUNCTION:"));
+        
+        if (toolLines.length > 0) {
           removeTyping();
-          const cmdLine = thinkingOutput.split("\n").find(line => line.includes("CALL_FUNCTION:"));
-          const jsonStr = cmdLine.replace("CALL_FUNCTION:", "").trim();
+          renderOrUpdateMessage(aiMsgId, "Reading real-time data logs...", false, "", `Processing multi-query: Running ${toolLines.length} lookups...`);
+          showTyping();
           
-          try {
-            const toolRequest = JSON.parse(jsonStr);
-            const funcName = toolRequest.function;
-            
-            if (FunctionRegistry[funcName]) {
-              // Edit message placeholder live to notify user about the function call execution
-              renderOrUpdateMessage(aiMsgId, "Reading real-time data logs...", false, "", `Invoking server method: ${funcName}...`);
-              showTyping();
+          conversationHistory.push({ role: 'assistant', content: responseText });
+          let combinedToolResults = "";
 
-              // Run the function directly from registry
-              const dataResult = await FunctionRegistry[funcName](toolRequest);
+          // Loop over all listed function calls dynamically
+          for (const line of toolLines) {
+            try {
+              const jsonStr = line.replace("CALL_FUNCTION:", "").trim();
+              const toolRequest = JSON.parse(jsonStr);
+              const funcName = toolRequest.function;
               
-              // Feed function results back to the conversation thread pool
-              conversationHistory.push({ role: 'assistant', content: responseText });
-              conversationHistory.push({ role: 'user', content: `[SYSTEM TOOL RESPONSE]: ${dataResult}` });
-
-              // Re-request final answer compilation with raw tracking data injected cleanly
-              messagesPayload = [
-                { role: 'user', content: SYSTEM_PROMPT },
-                { role: 'model', content: '<thinking>Ready.</thinking><answer>Understood.</answer>' },
-                ...conversationHistory
-              ];
-              
-              responseText = await callGeminiAPI(messagesPayload);
+              if (FunctionRegistry[funcName]) {
+                const result = await FunctionRegistry[funcName](toolRequest);
+                combinedToolResults += `\n${result}`;
+              }
+            } catch (err) {
+              console.error("Failed executing tool call component:", err);
             }
-          } catch (jsonErr) {
-            console.error("Function Calling parsing failure:", jsonErr);
           }
+
+          // Return all structured server logs back in a single block context
+          conversationHistory.push({ role: 'user', content: `[SYSTEM TOOL RESPONSES]: ${combinedToolResults}` });
+
+          messagesPayload = [
+            { role: 'user', content: SYSTEM_PROMPT },
+            { role: 'model', content: '<thinking>Ready.</thinking><answer>Understood.</answer>' },
+            ...conversationHistory
+          ];
+          
+          responseText = await callGeminiAPI(messagesPayload);
         }
 
-        // Parse final response structures 
+        // Final output processing layout
         thinkMatch = responseText.match(/<thinking>([\s\S]*?)<\/thinking>/);
         const answerMatch = responseText.match(/<answer>([\s\S]*?)<\/answer>/);
 
@@ -646,8 +636,6 @@ NETWORK PUNISHMENTS REFERENCE:
         let answerOutput = answerMatch ? answerMatch[1].trim() : responseText.replace(/<thinking>[\s\S]*?<\/thinking>/, '').trim();
 
         removeTyping();
-        
-        // Cleanly edit the message block to change state from loading/calling-tool to final text
         renderOrUpdateMessage(aiMsgId, formatText(answerOutput), false, formatText(thinkingOutput), "");
         conversationHistory.push({ role: 'assistant', content: responseText });
 
