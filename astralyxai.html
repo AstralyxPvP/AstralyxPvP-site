@@ -477,7 +477,7 @@ NETWORK PUNISHMENTS REFERENCE:
 
     async function callGeminiAPI(messages) {
       // Instead of calling Google directly, we hit our local Cloudflare background script
-      const url = `/functions/chat`;
+      const url = `/chat`;
 
       const payload = {
         messages: messages,
@@ -505,10 +505,11 @@ NETWORK PUNISHMENTS REFERENCE:
 
       if (!message) return;
 
-      if (!settings.apiKey || settings.apiKey === '') {
-        addMessage('<div class="error-message">Configuration error: API Key missing.</div>', false);
-        return;
-      }
+// Remove this thing check else BOOM NO API KEY
+//      if (!settings.apiKey || settings.apiKey === '') {
+//        addMessage('<div class="error-message">Configuration error: API Key missing.</div>', false);
+//        return;
+//      }
 
       addMessage(message, true);
       input.value = '';
