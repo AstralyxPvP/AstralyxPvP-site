@@ -380,7 +380,7 @@
   <script src="Script/script.js"></script>
 
   <script>
-    // Current Server Maintenance State
+    let activeSessionToken = null;
     const isMaintenanceActive = false;
     const API_BASE = "https://astralyxpvp.chessmrbeaston.pages.dev/api/";
 
@@ -546,11 +546,12 @@ ALL MEMBERS IN OUR TEAM:
 
     // Add 'token' inside the parentheses here!
     async function callGeminiAPI(messages, token) {
-      const url = `/chat`; // Make sure this matches your actual backend route (e.g., /api/astralyxai)
+      const url = `/api/astralyxai`; // Ensure this matches your backend route
       const payload = { 
           messages: conversationHistory, 
           model: currentModel,
-          turnstileToken: token // Now it knows what 'token' is!
+          turnstileToken: token,
+          sessionToken: activeSessionToken // <--- Send the session token!
       };
 
       const response = await fetch(url, {
@@ -565,24 +566,28 @@ ALL MEMBERS IN OUR TEAM:
       }
 
       const data = await response.json();
+      
+      // Save the VIP pass for the next message!
+      if (data.sessionToken) {
+        activeSessionToken = data.sessionToken; 
+      }
+
       return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
-
-    const formatText = (text) => {
-      return text
-        .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-        .replace(/\n/g, '<br>');
-    };
 
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
       if (!message) return;
-      
-      const token = turnstile.getResponse();
-        if (!token) {
-          alert("Please complete the human verification.");
-          return;
+      let token = null;
+      if (!activeSessionToken) {
+          token = turnstile.getResponse();
+          
+          if (!token) {
+            alert("Please complete the human verification.");
+            return;
+          }
+          turnstile.reset(); 
         }
       const userMsgId = generateId();
       renderOrUpdateMessage(userMsgId, message, true);
