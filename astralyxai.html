@@ -12,7 +12,7 @@
   <meta name="keywords" content="AstralyxAI, chat, assistant, Minecraft, PvP, support" />
   <meta name="author" content="Frostrax (Owner), IndianCoder3 &amp; DreamLong (NebulaGames Developers)" />
   <link rel="stylesheet" href="Style/style.css">
-  
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     /* Gemini-Inspired Red Theme Variables */
     :root {
@@ -359,6 +359,7 @@
 
   <div class="chat-input-container">
     <form class="chat-input-area" onsubmit="event.preventDefault();sendMessage();">
+      <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt"></div>
       <div class="chat-input-wrapper">
         <textarea 
           id="chatInput" 
@@ -380,7 +381,7 @@
   <script>
     // Current Server Maintenance State
     const isMaintenanceActive = false;
-    const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
+    const API_BASE = "https://astralyxpvp.chessmrbeaston.pages.dev/api/";
 
     // Updated System Prompt keeping all original punishments/details with Multi-Query configurations
     const SYSTEM_PROMPT = `You are AstralyxAI 1.0, an elite, respectful web-based AI assistant for the AstralyxPvP Minecraft server. You are developed by IndianCoder3. Note: AstralyxBot was our Discord bot, but you are the Web AI helper. Differenciate between AstralyxAI (web assistant) and AstralyxBot (discord assistant).
@@ -544,7 +545,11 @@ ALL MEMBERS IN OUR TEAM:
 
     async function callGeminiAPI(messages) {
       const url = `/chat`;
-      const payload = { messages: messages, model: currentModel };
+      const payload = { 
+          messages: conversationHistory, 
+          model: currentModel,
+          turnstileToken: token 
+        };
 
       const response = await fetch(url, {
         method: 'POST',
@@ -571,7 +576,11 @@ ALL MEMBERS IN OUR TEAM:
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
       if (!message) return;
-
+      const token = turnstile.getResponse();
+        if (!token) {
+          alert("Please complete the human verification.");
+          return;
+        }
       const userMsgId = generateId();
       renderOrUpdateMessage(userMsgId, message, true);
       

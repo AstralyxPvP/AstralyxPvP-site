@@ -1,18 +1,29 @@
 export async function onRequestPost(context) {
   try {
-    // 1. Pull the secret API key securely from your Cloudflare Dashboard
-    const apiKey = context.env.GEMINI_API_KEY;
-    if (!apiKey) {
-      return new Response(JSON.stringify({ error: "API key is not configured on the server." }), {
-        status: 500,
+    const { env, request } = context;
+    const { messages, model, turnstileToken } = await request.json();
+
+    // 1. Verify Turnstile Token (Server-Side)
+    const formData = new FormData();
+    formData.append('secret', env.TURNSTILE_SECRET_KEY);
+    formData.append('response', turnstileToken);
+    formData.append('remoteip', request.headers.get('CF-Connecting-IP'));
+
+    const verifyResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData
+    });
+    const verifyData = await verifyResult.json();
+
+    if (!verifyData.success) {
+      return new Response(JSON.stringify({ error: "Verification failed. Unauthorized access." }), { 
+        status: 403,
         headers: { "Content-Type": "application/json" }
       });
     }
 
-    // 2. Read the chat history sent from your HTML website
-    const { messages, model } = await context.request.json();
-
-    // 3. Forward the request safely to Google's servers
+    // 2. Proceed with your AI logic (API Key is safe in env)
+    const apiKey = env.GEMINI_API_KEY;
     const googleUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
     
     const response = await fetch(googleUrl, {
@@ -27,8 +38,6 @@ export async function onRequestPost(context) {
     });
 
     const data = await response.json();
-    
-    // 4. Send Google's reply back to your HTML website
     return new Response(JSON.stringify(data), {
       headers: { "Content-Type": "application/json" }
     });
