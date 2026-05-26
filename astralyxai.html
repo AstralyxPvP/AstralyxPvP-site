@@ -446,7 +446,6 @@ ALL MEMBERS IN OUR TEAM:
     let currentModel = MODELS.primary;
     let conversationHistory = [];
     let messageCounter = 0;
-
     function generateId() {
       return `msg-id-${Date.now()}-${messageCounter++}`;
     }
@@ -545,13 +544,19 @@ ALL MEMBERS IN OUR TEAM:
     };
 
     // Add 'token' inside the parentheses here!
+    
+
     async function callGeminiAPI(messages, token) {
+<<<<<<< HEAD
+      const url = `/chat`; // Matches your file structure
+=======
       const url = `https://astralyxpvpweb.pages.dev/api/astralyxai`; // Dreamlong line 549 updated
+>>>>>>> 8febe796dfaf001208fba1a8bffa6ff2c3cfc01b
       const payload = { 
-          messages: conversationHistory, 
+          messages: messages, 
           model: currentModel,
           turnstileToken: token,
-          sessionToken: activeSessionToken // <--- Send the session token!
+          sessionToken: activeSessionToken 
       };
 
       const response = await fetch(url, {
@@ -560,18 +565,9 @@ ALL MEMBERS IN OUR TEAM:
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Server Error');
-      }
-
-      const data = await response.json();
+      const data = await response.json(); // Now it will work because backend is fixed
+      if (data.sessionToken) activeSessionToken = data.sessionToken;
       
-      // Save the VIP pass for the next message!
-      if (data.sessionToken) {
-        activeSessionToken = data.sessionToken; 
-      }
-
       return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
 
@@ -579,16 +575,16 @@ ALL MEMBERS IN OUR TEAM:
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
       if (!message) return;
+      
       let token = null;
+      // ONLY ask Turnstile if no active session exists
       if (!activeSessionToken) {
-          token = turnstile.getResponse();
-          
-          if (!token) {
-            alert("Please complete the human verification.");
-            return;
-          }
-          turnstile.reset(); 
+        token = turnstile.getResponse();
+        if (!token) {
+          alert("Please verify you are human.");
+          return;
         }
+      }
       const userMsgId = generateId();
       renderOrUpdateMessage(userMsgId, message, true);
       
