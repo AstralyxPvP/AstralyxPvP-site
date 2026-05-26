@@ -419,11 +419,6 @@ NETWORK PUNISHMENTS REFERENCE:
 
     let currentModel = MODELS.primary;
     let conversationHistory = [];
-    
-    let settings = {
-      // apiKey: 'REPLACED', // <---- We will use Cloudflare environmental variables to secure our key (yes, this breaks local testing, but it's worth it)
-      temperature: 0.7
-    };
 
     function addMessage(content, isUser = false, thinkingContent = "") {
       const messagesDiv = document.getElementById('chatMessages');
@@ -482,7 +477,6 @@ NETWORK PUNISHMENTS REFERENCE:
     }
 
     async function callGeminiAPI(messages) {
-      // Instead of calling Google directly, we hit our local Cloudflare background script
       const url = `/chat`;
 
       const payload = {
@@ -510,12 +504,6 @@ NETWORK PUNISHMENTS REFERENCE:
       const message = input.value.trim();
 
       if (!message) return;
-
-// Remove this thing check else BOOM NO API KEY
-//      if (!settings.apiKey || settings.apiKey === '') {
-//        addMessage('<div class="error-message">Configuration error: API Key missing.</div>', false);
-//        return;
-//      }
 
       addMessage(message, true);
       input.value = '';
