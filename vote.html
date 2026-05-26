@@ -106,5 +106,16 @@
     <a href="/rules"><i class="fa-solid fa-scroll"></i>View rules</a>
   </div>
   <div id="footer"></div>
+  <button id="chatWidgetBtn" onclick="toggleChatDock()" title="Chat with AstralyxAI">
+    <i class="fa-solid fa-comments"></i>
+  </button>
+
+  <div id="chatDock">
+    <div class="chat-dock-header">
+      <span>AstralyxAI Assistant</span>
+      <button onclick="toggleChatDock()" class="chat-close-btn">&times;</button>
+    </div>
+    <iframe src="/astralyxai" class="chat-dock-iframe"></iframe>
+  </div>
 </body>
 </html>

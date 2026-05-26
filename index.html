@@ -64,100 +64,6 @@
     loadHead();
   </script>
 
-  <style>
-    /* Fixed Floating Button Container */
-    #chatWidgetBtn {
-      position: fixed !important;
-      bottom: 24px !important;
-      right: 24px !important;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #c8102e 0%, #900418 100%);
-      color: #ffffff;
-      border: 1px solid rgba(255, 77, 109, 0.3);
-      font-size: 24px;
-      cursor: pointer;
-      box-shadow: 0 4px 15px rgba(200, 16, 46, 0.5);
-      z-index: 999999 !important; /* Forces it over the top of the footer/other layers */
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.2s, background-color 0.2s;
-    }
-
-    #chatWidgetBtn:hover {
-      transform: scale(1.05);
-      background: #ff4d6d;
-    }
-
-    /* Side Dock Drawer Styles */
-    #chatDock {
-      position: fixed !important;
-      top: 0 !important;
-      right: -45% !important; /* Hidden off-screen right side by default */
-      width: 40%;   
-      height: 100vh !important;
-      background: #0c0203; 
-      border-left: 1px solid rgba(200, 16, 46, 0.3);
-      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.7);
-      z-index: 1000000 !important; /* Above the floating button layer */
-      display: flex;
-      flex-direction: column;
-      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important; 
-    }
-
-    /* Active dynamic state when button clicked */
-    #chatDock.open {
-      right: 0 !important;
-    }
-
-    /* Dock Top Header Area */
-    .chat-dock-header {
-      background: rgba(10, 5, 6, 0.9);
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-family: sans-serif;
-      font-weight: 600;
-      color: #f5f5f7;
-    }
-
-    .chat-close-btn {
-      background: transparent;
-      border: none;
-      color: #9e9eaf;
-      font-size: 24px;
-      cursor: pointer;
-      line-height: 1;
-    }
-
-    .chat-close-btn:hover {
-      color: #ff4d6d;
-    }
-
-    /* Clean frame interface window */
-    .chat-dock-iframe {
-      flex: 1;
-      border: none;
-      width: 100%;
-      height: 100%;
-      background: transparent;
-    }
-
-    /* Responsive phone optimization layouts */
-    @media (max-width: 768px) {
-      #chatDock {
-        width: 85%; 
-        right: -90% !important;
-      }
-      #chatDock.open {
-        right: 0 !important;
-      }
-    }
-  </style>
 </head>
 
 <body>
@@ -242,13 +148,6 @@
     </div>
     <iframe src="/astralyxai" class="chat-dock-iframe"></iframe>
   </div>
-
-  <script>
-    function toggleChatDock() {
-      const dock = document.getElementById('chatDock');
-      dock.classList.toggle('open');
-    }
-  </script>
 
 </body>
 </html>

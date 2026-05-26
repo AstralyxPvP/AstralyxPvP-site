@@ -201,3 +201,9 @@
         setTimeout(() => { window.location.href = a.href; }, 180);
     });
 })();
+
+// Some AI Button CSS? YES SIR
+function toggleChatDock() {
+  const dock = document.getElementById('chatDock');
+  dock.classList.toggle('open');
+}
