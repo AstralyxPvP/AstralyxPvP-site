@@ -364,13 +364,10 @@
   </div>
 
   <script>
-    // Current Server Maintenance State
     const isMaintenanceActive = false;
-
-    // API endpoints mapping
     const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
 
-    // Declarative Tool Definitions passed to Gemini API
+    // Correct Gemini-Structured Function Declarations
     const TOOLS_CONFIG = [{
       functionDeclarations: [
         {
@@ -381,7 +378,7 @@
             properties: {
               gamemode: {
                 type: "STRING",
-                description: "The specific gamemode ladder ID. Must be exactly 'swordffa1' (Sword FFA), 'nethpotffa' (Netherite Pot FFA), or 'maceffa' (Mace FFA).",
+                description: "The specific gamemode ladder ID. Must be exactly 'swordffa1', 'nethpotffa', or 'maceffa'.",
                 enum: ["swordffa1", "nethpotffa", "maceffa"]
               }
             },
@@ -390,13 +387,12 @@
         },
         {
           name: "fetchServerStatus",
-          description: "Fetches live network status including total player counts, maximum network limits, and server online flags.",
+          description: "Fetches live network status including total player counts and server online status.",
           parameters: { type: "OBJECT", properties: {} }
         }
       ]
     }];
 
-    // AstralyxAI System Context Instructions
     const SYSTEM_PROMPT = `You are AstralyxAI 1.0, an elite, respectful web-based AI assistant for the AstralyxPvP Minecraft server. You are developed by IndianCoder3. Note: AstralyxBot was our Discord bot, but you are the Web AI helper. Differenciate between AstralyxAI (web assistant) and AstralyxBot (discord assistant), AstralyxBot was made by DreamLong.
 
 THINKING FEATURE RULE:
@@ -452,7 +448,6 @@ NETWORK PUNISHMENTS REFERENCE:
 
     function addMessage(content, isUser = false, thinkingContent = "") {
       const messagesDiv = document.getElementById('chatMessages');
-
       const welcome = messagesDiv.querySelector('.welcome-message');
       if (welcome) welcome.remove();
 
@@ -505,36 +500,34 @@ NETWORK PUNISHMENTS REFERENCE:
       if (typing) typing.remove();
     }
 
-    // Direct platform execution implementations for requested AI tools
-    async function executeLocalTool(call) {
-      const { name, args } = call;
+    // Handles the actual API requests on your site
+    async function executeLocalTool(name, args) {
       if (name === "fetchLeaderboard") {
-        const mode = args.gamemode || "swordffa1";
+        let mode = args.gamemode || "swordffa1";
         const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(mode)}`);
         if (!res.ok) return { error: "Failed to read leaderboard records." };
         const data = await res.json();
         if (Array.isArray(data)) {
-          const formatted = data.slice(0, 10).map((p, i) => `#${i+1} ${p.username}: ${p.elo} ELO`).join(", ");
-          return { data: `Active Standings for ${mode}: ${formatted || 'No data found'}` };
+          return { standings: data.slice(0, 10).map((p, i) => ({ rank: i + 1, username: p.username, elo: p.elo })) };
         }
-        return { error: "Mismatched data shape returned." };
+        return { error: "Invalid data structure returned." };
       }
       
       if (name === "fetchServerStatus") {
         const res = await fetch(`${API_BASE}?serverStatus=true`);
-        if (!res.ok) return { error: "Server infrastructure unreachable." };
+        if (!res.ok) return { error: "Server status unreachable." };
         const data = await res.json();
-        return { online: data.online, activePlayers: data.current || 0, maxPlayers: data.max || 100 };
+        return { online: data.online, currentPlayers: data.current || 0, maxPlayers: data.max || 100 };
       }
-      throw new Error(`Tool ${name} mapping missing.`);
+      throw new Error(`Tool ${name} is missing a local configuration mapping.`);
     }
 
-    async function callGeminiAPI(messagesPayload) {
+    async function callGeminiAPI(historyPayload) {
       const url = `/chat`;
       const payload = {
-        messages: messagesPayload,
+        contents: historyPayload,
         model: currentModel,
-        tools: TOOLS_CONFIG // Pass the active function schema blueprints to backend gateway
+        tools: TOOLS_CONFIG
       };
 
       const response = await fetch(url, {
@@ -564,56 +557,47 @@ NETWORK PUNISHMENTS REFERENCE:
       showTyping();
 
       try {
-        conversationHistory.push({ role: 'user', content: message });
+        // Correct Gemini historical format structure
+        if (conversationHistory.length === 0) {
+          conversationHistory.push({ role: 'user', parts: [{ text: SYSTEM_PROMPT }] });
+          conversationHistory.push({ role: 'model', parts: [{ text: "<thinking>System online.</thinking><answer>Ready.</answer>" }] });
+        }
 
-        let currentTurnMessages = [
-          { role: 'user', content: SYSTEM_PROMPT },
-          { role: 'model', content: '<thinking>System parameters configured. Tools mounted. Ready to process user intents.</thinking><answer>Understood.</answer>' },
-          ...conversationHistory
-        ];
+        conversationHistory.push({ role: 'user', parts: [{ text: message }] });
 
-        // Core turn generation execution setup loops
-        let apiResponse = await callGeminiAPI(currentTurnMessages);
-        let candidate = apiResponse.candidates?.[0];
-        let modelPart = candidate?.content?.parts?.[0];
+        let apiResponse = await callGeminiAPI(conversationHistory);
+        let part = apiResponse.candidates?.[0]?.content?.parts?.[0];
 
-        // Loop execution paths if model triggers Function Call demands
-        if (modelPart && modelPart.functionCall) {
-          const functionCallRequest = modelPart.functionCall;
+        // Core Automatic Tool Loop Strategy
+        if (part && part.functionCall) {
+          const callRequest = part.functionCall;
           
-          // Execute corresponding function block securely via network APIs
-          let toolResultData;
-          try {
-            toolResultData = await executeLocalTool(functionCallRequest);
-          } catch(err) {
-            toolResultData = { error: err.message };
-          }
+          // Execute your actual API function automatically behind the scenes
+          const toolDataResult = await executeLocalTool(callRequest.name, callRequest.args);
 
-          // Format runtime structural states for next turn validation context
+          // Append both the model's intent request and your backend response payload to the history
           conversationHistory.push({
             role: 'model',
-            content: JSON.stringify({ functionCall: functionCallRequest })
+            parts: [{ functionCall: callRequest }]
           });
           conversationHistory.push({
             role: 'user',
-            content: JSON.stringify({ functionResponse: { name: functionCallRequest.name, response: toolResultData } })
+            parts: [{
+              functionResponse: {
+                name: callRequest.name,
+                response: { name: callRequest.name, content: toolDataResult }
+              }
+            }]
           });
 
-          // Re-evaluate complete operational parameters payload stack down onto backend
-          currentTurnMessages = [
-            { role: 'user', content: SYSTEM_PROMPT },
-            { role: 'model', content: '<thinking>System parameters configured. Tools mounted. Ready to process user intents.</thinking><answer>Understood.</answer>' },
-            ...conversationHistory
-          ];
-          
-          apiResponse = await callGeminiAPI(currentTurnMessages);
-          candidate = apiResponse.candidates?.[0];
-          modelPart = candidate?.content?.parts?.[0];
+          // Second round request: gives data context right back to Gemini to get the final answer text
+          apiResponse = await callGeminiAPI(conversationHistory);
+          part = apiResponse.candidates?.[0]?.content?.parts?.[0];
         }
 
-        const responseText = modelPart?.text || '';
+        const responseText = part?.text || '';
+        conversationHistory.push({ role: 'model', parts: [{ text: responseText }] });
 
-        // Extract and present semantic data schemas
         let thinkingOutput = "";
         let answerOutput = responseText;
 
@@ -635,7 +619,6 @@ NETWORK PUNISHMENTS REFERENCE:
 
         removeTyping();
         addMessage(formatText(answerOutput), false, formatText(thinkingOutput));
-        conversationHistory.push({ role: 'assistant', content: responseText });
 
       } catch (error) {
         removeTyping();
