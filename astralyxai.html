@@ -568,8 +568,8 @@ ALL MEMBERS IN OUR TEAM:
     }
     const formatText = (text) => {
       return text
-      .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-      .replace(/\n/g, '<br>');
+        .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+        .replace(/\n/g, '<br>');
     };
     async function sendMessage() {
       const input = document.getElementById('chatInput');
