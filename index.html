@@ -134,5 +134,117 @@
     <a href="/rules"><i class="fa-solid fa-scroll"></i>View rules</a>
   </div>
   <div id="footer"></div>
+
+  <button id="chatWidgetBtn" onclick="toggleChatDock()" title="Chat with AstralyxAI">
+    💬
+  </button>
+
+  <div id="chatDock">
+    <div class="chat-dock-header">
+      <span>AstralyxAI Assistant</span>
+      <button onclick="toggleChatDock()" class="chat-close-btn">&times;</button>
+    </div>
+    <iframe src="/astralyxai" class="chat-dock-iframe"></iframe>
+  </div>
+
+  <style>
+    /* Floating Button Styles */
+    #chatWidgetBtn {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #c8102e 0%, #900418 100%);
+      color: #ffffff;
+      border: 1px solid rgba(255, 77, 109, 0.3);
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(200, 16, 46, 0.4);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+
+    #chatWidgetBtn:hover {
+      transform: scale(1.05);
+      background: #ff4d6d;
+    }
+
+    /* Side Dock Drawer Styles */
+    #chatDock {
+      position: fixed;
+      top: 0;
+      right: -45%; /* Initially hidden off-screen */
+      width: 40%;   /* Takes up 40% of the screen width */
+      height: 100vh;
+      background: #0c0203; /* Matches your dark red/black gradient theme */
+      border-left: 1px solid rgba(200, 16, 46, 0.3);
+      box-shadow: -10px 0 30px rgba(0, 0, 0, 0.6);
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1); /* Smooth slide-in */
+    }
+
+    /* Dock Header Area */
+    .chat-dock-header {
+      background: rgba(10, 5, 6, 0.9);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: sans-serif;
+      font-weight: 600;
+      color: #f5f5f7;
+    }
+
+    .chat-close-btn {
+      background: transparent;
+      border: none;
+      color: #9e9eaf;
+      font-size: 24px;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .chat-close-btn:hover {
+      color: #ff4d6d;
+    }
+
+    /* Iframe sizing to fill container completely */
+    .chat-dock-iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    /* Responsive adjustments for smaller phone screens */
+    @media (max-width: 768px) {
+      #chatDock {
+        width: 85%; /* Take up more room on phones so it's readable */
+        right: -90%;
+      }
+    }
+  </style>
+
+  <script>
+    function toggleChatDock() {
+      const dock = document.getElementById('chatDock');
+      // If hidden, slide it in. Otherwise, slide it out.
+      if (dock.style.right === '0px') {
+        dock.style.right = window.innerWidth <= 768 ? '-90%' : '-45%';
+      } else {
+        dock.style.right = '0px';
+      }
+    }
+  </script>
+
 </body>
 </html>
