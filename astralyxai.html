@@ -527,17 +527,9 @@ NETWORK PUNISHMENTS REFERENCE:
       try {
         conversationHistory.push({ role: 'user', content: message });
 
-        await updateServerContext();
-        await updateLeaderboardContext();
-
         const messages = [
           { role: 'user', content: SYSTEM_PROMPT },
-
-          {
-            role: 'user',
-            content: buildAIContext()
-          },
-
+          { role: 'model', content: '<thinking>System parameters configured. Ready to assist user on AstralyxAI web platform.</thinking><answer>Understood.</answer>' },
           ...conversationHistory
         ];
 
