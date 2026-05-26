@@ -544,12 +544,13 @@ ALL MEMBERS IN OUR TEAM:
       }
     };
 
-    async function callGeminiAPI(messages) {
-      const url = `/chat`;
+    // Add 'token' inside the parentheses here!
+    async function callGeminiAPI(messages, token) {
+      const url = `/chat`; // Make sure this matches your actual backend route (e.g., /api/astralyxai)
       const payload = { 
           messages: conversationHistory, 
           model: currentModel,
-          turnstileToken: token 
+          turnstileToken: token // Now it knows what 'token' is!
       };
 
       const response = await fetch(url, {
@@ -601,7 +602,7 @@ ALL MEMBERS IN OUR TEAM:
           ...conversationHistory
         ];
 
-        let responseText = await callGeminiAPI(messagesPayload);
+        let responseText = await callGeminiAPI(messagesPayload, token);
         
         let thinkMatch = responseText.match(/<thinking>([\s\S]*?)<\/thinking>/);
         let thinkingOutput = thinkMatch ? thinkMatch[1].trim() : "";
@@ -642,7 +643,7 @@ ALL MEMBERS IN OUR TEAM:
             ...conversationHistory
           ];
           
-          responseText = await callGeminiAPI(messagesPayload);
+          responseText = await callGeminiAPI(messagesPayload, token);
         }
 
         // Final output processing layout
