@@ -566,7 +566,11 @@ ALL MEMBERS IN OUR TEAM:
       
       return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
-
+    const formatText = (text) => {
+      return text
+      .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
+      .replace(/\n/g, '<br>');
+    };
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
