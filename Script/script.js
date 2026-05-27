@@ -195,9 +195,6 @@
         initLeaderboard()
     ]).catch(err => console.error("Init failed:", err));
 
-    // Refresh server status every 20s
-    setInterval(updateNavStatus, 20000);
-
     // Smooth Page Transitions
     document.addEventListener('click', e => {
         const a = e.target.closest('a');
