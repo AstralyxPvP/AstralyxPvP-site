@@ -134,7 +134,6 @@
             select.innerHTML = '<option disabled selected>No gamemodes available</option>';
             const out = document.getElementById('lb');
             if (out) out.innerHTML = '<div style="text-align:center;padding:14px 0">No gamemodes found.</div>';
-        }
             }
         } catch (err) { console.error("GM Load Error:", err); }
 
