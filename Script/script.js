@@ -130,6 +130,11 @@
                 select.innerHTML = gms.map(gm => `<option value="${gm}">${gm}</option>`).join('');
                 const urlGm = new URLSearchParams(window.location.search).get('gamemode');
                 if (urlGm && gms.includes(urlGm)) select.value = urlGm;
+            } else {
+            select.innerHTML = '<option disabled selected>No gamemodes available</option>';
+            const out = document.getElementById('lb');
+            if (out) out.innerHTML = '<div style="text-align:center;padding:14px 0">No gamemodes found.</div>';
+        }
             }
         } catch (err) { console.error("GM Load Error:", err); }
 
