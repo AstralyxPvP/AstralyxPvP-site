@@ -174,7 +174,9 @@
         }
     }
 
-    document.body.classList.add('page-enter');
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('page-enter');
+    });
     
 
     setInterval(updateNavStatus, 20000);
