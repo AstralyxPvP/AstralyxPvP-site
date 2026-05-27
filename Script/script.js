@@ -179,7 +179,9 @@
 
     setInterval(updateNavStatus, 20000);
 
-    document.body.classList.add('page-enter');
+    document.addEventListener('DOMContentLoaded', () => {
+        document.body.classList.add('page-enter');
+    });
     
     Promise.all([
         initNavbar(),
