@@ -183,7 +183,7 @@
     });
     
 
-    setInterval(updateNavStatus, 20000);
+    
 
     document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('page-enter');
@@ -193,8 +193,9 @@
         initNavbar(),
         initFooter(),
         initLeaderboard()
-    ]).catch(err => console.error("Init failed:", err));
-
+    ]).then(() => {
+        setInterval(updateNavStatus, 20000);
+    }).catch(err => console.error("Init failed:", err));
     // Smooth Page Transitions
     document.addEventListener('click', e => {
         const a = e.target.closest('a');
