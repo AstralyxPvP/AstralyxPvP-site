@@ -5,10 +5,11 @@
 ## The Ultimate 1.9+ FFA PvP Battlefield
 
 [![GitHub license](https://img.shields.io/github/license/AstralyxPvP/AstralyxPvP-site?style=for-the-badge&color=blue)](LICENSE)
+[![Deployment Status](https://img.shields.io/badge/deployment-success-brightgreen?style=for-the-badge&logo=github)](https://astralyxpvp.pages.dev)
 [![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?style=for-the-badge&logo=cloudflare)](https://astralyxpvp.pages.dev)
 [![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?style=for-the-badge&logo=html5&logoColor=white)](https://astralyxpvp.pages.dev)
 [![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?style=for-the-badge&logo=google&logoColor=white)](https://astralyxpvp.pages.dev/astralyxai)
-[![Discord](https://img.shields.io/discord/876543210987654321?label=Discord&logo=discord&style=for-the-badge&color=7289DA)](https://discord.gg/u8BFrpRwEg)
+[![Discord](https://img.shields.io/discord/1477025023800901766.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/u8BFrpRwEg)
 
 ## About AstralyxPvP
 
@@ -49,6 +50,16 @@ To set up the project locally, follow these steps:
 ## Usage
 
 Visit the live website at [https://astralyxpvp.pages.dev](https://astralyxpvp.pages.dev) to experience AstralyxPvP.
+
+## Enabling Discord Widget
+
+If your Discord server widget is disabled, follow these steps to enable it and ensure the badge works correctly:
+
+1.  **Open Discord**: Launch the Discord application or go to the Discord web client.
+2.  **Server Settings**: Navigate to your server's settings. You can do this by clicking on your server name at the top left, then selecting `Server Settings`.
+3.  **Widget**: In the Server Settings menu, find and click on the `Widget` option under the `WIDGET` section.
+4.  **Enable Server Widget**: Toggle the `Enable Server Widget` option to ON. This will activate the widget and generate the necessary API endpoint for the badge.
+5.  **Copy Widget ID**: Ensure the `Widget Channel` is set to a public channel (e.g., `#general`). You can then copy the `Server ID` or `Widget URL` from this page. The badge uses the Server ID.
 
 ## Contributing
 
