@@ -857,33 +857,44 @@ TEAM HIERARCHY & ROLES:
 
     // Text-to-Speech
     function speakText(text) {
-        if (!window.speechSynthesis) return;
-        window.speechSynthesis.cancel();
-        
-        const utterance = new SpeechSynthesisUtterance(text);
-        
-        // 1. Force the language constraint to English (US)
-        utterance.lang = 'en-US';
-        
-        // 2. Look for high-quality variants that are strictly English
-        const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => 
-            (v.lang.startsWith('en')) && 
-            (v.name.includes('Google') || v.name.includes('Microsoft') || v.name.includes('Natural') || v.name.includes('Premium'))
-        );
-        
-        if (preferredVoice) {
-            utterance.voice = preferredVoice;
-        } else {
-            // Fallback: If no premium English voice is found, grab the first available English voice
-            const fallbackEnglish = voices.find(v => v.lang.startsWith('en'));
-            if (fallbackEnglish) utterance.voice = fallbackEnglish;
-        }
-        
-        utterance.rate = 1.0;
-        utterance.pitch = 1.0;
-        window.speechSynthesis.speak(utterance);
-    }
+      if (!window.speechSynthesis) return;
+
+      if (window.speechSynthesis.speaking) {
+          window.speechSynthesis.cancel();
+      }
+      
+      let phoneticText = text
+          .replace(/AstralyxPvP/gi, "As-tra-lix P V P")
+          .replace(/AstralyxAI/gi, "As-tra-lix A I")
+          .replace(/Astralyx/gi, "As-tra-lix");
+  
+      const utterance = new SpeechSynthesisUtterance(phoneticText);
+      utterance.lang = 'en-US';
+  
+      // 3. SECURE THE CLOUD SOCKET VOICE
+      const voices = window.speechSynthesis.getVoices();
+      let preferredVoice = voices.find(v => v.name === "Google US English");
+      
+      if (!preferredVoice) {
+          preferredVoice = voices.find(v => v.lang.startsWith('en') && v.name.includes('Google'));
+      }
+  
+      if (preferredVoice) {
+          utterance.voice = preferredVoice;
+      } else {
+          utterance.voice = voices.find(v => v.lang.startsWith('en'));
+      }
+  
+      utterance.rate = 1.0;
+      utterance.pitch = 1.0;
+  
+      // 4. PREVENT CHROMIUM TRASH DROP FOR MULTIPLE CLICKS
+      // Wrapping the execution in a minor timeout gives Chrome's internal WebSocket
+      // pipeline enough breathing space (50ms) to clean its buffer without dropping the connection.
+      setTimeout(() => {
+          window.speechSynthesis.speak(utterance);
+      }, 50);
+  }
   </script>
 </body>
 </html>
