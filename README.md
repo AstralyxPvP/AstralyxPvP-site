@@ -63,7 +63,3 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 For questions or suggestions, you can reach us at:
 *   **Email**: astralyxnetwork@gmail.com
 *   **Discord**: [https://discord.gg/u8BFrpRwEg](https://discord.gg/u8BFrpRwEg)
-
----
-
-**Manus AI** – Created on June 08, 2026
