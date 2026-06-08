@@ -53,13 +53,18 @@ Visit the live website at [https://astralyxpvp.pages.dev](https://astralyxpvp.pa
 
 ## Enabling Discord Widget
 
-If your Discord server widget is disabled, follow these steps to enable it and ensure the badge works correctly:
+If you cannot find the **Widget** setting or it appears disabled, follow these troubleshooting steps:
 
-1.  **Open Discord**: Launch the Discord application or go to the Discord web client.
-2.  **Server Settings**: Navigate to your server's settings. You can do this by clicking on your server name at the top left, then selecting `Server Settings`.
-3.  **Widget**: In the Server Settings menu, find and click on the `Widget` option under the `WIDGET` section.
-4.  **Enable Server Widget**: Toggle the `Enable Server Widget` option to ON. This will activate the widget and generate the necessary API endpoint for the badge.
-5.  **Copy Widget ID**: Ensure the `Widget Channel` is set to a public channel (e.g., `#general`). You can then copy the `Server ID` or `Widget URL` from this page. The badge uses the Server ID.
+1.  **Check Permissions**: Ensure you have **Administrator** permissions or the **Manage Server** permission on the Discord server.
+2.  **Locate the Setting**:
+    *   **Standard Path**: Go to `Server Settings` > `Widget`.
+    *   **Community Servers**: If your server has Community features enabled, look under `Server Settings` > `Community` > `Widget` or `App Directory`.
+    *   **Search Bar**: Use the search bar at the top of the Server Settings menu and type "Widget" to jump directly to the setting.
+3.  **Enable Server Widget**: Once in the Widget menu, toggle **Enable Server Widget** to **ON**.
+4.  **Configure Channel**: Set the **Widget Channel** to a public channel (e.g., `#general`) so the widget can display active members.
+5.  **Copy Server ID**: The badge requires your **Server ID**, which is found on this same Widget settings page.
+
+> **Note**: If the "Widget" tab is still missing, ensure your Discord client is updated to the latest version. In some 2026 updates, this setting may also be found under **Safety Setup** or **App Integration** depending on your server's configuration.
 
 ## Contributing
 
