@@ -75,7 +75,6 @@
       scroll-behavior: smooth;
     }
 
-    /* Gemini-Style Centered Hero Welcome Screen */
     .welcome-message {
       text-align: center;
       margin: auto 0;
@@ -101,7 +100,6 @@
       line-height: 1.6;
     }
 
-    /* Sleek Message Layouts */
     .message {
       display: flex;
       flex-direction: column;
@@ -148,7 +146,6 @@
       box-shadow: 0 4px 15px var(--primary-glow);
     }
 
-    /* Thinking Blocks & Logs */
     .thinking-container {
       background: rgba(255, 255, 255, 0.02);
       border-left: 2px solid rgba(200, 16, 46, 0.4);
@@ -263,6 +260,7 @@
       background: rgba(255, 255, 255, 0.05);
       color: var(--text-main);
       border: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 1.1rem;
     }
 
     .mic-btn:hover {
@@ -327,6 +325,16 @@
     }
     .wave-dot:nth-child(2) { animation-delay: 0.15s; }
     .wave-dot:nth-child(3) { animation-delay: 0.3s; }
+
+    /* Speaking State specific styling */
+    .voice-status-overlay.speaking .wave-dot {
+      background: #4dff88;
+    }
+    .voice-status-overlay.speaking {
+      border-color: rgba(77, 255, 136, 0.4);
+      color: #4dff88;
+      background: rgba(77, 255, 136, 0.1);
+    }
 
     .model-indicator {
       font-size: 0.75rem;
@@ -418,7 +426,7 @@
         <div class="wave-dot"></div>
         <div class="wave-dot"></div>
       </div>
-      <span id="voiceStatusText">Listening Live...</span>
+      <span id="voiceStatusText">Live Mode: Listening...</span>
     </div>
 
     <form class="chat-input-area" onsubmit="event.preventDefault();sendMessage();">
@@ -426,13 +434,14 @@
         <textarea 
           id="chatInput" 
           class="chat-input" 
-          placeholder="Ask AstralyxAI or start talking..." 
+          placeholder="Ask AstralyxAI or toggle Live Mode..." 
           rows="1"
           onkeydown="handleKeyPress(event)"
+          onfocus="handleTextFocus()"
         ></textarea>
       </div>
       <!-- Dual Input Actions: Mic Button and Text Action Button -->
-      <button type="button" class="action-btn mic-btn" id="micBtn" onclick="toggleVoiceLiveMode()" title="Toggle Voice Live Mode">🎤</button>
+      <button type="button" class="action-btn mic-btn" id="micBtn" onclick="toggleLiveMode()" title="Toggle AstralyxAI Live Mode">🎙️</button>
       <button class="action-btn send-btn" id="sendBtn" type="submit">➔</button>
     </form>
     <div class="model-indicator">
@@ -486,28 +495,12 @@ SERVER CONNECTION & SYNC DETAILS:
 - Maintenance status: ${isMaintenanceActive}.
 - Discord Account Linking Process: Join the game at java.astralyxpvp.int.yt -> execute the in-game command /linkaccount -> hop onto the Discord server and use the command /link <ingamename> <code> to synchronize roles and stats.
 
-EMAIL DETAILS:
-- Official team communication addresses route through the "@astralyxpvp.int.yt" domain (e.g., frostrax@astralyxpvp.int.yt, indiancoder3@astralyxpvp.int.yt, dreamlong@astralyxpvp.int.yt).
-
-NETWORK PUNISHMENTS REFERENCE:
-- Unfair Modifications/Hacks: 1st offense = 30-day ban, 2nd offense = Permanent blacklist.
-- Chat Toxicity/Swearing: 1st = 30-minute mute, 2nd = 3-hour mute, 3rd = 1-day mute.
-- Major Network Advertising: 1st = 6-month mute, 2nd = 12-month mute, 3rd = Permanent network mute.
-- Light Advertising: 1st = 12-hour mute, 2nd = 3-day mute, 3rd = 7-day ban.
-- Staff Disrespect/Harassment: 1st = Official Warning, 2nd = 1-hour mute, 3rd = 6-hour mute.
-- Chat Trolling / Flooding: Scaled timed mutes applied based on severity.
-- Ban Evading / DDoS threats: Immediate, non-appealable Permanent IP Blacklist.
-- Bug Exploiting: 14-day ban up to full Permanent ban based on asset damage.
-- Doxxing: Permanent ban + immediate referral to relevant security authorities.
-
 TEAM HIERARCHY & ROLES:
 - Executive Leadership: Frostrax (Owner - cousin of Co-Owner), Lazoryn (Co-Owner).
 - Management Core: _IZylox_ (Chief Manager), Dravox / Celestral (Sr. Manager), DreamLong (Manager & Backend API / JavaScript Lead).
 - Development Squad: IndianCoder3 (Developer, Web Design & AI Integrations Management), DreamLong (Dev & Manager both), Jailbreaksix12345 (Developer), Random_Acc (Developer), AL13N (Developer).
-- Hierarchy Rule: Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer. All developers carry equal weight, collaborating on a unified backend while maintaining specialized focuses (e.g., IndianCoder3 manages frontend/AI properties; DreamLong drives the core API engines).
 `;
     
-    // Fallback architecture configuration upgraded to high-performance open weights engine
     const MODELS = {
         primary: 'gemini-3.1-flash-lite',
         fallback: 'gemma-4-26b'
@@ -517,10 +510,16 @@ TEAM HIERARCHY & ROLES:
     let conversationHistory = [];
     let messageCounter = 0;
 
-    // Live Voice Integration State Variables
+    // --- LIVE MODE STATE VARIABLES ---
     let voiceRecognition = null;
-    let isVoiceLiveActive = false;
+    let isLiveMode = false; // Master toggle for Voice Live
+    let isRecognizing = false;
     let currentSpeechUtterance = null;
+
+    // Load voices early
+    if (window.speechSynthesis) {
+        window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+    }
 
     function generateId() {
       return `msg-id-${Date.now()}-${messageCounter++}`;
@@ -536,71 +535,129 @@ TEAM HIERARCHY & ROLES:
       }
       
       voiceRecognition = new SpeechRecognition();
-      voiceRecognition.continuous = false; 
+      voiceRecognition.continuous = false; // We manually restart it to create a seamless loop
       voiceRecognition.interimResults = false;
       voiceRecognition.lang = 'en-US';
 
       voiceRecognition.onstart = () => {
-        isVoiceLiveActive = true;
-        document.getElementById('micBtn').classList.add('active-listening');
-        document.getElementById('voiceOverlay').style.display = 'flex';
-        document.getElementById('voiceStatusText').textContent = "Listening Live...";
-        // Mute any ongoing TTS playback before reading input audio stream
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        isRecognizing = true;
+        if(isLiveMode) updateVoiceUI("listening");
       };
 
       voiceRecognition.onresult = (event) => {
         const transcript = event.results[0][0].transcript;
-        if (transcript.trim()) {
+        if (transcript.trim() && isLiveMode) {
           document.getElementById('chatInput').value = transcript;
-          sendMessage();
+          sendMessage(); // Send automatically in live mode
         }
       };
 
       voiceRecognition.onerror = (e) => {
-        console.error("Live Audio Recognition Error Context:", e);
-        stopVoiceLiveMode();
+        console.error("Live Audio Recognition Error:", e.error);
+        if (e.error === 'no-speech' && isLiveMode) {
+            // If no speech detected but live mode is on, just keep listening
+            try { voiceRecognition.start(); } catch(err){}
+        }
       };
 
       voiceRecognition.onend = () => {
-        stopVoiceLiveMode();
+        isRecognizing = false;
+        // If live mode is still active, and we aren't currently speaking, start listening again
+        if (isLiveMode && !window.speechSynthesis.speaking) {
+            try { voiceRecognition.start(); } catch(e){}
+        }
       };
     }
 
-    function toggleVoiceLiveMode() {
+    function toggleLiveMode() {
       if (!voiceRecognition) initVoiceEngine();
       if (!voiceRecognition) return;
 
-      if (!isVoiceLiveActive) {
-        voiceRecognition.start();
+      isLiveMode = !isLiveMode;
+
+      if (isLiveMode) {
+        // TURN ON LIVE MODE
+        if (window.speechSynthesis) window.speechSynthesis.cancel(); // Interrupt any ongoing speech
+        try { if(!isRecognizing) voiceRecognition.start(); } catch(e){}
+        document.getElementById('micBtn').classList.add('active-listening');
+        document.getElementById('voiceOverlay').style.display = 'flex';
+        updateVoiceUI("listening");
       } else {
-        voiceRecognition.stop();
+        // TURN OFF LIVE MODE
+        isLiveMode = false;
+        if (window.speechSynthesis) window.speechSynthesis.cancel();
+        try { voiceRecognition.stop(); } catch(e){}
+        document.getElementById('micBtn').classList.remove('active-listening');
+        document.getElementById('voiceOverlay').style.display = 'none';
       }
     }
 
-    function stopVoiceLiveMode() {
-      isVoiceLiveActive = false;
-      document.getElementById('micBtn').classList.remove('active-listening');
-      document.getElementById('voiceOverlay').style.display = 'none';
+    function updateVoiceUI(state) {
+        const overlay = document.getElementById('voiceOverlay');
+        const text = document.getElementById('voiceStatusText');
+        if (state === "listening") {
+            overlay.classList.remove('speaking');
+            text.textContent = "Live Mode: Listening...";
+        } else if (state === "speaking") {
+            overlay.classList.add('speaking');
+            text.textContent = "AstralyxAI is Speaking...";
+        }
     }
 
-    // High performance localized TTS Text-To-Speech engine
+    // If the user clicks into the text box, disable Live Mode to prevent chaos
+    function handleTextFocus() {
+        if (isLiveMode) {
+            toggleLiveMode(); // Shut off live mode gracefully
+        }
+    }
+
+    // High performance localized TTS Text-To-Speech engine with upgraded voices
     function executeLiveAudioPlayback(rawText) {
-      if (!window.speechSynthesis) return;
+      if (!window.speechSynthesis || !isLiveMode) return; // CRITICAL: NEVER speak unless Live Mode is toggled ON
       
       // Clean up text format syntax rules so the reader speaks humanely
       let cleanText = rawText.replace(/<\/?[^>]+(>|$)/g, ""); // Strip any raw inline elements
       cleanText = cleanText.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1"); // De-anchor text strings
+      cleanText = cleanText.replace(/#/g, ""); // Remove markdown hashes
+      cleanText = cleanText.replace(/\*/g, ""); // Remove bold/italic stars
 
       window.speechSynthesis.cancel(); // Stop overlap engines
       currentSpeechUtterance = new SpeechSynthesisUtterance(cleanText);
       
-      // Opting for premium localized routing streams if present inside user hardware
+      // Upgraded Premium Voice Selection Algorithm
       const voices = window.speechSynthesis.getVoices();
-      const naturalVoice = voices.find(v => v.name.includes("Google") || v.name.includes("Natural"));
-      if (naturalVoice) currentSpeechUtterance.voice = naturalVoice;
+      
+      // Look for high quality premium OS/Browser voices first
+      let bestVoice = voices.find(v => 
+          v.name.includes("Google UK English") || 
+          v.name.includes("Microsoft Aria") || 
+          v.name.includes("Samantha") ||
+          v.name.includes("Microsoft Guy") ||
+          v.name.includes("Google US English") ||
+          v.name.includes("Natural")
+      );
+      
+      if (bestVoice) {
+          currentSpeechUtterance.voice = bestVoice;
+      }
 
-      currentSpeechUtterance.rate = 1.05; // Light tempo configuration matching dynamic interface speed
+      currentSpeechUtterance.rate = 1.05; // Light tempo configuration
+
+      currentSpeechUtterance.onstart = () => {
+          if (isLiveMode) {
+              updateVoiceUI("speaking");
+              try { voiceRecognition.stop(); } catch(e){} // Stop listening while talking
+          }
+      };
+
+      currentSpeechUtterance.onend = () => {
+          // When done talking, if Live mode is still on, instantly open the mic again
+          if (isLiveMode) {
+              updateVoiceUI("listening");
+              try { if(!isRecognizing) voiceRecognition.start(); } catch(e){}
+          }
+      };
+
       window.speechSynthesis.speak(currentSpeechUtterance);
     }
 
@@ -713,7 +770,6 @@ TEAM HIERARCHY & ROLES:
       });
 
       if (!response.ok) {
-        // Automatically cascade processing requirements into our high performance open fallback model architecture
         if (currentModel === MODELS.primary) {
             console.warn("Primary engine bottleneck hit. Swapping to Fallback Weights: " + MODELS.fallback);
             currentModel = MODELS.fallback;
@@ -748,6 +804,12 @@ TEAM HIERARCHY & ROLES:
           return;
         }
       }
+
+      // If sending a message manually, pause listening temporarily to avoid echo/looping
+      if (isLiveMode && isRecognizing) {
+          try { voiceRecognition.stop(); } catch(e){}
+      }
+
       const userMsgId = generateId();
       renderOrUpdateMessage(userMsgId, message, true);
       
@@ -762,7 +824,7 @@ TEAM HIERARCHY & ROLES:
       try {
         let messagesPayload = [
           { role: 'user', content: SYSTEM_PROMPT },
-          { role: 'model', content: '<thinking>System parameters configured. Ready to accept clean tool requests via internal JSON protocol.</thinking><answer>Understood.</answer>' },
+          { role: 'model', content: '<thinking>System parameters configured. Ready.</thinking><answer>Understood.</answer>' },
           ...conversationHistory
         ];
 
@@ -817,16 +879,28 @@ TEAM HIERARCHY & ROLES:
         renderOrUpdateMessage(aiMsgId, formatText(answerOutput), false, formatText(thinkingOutput), "");
         conversationHistory.push({ role: 'assistant', content: responseText });
 
-        // Trigger dynamic Voice response if voice live stream elements are active
-        executeLiveAudioPlayback(answerOutput);
+        // IMPORTANT: Voice Playback ONLY triggers if Live Mode is currently enabled
+        if (isLiveMode) {
+             executeLiveAudioPlayback(answerOutput);
+        }
 
       } catch (error) {
         removeTyping();
         renderOrUpdateMessage(aiMsgId, `<div class="error-message">Error: ${error.message}</div>`, false);
         console.error('API Error:', error);
+        
+        // Resume listening if it failed but we are in live mode
+        if (isLiveMode) {
+             updateVoiceUI("listening");
+             try { if(!isRecognizing) voiceRecognition.start(); } catch(e){}
+        }
+
       } finally {
         document.getElementById('sendBtn').disabled = false;
-        input.focus();
+        // Only auto-focus the text input if we aren't in Live Mode (so the mobile keyboard doesn't pop up randomly)
+        if (!isLiveMode) {
+            input.focus();
+        }
       }
     }
 
@@ -840,8 +914,8 @@ TEAM HIERARCHY & ROLES:
       textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
     }
 
-    // Optional: Pre-trigger voice initialization engine when window loads
     window.addEventListener('DOMContentLoaded', () => {
+      // Pre-initialize but don't start listening yet
       initVoiceEngine();
     });
   </script>
