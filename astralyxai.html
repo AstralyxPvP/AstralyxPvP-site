@@ -729,66 +729,129 @@ TEAM HIERARCHY & ROLES:
       textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
     }
 
-    // Voice-to-Text
+    // Voice-to-Text using MediaRecorder + Gemini Multimodal AI API
     const micBtn = document.getElementById('micBtn');
-    
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
-    const isSpeechSupported = !!SpeechRecognition;
-    
-    if (isSpeechSupported) {
-      const recognition = new SpeechRecognition();
-      recognition.continuous = false;
-      recognition.interimResults = true;
-      recognition.lang = 'en-US';
+    let mediaRecorder = null;
+    let mediaStream = null;
+    let audioChunks = [];
 
-      recognition.onstart = () => {
-        micBtn.classList.add('listening');
-        micBtn.innerHTML = '<i class="fas fa-stop"></i>';
-      };
-
-      recognition.onend = () => {
-        micBtn.classList.remove('listening');
-        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-      };
-
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        const chatInput = document.getElementById('chatInput');
-        chatInput.value = transcript;
+    async function transcribeWithGemini(base64Audio, mimeType) {
+      const chatInput = document.getElementById('chatInput');
+      const originalPlaceholder = chatInput.placeholder;
+      chatInput.value = "Transcribing with Gemini AI...";
+      chatInput.disabled = true;
+      micBtn.disabled = true;
+      
+      let token = null;
+      if (!activeSessionToken) {
+        token = turnstile.getResponse();
+      }
+      
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            transcribeAudio: base64Audio,
+            mimeType: mimeType,
+            model: currentModel,
+            turnstileToken: token,
+            sessionToken: activeSessionToken
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error("Transcription API request failed.");
+        }
+        
+        const data = await response.json();
+        if (data.sessionToken) activeSessionToken = data.sessionToken;
+        
+        if (data.transcription) {
+          chatInput.value = data.transcription;
+        } else {
+          chatInput.value = "";
+          alert("Could not transcribe your audio. Make sure you spoke clearly!");
+        }
+      } catch (err) {
+        console.error("Transcription error:", err);
+        chatInput.value = "";
+        alert("Transcription failed: " + err.message);
+      } finally {
+        chatInput.disabled = false;
+        micBtn.disabled = false;
+        chatInput.placeholder = originalPlaceholder;
         chatInput.style.height = 'auto';
         chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
-      };
+        chatInput.focus();
+      }
+    }
 
-      recognition.onerror = (event) => {
-        micBtn.classList.remove('listening');
-        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
-        
-        if (event.error === 'not-allowed') {
-          alert("Microphone access was denied. Please allow it in your browser settings to use voice input.");
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.MediaRecorder) {
+      micBtn.addEventListener('click', async () => {
+        if (mediaRecorder && mediaRecorder.state === 'recording') {
+          // Stop recording
+          mediaRecorder.stop();
         } else {
-          console.error('Speech recognition error:', event.error);
-          alert("An error occurred during speech recognition: " + event.error);
-        }
-      };
+          // Start recording
+          try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            mediaStream = stream;
+            
+            // Choose supported MIME type
+            let options = {};
+            if (MediaRecorder.isTypeSupported('audio/webm')) {
+              options = { mimeType: 'audio/webm' };
+            } else if (MediaRecorder.isTypeSupported('audio/ogg')) {
+              options = { mimeType: 'audio/ogg' };
+            } else if (MediaRecorder.isTypeSupported('audio/mp4')) {
+              options = { mimeType: 'audio/mp4' };
+            }
+            
+            mediaRecorder = new MediaRecorder(stream, options);
+            audioChunks = [];
+            
+            mediaRecorder.ondataavailable = (event) => {
+              if (event.data && event.data.size > 0) {
+                audioChunks.push(event.data);
+              }
+            };
+            
+            mediaRecorder.onstart = () => {
+              micBtn.classList.add('listening');
+              micBtn.innerHTML = '<i class="fas fa-stop"></i>';
+              const chatInput = document.getElementById('chatInput');
+              chatInput.placeholder = "Listening... Speak now and click again to stop.";
+            };
 
-      micBtn.addEventListener('click', () => {
-        if (micBtn.classList.contains('listening')) {
-          recognition.stop();
-        } else {
-          // Attempt to request audio permission first, as some browsers require it
-          navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(() => {
-                recognition.start();
-            })
-            .catch((err) => {
-                console.error("Audio permission denied:", err);
-                alert("Microphone access is required for voice input. Please enable it in your browser settings.");
-            });
+            mediaRecorder.onstop = async () => {
+              micBtn.classList.remove('listening');
+              micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+              
+              // Cleanly stop all mic tracks to release system device
+              mediaStream.getTracks().forEach(track => track.stop());
+              
+              const audioBlob = new Blob(audioChunks, { type: mediaRecorder.mimeType || 'audio/webm' });
+              if (audioBlob.size > 0) {
+                const reader = new FileReader();
+                reader.readAsDataURL(audioBlob);
+                reader.onloadend = () => {
+                  const base64Audio = reader.result.split(',')[1];
+                  transcribeWithGemini(base64Audio, audioBlob.type);
+                };
+              }
+            };
+
+            mediaRecorder.start();
+          } catch (err) {
+            console.error("Mic access or recorder setup error:", err);
+            alert("Could not start recording. Please make sure microphone permission is allowed.");
+          }
         }
       });
     } else {
       micBtn.addEventListener('click', () => {
-        alert("Your browser does not support Speech Recognition. Please try using Google Chrome, Microsoft Edge, or ensure that you have enabled Web Speech API features if supported by your browser.");
+        alert("Your browser does not support audio recording (MediaRecorder). Please try a modern browser like Google Chrome, Firefox, or Safari.");
       });
     }
 
