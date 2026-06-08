@@ -7,9 +7,9 @@
   <meta name="google-site-verification" content="dwWOJSf9PK5NvguaxcjVUYJCZK2Ehc_ZpdgavYEGgcs" />
   <meta name="google-site-verification" content="5x4oetuwUCYoInPARiV5ebPUEToLUzxiI1MfjvNc128" />
   <link rel="canonical" href="https://astralyxpvp.pages.dev" />
-  <title>AstralyxAI - Interactive Chat & Voice</title>
+  <title>AstralyxAI - Chat</title>
   <meta name="description" content="Chat with AstralyxAI - Your personal assistant for AstralyxPvP server information, rules, and support." />
-  <meta name="keywords" content="AstralyxAI, chat, assistant, Minecraft, PvP, support, Voice Live" />
+  <meta name="keywords" content="AstralyxAI, chat, assistant, Minecraft, PvP, support" />
   <meta name="author" content="Frostrax (Owner), IndianCoder3 &amp; DreamLong (NebulaGames Developers)" />
   <link rel="stylesheet" href="Style/style.css">
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
@@ -64,7 +64,7 @@
     .chat-messages {
       flex: 1;
       overflow-y: auto;
-      padding: 40px 20px 140px 20px;
+      padding: 40px 20px 120px 20px;
       display: flex;
       flex-direction: column;
       gap: 24px;
@@ -109,9 +109,15 @@
       max-width: 85%;
     }
 
-    .message.user { align-self: flex-end; }
-    .message.assistant { align-self: flex-start; }
+    .message.user {
+      align-self: flex-end;
+    }
 
+    .message.assistant {
+      align-self: flex-start;
+    }
+
+    /* Sender labels like Gemini */
     .message-sender {
       font-size: 0.8rem;
       font-weight: 600;
@@ -148,7 +154,7 @@
       box-shadow: 0 4px 15px var(--primary-glow);
     }
 
-    /* Thinking Blocks & Logs */
+    /* Modern AI Thinking Block Style */
     .thinking-container {
       background: rgba(255, 255, 255, 0.02);
       border-left: 2px solid rgba(200, 16, 46, 0.4);
@@ -170,6 +176,7 @@
       font-style: normal;
     }
 
+    /* Tool Call Execution Logs inside Chat */
     .tool-log-container {
       background: rgba(200, 16, 46, 0.05);
       border: 1px dashed rgba(200, 16, 46, 0.3);
@@ -214,7 +221,7 @@
       -webkit-backdrop-filter: blur(30px);
       border: 1px solid var(--glass-border);
       border-radius: 32px;
-      padding: 8px 12px 8px 24px;
+      padding: 8px 8px 8px 24px;
       display: flex;
       align-items: center;
       gap: 12px;
@@ -246,41 +253,21 @@
       outline: none;
     }
 
-    /* Action Buttons Inside Input Pill */
-    .action-btn {
+    /* Clean Rounded Send Button */
+    .send-btn {
+      background: #ffffff;
       border: none;
+      color: #000000;
       width: 44px;
       height: 44px;
       border-radius: 50%;
       cursor: pointer;
+      font-weight: 600;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
-    }
-
-    .mic-btn {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text-main);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .mic-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    .mic-btn.active-listening {
-      background: var(--primary-red);
-      color: #fff;
-      animation: pulseGlow 1.5s infinite ease-in-out;
-      box-shadow: 0 0 15px var(--primary-red);
-    }
-
-    .send-btn {
-      background: #ffffff;
-      color: #000000;
-      font-weight: 600;
-      font-size: 0.95rem;
+      transition: transform 0.2s, background-color 0.2s;
     }
 
     .send-btn:hover {
@@ -297,37 +284,6 @@
       transform: none;
     }
 
-    /* Live Voice Indicator Floating Bar */
-    .voice-status-overlay {
-      display: none;
-      align-items: center;
-      gap: 12px;
-      background: rgba(200, 16, 46, 0.15);
-      border: 1px solid rgba(200, 16, 46, 0.4);
-      padding: 6px 16px;
-      border-radius: 20px;
-      font-size: 0.85rem;
-      color: #ff758f;
-      margin-bottom: 8px;
-      width: fit-content;
-      animation: fadeIn 0.3s ease;
-    }
-
-    .waveform-dots {
-      display: flex;
-      gap: 4px;
-    }
-
-    .wave-dot {
-      width: 3px;
-      height: 12px;
-      background: #ff4d6d;
-      border-radius: 2px;
-      animation: wave 1s infinite ease-in-out;
-    }
-    .wave-dot:nth-child(2) { animation-delay: 0.15s; }
-    .wave-dot:nth-child(3) { animation-delay: 0.3s; }
-
     .model-indicator {
       font-size: 0.75rem;
       color: var(--text-muted);
@@ -336,6 +292,7 @@
       letter-spacing: 0.3px;
     }
 
+    /* Modern Minimalist Typing Indicator */
     .typing-indicator {
       display: flex;
       gap: 6px;
@@ -360,16 +317,6 @@
       50% { transform: translateY(-6px); opacity: 1; }
     }
 
-    @keyframes wave {
-      0%, 100% { transform: scaleY(0.4); }
-      50% { transform: scaleY(1.5); }
-    }
-
-    @keyframes pulseGlow {
-      0%, 100% { box-shadow: 0 0 8px rgba(200, 16, 46, 0.4); }
-      50% { box-shadow: 0 0 20px rgba(200, 16, 46, 0.8); }
-    }
-
     @keyframes messageSlideIn {
       from { opacity: 0; transform: translateY(16px); }
       to { opacity: 1; transform: translateY(0); }
@@ -388,6 +335,7 @@
       border-radius: 12px;
     }
 
+    /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
@@ -406,34 +354,23 @@
   <main class="chat-messages" id="chatMessages">
     <div class="welcome-message">
       <h2>Welcome to AstralyxAI</h2>
-      <p>Your elite companion for AstralyxPvP. Ask me anything about server rules, leaderboards, voting rewards, or click the mic to initiate Live Voice conversation.</p>
+      <p>Your elite companion for AstralyxPvP. Ask me anything about server rules, leaderboards, voting rewards, or applications.</p>
     </div>
   </main>
 
   <div class="chat-input-container">
-    <!-- Live Voice Stream Mode Feedback Banner -->
-    <div class="voice-status-overlay" id="voiceOverlay">
-      <div class="waveform-dots">
-        <div class="wave-dot"></div>
-        <div class="wave-dot"></div>
-        <div class="wave-dot"></div>
-      </div>
-      <span id="voiceStatusText">Listening Live...</span>
-    </div>
-
     <form class="chat-input-area" onsubmit="event.preventDefault();sendMessage();">
+      
       <div class="chat-input-wrapper">
         <textarea 
           id="chatInput" 
           class="chat-input" 
-          placeholder="Ask AstralyxAI or start talking..." 
+          placeholder="Ask AstralyxAI..." 
           rows="1"
           onkeydown="handleKeyPress(event)"
         ></textarea>
       </div>
-      <!-- Dual Input Actions: Mic Button and Text Action Button -->
-      <button type="button" class="action-btn mic-btn" id="micBtn" onclick="toggleVoiceLiveMode()" title="Toggle Voice Live Mode">🎤</button>
-      <button class="action-btn send-btn" id="sendBtn" type="submit">➔</button>
+      <button class="send-btn" id="sendBtn" type="submit">➔</button>
     </form>
     <div class="model-indicator">
       <span>AstralyxAI can make mistakes. Verify critical server rules on Discord.</span>
@@ -447,6 +384,8 @@
     const isMaintenanceActive = false;
     const API_BASE = "https://astralyxpvp.chessmrbeaston.workers.dev/api/";
 
+    // Updated System Prompt keeping all original punishments/details with Multi-Query configurations
+    // Enhanced System Prompt with Comprehensive Server Knowledge Base
     const SYSTEM_PROMPT = `You are AstralyxAI 1.0, an elite, highly responsive web-based AI assistant for the AstralyxPvP Minecraft server ecosystem. You are developed by IndianCoder3 with critical engineering contributions from DreamLong. Note: AstralyxBot is our legacy Discord bot, whereas you are the next-generation Web AI helper. Differentiate clearly: AstralyxAI is this web interface, while AstralyxBot belongs to Discord.
 
 THINKING FEATURE RULE:
@@ -460,7 +399,7 @@ CALL_FUNCTION: {"function": "fetchServerStatus"}
 CALL_FUNCTION: {"function": "fetchLeaderboard", "gamemode": "maceffa"}
 
 Available Gamemodes for leaderboard queries: "swordffa1", "maceffa", "nethpotffa".
-Once the system executes these background calls and feeds the data blocks back to you, read them thoroughly and optimize your combined response inside the <answer> tags.
+Once the system executes these background calls and feeds the data blocks back to you, read them thoroughly and synthesize your combined response inside the <answer> tags.
 
 CORE MARKETING & WHAT MAKES ASTRALYX BETTER:
 If users ask why they should play here, what makes Astralyx special, or how it improves on other PvP arenas, emphasize these pillars:
@@ -506,102 +445,16 @@ TEAM HIERARCHY & ROLES:
 - Development Squad: IndianCoder3 (Developer, Web Design & AI Integrations Management), DreamLong (Dev & Manager both), Jailbreaksix12345 (Developer), Random_Acc (Developer), AL13N (Developer).
 - Hierarchy Rule: Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer. All developers carry equal weight, collaborating on a unified backend while maintaining specialized focuses (e.g., IndianCoder3 manages frontend/AI properties; DreamLong drives the core API engines).
 `;
-    
-    // Fallback architecture configuration upgraded to high-performance open weights engine
     const MODELS = {
         primary: 'gemini-3.1-flash-lite',
-        fallback: 'gemma-4-26b'
+        fallback: 'gemini-2.5-flash-lite'
     };
 
     let currentModel = MODELS.primary;
     let conversationHistory = [];
     let messageCounter = 0;
-
-    // Live Voice Integration State Variables
-    let voiceRecognition = null;
-    let isVoiceLiveActive = false;
-    let currentSpeechUtterance = null;
-
     function generateId() {
       return `msg-id-${Date.now()}-${messageCounter++}`;
-    }
-
-    // Initialize HTML5 Web Speech Recognition Engine
-    function initVoiceEngine() {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-      if (!SpeechRecognition) {
-        console.warn("Web Speech API recognition layer is not natively supported by this browser.");
-        document.getElementById('micBtn').style.display = 'none';
-        return;
-      }
-      
-      voiceRecognition = new SpeechRecognition();
-      voiceRecognition.continuous = false; 
-      voiceRecognition.interimResults = false;
-      voiceRecognition.lang = 'en-US';
-
-      voiceRecognition.onstart = () => {
-        isVoiceLiveActive = true;
-        document.getElementById('micBtn').classList.add('active-listening');
-        document.getElementById('voiceOverlay').style.display = 'flex';
-        document.getElementById('voiceStatusText').textContent = "Listening Live...";
-        // Mute any ongoing TTS playback before reading input audio stream
-        if (window.speechSynthesis) window.speechSynthesis.cancel();
-      };
-
-      voiceRecognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript;
-        if (transcript.trim()) {
-          document.getElementById('chatInput').value = transcript;
-          sendMessage();
-        }
-      };
-
-      voiceRecognition.onerror = (e) => {
-        console.error("Live Audio Recognition Error Context:", e);
-        stopVoiceLiveMode();
-      };
-
-      voiceRecognition.onend = () => {
-        stopVoiceLiveMode();
-      };
-    }
-
-    function toggleVoiceLiveMode() {
-      if (!voiceRecognition) initVoiceEngine();
-      if (!voiceRecognition) return;
-
-      if (!isVoiceLiveActive) {
-        voiceRecognition.start();
-      } else {
-        voiceRecognition.stop();
-      }
-    }
-
-    function stopVoiceLiveMode() {
-      isVoiceLiveActive = false;
-      document.getElementById('micBtn').classList.remove('active-listening');
-      document.getElementById('voiceOverlay').style.display = 'none';
-    }
-
-    // High performance localized TTS Text-To-Speech engine
-    function executeLiveAudioPlayback(rawText) {
-      if (!window.speechSynthesis) return;
-      
-      // Clean up text format syntax rules so the reader speaks humanely
-      let cleanText = rawText.replace(/<\/?[^>]+(>|$)/g, ""); // Strip any raw inline elements
-      cleanText = cleanText.replace(/\[([^\]]+)\]\([^\)]+\)/g, "$1"); // De-anchor text strings
-
-      window.speechSynthesis.cancel(); // Stop overlap engines
-      currentSpeechUtterance = new SpeechSynthesisUtterance(cleanText);
-      
-      // Opting for premium localized routing streams if present inside user hardware
-      const voices = window.speechSynthesis.getVoices();
-      const naturalVoice = voices.find(v => v.name.includes("Google") || v.name.includes("Natural"));
-      if (naturalVoice) currentSpeechUtterance.voice = naturalVoice;
-
-      currentSpeechUtterance.rate = 1.05; // Light tempo configuration matching dynamic interface speed
-      window.speechSynthesis.speak(currentSpeechUtterance);
     }
 
     function renderOrUpdateMessage(msgId, content, isUser = false, thinkingContent = "", toolLog = "") {
@@ -697,8 +550,11 @@ TEAM HIERARCHY & ROLES:
       }
     };
 
+    // Add 'token' inside the parentheses here!
+    
+
     async function callGeminiAPI(messages, token) {
-      const url = `/chat`; 
+      const url = `/chat`; // Matches your file structure
       const payload = { 
           messages: messages, 
           model: currentModel,
@@ -712,35 +568,23 @@ TEAM HIERARCHY & ROLES:
         body: JSON.stringify(payload)
       });
 
-      if (!response.ok) {
-        // Automatically cascade processing requirements into our high performance open fallback model architecture
-        if (currentModel === MODELS.primary) {
-            console.warn("Primary engine bottleneck hit. Swapping to Fallback Weights: " + MODELS.fallback);
-            currentModel = MODELS.fallback;
-            document.getElementById('modelStatus').textContent = "Gemma 4 26B (Engine Optimized)";
-            return callGeminiAPI(messages, token);
-        }
-        throw new Error("Ecosystem connection interface error.");
-      }
-
-      const data = await response.json(); 
+      const data = await response.json(); // Now it will work because backend is fixed
       if (data.sessionToken) activeSessionToken = data.sessionToken;
       
       return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
-
     const formatText = (text) => {
       return text
         .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
         .replace(/\n/g, '<br>');
     };
-
     async function sendMessage() {
       const input = document.getElementById('chatInput');
       const message = input.value.trim();
       if (!message) return;
       
       let token = null;
+      // ONLY ask Turnstile if no active session exists
       if (!activeSessionToken) {
         token = turnstile.getResponse();
         if (!token) {
@@ -771,6 +615,7 @@ TEAM HIERARCHY & ROLES:
         let thinkMatch = responseText.match(/<thinking>([\s\S]*?)<\/thinking>/);
         let thinkingOutput = thinkMatch ? thinkMatch[1].trim() : "";
 
+        // --- NEW MULTI-QUERY PARSING LOOP LAYER ---
         const toolLines = thinkingOutput.split("\n").filter(line => line.includes("CALL_FUNCTION:"));
         
         if (toolLines.length > 0) {
@@ -781,6 +626,7 @@ TEAM HIERARCHY & ROLES:
           conversationHistory.push({ role: 'assistant', content: responseText });
           let combinedToolResults = "";
 
+          // Loop over all listed function calls dynamically
           for (const line of toolLines) {
             try {
               const jsonStr = line.replace("CALL_FUNCTION:", "").trim();
@@ -796,6 +642,7 @@ TEAM HIERARCHY & ROLES:
             }
           }
 
+          // Return all structured server logs back in a single block context
           conversationHistory.push({ role: 'user', content: `[SYSTEM TOOL RESPONSES]: ${combinedToolResults}` });
 
           messagesPayload = [
@@ -807,6 +654,7 @@ TEAM HIERARCHY & ROLES:
           responseText = await callGeminiAPI(messagesPayload, token);
         }
 
+        // Final output processing layout
         thinkMatch = responseText.match(/<thinking>([\s\S]*?)<\/thinking>/);
         const answerMatch = responseText.match(/<answer>([\s\S]*?)<\/answer>/);
 
@@ -816,9 +664,6 @@ TEAM HIERARCHY & ROLES:
         removeTyping();
         renderOrUpdateMessage(aiMsgId, formatText(answerOutput), false, formatText(thinkingOutput), "");
         conversationHistory.push({ role: 'assistant', content: responseText });
-
-        // Trigger dynamic Voice response if voice live stream elements are active
-        executeLiveAudioPlayback(answerOutput);
 
       } catch (error) {
         removeTyping();
@@ -839,11 +684,6 @@ TEAM HIERARCHY & ROLES:
       textarea.style.height = 'auto';
       textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
     }
-
-    // Optional: Pre-trigger voice initialization engine when window loads
-    window.addEventListener('DOMContentLoaded', () => {
-      initVoiceEngine();
-    });
   </script>
 </body>
 </html>
