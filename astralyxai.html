@@ -731,10 +731,11 @@ TEAM HIERARCHY & ROLES:
 
     // Voice-to-Text
     const micBtn = document.getElementById('micBtn');
-    const isSpeechSupported = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+    
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition;
+    const isSpeechSupported = !!SpeechRecognition;
     
     if (isSpeechSupported) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
       const recognition = new SpeechRecognition();
       recognition.continuous = false;
       recognition.interimResults = true;
@@ -766,6 +767,7 @@ TEAM HIERARCHY & ROLES:
           alert("Microphone access was denied. Please allow it in your browser settings to use voice input.");
         } else {
           console.error('Speech recognition error:', event.error);
+          alert("An error occurred during speech recognition: " + event.error);
         }
       };
 
@@ -773,17 +775,20 @@ TEAM HIERARCHY & ROLES:
         if (micBtn.classList.contains('listening')) {
           recognition.stop();
         } else {
-          // Attempting to start automatically triggers the browser permission prompt
-          try {
-            recognition.start();
-          } catch (e) {
-            console.error("Recognition start error:", e);
-          }
+          // Attempt to request audio permission first, as some browsers require it
+          navigator.mediaDevices.getUserMedia({ audio: true })
+            .then(() => {
+                recognition.start();
+            })
+            .catch((err) => {
+                console.error("Audio permission denied:", err);
+                alert("Microphone access is required for voice input. Please enable it in your browser settings.");
+            });
         }
       });
     } else {
       micBtn.addEventListener('click', () => {
-        alert("Your browser does not support Voice Input. Please use a modern, standards-compliant browser like Google Chrome or Microsoft Edge.");
+        alert("Your browser does not support Speech Recognition. Please try using Google Chrome, Microsoft Edge, or ensure that you have enabled Web Speech API features if supported by your browser.");
       });
     }
 
