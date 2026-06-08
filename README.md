@@ -5,7 +5,7 @@
 ## The Ultimate 1.9+ FFA PvP Battlefield
 
 [![GitHub license](https://img.shields.io/github/license/AstralyxPvP/AstralyxPvP-site?color=blue)](LICENSE)
-[![Deployment Status](https://img.shields.io/badge/deployment-success-brightgreen?logo=github)](https://astralyxpvp.pages.dev)
+[![Deployment Status](https://img.shields.io/github/check-runs/AstralyxPvP/AstralyxPvP-site/main?label=deployment&logo=github)](https://astralyxpvp.pages.dev)
 [![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?logo=cloudflare)](https://astralyxpvp.pages.dev)
 [![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?logo=html5&logoColor=white)](https://astralyxpvp.pages.dev)
 [![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?logo=google&logoColor=white)](https://astralyxpvp.pages.dev/astralyxai)
