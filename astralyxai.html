@@ -862,10 +862,23 @@ TEAM HIERARCHY & ROLES:
         
         const utterance = new SpeechSynthesisUtterance(text);
         
-        // Try to find a better sounding voice
+        // 1. Force the language constraint to English (US)
+        utterance.lang = 'en-US';
+        
+        // 2. Look for high-quality variants that are strictly English
         const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Microsoft') || v.name.includes('Premium'));
-        if (preferredVoice) utterance.voice = preferredVoice;
+        const preferredVoice = voices.find(v => 
+            (v.lang.startsWith('en')) && 
+            (v.name.includes('Google') || v.name.includes('Microsoft') || v.name.includes('Natural') || v.name.includes('Premium'))
+        );
+        
+        if (preferredVoice) {
+            utterance.voice = preferredVoice;
+        } else {
+            // Fallback: If no premium English voice is found, grab the first available English voice
+            const fallbackEnglish = voices.find(v => v.lang.startsWith('en'));
+            if (fallbackEnglish) utterance.voice = fallbackEnglish;
+        }
         
         utterance.rate = 1.0;
         utterance.pitch = 1.0;
