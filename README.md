@@ -52,7 +52,7 @@ Visit the live website at [https://astralyxpvp.pages.dev](https://astralyxpvp.pa
 
 ## Contributing
 
-We welcome contributions to improve AstralyxPvP. Please refer to our `CONTRIBUTING.md` (if available) for details on submitting pull requests.
+You are welcome to contribute to AstarlyxPvP Website. Feel free to submit a pull request!
 
 ## License
 
