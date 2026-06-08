@@ -4,12 +4,12 @@
 
 ## The Ultimate 1.9+ FFA PvP Battlefield
 
-[![GitHub license](https://img.shields.io/github/license/AstralyxPvP/AstralyxPvP-site?style=for-the-badge&color=blue)](LICENSE)
-[![Deployment Status](https://img.shields.io/badge/deployment-success-brightgreen?style=for-the-badge&logo=github)](https://astralyxpvp.pages.dev)
-[![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?logo=cloudflare&style=for-the-badge)](https://astralyxpvp.pages.dev)
-[![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?style=for-the-badge&logo=html5&logoColor=white)](https://astralyxpvp.pages.dev)
-[![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?style=for-the-badge&logo=google&logoColor=white)](https://astralyxpvp.pages.dev/astralyxai)
-[![Discord](https://img.shields.io/discord/1477025023800901766.svg?label=&logo=discord&logoColor=ffffff&color=7389D8&labelColor=6A7EC2)](https://discord.gg/u8BFrpRwEg)
+[![GitHub license](https://img.shields.io/github/license/AstralyxPvP/AstralyxPvP-site?color=blue)](LICENSE)
+[![Deployment Status](https://img.shields.io/badge/deployment-success-brightgreen?logo=github)](https://astralyxpvp.pages.dev)
+[![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?logo=cloudflare)](https://astralyxpvp.pages.dev)
+[![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?logo=html5&logoColor=white)](https://astralyxpvp.pages.dev)
+[![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?logo=google&logoColor=white)](https://astralyxpvp.pages.dev/astralyxai)
+[![Discord](https://img.shields.io/discord/1477025023800901766?logo=discord&logoColor=white&color=7389D8)](https://discord.gg/u8BFrpRwEg)
 
 ## About AstralyxPvP
 
