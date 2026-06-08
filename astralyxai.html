@@ -335,6 +335,35 @@
       border-radius: 12px;
     }
 
+    .mic-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: none;
+      color: var(--text-main);
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background-color 0.2s;
+    }
+    .mic-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: scale(1.05);
+    }
+    .mic-btn.listening {
+      background: var(--primary-red);
+      color: white;
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0.7); }
+      70% { box-shadow: 0 0 0 10px rgba(200, 16, 46, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(200, 16, 46, 0); }
+    }
+
     /* Custom Scrollbar */
     ::-webkit-scrollbar { width: 8px; }
     ::-webkit-scrollbar-track { background: transparent; }
@@ -368,8 +397,9 @@
           placeholder="Ask AstralyxAI..." 
           rows="1"
           onkeydown="handleKeyPress(event)"
-        ></textarea>
+        >        </textarea>
       </div>
+      <button type="button" class="mic-btn" id="micBtn" title="Speak to message">🎙️</button>
       <button class="send-btn" id="sendBtn" type="submit">➔</button>
     </form>
     <div class="model-indicator">
@@ -501,6 +531,19 @@ TEAM HIERARCHY & ROLES:
       const textBody = document.createElement('div');
       textBody.innerHTML = content;
       contentDiv.appendChild(textBody);
+
+      if (!isUser) {
+        const speakBtn = document.createElement('button');
+        speakBtn.textContent = '🔊';
+        speakBtn.style.background = 'transparent';
+        speakBtn.style.border = 'none';
+        speakBtn.style.cursor = 'pointer';
+        speakBtn.style.fontSize = '1.1rem';
+        speakBtn.style.display = 'block';
+        speakBtn.style.marginTop = '10px';
+        speakBtn.onclick = () => speakText(textBody.innerText);
+        contentDiv.appendChild(speakBtn);
+      }
 
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
@@ -683,6 +726,65 @@ TEAM HIERARCHY & ROLES:
       const textarea = event.target;
       textarea.style.height = 'auto';
       textarea.style.height = Math.min(textarea.scrollHeight, 120) + 'px';
+    }
+
+    // Voice-to-Text
+    const micBtn = document.getElementById('micBtn');
+    const isSpeechSupported = 'SpeechRecognition' in window || 'webkitSpeechRecognition' in window;
+    
+    if (isSpeechSupported) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      const recognition = new SpeechRecognition();
+      recognition.continuous = false;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+
+      recognition.onstart = () => {
+        micBtn.classList.add('listening');
+        micBtn.textContent = '⏹️';
+      };
+
+      recognition.onend = () => {
+        micBtn.classList.remove('listening');
+        micBtn.textContent = '🎙️';
+      };
+
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript;
+        const chatInput = document.getElementById('chatInput');
+        chatInput.value = transcript;
+        chatInput.style.height = 'auto';
+        chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
+      };
+
+      micBtn.addEventListener('click', () => {
+        if (micBtn.classList.contains('listening')) {
+          recognition.stop();
+        } else {
+          recognition.start();
+        }
+      });
+    } else {
+      micBtn.addEventListener('click', () => {
+        alert("Your browser does not support Voice Input. Please use a modern, standards-compliant browser like Google Chrome or Microsoft Edge to enable voice interaction.");
+      });
+    }
+
+    // Text-to-Speech
+    function speakText(text) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        
+        const utterance = new SpeechSynthesisUtterance(text);
+        
+        // Try to find a better sounding voice
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.name.includes('Google') || v.name.includes('Microsoft') || v.name.includes('Premium'));
+        if (preferredVoice) utterance.voice = preferredVoice;
+        
+        utterance.rate = 1.0;
+        utterance.pitch = 1.0;
+        window.speechSynthesis.speak(utterance);
     }
   </script>
 </body>
