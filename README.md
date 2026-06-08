@@ -62,5 +62,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ## Contact
 
 For questions or suggestions, you can reach us at:
-*   **Email**: astralyxnetwork@gmail.com
+*   **Email**: info@astralyxpvp.int.yt
 *   **Discord**: [https://discord.gg/u8BFrpRwEg](https://discord.gg/u8BFrpRwEg)
