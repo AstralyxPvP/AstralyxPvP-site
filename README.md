@@ -10,9 +10,9 @@
 [![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?logo=html5&logoColor=white)](https://astralyxpvp.pages.dev)
 [![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?logo=google&logoColor=white)](https://astralyxpvp.pages.dev/astralyxai)
 [![Discord](https://img.shields.io/discord/1477025023800901766?logo=discord&logoColor=white&color=7389D8&label=discord)](https://discord.gg/u8BFrpRwEg)
-[![GitHub Org's stars](https://img.shields.io/github/stars/astralyxpvp?logo=github&link=https%3A%2F%2Fgithub.com%2FAstralyxPvP%2F)](https://github.com/AstralyxPvP/)
 [![YouTube](https://img.shields.io/badge/YouTube-@AstralyxPvP-red?style=flat&logo=youtube&logoColor=white)](https://www.youtube.com/@AstralyxPvP)
 
+[![GitHub Org's stars](https://img.shields.io/github/stars/astralyxpvp?logo=github&link=https%3A%2F%2Fgithub.com%2FAstralyxPvP%2F)](https://github.com/AstralyxPvP/)
 
 ## About AstralyxPvP
 
