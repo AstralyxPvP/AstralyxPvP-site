@@ -758,16 +758,32 @@ TEAM HIERARCHY & ROLES:
         chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + 'px';
       };
 
+      recognition.onerror = (event) => {
+        micBtn.classList.remove('listening');
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+        
+        if (event.error === 'not-allowed') {
+          alert("Microphone access was denied. Please allow it in your browser settings to use voice input.");
+        } else {
+          console.error('Speech recognition error:', event.error);
+        }
+      };
+
       micBtn.addEventListener('click', () => {
         if (micBtn.classList.contains('listening')) {
           recognition.stop();
         } else {
-          recognition.start();
+          // Attempting to start automatically triggers the browser permission prompt
+          try {
+            recognition.start();
+          } catch (e) {
+            console.error("Recognition start error:", e);
+          }
         }
       });
     } else {
       micBtn.addEventListener('click', () => {
-        alert("Your browser does not support Voice Input. Please use a modern, standards-compliant browser like Google Chrome or Microsoft Edge to enable voice interaction.");
+        alert("Your browser does not support Voice Input. Please use a modern, standards-compliant browser like Google Chrome or Microsoft Edge.");
       });
     }
 
