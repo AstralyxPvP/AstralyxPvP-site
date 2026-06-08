@@ -51,21 +51,6 @@ To set up the project locally, follow these steps:
 
 Visit the live website at [https://astralyxpvp.pages.dev](https://astralyxpvp.pages.dev) to experience AstralyxPvP.
 
-## Enabling Discord Widget
-
-If you cannot find the **Widget** setting or it appears disabled, follow these troubleshooting steps:
-
-1.  **Check Permissions**: Ensure you have **Administrator** permissions or the **Manage Server** permission on the Discord server.
-2.  **Locate the Setting**:
-    *   **Standard Path**: Go to `Server Settings` > `Widget`.
-    *   **Community Servers**: If your server has Community features enabled, look under `Server Settings` > `Community` > `Widget` or `App Directory`.
-    *   **Search Bar**: Use the search bar at the top of the Server Settings menu and type "Widget" to jump directly to the setting.
-3.  **Enable Server Widget**: Once in the Widget menu, toggle **Enable Server Widget** to **ON**.
-4.  **Configure Channel**: Set the **Widget Channel** to a public channel (e.g., `#general`) so the widget can display active members.
-5.  **Copy Server ID**: The badge requires your **Server ID**, which is found on this same Widget settings page.
-
-> **Note**: If the "Widget" tab is still missing, ensure your Discord client is updated to the latest version. In some 2026 updates, this setting may also be found under **Safety Setup** or **App Integration** depending on your server's configuration.
-
 ## Contributing
 
 You are welcome to contribute to AstarlyxPvP Website. Feel free to submit a pull request!
