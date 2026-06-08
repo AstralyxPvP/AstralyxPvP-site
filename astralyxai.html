@@ -399,7 +399,7 @@
           onkeydown="handleKeyPress(event)"
         >        </textarea>
       </div>
-      <button type="button" class="mic-btn" id="micBtn" title="Speak to message">🎙️</button>
+      <button type="button" class="mic-btn" id="micBtn" title="Speak to message"><i class="fas fa-microphone"></i></button>
       <button class="send-btn" id="sendBtn" type="submit">➔</button>
     </form>
     <div class="model-indicator">
@@ -534,9 +534,10 @@ TEAM HIERARCHY & ROLES:
 
       if (!isUser) {
         const speakBtn = document.createElement('button');
-        speakBtn.textContent = '🔊';
+        speakBtn.innerHTML = '<i class="fas fa-volume-high"></i>';
         speakBtn.style.background = 'transparent';
         speakBtn.style.border = 'none';
+        speakBtn.style.color = 'var(--text-muted)';
         speakBtn.style.cursor = 'pointer';
         speakBtn.style.fontSize = '1.1rem';
         speakBtn.style.display = 'block';
@@ -741,12 +742,12 @@ TEAM HIERARCHY & ROLES:
 
       recognition.onstart = () => {
         micBtn.classList.add('listening');
-        micBtn.textContent = '⏹️';
+        micBtn.innerHTML = '<i class="fas fa-stop"></i>';
       };
 
       recognition.onend = () => {
         micBtn.classList.remove('listening');
-        micBtn.textContent = '🎙️';
+        micBtn.innerHTML = '<i class="fas fa-microphone"></i>';
       };
 
       recognition.onresult = (event) => {
