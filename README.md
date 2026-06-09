@@ -54,7 +54,7 @@ cd AstralyxPvP-site
 
 2. **Run a Local Server:**
 This project is built using static frontend assets and does not require complex backend setups. To view the pages correctly, open the directory using a local web server tool (such as the **Live Server** extension in VS Code).
-
+Note that the AI will not work on local Environment 
 ## 🌐 Live Usage
 
 Explore the live platform directly at:
@@ -79,9 +79,9 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Emails:** [info@astralyxpvp.int.yt](https://www.google.com/search?q=mailto%3Ainfo%40astralyxpvp.int.yt) | [dreamlong@astralyxpvp.int.yt](https://www.google.com/search?q=mailto%3Adreamlong%40astralyxpvp.int.yt) | [indiancoder3@astralyxpvp.int.yt](https://www.google.com/search?q=mailto%3Aindiancoder3%40astralyxpvp.int.yt)
+* 📧 **Emails:** [info@astralyxpvp.int.yt](https://www.google.com/search?q=mailto%3Ainfo%40astralyxpvp.int.yt)
 * 💬 **Discord Community:** [Join our Discord Server](https://discord.gg/u8BFrpRwEg)
 
 ---
 
-© NebulaGames 2026. We are not affilated with Mojanj.
+© NebulaGames 2026. We are not affilated with Mojang.
