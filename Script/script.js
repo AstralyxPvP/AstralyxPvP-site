@@ -41,11 +41,21 @@
         if (!container) return;
       
         try {
-            const response = await fetch('https://astralyxpvp.pages.dev/Assets/navbar.html');
+            const response = await fetch('/Assets/navbar.html');
             if (!response.ok) throw new Error('Navbar missing');
             
             const html = await response.text();
             container.innerHTML = html;
+
+            // Hamburger menu toggle
+            const hamburger = container.querySelector('.hamburger');
+            const navLinks = container.querySelector('.nav-links');
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', () => {
+                    hamburger.classList.toggle('active');
+                    navLinks.classList.toggle('active');
+                });
+            }
 
             // Active link logic
             const currentPath = window.location.pathname.split("/").pop() || "index.html";
@@ -72,7 +82,7 @@
         if (!container) return;
     
         try {
-            const response = await fetch('https://astralyxpvp.pages.dev/Assets/footer.html');
+            const response = await fetch('/Assets/footer.html');
             if (!response.ok) throw new Error('Footer asset could not be fetched');
             
             const html = await response.text();
