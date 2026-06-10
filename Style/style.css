@@ -1391,9 +1391,9 @@ footer img {
 
   /* ========== NAVBAR (MOBILE) ========== */
   nav {
-    padding: 10px 16px;
+    padding: 14px 20px;
     width: 95%;
-    top: 10px;
+    top: 20px;
     border-radius: 28px;
     backdrop-filter: none;
     -webkit-backdrop-filter: none;
