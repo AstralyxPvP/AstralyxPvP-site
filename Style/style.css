@@ -16,7 +16,7 @@
 
 .page-content {
   flex: 1;
-  padding-top: var(--nav-height);
+  padding-top: 85px;
 }
 
 .hero,
@@ -100,9 +100,9 @@ body {
 }
 
 .custom-icon {
-    width: 40px;   /* Adjust to match your other icons */
+    width: 40px;
     height: 40px;
-    fill: #e3b04b; /* Change this to red or your gold color! */
+    fill: #e3b04b;
 }
 
 .icon-box {
@@ -135,11 +135,9 @@ body::before {
 @keyframes pageFadeIn {
   from {
     opacity: 0;
-    /*transform: translateY(8px)*/
   }
   to {
     opacity: 1;
-    /*transform: translateY(0)*/
   }
 }
 
@@ -166,16 +164,12 @@ img {
 
 
 #navbar-placeholder {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
-    height: 100%; /* Gives the sticky nav a "track" to stay in */
-    pointer-events: none; /* Allows you to click things behind the placeholder */
+    pointer-events: none;
 }
 
 #navbar-placeholder nav {
-    pointer-events: auto; /* Re-enables clicking on the actual nav links */
+    pointer-events: auto;
 }
 
 
@@ -1341,8 +1335,34 @@ footer img {
   background: transparent;
 }
 
+/* Hamburger Menu Base Styles (desktop default) */
+.hamburger {
+  display: none;
+  cursor: pointer;
+  z-index: 10001;
+  font-size: 1.5rem;
+  color: var(--text);
+  transition: color 0.3s ease;
+  margin-left: 15px;
+}
+
+.hamburger:hover,
+.hamburger.active {
+  color: var(--accent);
+}
+
+/* Backdrop & Close button - hidden by default on desktop */
+.nav-backdrop,
+.mobile-close {
+  display: none;
+}
+
 /* Responsive phone optimization layouts */
 @media (max-width: 768px) {
+  :root {
+    --nav-height: 60px;
+  }
+
   #chatDock {
     width: 85%; 
     right: -90% !important;
@@ -1351,9 +1371,36 @@ footer img {
     right: 0 !important;
   }
 
+  /* General Mobile */
+  body {
+    font-size: 16px;
+  }
+
+  .page-content {
+    padding-top: 60px;
+  }
+
+  .hero,
+  .wrap,
+  .lb-section,
+  .credits-section,
+  .features-grid {
+    padding-top: 15px;
+    padding-bottom: 40px;
+  }
+
+  /* ========== NAVBAR (MOBILE) ========== */
   nav {
-    padding: 12px 20px;
+    padding: 10px 16px;
     width: 95%;
+    top: 10px;
+    border-radius: 28px;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+
+  .nav-left {
+    width: 100%;
   }
 
   .nav-logo-text, 
@@ -1362,59 +1409,196 @@ footer img {
   }
 
   .hamburger {
-    display: flex;
+    display: block !important;
+    font-size: 22px;
+    cursor: pointer;
+    color: white;
+    margin-left: auto;
   }
 
+  /* Mobile Menu Backdrop */
+  .nav-backdrop {
+    display: block;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.4s ease;
+    z-index: 9999;
+  }
+
+  .nav-backdrop.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Mobile Menu Card */
   .nav-links {
     position: fixed;
-    top: 0;
-    right: -100%;
-    width: 70%;
-    height: 100vh;
-    background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(20px);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.85);
+    width: 85%;
+    max-width: 340px;
+    background: rgba(18, 18, 18, 0.88);
+    backdrop-filter: blur(40px) saturate(140%);
+    -webkit-backdrop-filter: blur(40px) saturate(140%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+    border-radius: 28px;
+    padding: 56px 20px 20px;
+    display: flex;
     flex-direction: column;
-    justify-content: center;
-    gap: 30px;
-    transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    border-left: 1px solid var(--border);
+    gap: 4px;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
     z-index: 10000;
   }
 
   .nav-links.active {
-    right: 0;
+    opacity: 1;
+    pointer-events: auto;
+    transform: translate(-50%, -50%) scale(1);
   }
 
   .nav-links a {
-    font-size: 1.2rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    text-align: center;
+    padding: 14px 20px;
+    border-radius: 14px;
+    width: 100%;
+    transition: background 0.3s ease;
   }
 
-  .hamburger.active span:nth-child(1) {
-    transform: translateY(9px) rotate(45deg);
+  .nav-links a:hover,
+  .nav-links a.active {
+    background: rgba(255, 255, 255, 0.06);
   }
-  .hamburger.active span:nth-child(2) {
-    opacity: 0;
+
+  /* Close button inside the card */
+  .mobile-close {
+    display: flex;
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+    font-size: 1.3rem;
+    cursor: pointer;
+    z-index: 10001;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.3s ease;
   }
-  .hamburger.active span:nth-child(3) {
-    transform: translateY(-9px) rotate(-45deg);
+
+  .mobile-close:hover {
+    background: rgba(255,255,255,0.12);
+  }
+
+  /* ========== HERO (MOBILE) ========== */
+  .hero-inner-split {
+    flex-direction: column-reverse;
+    gap: 30px;
+    text-align: center;
+  }
+
+  .hero-text {
+    text-align: center;
+  }
+
+  .hero-text h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-image {
+    justify-content: center;
+  }
+
+  .hero-logo-main {
+    max-width: 260px;
+  }
+
+  /* ========== FEATURES (MOBILE) ========== */
+  .features {
+    padding: 40px 5%;
+  }
+
+  .section-title {
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+  }
+
+  .features-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .feature-card {
+    padding: 25px 20px;
+  }
+
+  /* ========== LEADERBOARD (MOBILE) ========== */
+  .lb-panel {
+    padding: 15px;
+    margin: 0 10px;
+  }
+
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  th, td {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  /* ========== FOOTER (MOBILE) ========== */
+  footer {
+    padding: 20px 5% 10px !important;
+  }
+
+  .footer-links {
+    gap: 10px;
+  }
+
+  .footer-links a {
+    font-size: 0.75rem;
+  }
+
+  /* ========== VOTE (MOBILE) ========== */
+  .vote-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* ========== CREDITS (MOBILE) ========== */
+  .credits-grid {
+    grid-template-columns: 1fr;
+    padding: 0 15px;
+  }
+
+  .credit-card {
+    padding: 25px;
+  }
+
+  /* ========== DOCS (MOBILE) ========== */
+  .doc-block {
+    padding: 10px;
+  }
+
+  .doc-embed {
+    height: 50vh;
   }
 }
 
-/* Hamburger Menu Base Styles */
-.hamburger {
-  display: none;
-  flex-direction: column;
-  justify-content: space-around;
-  width: 30px;
-  height: 21px;
-  cursor: pointer;
-  z-index: 10001;
-}
 
-.hamburger span {
-  width: 100%;
-  height: 3px;
-  background: var(--text);
-  border-radius: 10px;
-  transition: 0.3s ease;
-}

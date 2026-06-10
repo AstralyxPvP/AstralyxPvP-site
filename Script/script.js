@@ -41,7 +41,7 @@
         if (!container) return;
       
         try {
-            const response = await fetch('/Assets/navbar.html');
+            const response = await fetch('Assets/navbar.html');
             if (!response.ok) throw new Error('Navbar missing');
             
             const html = await response.text();
@@ -50,11 +50,35 @@
             // Hamburger menu toggle
             const hamburger = container.querySelector('.hamburger');
             const navLinks = container.querySelector('.nav-links');
+            const mobileClose = container.querySelector('.mobile-close');
+            const backdrop = container.querySelector('.nav-backdrop');
+            
+            function openMenu() {
+                hamburger.classList.add('active');
+                navLinks.classList.add('active');
+                if (backdrop) backdrop.classList.add('active');
+            }
+            
+            function closeMenu() {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+                if (backdrop) backdrop.classList.remove('active');
+            }
+            
             if (hamburger && navLinks) {
                 hamburger.addEventListener('click', () => {
-                    hamburger.classList.toggle('active');
-                    navLinks.classList.toggle('active');
+                    if (navLinks.classList.contains('active')) {
+                        closeMenu();
+                    } else {
+                        openMenu();
+                    }
                 });
+            }
+            if (mobileClose && navLinks) {
+                mobileClose.addEventListener('click', closeMenu);
+            }
+            if (backdrop && navLinks) {
+                backdrop.addEventListener('click', closeMenu);
             }
 
             // Active link logic
@@ -82,7 +106,7 @@
         if (!container) return;
     
         try {
-            const response = await fetch('/Assets/footer.html');
+            const response = await fetch('Assets/footer.html');
             if (!response.ok) throw new Error('Footer asset could not be fetched');
             
             const html = await response.text();
@@ -188,30 +212,25 @@
         }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.add('page-enter');
-    });
-    
+    function onReady(fn) {
+        if (document.readyState !== 'loading') fn();
+        else document.addEventListener('DOMContentLoaded', fn);
+    }
 
-    
-
-    document.addEventListener('DOMContentLoaded', () => {
-        document.body.classList.add('page-enter');
+    onReady(() => {
+        Promise.all([
+            initNavbar(),
+            initFooter(),
+            initLeaderboard()
+        ]).then(() => {
+            setInterval(updateNavStatus, 20000);
+        }).catch(err => console.error("Init failed:", err));
     });
-    
-    Promise.all([
-        initNavbar(),
-        initFooter(),
-        initLeaderboard()
-    ]).then(() => {
-        setInterval(updateNavStatus, 20000);
-    }).catch(err => console.error("Init failed:", err));
+
     // Smooth Page Transitions
     document.addEventListener('click', e => {
         const a = e.target.closest('a');
-        // Ignore external links, target="_blank", or anchors
         if(!a || a.target === '_blank' || a.hostname !== window.location.hostname || a.hash) return;
-        
         e.preventDefault();
         document.body.classList.add('page-exit');
         setTimeout(() => { window.location.href = a.href; }, 180);
