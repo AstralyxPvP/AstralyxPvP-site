@@ -80,7 +80,7 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Emails:** [info@astralyxpvp.int.yt](https://www.google.com/search?q=mailto%3Ainfo%40astralyxpvp.int.yt)
+* 📧 **Emails:** [info@astralyxpvp.int.yt](mailto:info@astralyxpvp.int.yt)
 * 💬 **Discord Community:** [Join our Discord Server](https://discord.gg/u8BFrpRwEg)
 
 ---
