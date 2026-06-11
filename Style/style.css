@@ -94,6 +94,11 @@ body {
     radial-gradient(circle at top, #1a0000 0%, #000 60%);
   overflow-x: hidden;
   position: relative;
+  cursor: url('../Assets/cursor-sword.png') 20 10, auto;
+}
+
+a, button, [role="button"], input, select, textarea, [onclick] {
+  cursor: url('../Assets/cursor-sword.png') 20 10, auto;
 }
 
 /* Ambient dot grid — static, cheap */
