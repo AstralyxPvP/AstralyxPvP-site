@@ -97,21 +97,29 @@ body {
   cursor: url('../Assets/cursor-sword.png') 0 0, auto;
 }
 
-* {
+/* Interactive elements get the axe cursor on hover + swing on click */
+a, button, input, select, textarea, summary, label, [role="button"], .clickable {
   cursor: url('../Assets/cursor-sword.png') 0 0, auto !important;
 }
+a:hover, button:hover, input:hover, select:hover, textarea:hover, summary:hover, label:hover, [role="button"]:hover, .clickable:hover {
+  cursor: url('../Assets/cursor-axe.png') 0 0, auto !important;
+}
+a:active, button:active, input:active, select:active, textarea:active, summary:active, label:active, [role="button"]:active, .clickable:active {
+  cursor: url('../Assets/cursor-axe-click.png') 0 0, auto !important;
+}
 
-/* Ambient dot grid — static, cheap */
+/* Ambient grid overlay — cheap, static */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
-  background-image: radial-gradient(circle, rgba(255,215,0,0.055) 1px, transparent 1px);
-  background-size: 45px 45px;
+  background-image: 
+    linear-gradient(rgba(255,215,0,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,215,0,0.04) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px;
   pointer-events: none;
   z-index: -1;
-  opacity: 0.6;
-  animation: gridPulse 10s ease-in-out infinite;
+  opacity: 0.5;
 }
 
 /* Ambient colour blobs — cheap, fixed */
@@ -1231,10 +1239,7 @@ footer::before {
 @keyframes shine {
   to { transform: translateX(200%); }
 }
-@keyframes gridPulse {
-  0%, 100% { opacity: 0.4; }
-  50%       { opacity: 0.8; }
-}
+
 @keyframes menuIn {
   from { opacity: 0; transform: translateY(8px) scale(0.96); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
