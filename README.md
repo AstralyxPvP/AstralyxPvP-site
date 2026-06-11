@@ -54,7 +54,8 @@ cd AstralyxPvP-site
 
 2. **Run a Local Server:**
 This project is built using static frontend assets and does not require complex backend setups. To view the pages correctly, open the directory using a local web server tool (such as the **Live Server** extension in VS Code).
-Note that the AI will not work on local Environment 
+Note that the AI, and some other features will not work on local Environment, as the AI uses environment variables to fetch the API Key. You need to store your key safely and link it into the code.
+
 ## 🌐 Live Usage
 
 Explore the live platform directly at:
@@ -73,7 +74,7 @@ We are currently prioritizing development help in these areas:
 
 ## 📄 License
 
-This project is licensed under the **GNU GPL v3 License**. Check out the [LICENSE](https://www.google.com/search?q=LICENSE) file for complete details.
+This project is licensed under the **GNU GPL v3 License**. Check out the [LICENSE](/LICENSE) file for complete details.
 
 ## 📞 Contact & Support
 
