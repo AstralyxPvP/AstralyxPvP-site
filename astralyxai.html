@@ -549,6 +549,72 @@ TEAM HIERARCHY & ROLES:
       messagesDiv.scrollTop = messagesDiv.scrollHeight;
     }
 
+    async function streamIntoMessage(msgId, fullText, thinkingContent = "", toolLog = "") {
+      const messagesDiv = document.getElementById('chatMessages');
+      const welcome = messagesDiv.querySelector('.welcome-message');
+      if (welcome) welcome.remove();
+
+      let messageDiv = document.getElementById(msgId);
+      if (!messageDiv) {
+        messageDiv = document.createElement('div');
+        messageDiv.id = msgId;
+        messageDiv.className = 'message assistant';
+        const senderLabel = document.createElement('div');
+        senderLabel.className = 'message-sender';
+        senderLabel.textContent = 'AstralyxAI';
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'message-content';
+        messageDiv.appendChild(senderLabel);
+        messageDiv.appendChild(contentDiv);
+        messagesDiv.appendChild(messageDiv);
+      }
+
+      const contentDiv = messageDiv.querySelector('.message-content');
+      contentDiv.innerHTML = '';
+
+      if (toolLog) {
+        const logBox = document.createElement('div');
+        logBox.className = 'tool-log-container';
+        logBox.innerHTML = `⚡ <span>${toolLog}</span>`;
+        contentDiv.appendChild(logBox);
+      }
+
+      if (thinkingContent) {
+        const thinkBox = document.createElement('div');
+        thinkBox.className = 'thinking-container';
+        thinkBox.innerHTML = `<div class="thinking-title">AstralyxAI Thought Process</div>${thinkingContent}`;
+        contentDiv.appendChild(thinkBox);
+      }
+
+      const textBody = document.createElement('div');
+      contentDiv.appendChild(textBody);
+
+      let displayed = '';
+      const chars = [...fullText];
+      for (let i = 0; i < chars.length; i++) {
+        displayed += chars[i];
+        textBody.innerHTML = formatText(displayed);
+        if (i % 2 === 0) {
+          messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+        const delay = chars[i].match(/[.!?]\s*$/) ? 60 : 12;
+        await new Promise(r => setTimeout(r, delay));
+      }
+
+      const speakBtn = document.createElement('button');
+      speakBtn.innerHTML = '<i class="fas fas fa-volume-up"></i>';
+      speakBtn.style.background = 'transparent';
+      speakBtn.style.border = 'none';
+      speakBtn.style.color = 'var(--text-muted)';
+      speakBtn.style.cursor = 'pointer';
+      speakBtn.style.fontSize = '1.1rem';
+      speakBtn.style.display = 'block';
+      speakBtn.style.marginTop = '10px';
+      speakBtn.onclick = () => speakText(textBody.innerText);
+      contentDiv.appendChild(speakBtn);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
     function showTyping() {
       const messagesDiv = document.getElementById('chatMessages');
       if(document.getElementById('typingIndicator')) return;
@@ -706,7 +772,7 @@ TEAM HIERARCHY & ROLES:
         let answerOutput = answerMatch ? answerMatch[1].trim() : responseText.replace(/<thinking>[\s\S]*?<\/thinking>/, '').trim();
 
         removeTyping();
-        renderOrUpdateMessage(aiMsgId, formatText(answerOutput), false, formatText(thinkingOutput), "");
+        streamIntoMessage(aiMsgId, answerOutput, formatText(thinkingOutput), "");
         conversationHistory.push({ role: 'assistant', content: responseText });
 
       } catch (error) {
