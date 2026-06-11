@@ -269,10 +269,11 @@ nav {
   translate: -50% 0;
   z-index: 9999;
   width: min(92%, 1200px);
-  padding: 14px 40px;
+  padding: 14px 40px 14px;
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  column-gap: 20px;
 
   background: rgba(18, 8, 10, 0.68);
   backdrop-filter: blur(12px) saturate(115%);
@@ -390,7 +391,10 @@ nav::before {
 .nav-links {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
+  flex-wrap: wrap;
+  row-gap: 8px;
 }
 
 .nav-links a {
