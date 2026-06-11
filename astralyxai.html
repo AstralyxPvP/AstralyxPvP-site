@@ -225,6 +225,15 @@
       gap: 8px;
     }
 
+    .message-content strong {
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .message-content em {
+      font-style: italic;
+    }
+
     .message-content a {
       color: #ff4d6d;
       text-decoration: none;
@@ -635,10 +644,11 @@ Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer
         contentDiv.appendChild(logBox);
       }
 
-      if (!isUser && thinkingContent) {
+      if (!isUser) {
         const thinkBox = document.createElement('div');
         thinkBox.className = 'thinking-container collapsed';
-        thinkBox.innerHTML = `<div class="thinking-header"><span class="thinking-toggle">></span> <span class="thinking-title">AI thought process</span></div><div class="thinking-body">${thinkingContent}</div>`;
+        const bodyContent = thinkingContent || '<em style="color:#666;font-style:italic;">No detailed reasoning provided.</em>';
+        thinkBox.innerHTML = `<div class="thinking-header"><span class="thinking-toggle">></span> <span class="thinking-title">AI thought process</span></div><div class="thinking-body">${bodyContent}</div>`;
         thinkBox.querySelector('.thinking-header').onclick = () => {
           thinkBox.classList.toggle('collapsed');
           thinkBox.querySelector('.thinking-toggle').textContent = thinkBox.classList.contains('collapsed') ? '>' : 'v';
@@ -697,10 +707,11 @@ Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer
         contentDiv.appendChild(logBox);
       }
 
-      if (thinkingContent) {
+      {
         const thinkBox = document.createElement('div');
         thinkBox.className = 'thinking-container collapsed';
-        thinkBox.innerHTML = `<div class="thinking-header"><span class="thinking-toggle">></span> <span class="thinking-title">AI thought process</span></div><div class="thinking-body">${thinkingContent}</div>`;
+        const bodyContent = thinkingContent || '<em style="color:#666;font-style:italic;">No detailed reasoning provided.</em>';
+        thinkBox.innerHTML = `<div class="thinking-header"><span class="thinking-toggle">></span> <span class="thinking-title">AI thought process</span></div><div class="thinking-body">${bodyContent}</div>`;
         thinkBox.querySelector('.thinking-header').onclick = () => {
           thinkBox.classList.toggle('collapsed');
           thinkBox.querySelector('.thinking-toggle').textContent = thinkBox.classList.contains('collapsed') ? '>' : 'v';
@@ -807,7 +818,15 @@ Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer
     }
     const parseMarkdown = (text) => {
       if (!text) return '';
-      return marked.parse(text, { breaks: true, gfm: true });
+      if (typeof marked !== 'undefined' && marked.parse) {
+        return marked.parse(text, { breaks: true, gfm: true });
+      }
+      // Fallback if marked CDN fails to load
+      return text
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/`(.+?)`/g, '<code>$1</code>')
+        .replace(/\n/g, '<br>');
     };
     async function sendMessage() {
       const input = document.getElementById('chatInput');
