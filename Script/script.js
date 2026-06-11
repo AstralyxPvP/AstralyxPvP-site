@@ -261,3 +261,9 @@ function toggleChatDock() {
   const dock = document.getElementById('chatDock');
   dock.classList.toggle('open');
 }
+
+window.copyServerIP = function() {
+  const ip = document.getElementById('server-ip');
+  if (!ip) return;
+  navigator.clipboard.writeText(ip.textContent.trim()).catch(() => {});
+};
