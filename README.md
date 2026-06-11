@@ -74,7 +74,7 @@ We are currently prioritizing development help in these areas:
 
 ## 📄 License
 
-This project is licensed under the **GNU GPL v3 License**. Check out the [LICENSE](/LICENSE) file for complete details.
+This project is licensed under the **GNU GPL v3 License**. Check out the [LICENSE](./LICENSE) file for complete details.
 
 ## 📞 Contact & Support
 
