@@ -1025,6 +1025,7 @@ footer::before {
 .footer-links a:hover::after { width: 100%; }
 
 .footer-disclaimer { color: #555; font-size: 0.65rem; }
+.footer-updated { color: #555; font-size: 0.6rem; margin-top: 4px; }
 
 .credits { margin-top: 25px; font-size: 0.6rem; color: #777; letter-spacing: 1px; padding-bottom: 5px; }
 .credits a { color: var(--gold); text-decoration: none; font-weight: 700; }
