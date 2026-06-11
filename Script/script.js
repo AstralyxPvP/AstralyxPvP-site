@@ -55,14 +55,24 @@
             
             function openMenu() {
                 hamburger.classList.add('active');
-                navLinks.classList.add('active');
-                if (backdrop) backdrop.classList.add('active');
+                if (window.innerWidth <= 860) {
+                    document.body.appendChild(navLinks);
+                }
+                requestAnimationFrame(() => {
+                    navLinks.classList.add('active');
+                    if (backdrop) backdrop.classList.add('active');
+                });
             }
             
             function closeMenu() {
                 hamburger.classList.remove('active');
                 navLinks.classList.remove('active');
                 if (backdrop) backdrop.classList.remove('active');
+                setTimeout(() => {
+                    if (window.innerWidth <= 860 && navLinks.parentNode !== container) {
+                        container.appendChild(navLinks);
+                    }
+                }, 300);
             }
             
             if (hamburger && navLinks) {
