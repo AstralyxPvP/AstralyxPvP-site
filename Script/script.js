@@ -267,3 +267,8 @@ window.copyServerIP = function() {
   if (!ip) return;
   navigator.clipboard.writeText(ip.textContent.trim()).catch(() => {});
 };
+
+document.addEventListener('click', e => {
+  const btn = e.target.closest('[data-menu-copy]');
+  if (btn) window.copyServerIP();
+});
