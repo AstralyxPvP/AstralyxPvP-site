@@ -6,6 +6,14 @@
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
     }[c]));
 
+    // Preload custom cursor & log result
+    (function preloadCursor() {
+        const img = new Image();
+        img.onload = () => console.log('[Cursor] Diamond sword cursor loaded successfully');
+        img.onerror = () => console.warn('[Cursor] Failed to load cursor image — check path or file format');
+        img.src = '../Assets/cursor-sword.png';
+    })();
+
     const contextMenu = document.getElementById("contextMenu");
 
     if (contextMenu) {
