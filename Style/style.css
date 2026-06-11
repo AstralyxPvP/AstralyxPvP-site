@@ -98,13 +98,13 @@ body {
 }
 
 /* Interactive elements get the axe cursor on hover + swing on click */
-a, button, input, select, textarea, summary, label, [role="button"], .clickable {
+a, button, input, select, textarea, summary, label, [role="button"], .clickable, .hero-btn, [onclick] {
   cursor: url('../Assets/cursor-sword.png') 0 0, auto !important;
 }
-a:hover, button:hover, input:hover, select:hover, textarea:hover, summary:hover, label:hover, [role="button"]:hover, .clickable:hover {
+a:hover, button:hover, input:hover, select:hover, textarea:hover, summary:hover, label:hover, [role="button"]:hover, .clickable:hover, .hero-btn:hover, [onclick]:hover {
   cursor: url('../Assets/cursor-axe.png') 0 0, auto !important;
 }
-a:active, button:active, input:active, select:active, textarea:active, summary:active, label:active, [role="button"]:active, .clickable:active {
+a:active, button:active, input:active, select:active, textarea:active, summary:active, label:active, [role="button"]:active, .clickable:active, .hero-btn:active, [onclick]:active {
   cursor: url('../Assets/cursor-axe-click.png') 0 0, auto !important;
 }
 
