@@ -155,26 +155,60 @@
       box-shadow: 0 4px 15px var(--primary-glow);
     }
 
-    /* Modern AI Thinking Block Style */
+    /* Modern AI Thinking Block - Collapsible */
     .thinking-container {
-      background: rgba(255, 255, 255, 0.02);
-      border-left: 2px solid rgba(200, 16, 46, 0.4);
-      padding: 10px 14px;
       margin-bottom: 12px;
-      font-size: 0.88rem;
-      color: #b0b0c0;
-      border-radius: 4px;
-      font-style: italic;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .thinking-container.collapsed .thinking-body {
+      display: none;
+    }
+
+    .thinking-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 6px;
+      user-select: none;
+      transition: background 0.15s;
+    }
+
+    .thinking-header:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .thinking-toggle {
+      font-size: 0.7rem;
+      color: #888;
+      font-family: monospace;
+      transition: transform 0.15s;
+      width: 12px;
+      text-align: center;
     }
 
     .thinking-title {
       font-size: 0.75rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
-      color: #ff4d6d;
-      margin-bottom: 4px;
+      color: #888;
       font-style: normal;
+      text-transform: lowercase;
+    }
+
+    .thinking-body {
+      padding: 10px 12px;
+      margin-top: 4px;
+      background: rgba(255, 255, 255, 0.02);
+      border-left: 2px solid rgba(200, 16, 46, 0.4);
+      border-radius: 0 0 4px 4px;
+      font-size: 0.88rem;
+      color: #b0b0c0;
+      font-style: italic;
+      line-height: 1.5;
     }
 
     /* Tool Call Execution Logs inside Chat */
@@ -603,8 +637,12 @@ Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer
 
       if (!isUser && thinkingContent) {
         const thinkBox = document.createElement('div');
-        thinkBox.className = 'thinking-container';
-        thinkBox.innerHTML = `<div class="thinking-title">AstralyxAI Thought Process</div>${thinkingContent}`;
+        thinkBox.className = 'thinking-container collapsed';
+        thinkBox.innerHTML = `<div class="thinking-header"><span class="thinking-toggle">></span> <span class="thinking-title">AI thought process</span></div><div class="thinking-body">${thinkingContent}</div>`;
+        thinkBox.querySelector('.thinking-header').onclick = () => {
+          thinkBox.classList.toggle('collapsed');
+          thinkBox.querySelector('.thinking-toggle').textContent = thinkBox.classList.contains('collapsed') ? '>' : 'v';
+        };
         contentDiv.appendChild(thinkBox);
       }
 
@@ -661,8 +699,12 @@ Owner > Co-Owner > Chief Manager > Sr. Manager > Manager > Developer
 
       if (thinkingContent) {
         const thinkBox = document.createElement('div');
-        thinkBox.className = 'thinking-container';
-        thinkBox.innerHTML = `<div class="thinking-title">AstralyxAI Thought Process</div>${thinkingContent}`;
+        thinkBox.className = 'thinking-container collapsed';
+        thinkBox.innerHTML = `<div class="thinking-header"><span class="thinking-toggle">></span> <span class="thinking-title">AI thought process</span></div><div class="thinking-body">${thinkingContent}</div>`;
+        thinkBox.querySelector('.thinking-header').onclick = () => {
+          thinkBox.classList.toggle('collapsed');
+          thinkBox.querySelector('.thinking-toggle').textContent = thinkBox.classList.contains('collapsed') ? '>' : 'v';
+        };
         contentDiv.appendChild(thinkBox);
       }
 
