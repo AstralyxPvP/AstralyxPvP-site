@@ -1,373 +1,374 @@
-3dc8dd4 Initial
-92eb52f Add License
-874ddbc Basic Update (Store & Footer & etc.)
-60fff05 Fix HTML files not Including JS (IndianCoder3)
-72adc02 Update script.js
-e21e791 Update script.js
-4d00f00 Edit Credits
-85da9aa Fix Credits page Errors
-23f1def Update script.js
-f58e662 Commit - Fixes
-042f3cd Commit - Fixes
-a237d57 Merge branch 'main' of https://github.com/IndianCoder3/Coding-Astralyxpvp
-5e321cd Update Styles - Animations
-a6049fc Create dont_touch.js
-6e3732e Rebase to New Repo
-800b06b Update terms.html
-24016bf Update style.css
-662c193 Update style.css
-e0cc7bb Update style.css
-ade344d Update style.css
-6a16d5a Fix heading for Terms
-feace93 Update terms.html
-3d79ada Update style.css
-6dc1a1f Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-0362748 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-193696f Update style.css
-4b3fe41 Update style.css
-aaa93b9 Change terms heading
-8d2bd07 Merge branches 'main' and 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-1dd759b Change terms.html
-a29a875 Heading Fix - Terms
-b66225e Update terms.html
-de1e405 Update style.css
-1d99882 Add newer Terms Cards
-291a540 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-2866f7b Fix website glitch Terms
-2e17087 Revert to old style Cards in Terms.html
-740c414 Fix language in Card 3
-347cb70 Add Animations to .doc-container via CSS
-7f639f7 Add animations to .doc-* in CSS
-4e9b6fb edit privacy.html
-921fa88 changes
-f5eab02 yea bro some bug fixing
-afa77bc yea bro
-28853d6 bug fixing AGAIN
-c4de258 Add files via upload
-4e6275d Updating Icon
-10c684d SEO Setup
-9d6e7d2 Add GSC token
-5c79987 Tests and Bugs
-5e20ca6 Tests
-99995d7 added animations and fix bugs
-88810c9 tests
-c2d18bc test
-8350902 yea again
-9a70231 New file: Style/style-beta.css
-eaec746 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-ed9ad02 Update Script.js for better ContextMenu
-e909957 Update style-beta
-051d0ff Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-87d0bc7 Make style-beta.css only coverNavbar
-d2ab749 Add Cloudflare Workers configuration
-55027f9 Update ContextMenu
-f34df12 Add Al13n to Credits
-65939d0 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-2324936 update da shi
-632fa06 Discord Bot Credit to DreamLong
-58f9ae7 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-8543bd1 Nav IDK Fix
-6c432dc IDK Fix shi
-489ee94 yea bro bug fixing very good yk
-d84e822 fix rot
-a8ecdb0 update meta data
-111dfb0 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-e5c381f Shi FIxing Brainrot I hate this
-973234f feat: setup gpg signing
-38150ca Fix credits lines
-9d48ecb Fix context menu copy IP option
-726d936 Update IP to none-subscribe.gl.joinmc.link
-e5c26ad Toastify? YES SIR
-40e1eb6 fixing bugs
-d9501ac just another test, if it doesent work then its indians fault, if it works my job :thumbs_up:
-6f80b0c hope it works
-153e765 oh my gawd
-f54c4fc fucking commit
-4546479 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-28607fb sussy commit
-ed4b8bd but it didnt go as expected, even tho i said
-d3aee1a Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-3708510 Update Better UI
-caab4ca Saucy sus f*** commit
-76c4d07 Test
-fb20359 omg please work
-5dd7363 fucking commit
-558793c Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-dcda15d DreamLong needs to dream longer jking
-a3ff25d a
-13a2ccd fuck me
-2c5bb8d Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-a8d247e Bugs Fixing
-1c522dd FIXED!!! NAVBAR FIXED YAY
-c2f1480 NavBar fixing more deep... Thanks to position: sticky
-3442f63 NavBar Brainrot Shit case closed
-c6d7881 More Animations!
-6f55f85 Fixing + Adding robots.txt + Making the website "faster"
-b5ee0d4 BIG BUG BOI FIXING
-fc2110c Optimizations - first part
-d0bd5cb Optimizations
-6260265 test
-273ad7e buh
-e30a2ca Sussy commet
-20d465a Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-ef66634 Cocky commit
-2076f25 Add files via upload
-fc25906 yea man
-0efc064 Cooking time
-0a6add7 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-78439eb motherfu**ing commit
-627aa85 Lucky Wolfy
-0540ad2 GOLD BETTER
-740da53 important bitch
-41d1516 BRO WILL U ACCEPT MY GOLD SWORD
-4839b8b Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-d695e5c omg
-3ffcf1b MY SWORD
-1335717 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-361e6d7 Logo Improve
-f6e57a6 FUCK YOU ASS BITCH
-2904d33 sus
-81133ce Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-04a92dd sussy bake
-b3b9b03 fkass
-85faee9 Remove unused Font Awesome
-3dc63f2 yea bro DONT
-4b12ac6 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-8921570 learn the lesson
-4596f26 The sword is MINE
-d8d3a87 yo
-352a1a3 Cooking BetterSEO for dinner i hungry
-132d245 The food wasn't good let's cook again
-37c24df SEO ka baap ko phone laga
-2a78c67 asap new token
-8b6f136 SEO upgrade :thumbs_up:
-d9987f2 testing
-328a710 Create navbar.html
-209fab8 tests
-99fabd7 Updating Font Awesome, Fixing Errors, Testing
-137b68c Testing
-10ee117 Updating Head
-9f78e82 Trying out navbar
-70fceb7 Give back our HEAD
-94bf981 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-b759cf0 Update testing
-2f7cbf4 saucy baka
-0fb9e3b Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-6df0ddf Updating Script.js
-c114978 test
-d62fc2a testnig
-667cbe4 Who Said "Who"?
-d3a7d47 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-1cb3a45 bro dont z-index wars between navbar and hero
-177961b test
-be6bda8 WORLD CUPPP
-8f812fb test
-7868136 FINALLY
-a944748 navbar test
-0117595 test?
-4170986 World CUPPPPPPP World CUPPPPPPPPP
-6738c5e adding navbar
-f428d03 updated smoother animations
-3320b3d bugs fixed i hope
-6bd2b6d test fixing
-7c3d1c3 bug fixing
-37e7358 Comet SEO sauce
-6eeadab Optimize ka baap
-90fb5db tast
-d5d5ef9 lage mafia-as
-575f22d Comeback head.html
-1076cd4 faah
-14f5394 this is chuck chuck live in a village he want emerald
-d5d5ca8 Chuck have many emeralds. Chuck now very happy. Chuck leave village with emeralds
-856f712 RIP COMEDY
-0456360 MG Comet le aayo
-a74ce14 bullshit
-fd99d5d Maintainence Mode
-b02b5f6 Merge pull request #1 from AstralyxPvP/cloudflare/workers-autoconfig
-6f7b207 test
-3e9fdfd test
-a30eb10 Make Phone index.html unoptimized
-9a1cda7 update footer.html
-2ce2e9e update phone +fixing script.js
-b650dd1 update phone
-801c27a update
-49121cf Update style.phone.css
-3bc2c69 Update style.phone.css
-0bd59a0 Update style.phone.css
-9c65f39 Update style.phone.css
-3277156 Update style.css
-ce4679d test
-4a55259 Update style.css
-dfeacd2 Update style.phone.css
-be77b13 Fix Leaderboard
-e11be63 Maybe Fix Status Page
-16cafd9 Technologia
-aa92876 Good to see you, AstralyxAI!
-39239d9 A wild AstralyxAI - Updated Edition just appeared!
-ce2b738 AstralyxAI - backed by Gemini & Improved by Gemini
-5516442 Create AI.html
-369f813 Update AI.html
-7800d5e Create Instructions.txt
-c0d4240 Update index.html
-bff338e Update index.html
-4fce890 Update AI.html
-a1f6675 Update AI.html
-f6b6b04 Redo
-be61211 Well I am gonna make AstralyxAI bro lol
-a2ea466 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
-9c7eb5e ENCRYPT MY KEYS
-ef0ccf7 BOOM SOME COOKIN TIME
-4ab9615 HTML BETTER FORMATTING
-13bed9d Maybe some timepass?
-7118281 maybe test?
-c379c18 HAPPY HAPPY HAPPY or SAD SAD
-99d4fad idk am i f***ed up
-c00b7ba WAIT IS THIS WHAT I THOUGHT
-68add4c welcome to 2067
-23fc5c5 ladle meow
-17394cc That's It. Seriously.
-a856511 BRO CHATGPT SUCKS I DONT SO PLEASE SILENCE
-46af060 will it work or am i fired
-61cd17f sticky or fixed choice is of god
-84fa843 fixed was a bit better atleast dreamlong save me
-6fe6cfd shayad transform ko bye bolna padega
-140b306 AstralyxAI? YES SIR
-feb76d0 some teaching ofc
-ac32205 Teach the bot self defense
-982fa05 sus
-288ba89 GUYS
-2974901 some credit please
-087fe17 astralyxai x api
-70c4270 will my config work or just crash test
-3f72886 chatgpt bad
-4ec8860 emergerncy meeting
-fd65830 fuck chatgpt
-90034a7 REST IN PEACE MY GRANNY SHE GOT HIT BY A METEORIOD
-bdc6cbc gem
-363c85f sus
-5794e59 smallnote
-8e881f8 Function Calling maybe BETTER?
-9922c39 67 memes per sec
-c13ab75 Comeback to our standard strapping bro
-6921ee8 Function Calling Attempt 2
-5342a9c no navbar in iframe ofc
-4985cdf Trust Gemini its good
-fbfee99 EVERYONE DESERVES A PLACE
-089bbc2 some update
-62c21f7 hey
-d7117f3 bru git
-018a2ac Adding Turnstile
-cfbba1c fix
-466268a Fixing Turnstile
-5d9d1d8 fix maybe
-8febe79 lava cock
-d867732 fix
-d1dba2a fx
-0fe0e68 OMG DONT CHANGE
-ee668dd fix again
-4a7f05d fix last i hope
-b975eff gogo
-87dbd62 stop airplaning the twin towers
-a2a50f7 fix
-052e196 Update script.js
-8c5a747 Update script.js
-45595b1 Update script.js
-72fc337 Update script.js
-0cf642a Update index.html
-877dfc6 Update leaderboard.html
-1196009 Update script.js
-b871c98 Update script.js
-754edf0 Update script.js
-ea1addd Update script.js
-53ca3e1 maybe better ai
-173e69a please dont make me ragequit so ofc we take a backup
-6413757 bru gemini isnt that smaart nowadays
-53c126d bro chatgpt is a f***ing ai well i ragequit rn
-c2ad28e well gemini 3.1 flash lite with opencode dont embarres me
-e0d7566 faah
-404441c commit
-20b6ead 22222
-2de4f69 cheeseburgers
-dac81d2 hella sus
-3f564bc @DreamLong Please check chat.js in functions
-5ecf51c Update chat.js
-6197f27 Add comprehensive README.md with project details, features, technologies, and Shields.io badges.
-6408012 Update README.md to English with detailed project information and badges.
-7123d48 Update README.md
-a0430b9 Update README.md
-5679821 Create audio.js
-437344a Update chat.js
-288265b Update astralyxai.html
-fe2f24a Update astralyxai.html
-ab15acc Update README.md with rounded badges, deployment status, specific Discord badge, and Discord widget enablement instructions.
-fedc973 Update Discord widget troubleshooting instructions in README.md.
-71a06ce Update README.md
-375ca3d Update README.md
-7cac03b Update README.md
-fb2692e Update README.md
-fd0a8f6 Update README.md
-00aeb9a Update README.md
-42c0b3f Update README.md
-6e5331a Update README.md
-e30fd6b Update README.md
-97cbeb4 Create GitLog.txt
-dc18458 some readme cooking
-a6879b9 Update README.md
-44da63f Update README.md
-183df3f Readme Accept
-4f64d22 Merge branch 'main' of https://github.com/AstralyxPvP/AstralyxPvP-site
-b625130 Update sus.txt
-33cfe97 maybe test
-a8be4de sussy baka sucks
-fbfc07e sos
-4825609 sys
-2c20e21 yay
-92d51a1 Yea bro goddamn lets just commit now
-68a82cd sus
-97ca953 maybe
-0b6f1a9 fix: navbar fixed top on all viewports, mobile menu centered, rules moved to footer
-dd60598 fix: hide nav-footer-hint on desktop
-bb5f9d1 fix: restore nav-links inside nav element on close
-5ca74c8 feat: add diamond sword custom cursor
-0bf7fe8 fix: resize cursor to 64x64 (was too big), add JS load log
-8323e80 fix: cursor now on all elements, override pointer rules
-09677a4 fix: cursor hotspot to top-left (0 0)
-a7ffb6d fix: resize cursor to 32x32
-81fcf93 fix: grammar fixes across pages
-4b916b7 refactor: overhaul terms and privacy content
-0b31a9c fix: update contact email to info@, add last-updated to footer
-23a3a40 feat: live typing stream for AI responses
-73df70c feat: full markdown rendering + live typing for AI
-20a09b9 fix: escape backticks in prompt template literal
-78b4ef3 feat: use marked.js for proper markdown rendering
-a90b43c refactor: cleaner system prompt with leaderboard data note
-ab30f74 yes sir cleaner ai
-6b393ef feat: add collapsible thinking box, always show for AI, fix markdown bold with fallback
-00f5963 DO IT
-936285e sus
-593ced7 feat: diamond axe cursor on hover with swing on click
-10fb354 fix: rotate axe 60° left, click rotates 75° left
-41e5049 fix: click rotation 90°, hero IP button axe cursor
-2064597 tweak: axe hover -95°, click -115°
-decf271 tweak: axe 40x40, hover -95°, click -140°
-d9ea6a6 fix: add copyServerIP function, update all copyIP references
-f3fa94d fix: add data-menu-copy handler, use copyServerIP
-e125711 fix: reduce navbar blur to 12px, fix active page indicator
-06f4bc7 feat: nav link pills with icons on desktop, blur 14px
-6f5fa20 fix: active only highlights, hover lifts
-5e97b5b feat: double-decker nav pills, flex-wrap on overflow instead of hamburger
-e743706 feat: add contact page with Discord and emails
-4ab3b78 fix: show email addresses in contact page
-c5c8c8b fix: add al13n email to contact page
-5e770f3 fix: use support page's discord button style
-fe847c2 fix: match discord button exactly to support page (thickness, padding, text)
-7539918 hey
-890eb6a feat: add support link to footer
-37a1d6d refactor: remove support link from navbar (still in footer)
-fe90e50 fix: add standard background-clip property alongside vendor prefix
-44d587c chore: remove unused files (backups, old styles, unused scripts, test pages, readme)
-cb3bb0e ah bring back our readme
-bd63176 update dreamlong's stupid shit
-fc0577e oops file mistake
-4383be2 BRO DREAMLONG PLEASE ATLEAST CHECK BEFORE USING AI BROS REFERENCING GOOGLE LINKS WTF IS THAT
-e5a49be yea i get it some fault was mine as well im sorry dreamlong please
+2026-05-08 | 3dc8dd4 | IndianCoder3 | Initial
+2026-05-08 | 92eb52f | IndianCoder3 | Add License
+2026-05-09 | 874ddbc | IndianCoder3 | Basic Update (Store & Footer & etc.)
+2026-05-09 | 60fff05 | IndianCoder3 | Fix HTML files not Including JS (IndianCoder3)
+2026-05-09 | 72adc02 | DreamLong | Update script.js
+2026-05-09 | e21e791 | DreamLong | Update script.js
+2026-05-09 | 4d00f00 | IndianCoder3 | Edit Credits
+2026-05-09 | 85da9aa | IndianCoder3 | Fix Credits page Errors
+2026-05-09 | 23f1def | DreamLong | Update script.js
+2026-05-09 | f58e662 | IndianCoder3 | Commit - Fixes
+2026-05-09 | 042f3cd | IndianCoder3 | Commit - Fixes
+2026-05-09 | a237d57 | IndianCoder3 | Merge branch 'main' of https://github.com/IndianCoder3/Coding-Astralyxpvp
+2026-05-09 | 5e321cd | IndianCoder3 | Update Styles - Animations
+2026-05-09 | a6049fc | DreamLong | Create dont_touch.js
+2026-05-09 | 6e3732e | IndianCoder3 | Rebase to New Repo
+2026-05-09 | 800b06b | DreamLong | Update terms.html
+2026-05-09 | 24016bf | DreamLong | Update style.css
+2026-05-09 | 662c193 | DreamLong | Update style.css
+2026-05-09 | e0cc7bb | DreamLong | Update style.css
+2026-05-09 | ade344d | DreamLong | Update style.css
+2026-05-09 | 6a16d5a | IndianCoder3 | Fix heading for Terms
+2026-05-09 | feace93 | DreamLong | Update terms.html
+2026-05-09 | 3d79ada | DreamLong | Update style.css
+2026-05-09 | 6dc1a1f | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-09 | 0362748 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-09 | 193696f | DreamLong | Update style.css
+2026-05-09 | 4b3fe41 | DreamLong | Update style.css
+2026-05-09 | aaa93b9 | IndianCoder3 | Change terms heading
+2026-05-09 | 8d2bd07 | IndianCoder3 | Merge branches 'main' and 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-09 | 1dd759b | IndianCoder3 | Change terms.html
+2026-05-09 | a29a875 | IndianCoder3 | Heading Fix - Terms
+2026-05-09 | b66225e | DreamLong | Update terms.html
+2026-05-09 | de1e405 | DreamLong | Update style.css
+2026-05-09 | 1d99882 | IndianCoder3 | Add newer Terms Cards
+2026-05-09 | 291a540 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-09 | 2866f7b | IndianCoder3 | Fix website glitch Terms
+2026-05-09 | 2e17087 | IndianCoder3 | Revert to old style Cards in Terms.html
+2026-05-09 | 740c414 | IndianCoder3 | Fix language in Card 3
+2026-05-09 | 347cb70 | IndianCoder3 | Add Animations to .doc-container via CSS
+2026-05-09 | 7f639f7 | IndianCoder3 | Add animations to .doc-* in CSS
+2026-05-09 | 4e9b6fb | DreamLong | edit privacy.html
+2026-05-09 | 921fa88 | DreamLong | changes
+2026-05-09 | f5eab02 | DreamLong | yea bro some bug fixing
+2026-05-09 | afa77bc | DreamLong | yea bro
+2026-05-09 | 28853d6 | DreamLong | bug fixing AGAIN
+2026-05-09 | c4de258 | DreamLong | Add files via upload
+2026-05-09 | 4e6275d | DreamLong | Updating Icon
+2026-05-09 | 10c684d | IndianCoder3 | SEO Setup
+2026-05-09 | 9d6e7d2 | IndianCoder3 | Add GSC token
+2026-05-09 | 5c79987 | DreamLong | Tests and Bugs
+2026-05-10 | 5e20ca6 | DreamLong | Tests
+2026-05-10 | 99995d7 | DreamLong | added animations and fix bugs
+2026-05-10 | 88810c9 | DreamLong | tests
+2026-05-10 | c2d18bc | DreamLong | test
+2026-05-10 | 8350902 | DreamLong | yea again
+2026-05-10 | 9a70231 | IndianCoder3 | New file: Style/style-beta.css
+2026-05-10 | eaec746 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | ed9ad02 | DreamLong | Update Script.js for better ContextMenu
+2026-05-10 | e909957 | IndianCoder3 | Update style-beta
+2026-05-10 | 051d0ff | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 87d0bc7 | IndianCoder3 | Make style-beta.css only coverNavbar
+2026-05-10 | d2ab749 | cloudflare-workers-and-pages[bot] | Add Cloudflare Workers configuration
+2026-05-10 | 55027f9 | DreamLong | Update ContextMenu
+2026-05-10 | f34df12 | IndianCoder3 | Add Al13n to Credits
+2026-05-10 | 65939d0 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 2324936 | DreamLong | update da shi
+2026-05-10 | 632fa06 | IndianCoder3 | Discord Bot Credit to DreamLong
+2026-05-10 | 58f9ae7 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 8543bd1 | IndianCoder3 | Nav IDK Fix
+2026-05-10 | 6c432dc | IndianCoder3 | IDK Fix shi
+2026-05-10 | 489ee94 | DreamLong | yea bro bug fixing very good yk
+2026-05-10 | d84e822 | IndianCoder3 | fix rot
+2026-05-10 | a8ecdb0 | DreamLong | update meta data
+2026-05-10 | 111dfb0 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | e5c381f | IndianCoder3 | Shi FIxing Brainrot I hate this
+2026-05-10 | 973234f | IndianCoder3 | feat: setup gpg signing
+2026-05-10 | 38150ca | IndianCoder3 | Fix credits lines
+2026-05-10 | 9d48ecb | IndianCoder3 | Fix context menu copy IP option
+2026-05-10 | 726d936 | IndianCoder3 | Update IP to none-subscribe.gl.joinmc.link
+2026-05-10 | e5c26ad | DreamLong | Toastify? YES SIR
+2026-05-10 | 40e1eb6 | DreamLong | fixing bugs
+2026-05-10 | d9501ac | DreamLong | just another test, if it doesent work then its indians fault, if it works my job :thumbs_up:
+2026-05-10 | 6f80b0c | DreamLong | hope it works
+2026-05-10 | 153e765 | DreamLong | oh my gawd
+2026-05-10 | f54c4fc | IndianCoder3 | fucking commit
+2026-05-10 | 4546479 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 28607fb | IndianCoder3 | sussy commit
+2026-05-10 | ed4b8bd | DreamLong | but it didnt go as expected, even tho i said
+2026-05-10 | d3aee1a | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 3708510 | DreamLong | Update Better UI
+2026-05-10 | caab4ca | IndianCoder3 | Saucy sus f*** commit
+2026-05-10 | 76c4d07 | DreamLong | Test
+2026-05-10 | fb20359 | DreamLong | omg please work
+2026-05-10 | 5dd7363 | IndianCoder3 | fucking commit
+2026-05-10 | 558793c | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | dcda15d | IndianCoder3 | DreamLong needs to dream longer jking
+2026-05-10 | a3ff25d | DreamLong | a
+2026-05-10 | 13a2ccd | IndianCoder3 | fuck me
+2026-05-10 | 2c5bb8d | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | a8d247e | DreamLong | Bugs Fixing
+2026-05-10 | 1c522dd | IndianCoder3 | FIXED!!! NAVBAR FIXED YAY
+2026-05-10 | c2f1480 | IndianCoder3 | NavBar fixing more deep... Thanks to position: sticky
+2026-05-10 | 3442f63 | IndianCoder3 | NavBar Brainrot Shit case closed
+2026-05-10 | c6d7881 | DreamLong | More Animations!
+2026-05-10 | 6f55f85 | DreamLong | Fixing + Adding robots.txt + Making the website "faster"
+2026-05-10 | b5ee0d4 | DreamLong | BIG BUG BOI FIXING
+2026-05-10 | fc2110c | DreamLong | Optimizations - first part
+2026-05-10 | d0bd5cb | DreamLong | Optimizations
+2026-05-10 | 6260265 | DreamLong | test
+2026-05-10 | 273ad7e | DreamLong | buh
+2026-05-10 | e30a2ca | IndianCoder3 | Sussy commet
+2026-05-10 | 20d465a | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | ef66634 | IndianCoder3 | Cocky commit
+2026-05-10 | 2076f25 | DreamLong | Add files via upload
+2026-05-10 | fc25906 | DreamLong | yea man
+2026-05-10 | 0efc064 | IndianCoder3 | Cooking time
+2026-05-10 | 0a6add7 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 78439eb | IndianCoder3 | motherfu**ing commit
+2026-05-10 | 627aa85 | IndianCoder3 | Lucky Wolfy
+2026-05-10 | 0540ad2 | IndianCoder3 | GOLD BETTER
+2026-05-10 | 740da53 | DreamLong | important bitch
+2026-05-10 | 41d1516 | IndianCoder3 | BRO WILL U ACCEPT MY GOLD SWORD
+2026-05-10 | 4839b8b | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | d695e5c | DreamLong | omg
+2026-05-10 | 3ffcf1b | IndianCoder3 | MY SWORD
+2026-05-10 | 1335717 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 361e6d7 | IndianCoder3 | Logo Improve
+2026-05-10 | f6e57a6 | DreamLong | FUCK YOU ASS BITCH
+2026-05-10 | 2904d33 | IndianCoder3 | sus
+2026-05-10 | 81133ce | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 04a92dd | IndianCoder3 | sussy bake
+2026-05-10 | b3b9b03 | DreamLong | fkass
+2026-05-10 | 85faee9 | IndianCoder3 | Remove unused Font Awesome
+2026-05-10 | 3dc63f2 | DreamLong | yea bro DONT
+2026-05-10 | 4b12ac6 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 8921570 | IndianCoder3 | learn the lesson
+2026-05-10 | 4596f26 | IndianCoder3 | The sword is MINE
+2026-05-10 | d8d3a87 | IndianCoder3 | yo
+2026-05-10 | 352a1a3 | IndianCoder3 | Cooking BetterSEO for dinner i hungry
+2026-05-10 | 132d245 | IndianCoder3 | The food wasn't good let's cook again
+2026-05-10 | 37c24df | IndianCoder3 | SEO ka baap ko phone laga
+2026-05-10 | 2a78c67 | IndianCoder3 | asap new token
+2026-05-10 | 8b6f136 | DreamLong | SEO upgrade :thumbs_up:
+2026-05-10 | d9987f2 | DreamLong | testing
+2026-05-10 | 328a710 | DreamLong | Create navbar.html
+2026-05-10 | 209fab8 | DreamLong | tests
+2026-05-10 | 99fabd7 | DreamLong | Updating Font Awesome, Fixing Errors, Testing
+2026-05-10 | 137b68c | DreamLong | Testing
+2026-05-10 | 10ee117 | DreamLong | Updating Head
+2026-05-10 | 9f78e82 | DreamLong | Trying out navbar
+2026-05-10 | 70fceb7 | IndianCoder3 | Give back our HEAD
+2026-05-10 | 94bf981 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | b759cf0 | DreamLong | Update testing
+2026-05-10 | 2f7cbf4 | IndianCoder3 | saucy baka
+2026-05-10 | 0fb9e3b | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 6df0ddf | DreamLong | Updating Script.js
+2026-05-10 | c114978 | DreamLong | test
+2026-05-10 | d62fc2a | DreamLong | testnig
+2026-05-10 | 667cbe4 | IndianCoder3 | Who Said "Who"?
+2026-05-10 | d3a7d47 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-10 | 1cb3a45 | IndianCoder3 | bro dont z-index wars between navbar and hero
+2026-05-10 | 177961b | DreamLong | test
+2026-05-10 | be6bda8 | DreamLong | WORLD CUPPP
+2026-05-10 | 8f812fb | DreamLong | test
+2026-05-10 | 7868136 | DreamLong | FINALLY
+2026-05-10 | a944748 | DreamLong | navbar test
+2026-05-10 | 0117595 | DreamLong | test?
+2026-05-10 | 4170986 | DreamLong | World CUPPPPPPP World CUPPPPPPPPP
+2026-05-10 | 6738c5e | DreamLong | adding navbar
+2026-05-10 | f428d03 | DreamLong | updated smoother animations
+2026-05-10 | 3320b3d | DreamLong | bugs fixed i hope
+2026-05-10 | 6bd2b6d | DreamLong | test fixing
+2026-05-10 | 7c3d1c3 | DreamLong | bug fixing
+2026-05-11 | 37e7358 | IndianCoder3 | Comet SEO sauce
+2026-05-11 | 6eeadab | IndianCoder3 | Optimize ka baap
+2026-05-11 | 90fb5db | IndianCoder3 | tast
+2026-05-11 | d5d5ef9 | IndianCoder3 | lage mafia-as
+2026-05-11 | 575f22d | IndianCoder3 | Comeback head.html
+2026-05-11 | 1076cd4 | IndianCoder3 | faah
+2026-05-11 | 14f5394 | IndianCoder3 | this is chuck chuck live in a village he want emerald
+2026-05-11 | d5d5ca8 | IndianCoder3 | Chuck have many emeralds. Chuck now very happy. Chuck leave village with emeralds
+2026-05-11 | 856f712 | IndianCoder3 | RIP COMEDY
+2026-05-11 | 0456360 | IndianCoder3 | MG Comet le aayo
+2026-05-11 | a74ce14 | IndianCoder3 | bullshit
+2026-05-11 | fd99d5d | IndianCoder3 | Maintainence Mode
+2026-05-11 | b02b5f6 | IndianCoder3 | Merge pull request #1 from AstralyxPvP/cloudflare/workers-autoconfig
+2026-05-11 | 6f7b207 | DreamLong | test
+2026-05-11 | 3e9fdfd | DreamLong | test
+2026-05-11 | a30eb10 | IndianCoder3 | Make Phone index.html unoptimized
+2026-05-11 | 9a1cda7 | DreamLong | update footer.html
+2026-05-11 | 2ce2e9e | DreamLong | update phone +fixing script.js
+2026-05-11 | b650dd1 | DreamLong | update phone
+2026-05-11 | 801c27a | DreamLong | update
+2026-05-11 | 49121cf | DreamLong | Update style.phone.css
+2026-05-11 | 3bc2c69 | DreamLong | Update style.phone.css
+2026-05-11 | 0bd59a0 | DreamLong | Update style.phone.css
+2026-05-11 | 9c65f39 | DreamLong | Update style.phone.css
+2026-05-11 | 3277156 | DreamLong | Update style.css
+2026-05-12 | ce4679d | DreamLong | test
+2026-05-22 | 4a55259 | DreamLong | Update style.css
+2026-05-22 | dfeacd2 | DreamLong | Update style.phone.css
+2026-05-25 | be77b13 | DreamLong | Fix Leaderboard
+2026-05-25 | e11be63 | IndianCoder3 | Maybe Fix Status Page
+2026-05-25 | 16cafd9 | IndianCoder3 | Technologia
+2026-05-25 | aa92876 | IndianCoder3 | Good to see you, AstralyxAI!
+2026-05-25 | 39239d9 | IndianCoder3 | A wild AstralyxAI - Updated Edition just appeared!
+2026-05-25 | ce2b738 | IndianCoder3 | AstralyxAI - backed by Gemini & Improved by Gemini
+2026-05-25 | 5516442 | DreamLong | Create AI.html
+2026-05-25 | 369f813 | DreamLong | Update AI.html
+2026-05-25 | 7800d5e | DreamLong | Create Instructions.txt
+2026-05-25 | c0d4240 | DreamLong | Update index.html
+2026-05-25 | bff338e | DreamLong | Update index.html
+2026-05-25 | 4fce890 | DreamLong | Update AI.html
+2026-05-25 | a1f6675 | DreamLong | Update AI.html
+2026-05-25 | f6b6b04 | DreamLong | Redo
+2026-05-26 | be61211 | IndianCoder3 | Well I am gonna make AstralyxAI bro lol
+2026-05-26 | a2ea466 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2026-05-26 | 9c7eb5e | IndianCoder3 | ENCRYPT MY KEYS
+2026-05-26 | ef0ccf7 | IndianCoder3 | BOOM SOME COOKIN TIME
+2026-05-26 | 4ab9615 | IndianCoder3 | HTML BETTER FORMATTING
+2026-05-26 | 13bed9d | IndianCoder3 | Maybe some timepass?
+2026-05-26 | 7118281 | IndianCoder3 | maybe test?
+2026-05-26 | c379c18 | IndianCoder3 | HAPPY HAPPY HAPPY or SAD SAD
+2026-05-26 | 99d4fad | IndianCoder3 | idk am i f***ed up
+2026-05-26 | c00b7ba | IndianCoder3 | WAIT IS THIS WHAT I THOUGHT
+2026-05-26 | 68add4c | IndianCoder3 | welcome to 2067
+2026-05-26 | 23fc5c5 | IndianCoder3 | ladle meow
+2026-05-26 | 17394cc | IndianCoder3 | That's It. Seriously.
+2026-05-26 | a856511 | IndianCoder3 | BRO CHATGPT SUCKS I DONT SO PLEASE SILENCE
+2026-05-26 | 46af060 | IndianCoder3 | will it work or am i fired
+2026-05-26 | 61cd17f | IndianCoder3 | sticky or fixed choice is of god
+2026-05-26 | 84fa843 | IndianCoder3 | fixed was a bit better atleast dreamlong save me
+2026-05-26 | 6fe6cfd | IndianCoder3 | shayad transform ko bye bolna padega
+2026-05-26 | 140b306 | IndianCoder3 | AstralyxAI? YES SIR
+2026-05-26 | feb76d0 | IndianCoder3 | some teaching ofc
+2026-05-26 | ac32205 | IndianCoder3 | Teach the bot self defense
+2026-05-26 | 982fa05 | IndianCoder3 | sus
+2026-05-26 | 288ba89 | IndianCoder3 | GUYS
+2026-05-26 | 2974901 | IndianCoder3 | some credit please
+2026-05-26 | 087fe17 | IndianCoder3 | astralyxai x api
+2026-05-26 | 70c4270 | IndianCoder3 | will my config work or just crash test
+2026-05-26 | 3f72886 | IndianCoder3 | chatgpt bad
+2026-05-26 | 4ec8860 | IndianCoder3 | emergerncy meeting
+2026-05-26 | fd65830 | IndianCoder3 | fuck chatgpt
+2026-05-26 | 90034a7 | IndianCoder3 | REST IN PEACE MY GRANNY SHE GOT HIT BY A METEORIOD
+2026-05-26 | bdc6cbc | IndianCoder3 | gem
+2026-05-26 | 363c85f | IndianCoder3 | sus
+2026-05-26 | 5794e59 | IndianCoder3 | smallnote
+2026-05-26 | 8e881f8 | IndianCoder3 | Function Calling maybe BETTER?
+2026-05-26 | 9922c39 | IndianCoder3 | 67 memes per sec
+2026-05-26 | c13ab75 | IndianCoder3 | Comeback to our standard strapping bro
+2026-05-26 | 6921ee8 | IndianCoder3 | Function Calling Attempt 2
+2026-05-26 | 5342a9c | IndianCoder3 | no navbar in iframe ofc
+2026-05-26 | 4985cdf | IndianCoder3 | Trust Gemini its good
+2026-05-26 | fbfee99 | IndianCoder3 | EVERYONE DESERVES A PLACE
+2026-05-26 | 089bbc2 | IndianCoder3 | some update
+2026-05-26 | 62c21f7 | IndianCoder3 | hey
+2026-05-26 | d7117f3 | IndianCoder3 | bru git
+2026-05-26 | 018a2ac | DreamLong | Adding Turnstile
+2026-05-26 | cfbba1c | DreamLong | fix
+2026-05-26 | 466268a | DreamLong | Fixing Turnstile
+2026-05-26 | 5d9d1d8 | DreamLong | fix maybe
+2026-05-26 | 8febe79 | IndianCoder3 | lava cock
+2026-05-26 | d867732 | DreamLong | fix
+2026-05-26 | d1dba2a | DreamLong | fx
+2026-05-26 | 0fe0e68 | DreamLong | OMG DONT CHANGE
+2026-05-26 | ee668dd | DreamLong | fix again
+2026-05-26 | 4a7f05d | DreamLong | fix last i hope
+2026-05-26 | b975eff | IndianCoder3 | gogo
+2026-05-26 | 87dbd62 | DreamLong | stop airplaning the twin towers
+2026-05-26 | a2a50f7 | DreamLong | fix
+2026-05-27 | 052e196 | DreamLong | Update script.js
+2026-05-27 | 8c5a747 | DreamLong | Update script.js
+2026-05-27 | 45595b1 | DreamLong | Update script.js
+2026-05-27 | 72fc337 | DreamLong | Update script.js
+2026-05-27 | 0cf642a | DreamLong | Update index.html
+2026-05-27 | 877dfc6 | DreamLong | Update leaderboard.html
+2026-05-27 | 1196009 | DreamLong | Update script.js
+2026-05-27 | b871c98 | DreamLong | Update script.js
+2026-05-27 | 754edf0 | DreamLong | Update script.js
+2026-05-27 | ea1addd | DreamLong | Update script.js
+2026-06-02 | 53ca3e1 | IndianCoder3 | maybe better ai
+2026-06-08 | 173e69a | IndianCoder3 | please dont make me ragequit so ofc we take a backup
+2026-06-08 | 6413757 | IndianCoder3 | bru gemini isnt that smaart nowadays
+2026-06-08 | 53c126d | IndianCoder3 | bro chatgpt is a f***ing ai well i ragequit rn
+2026-06-08 | c2ad28e | IndianCoder3 | well gemini 3.1 flash lite with opencode dont embarres me
+2026-06-08 | e0d7566 | IndianCoder3 | faah
+2026-06-08 | 404441c | IndianCoder3 | commit
+2026-06-08 | 20b6ead | IndianCoder3 | 22222
+2026-06-08 | 2de4f69 | IndianCoder3 | cheeseburgers
+2026-06-08 | dac81d2 | IndianCoder3 | hella sus
+2026-06-08 | 3f564bc | IndianCoder3 | @DreamLong Please check chat.js in functions
+2026-06-08 | 5ecf51c | DreamLong | Update chat.js
+2026-06-08 | 6197f27 | DreamLongYT | Add comprehensive README.md with project details, features, technologies, and Shields.io badges.
+2026-06-08 | 6408012 | DreamLongYT | Update README.md to English with detailed project information and badges.
+2026-06-08 | 7123d48 | DreamLong | Update README.md
+2026-06-08 | a0430b9 | DreamLong | Update README.md
+2026-06-08 | 5679821 | DreamLong | Create audio.js
+2026-06-08 | 437344a | DreamLong | Update chat.js
+2026-06-08 | 288265b | DreamLong | Update astralyxai.html
+2026-06-08 | fe2f24a | DreamLong | Update astralyxai.html
+2026-06-08 | ab15acc | DreamLongYT | Update README.md with rounded badges, deployment status, specific Discord badge, and Discord widget enablement instructions.
+2026-06-08 | fedc973 | DreamLongYT | Update Discord widget troubleshooting instructions in README.md.
+2026-06-08 | 71a06ce | DreamLong | Update README.md
+2026-06-08 | 375ca3d | DreamLong | Update README.md
+2026-06-08 | 7cac03b | DreamLong | Update README.md
+2026-06-08 | fb2692e | DreamLong | Update README.md
+2026-06-08 | fd0a8f6 | DreamLong | Update README.md
+2026-06-08 | 00aeb9a | DreamLong | Update README.md
+2026-06-08 | 42c0b3f | DreamLong | Update README.md
+2026-06-08 | 6e5331a | DreamLong | Update README.md
+2026-06-08 | e30fd6b | DreamLong | Update README.md
+2026-06-09 | 97cbeb4 | IndianCoder3 | Create GitLog.txt
+2026-06-09 | dc18458 | IndianCoder3 | some readme cooking
+2026-06-09 | a6879b9 | DreamLong | Update README.md
+2026-06-09 | 44da63f | DreamLong | Update README.md
+2026-06-10 | 183df3f | IndianCoder3 | Readme Accept
+2026-06-10 | 4f64d22 | IndianCoder3 | Merge branch 'main' of https://github.com/AstralyxPvP/AstralyxPvP-site
+2026-06-10 | b625130 | IndianCoder3 | Update sus.txt
+2026-06-10 | 33cfe97 | IndianCoder3 | maybe test
+2026-06-10 | a8be4de | IndianCoder3 | sussy baka sucks
+2026-06-10 | fbfc07e | IndianCoder3 | sos
+2026-06-10 | 4825609 | IndianCoder3 | sys
+2026-06-10 | 2c20e21 | IndianCoder3 | yay
+2026-06-11 | 92d51a1 | IndianCoder3 | Yea bro goddamn lets just commit now
+2026-06-11 | 68a82cd | IndianCoder3 | sus
+2026-06-11 | 97ca953 | IndianCoder3 | maybe
+2026-06-11 | 0b6f1a9 | IndianCoder3 | fix: navbar fixed top on all viewports, mobile menu centered, rules moved to footer
+2026-06-11 | dd60598 | IndianCoder3 | fix: hide nav-footer-hint on desktop
+2026-06-11 | bb5f9d1 | IndianCoder3 | fix: restore nav-links inside nav element on close
+2026-06-11 | 5ca74c8 | IndianCoder3 | feat: add diamond sword custom cursor
+2026-06-11 | 0bf7fe8 | IndianCoder3 | fix: resize cursor to 64x64 (was too big), add JS load log
+2026-06-11 | 8323e80 | IndianCoder3 | fix: cursor now on all elements, override pointer rules
+2026-06-11 | 09677a4 | IndianCoder3 | fix: cursor hotspot to top-left (0 0)
+2026-06-11 | a7ffb6d | IndianCoder3 | fix: resize cursor to 32x32
+2026-06-11 | 81fcf93 | IndianCoder3 | fix: grammar fixes across pages
+2026-06-11 | 4b916b7 | IndianCoder3 | refactor: overhaul terms and privacy content
+2026-06-11 | 0b31a9c | IndianCoder3 | fix: update contact email to info@, add last-updated to footer
+2026-06-11 | 23a3a40 | IndianCoder3 | feat: live typing stream for AI responses
+2026-06-11 | 73df70c | IndianCoder3 | feat: full markdown rendering + live typing for AI
+2026-06-11 | 20a09b9 | IndianCoder3 | fix: escape backticks in prompt template literal
+2026-06-11 | 78b4ef3 | IndianCoder3 | feat: use marked.js for proper markdown rendering
+2026-06-11 | a90b43c | IndianCoder3 | refactor: cleaner system prompt with leaderboard data note
+2026-06-11 | ab30f74 | IndianCoder3 | yes sir cleaner ai
+2026-06-11 | 6b393ef | IndianCoder3 | feat: add collapsible thinking box, always show for AI, fix markdown bold with fallback
+2026-06-11 | 00f5963 | IndianCoder3 | DO IT
+2026-06-11 | 936285e | IndianCoder3 | sus
+2026-06-11 | 593ced7 | IndianCoder3 | feat: diamond axe cursor on hover with swing on click
+2026-06-11 | 10fb354 | IndianCoder3 | fix: rotate axe 60° left, click rotates 75° left
+2026-06-11 | 41e5049 | IndianCoder3 | fix: click rotation 90°, hero IP button axe cursor
+2026-06-11 | 2064597 | IndianCoder3 | tweak: axe hover -95°, click -115°
+2026-06-11 | decf271 | IndianCoder3 | tweak: axe 40x40, hover -95°, click -140°
+2026-06-11 | d9ea6a6 | IndianCoder3 | fix: add copyServerIP function, update all copyIP references
+2026-06-11 | f3fa94d | IndianCoder3 | fix: add data-menu-copy handler, use copyServerIP
+2026-06-11 | e125711 | IndianCoder3 | fix: reduce navbar blur to 12px, fix active page indicator
+2026-06-11 | 06f4bc7 | IndianCoder3 | feat: nav link pills with icons on desktop, blur 14px
+2026-06-11 | 6f5fa20 | IndianCoder3 | fix: active only highlights, hover lifts
+2026-06-11 | 5e97b5b | IndianCoder3 | feat: double-decker nav pills, flex-wrap on overflow instead of hamburger
+2026-06-11 | e743706 | IndianCoder3 | feat: add contact page with Discord and emails
+2026-06-11 | 4ab3b78 | IndianCoder3 | fix: show email addresses in contact page
+2026-06-11 | c5c8c8b | IndianCoder3 | fix: add al13n email to contact page
+2026-06-11 | 5e770f3 | IndianCoder3 | fix: use support page's discord button style
+2026-06-11 | fe847c2 | IndianCoder3 | fix: match discord button exactly to support page (thickness, padding, text)
+2026-06-11 | 7539918 | IndianCoder3 | hey
+2026-06-11 | 890eb6a | IndianCoder3 | feat: add support link to footer
+2026-06-11 | 37a1d6d | IndianCoder3 | refactor: remove support link from navbar (still in footer)
+2026-06-11 | fe90e50 | IndianCoder3 | fix: add standard background-clip property alongside vendor prefix
+2026-06-11 | 44d587c | IndianCoder3 | chore: remove unused files (backups, old styles, unused scripts, test pages, readme)
+2026-06-11 | cb3bb0e | IndianCoder3 | ah bring back our readme
+2026-06-11 | bd63176 | IndianCoder3 | update dreamlong's stupid shit
+2026-06-11 | fc0577e | IndianCoder3 | oops file mistake
+2026-06-11 | 4383be2 | IndianCoder3 | BRO DREAMLONG PLEASE ATLEAST CHECK BEFORE USING AI BROS REFERENCING GOOGLE LINKS WTF IS THAT
+2026-06-11 | e5a49be | IndianCoder3 | yea i get it some fault was mine as well im sorry dreamlong please
+2026-06-11 | 365c068 | IndianCoder3 | chore: save full commit log to 2026-6-11.txt
