@@ -1144,16 +1144,16 @@ footer::before {
    KEYFRAMES
    ============================================================ */
 @keyframes pageFadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes pageFadeOut {
   from { opacity: 1; }
-  to   { opacity: 0; }
+  to   { opacity: 0; transform: translateY(6px); }
 }
 @keyframes navDrop {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+  from { opacity: 0; transform: translateY(-60px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateY(30px); }
@@ -1294,7 +1294,7 @@ footer::before {
   .nav-links {
     position: fixed;
     top: 50%; left: 50%;
-    translate: -50% -50%;
+    transform: translate(-50%, -50%) scale(0.88);
     width: min(88%, 320px);
     background: rgba(16,8,10,0.94);
     backdrop-filter: blur(32px) saturate(130%);
@@ -1306,12 +1306,11 @@ footer::before {
     flex-direction: column;
     gap: 4px;
     opacity: 0; pointer-events: none;
-    scale: 0.88;
-    transition: opacity var(--t-med) var(--ease), scale var(--t-med) var(--ease);
+    transition: opacity var(--t-med) var(--ease), transform var(--t-med) var(--ease);
     z-index: 9500;
   }
 
-  .nav-links.active { opacity: 1; pointer-events: auto; scale: 1; }
+  .nav-links.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
 
   .nav-links a {
     font-size: 1rem; font-weight: 700;
