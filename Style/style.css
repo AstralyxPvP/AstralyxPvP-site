@@ -442,7 +442,7 @@ nav::before {
 
 .hamburger:hover, .hamburger.active { color: var(--gold); }
 
-.nav-backdrop, .mobile-close { display: none; }
+.nav-backdrop, .mobile-close, .nav-footer-hint { display: none; }
 
 /* ============================================================
    HERO
