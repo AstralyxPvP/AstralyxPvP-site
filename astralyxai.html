@@ -12,6 +12,7 @@
   <meta name="keywords" content="AstralyxAI, chat, assistant, Minecraft, PvP, support" />
   <meta name="author" content="Frostrax (Owner), IndianCoder3 &amp; DreamLong (NebulaGames Developers)" />
   <link rel="stylesheet" href="Style/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <style>
     /* Gemini-Inspired Red Theme Variables */
@@ -748,52 +749,7 @@ TEAM HIERARCHY & ROLES:
     }
     const parseMarkdown = (text) => {
       if (!text) return '';
-
-      let html = text
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-
-      const codeBlocks = [];
-      html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
-        codeBlocks.push(`<pre><code>${code.trim()}</code></pre>`);
-        return `\x00CODEBLOCK${codeBlocks.length - 1}\x00`;
-      });
-
-      const inlineCodes = [];
-      html = html.replace(/`([^`]+)`/g, (_, code) => {
-        inlineCodes.push(`<code>${code}</code>`);
-        return `\x00INLINECODE${inlineCodes.length - 1}\x00`;
-      });
-
-      html = html
-        .replace(/^### (.+)$/gm, '<h4>$1</h4>')
-        .replace(/^## (.+)$/gm, '<h3>$1</h3>')
-        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
-        .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
-        .replace(/^\-{3,}$/gm, '<hr>')
-        .replace(/\*{3,}/g, '<hr>');
-
-      const listBlockRe = /(^(?:\- .+\n?)+)|(^(?:\d+\. .+\n?)+)/gm;
-      html = html.replace(listBlockRe, (match) => {
-        const lines = match.trim().split('\n');
-        const isOl = /^\d+\./.test(lines[0]);
-        const items = lines.map(l => `<li>${l.replace(/^\- |^\d+\. /, '')}</li>`).join('');
-        return isOl ? `<ol>${items}</ol>` : `<ul>${items}</ul>`;
-      });
-
-      html = html
-        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*(.+?)\*/g, '<em>$1</em>')
-        .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
-
-      html = html.replace(/\x00INLINECODE(\d+)\x00/g, (_, i) => inlineCodes[parseInt(i)]);
-      html = html.replace(/\x00CODEBLOCK(\d+)\x00/g, (_, i) => codeBlocks[parseInt(i)]);
-
-      html = html.replace(/\n{2,}/g, '<br><br>');
-      html = html.replace(/\n/g, '<br>');
-
-      return html.trim();
+      return marked.parse(text, { breaks: true, gfm: true });
     };
     async function sendMessage() {
       const input = document.getElementById('chatInput');
