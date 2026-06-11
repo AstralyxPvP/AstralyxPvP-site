@@ -390,7 +390,7 @@ nav::before {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .nav-links a {
@@ -402,6 +402,37 @@ nav::before {
   letter-spacing: 0.07em;
   position: relative;
   transition: color var(--t-fast) ease, transform var(--t-fast) ease;
+}
+
+/* Desktop nav links as glass pills */
+@media (min-width: 861px) {
+  .nav-links a {
+    background: rgba(18, 8, 10, 0.68);
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+    padding: 8px 18px;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(255,255,255,0.06);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.73rem;
+  }
+  .nav-links a::after { display: none; }
+  .nav-links a:hover,
+  .nav-links a.active {
+    border-color: rgba(255,215,0,0.25);
+    box-shadow: 0 0 18px rgba(255,215,0,0.06);
+  }
+  /* Keep CTA red regardless */
+  .nav-cta {
+    background: linear-gradient(135deg, var(--red), #ff3355) !important;
+    border-color: transparent !important;
+    box-shadow: 0 2px 14px var(--red-glow) !important;
+  }
+  .nav-cta:hover {
+    border-color: transparent !important;
+  }
 }
 
 .nav-links a:hover,
