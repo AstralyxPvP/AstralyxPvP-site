@@ -419,10 +419,15 @@ nav::before {
     font-size: 0.73rem;
   }
   .nav-links a::after { display: none; }
-  .nav-links a:hover,
+  .nav-links a:hover {
+    border-color: rgba(255,215,0,0.25);
+    box-shadow: 0 0 18px rgba(255,215,0,0.06);
+    transform: translateY(-2px);
+  }
   .nav-links a.active {
     border-color: rgba(255,215,0,0.25);
     box-shadow: 0 0 18px rgba(255,215,0,0.06);
+    transform: none;
   }
   /* Keep CTA red regardless */
   .nav-cta {
@@ -435,8 +440,8 @@ nav::before {
   }
 }
 
-.nav-links a:hover,
-.nav-links a.active { color: var(--gold); transform: translateY(-2px); }
+.nav-links a:hover { color: var(--gold); transform: translateY(-2px); }
+.nav-links a.active { color: var(--gold); }
 
 .nav-links a.active {
   text-shadow: 0 0 12px rgba(255,215,0,0.25);
