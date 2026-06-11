@@ -101,9 +101,10 @@
             }
 
             // Active link logic
-            const currentPath = window.location.pathname.split("/").pop() || "index.html";
+            const currentPath = (window.location.pathname.split("/").pop() || "index.html").replace(/\.html$/, '');
             container.querySelectorAll('.nav-links a').forEach(link => {
-                if(link.getAttribute('href') === currentPath) link.classList.add('active');
+              const href = link.getAttribute('href').replace(/\.html$/, '');
+              if (href === '/' + currentPath || href === currentPath) link.classList.add('active');
             });
 
             // Adjust main content padding so it's not hidden under a fixed nav
