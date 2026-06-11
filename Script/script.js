@@ -69,8 +69,9 @@
                 navLinks.classList.remove('active');
                 if (backdrop) backdrop.classList.remove('active');
                 setTimeout(() => {
-                    if (window.innerWidth <= 860 && navLinks.parentNode !== container) {
-                        container.appendChild(navLinks);
+                    if (window.innerWidth <= 860 && navLinks.parentNode !== container.querySelector('nav')) {
+                        const nav = container.querySelector('nav');
+                        if (nav) nav.appendChild(navLinks);
                     }
                 }, 300);
             }
