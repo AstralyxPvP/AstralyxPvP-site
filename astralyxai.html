@@ -202,6 +202,69 @@
       border-bottom-style: solid;
     }
 
+    .message-content pre {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 10px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 8px 0;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .message-content pre code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+      color: #e4e4ef;
+    }
+
+    .message-content code {
+      background: rgba(200, 16, 46, 0.15);
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.88rem;
+      color: #ff758f;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    }
+
+    .message-content blockquote {
+      border-left: 3px solid var(--primary-red);
+      margin: 8px 0;
+      padding: 6px 14px;
+      color: #b0b0c0;
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 0 6px 6px 0;
+    }
+
+    .message-content ul, .message-content ol {
+      margin: 6px 0;
+      padding-left: 24px;
+    }
+
+    .message-content li {
+      margin: 4px 0;
+      line-height: 1.5;
+    }
+
+    .message-content h2, .message-content h3, .message-content h4 {
+      margin: 16px 0 8px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+
+    .message-content h2 { font-size: 1.3rem; }
+    .message-content h3 { font-size: 1.15rem; }
+    .message-content h4 { font-size: 1.05rem; }
+
+    .message-content hr {
+      border: none;
+      height: 1px;
+      background: rgba(255, 255, 255, 0.08);
+      margin: 16px 0;
+    }
+
     /* Floating Pill Input Box Area */
     .chat-input-container {
       position: fixed;
@@ -420,7 +483,7 @@
 
 THINKING FEATURE RULE:
 Before generating your response text, you MUST always and ALWAYS COMPULSORY (except whenn the user says himself theat he does not want thinking) output your logical thinking process inside <thinking>...</thinking> tags. Then put your final answers inside <answer>...</answer> tags. Keep your inner thoughts sharp, analytic, and relevant to the user query.
-You may use HTML formatting inside your answer for better presentation, but never break or alter the structural <thinking> and <answer> tags.
+You may use Markdown formatting inside your answer for better presentation (bold, italic, code blocks, lists, headings, blockquotes). Never use raw HTML in your answer — the frontend converts Markdown to HTML automatically.
 
 MULTI-FUNCTION CALLING SYSTEM:
 You have access to real-time tools. If a user query requires multiple lookups (e.g., asking about BOTH server player count and leaderboard ranks), you can request MULTIPLE functions at once by placing each directive on its own separate line inside your <thinking> space.
@@ -442,7 +505,7 @@ If users ask why they should play here, what makes Astralyx special, or how it i
 CRITICAL RULES FOR RESPONDING:
 1. ONLY answer the specific question asked. Do not flood or dump irrelevant navigation pathways.
 2. If greeted (hi, hello, etc), greet back warmly and ask how you can assist them. Do not link websites on simple greetings unless prompted.
-3. Use clean Markdown links with HTML formatting. NEVER show raw text links. Format precisely using original pathways: [Main Website](https://astralyxpvp.pages.dev/), [Rules](https://astralyxpvp.pages.dev/rules), [Staff Application](https://astralyxpvp.pages.dev/apply), [Leaderboard](https://astralyxpvp.pages.dev/leaderboard), [Vote](https://astralyxpvp.pages.dev/vote), [Store](https://astralyxpvp.pages.dev/store), [Status](https://astralyxpvp.pages.dev/status).
+3. Use clean Markdown formatting in your answers: **bold**, *italic*, `code`, ```code blocks```, lists, headings, blockquotes, and [links](url). Never use raw HTML in your answer.
 4. For staff applications: Direct users to [Staff Application](https://astralyxpvp.pages.dev/apply) and explicitly state they must complete the formal submission inside Discord channel <#1477272661519368283>.
 5. For server announcements: Direct them to Discord channel <#1477033205017346259>.
 6. For technical or missing credit/item issues: Direct to Discord support tickets <#1477032862892163113> or verified staff emails.
@@ -593,7 +656,7 @@ TEAM HIERARCHY & ROLES:
       const chars = [...fullText];
       for (let i = 0; i < chars.length; i++) {
         displayed += chars[i];
-        textBody.innerHTML = formatText(displayed);
+        textBody.innerHTML = parseMarkdown(displayed);
         if (i % 2 === 0) {
           messagesDiv.scrollTop = messagesDiv.scrollHeight;
         }
@@ -683,10 +746,54 @@ TEAM HIERARCHY & ROLES:
       
       return data.candidates?.[0]?.content?.parts?.[0]?.text || '';
     }
-    const formatText = (text) => {
-      return text
-        .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank">$1</a>')
-        .replace(/\n/g, '<br>');
+    const parseMarkdown = (text) => {
+      if (!text) return '';
+
+      let html = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      const codeBlocks = [];
+      html = html.replace(/```(\w*)\n?([\s\S]*?)```/g, (_, lang, code) => {
+        codeBlocks.push(`<pre><code>${code.trim()}</code></pre>`);
+        return `\x00CODEBLOCK${codeBlocks.length - 1}\x00`;
+      });
+
+      const inlineCodes = [];
+      html = html.replace(/`([^`]+)`/g, (_, code) => {
+        inlineCodes.push(`<code>${code}</code>`);
+        return `\x00INLINECODE${inlineCodes.length - 1}\x00`;
+      });
+
+      html = html
+        .replace(/^### (.+)$/gm, '<h4>$1</h4>')
+        .replace(/^## (.+)$/gm, '<h3>$1</h3>')
+        .replace(/^# (.+)$/gm, '<h2>$1</h2>')
+        .replace(/^> (.+)$/gm, '<blockquote>$1</blockquote>')
+        .replace(/^\-{3,}$/gm, '<hr>')
+        .replace(/\*{3,}/g, '<hr>');
+
+      const listBlockRe = /(^(?:\- .+\n?)+)|(^(?:\d+\. .+\n?)+)/gm;
+      html = html.replace(listBlockRe, (match) => {
+        const lines = match.trim().split('\n');
+        const isOl = /^\d+\./.test(lines[0]);
+        const items = lines.map(l => `<li>${l.replace(/^\- |^\d+\. /, '')}</li>`).join('');
+        return isOl ? `<ol>${items}</ol>` : `<ul>${items}</ul>`;
+      });
+
+      html = html
+        .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.+?)\*/g, '<em>$1</em>')
+        .replace(/\[([^\]]+)\]\(([^\)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+
+      html = html.replace(/\x00INLINECODE(\d+)\x00/g, (_, i) => inlineCodes[parseInt(i)]);
+      html = html.replace(/\x00CODEBLOCK(\d+)\x00/g, (_, i) => codeBlocks[parseInt(i)]);
+
+      html = html.replace(/\n{2,}/g, '<br><br>');
+      html = html.replace(/\n/g, '<br>');
+
+      return html.trim();
     };
     async function sendMessage() {
       const input = document.getElementById('chatInput');
@@ -772,7 +879,7 @@ TEAM HIERARCHY & ROLES:
         let answerOutput = answerMatch ? answerMatch[1].trim() : responseText.replace(/<thinking>[\s\S]*?<\/thinking>/, '').trim();
 
         removeTyping();
-        streamIntoMessage(aiMsgId, answerOutput, formatText(thinkingOutput), "");
+        streamIntoMessage(aiMsgId, answerOutput, parseMarkdown(thinkingOutput), "");
         conversationHistory.push({ role: 'assistant', content: responseText });
 
       } catch (error) {
