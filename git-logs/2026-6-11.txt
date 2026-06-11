@@ -1,0 +1,373 @@
+3dc8dd4 Initial
+92eb52f Add License
+874ddbc Basic Update (Store & Footer & etc.)
+60fff05 Fix HTML files not Including JS (IndianCoder3)
+72adc02 Update script.js
+e21e791 Update script.js
+4d00f00 Edit Credits
+85da9aa Fix Credits page Errors
+23f1def Update script.js
+f58e662 Commit - Fixes
+042f3cd Commit - Fixes
+a237d57 Merge branch 'main' of https://github.com/IndianCoder3/Coding-Astralyxpvp
+5e321cd Update Styles - Animations
+a6049fc Create dont_touch.js
+6e3732e Rebase to New Repo
+800b06b Update terms.html
+24016bf Update style.css
+662c193 Update style.css
+e0cc7bb Update style.css
+ade344d Update style.css
+6a16d5a Fix heading for Terms
+feace93 Update terms.html
+3d79ada Update style.css
+6dc1a1f Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+0362748 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+193696f Update style.css
+4b3fe41 Update style.css
+aaa93b9 Change terms heading
+8d2bd07 Merge branches 'main' and 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+1dd759b Change terms.html
+a29a875 Heading Fix - Terms
+b66225e Update terms.html
+de1e405 Update style.css
+1d99882 Add newer Terms Cards
+291a540 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2866f7b Fix website glitch Terms
+2e17087 Revert to old style Cards in Terms.html
+740c414 Fix language in Card 3
+347cb70 Add Animations to .doc-container via CSS
+7f639f7 Add animations to .doc-* in CSS
+4e9b6fb edit privacy.html
+921fa88 changes
+f5eab02 yea bro some bug fixing
+afa77bc yea bro
+28853d6 bug fixing AGAIN
+c4de258 Add files via upload
+4e6275d Updating Icon
+10c684d SEO Setup
+9d6e7d2 Add GSC token
+5c79987 Tests and Bugs
+5e20ca6 Tests
+99995d7 added animations and fix bugs
+88810c9 tests
+c2d18bc test
+8350902 yea again
+9a70231 New file: Style/style-beta.css
+eaec746 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+ed9ad02 Update Script.js for better ContextMenu
+e909957 Update style-beta
+051d0ff Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+87d0bc7 Make style-beta.css only coverNavbar
+d2ab749 Add Cloudflare Workers configuration
+55027f9 Update ContextMenu
+f34df12 Add Al13n to Credits
+65939d0 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+2324936 update da shi
+632fa06 Discord Bot Credit to DreamLong
+58f9ae7 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+8543bd1 Nav IDK Fix
+6c432dc IDK Fix shi
+489ee94 yea bro bug fixing very good yk
+d84e822 fix rot
+a8ecdb0 update meta data
+111dfb0 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+e5c381f Shi FIxing Brainrot I hate this
+973234f feat: setup gpg signing
+38150ca Fix credits lines
+9d48ecb Fix context menu copy IP option
+726d936 Update IP to none-subscribe.gl.joinmc.link
+e5c26ad Toastify? YES SIR
+40e1eb6 fixing bugs
+d9501ac just another test, if it doesent work then its indians fault, if it works my job :thumbs_up:
+6f80b0c hope it works
+153e765 oh my gawd
+f54c4fc fucking commit
+4546479 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+28607fb sussy commit
+ed4b8bd but it didnt go as expected, even tho i said
+d3aee1a Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+3708510 Update Better UI
+caab4ca Saucy sus f*** commit
+76c4d07 Test
+fb20359 omg please work
+5dd7363 fucking commit
+558793c Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+dcda15d DreamLong needs to dream longer jking
+a3ff25d a
+13a2ccd fuck me
+2c5bb8d Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+a8d247e Bugs Fixing
+1c522dd FIXED!!! NAVBAR FIXED YAY
+c2f1480 NavBar fixing more deep... Thanks to position: sticky
+3442f63 NavBar Brainrot Shit case closed
+c6d7881 More Animations!
+6f55f85 Fixing + Adding robots.txt + Making the website "faster"
+b5ee0d4 BIG BUG BOI FIXING
+fc2110c Optimizations - first part
+d0bd5cb Optimizations
+6260265 test
+273ad7e buh
+e30a2ca Sussy commet
+20d465a Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+ef66634 Cocky commit
+2076f25 Add files via upload
+fc25906 yea man
+0efc064 Cooking time
+0a6add7 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+78439eb motherfu**ing commit
+627aa85 Lucky Wolfy
+0540ad2 GOLD BETTER
+740da53 important bitch
+41d1516 BRO WILL U ACCEPT MY GOLD SWORD
+4839b8b Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+d695e5c omg
+3ffcf1b MY SWORD
+1335717 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+361e6d7 Logo Improve
+f6e57a6 FUCK YOU ASS BITCH
+2904d33 sus
+81133ce Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+04a92dd sussy bake
+b3b9b03 fkass
+85faee9 Remove unused Font Awesome
+3dc63f2 yea bro DONT
+4b12ac6 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+8921570 learn the lesson
+4596f26 The sword is MINE
+d8d3a87 yo
+352a1a3 Cooking BetterSEO for dinner i hungry
+132d245 The food wasn't good let's cook again
+37c24df SEO ka baap ko phone laga
+2a78c67 asap new token
+8b6f136 SEO upgrade :thumbs_up:
+d9987f2 testing
+328a710 Create navbar.html
+209fab8 tests
+99fabd7 Updating Font Awesome, Fixing Errors, Testing
+137b68c Testing
+10ee117 Updating Head
+9f78e82 Trying out navbar
+70fceb7 Give back our HEAD
+94bf981 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+b759cf0 Update testing
+2f7cbf4 saucy baka
+0fb9e3b Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+6df0ddf Updating Script.js
+c114978 test
+d62fc2a testnig
+667cbe4 Who Said "Who"?
+d3a7d47 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+1cb3a45 bro dont z-index wars between navbar and hero
+177961b test
+be6bda8 WORLD CUPPP
+8f812fb test
+7868136 FINALLY
+a944748 navbar test
+0117595 test?
+4170986 World CUPPPPPPP World CUPPPPPPPPP
+6738c5e adding navbar
+f428d03 updated smoother animations
+3320b3d bugs fixed i hope
+6bd2b6d test fixing
+7c3d1c3 bug fixing
+37e7358 Comet SEO sauce
+6eeadab Optimize ka baap
+90fb5db tast
+d5d5ef9 lage mafia-as
+575f22d Comeback head.html
+1076cd4 faah
+14f5394 this is chuck chuck live in a village he want emerald
+d5d5ca8 Chuck have many emeralds. Chuck now very happy. Chuck leave village with emeralds
+856f712 RIP COMEDY
+0456360 MG Comet le aayo
+a74ce14 bullshit
+fd99d5d Maintainence Mode
+b02b5f6 Merge pull request #1 from AstralyxPvP/cloudflare/workers-autoconfig
+6f7b207 test
+3e9fdfd test
+a30eb10 Make Phone index.html unoptimized
+9a1cda7 update footer.html
+2ce2e9e update phone +fixing script.js
+b650dd1 update phone
+801c27a update
+49121cf Update style.phone.css
+3bc2c69 Update style.phone.css
+0bd59a0 Update style.phone.css
+9c65f39 Update style.phone.css
+3277156 Update style.css
+ce4679d test
+4a55259 Update style.css
+dfeacd2 Update style.phone.css
+be77b13 Fix Leaderboard
+e11be63 Maybe Fix Status Page
+16cafd9 Technologia
+aa92876 Good to see you, AstralyxAI!
+39239d9 A wild AstralyxAI - Updated Edition just appeared!
+ce2b738 AstralyxAI - backed by Gemini & Improved by Gemini
+5516442 Create AI.html
+369f813 Update AI.html
+7800d5e Create Instructions.txt
+c0d4240 Update index.html
+bff338e Update index.html
+4fce890 Update AI.html
+a1f6675 Update AI.html
+f6b6b04 Redo
+be61211 Well I am gonna make AstralyxAI bro lol
+a2ea466 Merge branch 'main' of https://github.com/AstralyxPvP-Website-Dev-Team/AstralyxPvP-site
+9c7eb5e ENCRYPT MY KEYS
+ef0ccf7 BOOM SOME COOKIN TIME
+4ab9615 HTML BETTER FORMATTING
+13bed9d Maybe some timepass?
+7118281 maybe test?
+c379c18 HAPPY HAPPY HAPPY or SAD SAD
+99d4fad idk am i f***ed up
+c00b7ba WAIT IS THIS WHAT I THOUGHT
+68add4c welcome to 2067
+23fc5c5 ladle meow
+17394cc That's It. Seriously.
+a856511 BRO CHATGPT SUCKS I DONT SO PLEASE SILENCE
+46af060 will it work or am i fired
+61cd17f sticky or fixed choice is of god
+84fa843 fixed was a bit better atleast dreamlong save me
+6fe6cfd shayad transform ko bye bolna padega
+140b306 AstralyxAI? YES SIR
+feb76d0 some teaching ofc
+ac32205 Teach the bot self defense
+982fa05 sus
+288ba89 GUYS
+2974901 some credit please
+087fe17 astralyxai x api
+70c4270 will my config work or just crash test
+3f72886 chatgpt bad
+4ec8860 emergerncy meeting
+fd65830 fuck chatgpt
+90034a7 REST IN PEACE MY GRANNY SHE GOT HIT BY A METEORIOD
+bdc6cbc gem
+363c85f sus
+5794e59 smallnote
+8e881f8 Function Calling maybe BETTER?
+9922c39 67 memes per sec
+c13ab75 Comeback to our standard strapping bro
+6921ee8 Function Calling Attempt 2
+5342a9c no navbar in iframe ofc
+4985cdf Trust Gemini its good
+fbfee99 EVERYONE DESERVES A PLACE
+089bbc2 some update
+62c21f7 hey
+d7117f3 bru git
+018a2ac Adding Turnstile
+cfbba1c fix
+466268a Fixing Turnstile
+5d9d1d8 fix maybe
+8febe79 lava cock
+d867732 fix
+d1dba2a fx
+0fe0e68 OMG DONT CHANGE
+ee668dd fix again
+4a7f05d fix last i hope
+b975eff gogo
+87dbd62 stop airplaning the twin towers
+a2a50f7 fix
+052e196 Update script.js
+8c5a747 Update script.js
+45595b1 Update script.js
+72fc337 Update script.js
+0cf642a Update index.html
+877dfc6 Update leaderboard.html
+1196009 Update script.js
+b871c98 Update script.js
+754edf0 Update script.js
+ea1addd Update script.js
+53ca3e1 maybe better ai
+173e69a please dont make me ragequit so ofc we take a backup
+6413757 bru gemini isnt that smaart nowadays
+53c126d bro chatgpt is a f***ing ai well i ragequit rn
+c2ad28e well gemini 3.1 flash lite with opencode dont embarres me
+e0d7566 faah
+404441c commit
+20b6ead 22222
+2de4f69 cheeseburgers
+dac81d2 hella sus
+3f564bc @DreamLong Please check chat.js in functions
+5ecf51c Update chat.js
+6197f27 Add comprehensive README.md with project details, features, technologies, and Shields.io badges.
+6408012 Update README.md to English with detailed project information and badges.
+7123d48 Update README.md
+a0430b9 Update README.md
+5679821 Create audio.js
+437344a Update chat.js
+288265b Update astralyxai.html
+fe2f24a Update astralyxai.html
+ab15acc Update README.md with rounded badges, deployment status, specific Discord badge, and Discord widget enablement instructions.
+fedc973 Update Discord widget troubleshooting instructions in README.md.
+71a06ce Update README.md
+375ca3d Update README.md
+7cac03b Update README.md
+fb2692e Update README.md
+fd0a8f6 Update README.md
+00aeb9a Update README.md
+42c0b3f Update README.md
+6e5331a Update README.md
+e30fd6b Update README.md
+97cbeb4 Create GitLog.txt
+dc18458 some readme cooking
+a6879b9 Update README.md
+44da63f Update README.md
+183df3f Readme Accept
+4f64d22 Merge branch 'main' of https://github.com/AstralyxPvP/AstralyxPvP-site
+b625130 Update sus.txt
+33cfe97 maybe test
+a8be4de sussy baka sucks
+fbfc07e sos
+4825609 sys
+2c20e21 yay
+92d51a1 Yea bro goddamn lets just commit now
+68a82cd sus
+97ca953 maybe
+0b6f1a9 fix: navbar fixed top on all viewports, mobile menu centered, rules moved to footer
+dd60598 fix: hide nav-footer-hint on desktop
+bb5f9d1 fix: restore nav-links inside nav element on close
+5ca74c8 feat: add diamond sword custom cursor
+0bf7fe8 fix: resize cursor to 64x64 (was too big), add JS load log
+8323e80 fix: cursor now on all elements, override pointer rules
+09677a4 fix: cursor hotspot to top-left (0 0)
+a7ffb6d fix: resize cursor to 32x32
+81fcf93 fix: grammar fixes across pages
+4b916b7 refactor: overhaul terms and privacy content
+0b31a9c fix: update contact email to info@, add last-updated to footer
+23a3a40 feat: live typing stream for AI responses
+73df70c feat: full markdown rendering + live typing for AI
+20a09b9 fix: escape backticks in prompt template literal
+78b4ef3 feat: use marked.js for proper markdown rendering
+a90b43c refactor: cleaner system prompt with leaderboard data note
+ab30f74 yes sir cleaner ai
+6b393ef feat: add collapsible thinking box, always show for AI, fix markdown bold with fallback
+00f5963 DO IT
+936285e sus
+593ced7 feat: diamond axe cursor on hover with swing on click
+10fb354 fix: rotate axe 60° left, click rotates 75° left
+41e5049 fix: click rotation 90°, hero IP button axe cursor
+2064597 tweak: axe hover -95°, click -115°
+decf271 tweak: axe 40x40, hover -95°, click -140°
+d9ea6a6 fix: add copyServerIP function, update all copyIP references
+f3fa94d fix: add data-menu-copy handler, use copyServerIP
+e125711 fix: reduce navbar blur to 12px, fix active page indicator
+06f4bc7 feat: nav link pills with icons on desktop, blur 14px
+6f5fa20 fix: active only highlights, hover lifts
+5e97b5b feat: double-decker nav pills, flex-wrap on overflow instead of hamburger
+e743706 feat: add contact page with Discord and emails
+4ab3b78 fix: show email addresses in contact page
+c5c8c8b fix: add al13n email to contact page
+5e770f3 fix: use support page's discord button style
+fe847c2 fix: match discord button exactly to support page (thickness, padding, text)
+7539918 hey
+890eb6a feat: add support link to footer
+37a1d6d refactor: remove support link from navbar (still in footer)
+fe90e50 fix: add standard background-clip property alongside vendor prefix
+44d587c chore: remove unused files (backups, old styles, unused scripts, test pages, readme)
+cb3bb0e ah bring back our readme
+bd63176 update dreamlong's stupid shit
+fc0577e oops file mistake
+4383be2 BRO DREAMLONG PLEASE ATLEAST CHECK BEFORE USING AI BROS REFERENCING GOOGLE LINKS WTF IS THAT
+e5a49be yea i get it some fault was mine as well im sorry dreamlong please
