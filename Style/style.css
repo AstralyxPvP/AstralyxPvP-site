@@ -369,19 +369,20 @@ nav::before {
 
 /* Status pill — glass style like nav links */
 .server-pill {
-  font-size: 0.68rem;
-  font-weight: 700;
-  padding: 5px 12px 5px 26px;
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 5px 14px 5px 10px;
   border-radius: var(--r-pill);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.08);
   background: rgba(18, 8, 10, 0.68);
   backdrop-filter: blur(14px) saturate(115%);
   -webkit-backdrop-filter: blur(14px) saturate(115%);
   white-space: nowrap;
   position: relative;
   overflow: hidden;
-  letter-spacing: 0.04em;
-  transition: var(--t-fast) ease;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease;
 }
 
 /* Shine sweep on pill */
@@ -390,25 +391,29 @@ nav::before {
   position: absolute;
   inset: 0;
   transform: translateX(-100%);
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.15), transparent);
-  animation: shine 3.5s linear infinite;
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.12), transparent);
+  animation: shine 4s ease-in-out infinite;
+  pointer-events: none;
 }
 
-/* Online dot */
-.server-pill.online { color: #3ddc84; border-color: #3ddc84; box-shadow: 0 0 10px rgba(61,220,132,0.3); }
-.server-pill.online::after {
-  content: '';
-  position: absolute;
-  width: 7px; height: 7px;
-  background: #3ddc84;
-  border-radius: 50%;
-  left: 10px; top: 50%;
-  transform: translateY(-50%);
-  box-shadow: 0 0 8px #3ddc84;
-  animation: pulseDot 1.6s ease-in-out infinite;
+/* Status colours + glow */
+.server-pill.offline {
+  color: #ff4466;
+  border-color: rgba(255,68,102,0.3);
+  box-shadow: inset 0 0 12px rgba(255,68,102,0.08);
+}
+.server-pill.offline::before {
+  background: linear-gradient(120deg, transparent, rgba(255,68,102,0.15), transparent);
 }
 
-.server-pill.offline { color: var(--red); border-color: var(--red); }
+.server-pill.online {
+  color: #3ddc84;
+  border-color: rgba(61,220,132,0.3);
+  box-shadow: inset 0 0 12px rgba(61,220,132,0.08);
+}
+.server-pill.online::before {
+  background: linear-gradient(120deg, transparent, rgba(61,220,132,0.15), transparent);
+}
 
 /* Nav links */
 .nav-links {
