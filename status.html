@@ -206,8 +206,8 @@
     // ======== STATUS PAGE - SERVER STATUS LOADER ========
     const API_BASE = "https://astralyxpvpweb.pages.dev/api/";
     const yamlData = {
-      'maintainence': 'no',
-      'maintainence-expected-end': ''
+      'maintainence': 'yes',
+      'maintainence-expected-end': '2026-06-22'
     };
 
     async function loadServerStatus() {
@@ -225,7 +225,6 @@
       try {
         const isMaintenance = (yamlData['maintainence'] || '').toLowerCase() === 'yes';
         const expectedEndRaw = (yamlData['maintainence-expected-end'] || '').trim();
-        const expectedDays = parseInt(expectedEndRaw || '0');
 
         statusInfo.style.display = 'block';
 
@@ -238,10 +237,19 @@
           statusIndicator.textContent = 'MAINTENANCE MODE';
           pulseIndicator.className = 'pulse-dot maintenance';
           maintenanceRow.style.display = 'flex';
-          if (!expectedEndRaw || expectedDays === 0) {
+          if (!expectedEndRaw) {
             maintenanceInfo.textContent = `We don't have an estimate right now`;
           } else {
-            maintenanceInfo.textContent = `${expectedDays} day${expectedDays !== 1 ? 's' : ''} expected`;
+            // Format the date nicely (e.g., "22nd June 2026")
+            var parts = expectedEndRaw.split('-');
+            var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
+            var day = d.getDate();
+            var suffix = 'th';
+            if (day === 1 || day === 21 || day === 31) suffix = 'st';
+            else if (day === 2 || day === 22) suffix = 'nd';
+            else if (day === 3 || day === 23) suffix = 'rd';
+            var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+            maintenanceInfo.textContent = day + suffix + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
           }
         } else {
           // Server is not in maintenance, check if online
