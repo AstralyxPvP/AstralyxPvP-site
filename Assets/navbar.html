@@ -43,9 +43,9 @@
   ro.observe(links);
   checkWrap();
 
-  /* Transparent nav at top */
+  /* Glass nav on scroll — starts transparent at top */
   function checkScroll() {
-    nav.classList.toggle('nav-top', window.scrollY < 20);
+    nav.classList.toggle('nav-scrolled', window.scrollY >= 20);
   }
   window.addEventListener('scroll', checkScroll, { passive: true });
   checkScroll();
