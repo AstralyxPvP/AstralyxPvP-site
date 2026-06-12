@@ -4,7 +4,7 @@
    ============================================================ */
 
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css');
-@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=Playfair+Display:wght@400;800&family=Fira+Code:wght@400;700&display=swap');
 
 /* ============================================================
    DESIGN TOKENS
@@ -108,15 +108,19 @@ a:active, button:active, input:active, select:active, textarea:active, summary:a
   cursor: url('../Assets/cursor-axe-click.png') 0 0, auto !important;
 }
 
-/* Ambient grid overlay — cheap, static */
+/* Ambient grid overlay — main grid + thinner inner grids */
 body::after {
   content: '';
   position: fixed;
   inset: 0;
   background-image: 
+    /* Main grid lines */
     linear-gradient(rgba(255,215,0,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,215,0,0.04) 1px, transparent 1px);
-  background-size: 50px 50px, 50px 50px;
+    linear-gradient(90deg, rgba(255,215,0,0.04) 1px, transparent 1px),
+    /* Thinner inner grid lines */
+    linear-gradient(rgba(255,215,0,0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,215,0,0.02) 1px, transparent 1px);
+  background-size: 50px 50px, 50px 50px, 10px 10px, 10px 10px;
   pointer-events: none;
   z-index: -1;
   opacity: 0.5;
@@ -282,6 +286,15 @@ nav {
   border-radius: var(--r-pill);
   box-shadow: inset 0 1px 0 rgba(255,255,255,0.04), 0 8px 32px rgba(0,0,0,0.5);
   animation: navDrop 0.7s var(--ease) both;
+  transition: background 0.3s ease, backdrop-filter 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Transparent nav when at top of page */
+.nav-top {
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  box-shadow: none;
 }
 
 /* Shimmer border ring on nav */
@@ -346,14 +359,16 @@ nav::before {
   animation: floatLogo 4s ease-in-out infinite;
 }
 
-/* Status pill */
+/* Status pill — glass style like nav links */
 .server-pill {
   font-size: 0.68rem;
   font-weight: 700;
   padding: 5px 12px 5px 26px;
   border-radius: var(--r-pill);
-  border: 1px solid currentColor;
-  background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(18, 8, 10, 0.68);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
   white-space: nowrap;
   position: relative;
   overflow: hidden;
@@ -404,12 +419,21 @@ nav::before {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
+  font-family: 'Fira Code', 'Courier New', monospace;
   position: relative;
   transition: color var(--t-fast) ease, transform var(--t-fast) ease;
 }
 
 /* Desktop nav links as glass pills */
 @media (min-width: 861px) {
+  .nav-links {
+    background: rgba(18, 8, 10, 0.55);
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+    padding: 6px 8px;
+    border-radius: var(--r-pill);
+    border: 1px solid rgba(255,255,255,0.06);
+  }
   .nav-links a {
     background: rgba(18, 8, 10, 0.68);
     backdrop-filter: blur(14px) saturate(115%);
@@ -567,6 +591,7 @@ nav::before {
   font-weight: 800;
   line-height: 1.08;
   margin-bottom: var(--sp-5);
+  text-transform: uppercase;
   background: linear-gradient(90deg, var(--gold), var(--red), var(--gold));
   background-size: 200% auto;
   -webkit-background-clip: text;

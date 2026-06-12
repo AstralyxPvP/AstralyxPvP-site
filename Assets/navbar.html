@@ -28,6 +28,8 @@
   var nav = document.querySelector('nav');
   var links = document.querySelector('.nav-links');
   if (!nav || !links) return;
+
+  /* Double-decker wrap detection */
   function checkWrap() {
     var items = links.children;
     var wrapped = false;
@@ -40,5 +42,12 @@
   var ro = new ResizeObserver(checkWrap);
   ro.observe(links);
   checkWrap();
+
+  /* Transparent nav at top */
+  function checkScroll() {
+    nav.classList.toggle('nav-top', window.scrollY < 20);
+  }
+  window.addEventListener('scroll', checkScroll, { passive: true });
+  checkScroll();
 })();
 </script>
