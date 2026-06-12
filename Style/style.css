@@ -496,8 +496,11 @@ nav::before {
 .nav-links a:hover::after,
 .nav-links a.active::after { width: 100%; }
 
-/* Double-decker: hide logo text, enlarge logo image (desktop only) */
+/* Double-decker: center left side between 2 rows, hide logo text, enlarge logo (desktop only) */
 @media (min-width: 861px) {
+  .double-decker {
+    align-items: center;
+  }
   .double-decker .nav-logo-text { display: none; }
   .double-decker .logo img { height: 58px; }
 }

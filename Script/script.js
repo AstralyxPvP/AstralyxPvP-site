@@ -117,6 +117,30 @@
             }
 
             updateNavStatus();
+
+            // Double-decker wrap detection
+            function checkWrap() {
+              var items = navLinks.children;
+              var wrapped = false;
+              var firstTop = items[0] && items[0].offsetTop;
+              for (var i = 1; i < items.length; i++) {
+                if (items[i].offsetTop > firstTop) { wrapped = true; break; }
+              }
+              nav.classList.toggle('double-decker', wrapped);
+            }
+            var ro = new ResizeObserver(checkWrap);
+            ro.observe(navLinks);
+            checkWrap();
+
+            // Glass nav on scroll — starts transparent at top
+            function checkScroll() {
+              nav.classList.toggle('nav-scrolled', window.scrollY >= 20);
+            }
+            window.addEventListener('scroll', checkScroll, { passive: true });
+            checkScroll();
+
+            // Re-check wrap on resize (fallback for browsers without ResizeObserver)
+            window.addEventListener('resize', checkWrap);
         } catch (error) {
             console.error('Navbar error:', error);
         }
