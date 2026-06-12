@@ -464,6 +464,12 @@ nav::before {
 .nav-links a:hover::after,
 .nav-links a.active::after { width: 100%; }
 
+/* Double-decker: hide logo text, enlarge logo image (desktop only) */
+@media (min-width: 861px) {
+  .double-decker .nav-logo-text { display: none; }
+  .double-decker .logo img { height: 58px; }
+}
+
 /* CTA button */
 .nav-cta {
   background: linear-gradient(135deg, var(--red), #ff3355) !important;

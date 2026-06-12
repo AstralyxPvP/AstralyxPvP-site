@@ -23,3 +23,22 @@
     <span class="nav-footer-hint">Some pages are available in the footer</span>
   </div>
 </nav>
+<script>
+;(function() {
+  var nav = document.querySelector('nav');
+  var links = document.querySelector('.nav-links');
+  if (!nav || !links) return;
+  function checkWrap() {
+    var items = links.children;
+    var wrapped = false;
+    var firstTop = items[0] && items[0].offsetTop;
+    for (var i = 1; i < items.length; i++) {
+      if (items[i].offsetTop > firstTop) { wrapped = true; break; }
+    }
+    nav.classList.toggle('double-decker', wrapped);
+  }
+  var ro = new ResizeObserver(checkWrap);
+  ro.observe(links);
+  checkWrap();
+})();
+</script>
