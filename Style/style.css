@@ -278,7 +278,7 @@ li { margin-bottom: var(--sp-2); }
 }
 #navbar-placeholder nav { pointer-events: auto; }
 
-nav {
+.main-nav {
   position: fixed;
   top: 20px;
   left: 50%;
@@ -1196,6 +1196,7 @@ tbody tr:hover .elo-pill {
   display: flex;
   align-items: center;
   gap: 10px;
+  scroll-margin-top: 100px;
 }
 
 .doc-group-title:first-of-type {
@@ -1264,19 +1265,19 @@ tbody tr:hover .elo-pill {
 /* Bottom page nav — desktop only */
 .bottom-nav {
   position: fixed;
-  bottom: 24px;
+  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(7, 2, 5, 0.9);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 215, 0, 0.2);
-  border-radius: 12px;
-  z-index: 9999;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  gap: 6px;
+  padding: 6px 10px;
+  background: rgba(18, 8, 10, 0.65);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  z-index: 9998;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   width: fit-content;
   max-width: 90vw;
 }
@@ -1285,20 +1286,31 @@ tbody tr:hover .elo-pill {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 4px 10px;
-  border-radius: 8px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: rgba(18, 8, 10, 0.7);
+  backdrop-filter: blur(14px) saturate(115%);
+  -webkit-backdrop-filter: blur(14px) saturate(115%);
+  border: 1px solid rgba(255, 255, 255, 0.06);
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.75rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   font-weight: 700;
-  transition: color var(--t-fast) ease, background var(--t-fast) ease;
+  font-family: 'Consolas', 'Lucida Console', 'Courier New', monospace;
+  transition: color var(--t-fast) ease, background var(--t-fast) ease, transform var(--t-fast) ease, border-color var(--t-fast) ease;
 }
 
 .bottom-nav a:hover {
   color: var(--gold);
-  background: rgba(255, 215, 0, 0.1);
+  background: rgba(255, 215, 0, 0.12);
+  border-color: rgba(255, 215, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.bottom-nav a:active {
+  transform: translateY(0) scale(0.98);
 }
 
 @media (max-width: 860px) {
