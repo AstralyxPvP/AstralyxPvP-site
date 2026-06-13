@@ -224,26 +224,35 @@
         const out = document.getElementById('lb');
         if (!gmSelect || !out) return;
 
-        out.innerHTML = '<div style="text-align:center;color:var(--muted);padding:14px 0">Loading...</div>';
+        out.innerHTML = '<div class="lb-loading">Loading...</div>';
 
         try {
             const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(gmSelect.value)}`);
             const data = await res.json();
 
             if (!Array.isArray(data) || data.length === 0) {
-                out.innerHTML = '<div style="text-align:center;padding:14px 0">No data found.</div>';
+                out.innerHTML = '<div class="lb-empty">No data found.</div>';
                 return;
             }
+
+            const rankClass = (i) => {
+                if (i === 0) return 'rank gold';
+                if (i === 1) return 'rank silver';
+                if (i === 2) return 'rank bronze';
+                return 'rank';
+            };
 
             let html = '<table><thead><tr><th>Rank</th><th>Player</th><th>ELO</th></tr></thead><tbody>';
             data.slice(0, 100).forEach((p, i) => {
                 html += `<tr>
-                    <td class="rank">#${i + 1}</td>
+                    <td class="${rankClass(i)}">#${i + 1}</td>
                     <td>
-                      <img src="https://minotar.net/helm/${encodeURIComponent(p.username)}/24.png" style="vertical-align:middle;margin-right:10px;border-radius:3px" loading="lazy">
-                      ${escapeHtml(p.username)}
+                      <div class="player-cell">
+                        <img src="https://minotar.net/helm/${encodeURIComponent(p.username)}/24.png" alt="" loading="lazy">
+                        <span class="player-name">${escapeHtml(p.username)}</span>
+                      </div>
                     </td>
-                    <td>${escapeHtml(p.elo)}</td>
+                    <td><span class="elo-pill">${escapeHtml(p.elo)}</span></td>
                   </tr>`;
             });
             out.innerHTML = html + '</tbody></table>';
@@ -252,7 +261,7 @@
             u.searchParams.set('gamemode', gmSelect.value);
             history.replaceState({}, '', u.toString());
         } catch (err) {
-            out.innerHTML = '<div style="text-align:center;color:#e74c3c;padding:14px 0">Error loading leaderboard.</div>';
+            out.innerHTML = '<div class="lb-error">Error loading leaderboard.</div>';
         }
     }
 
