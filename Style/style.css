@@ -1218,9 +1218,12 @@ tbody tr:hover .elo-pill {
 }
 
 .doc-block h3::before {
-  content: '◆ ';
+  font-family: "Font Awesome 6 Free", "Font Awesome 5 Free";
+  content: "\f15c";
+  font-weight: 900;
   color: var(--red);
-  font-size: 0.7rem;
+  font-size: 0.75rem;
+  margin-right: 8px;
   vertical-align: middle;
 }
 

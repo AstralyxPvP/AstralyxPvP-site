@@ -78,7 +78,7 @@
       border-radius: 20px;
       padding: 60px 40px;
       backdrop-filter: blur(10px);
-      max-width: 700px;
+      max-width: 750px;
       width: 100%;
       animation: fadeInUp 0.8s ease-out forwards;
     }
@@ -137,18 +137,6 @@
       padding-left: 40px;
     }
 
-    .contact-card-body a {
-      color: var(--muted);
-      text-decoration: none;
-      display: block;
-      padding: 4px 0;
-      transition: color var(--t-fast) ease;
-    }
-
-    .contact-card-body a:hover {
-      color: var(--accent);
-    }
-
     .contact-card-body p {
       color: var(--muted);
       margin: 4px 0;
@@ -181,6 +169,88 @@
 
     .discord-button:active {
       transform: translateY(-2px) scale(0.98);
+    }
+
+    /* Team grid */
+    .team-section-title {
+      font-family: var(--font-elegant);
+      font-size: 1.6rem;
+      color: var(--gold);
+      margin: 40px 0 24px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 36px;
+    }
+
+    .team-card {
+      background: rgba(200, 16, 46, 0.06);
+      border: 1px solid rgba(200, 16, 46, 0.18);
+      border-radius: 16px;
+      padding: 22px 16px 18px;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: border-color var(--t-med) ease, transform var(--t-med) ease, box-shadow var(--t-med) ease;
+      cursor: default;
+    }
+
+    .team-card:hover {
+      border-color: rgba(255, 215, 0, 0.3);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(200, 16, 46, 0.15);
+    }
+
+    .team-card img {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+      border: 2px solid rgba(200, 16, 46, 0.3);
+      transition: border-color var(--t-fast) ease, transform var(--t-fast) ease;
+    }
+
+    .team-card:hover img {
+      border-color: var(--gold);
+      transform: scale(1.06);
+    }
+
+    .team-card h3 {
+      font-family: var(--font-elegant);
+      font-size: 1rem;
+      color: var(--text);
+      margin: 0 0 4px;
+    }
+
+    .team-card .role {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin: 0 0 10px;
+      line-height: 1.4;
+    }
+
+    .team-card a {
+      font-size: 0.78rem;
+      color: var(--gold);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.15);
+      transition: background var(--t-fast) ease, color var(--t-fast) ease;
+    }
+
+    .team-card a:hover {
+      background: rgba(255, 215, 0, 0.18);
+      color: #fff;
     }
   </style>
 </head>
@@ -219,12 +289,47 @@
           </div>
           <div class="contact-card-body">
             <p><strong>General Inquiries</strong></p>
-            <a href="mailto:info@astralyxpvp.int.yt">info@astralyxpvp.int.yt</a>
-            <p style="margin-top:12px;"><strong>Team / Department</strong></p>
-            <a href="mailto:frostrax@astralyxpvp.int.yt">frostrax@astralyxpvp.int.yt — Owner</a>
-            <a href="mailto:indiancoder3@astralyxpvp.int.yt">indiancoder3@astralyxpvp.int.yt — Web &amp; AI</a>
-            <a href="mailto:dreamlong@astralyxpvp.int.yt">dreamlong@astralyxpvp.int.yt — Backend &amp; API</a>
-            <a href="mailto:al13n@astralyxpvp.int.yt">al13n@astralyxpvp.int.yt — Developer</a>
+            <a href="mailto:info@astralyxpvp.int.yt" style="color:var(--muted);text-decoration:none;display:block;padding:4px 0;transition:color var(--t-fast) ease;">info@astralyxpvp.int.yt</a>
+          </div>
+        </div>
+
+        <div class="team-section-title"><i class="fa-solid fa-users" style="margin-right:10px;"></i>Our Team</div>
+        <div class="team-grid">
+          <div class="team-card">
+            <img src="Assets/Frostrax.webp" alt="Frostrax" loading="lazy">
+            <h3>Frostrax</h3>
+            <p class="role">Owner</p>
+            <a href="mailto:frostrax@astralyxpvp.int.yt"><i class="fa-solid fa-envelope"></i> Email</a>
+          </div>
+          <div class="team-card">
+            <img src="Assets/IndianCoder3.webp" alt="IndianCoder3" loading="lazy">
+            <h3>IndianCoder3</h3>
+            <p class="role">Web &amp; AI Developer</p>
+            <a href="mailto:indiancoder3@astralyxpvp.int.yt"><i class="fa-solid fa-envelope"></i> Email</a>
+          </div>
+          <div class="team-card">
+            <img src="Assets/DreamLong.webp" alt="DreamLong" loading="lazy">
+            <h3>DreamLong</h3>
+            <p class="role">Backend &amp; API Developer</p>
+            <a href="mailto:dreamlong@astralyxpvp.int.yt"><i class="fa-solid fa-envelope"></i> Email</a>
+          </div>
+          <div class="team-card">
+            <img src="Assets/Al13n.webp" alt="Al13n" loading="lazy">
+            <h3>Al13n</h3>
+            <p class="role">Developer</p>
+            <a href="mailto:al13n@astralyxpvp.int.yt"><i class="fa-solid fa-envelope"></i> Email</a>
+          </div>
+          <div class="team-card">
+            <img src="Assets/Lazyron.webp" alt="Lazyron" loading="lazy">
+            <h3>Lazyron</h3>
+            <p class="role">Staff</p>
+            <a href="#" onclick="return false" style="opacity:0.4;cursor:default;"><i class="fa-solid fa-envelope"></i> Email</a>
+          </div>
+          <div class="team-card">
+            <img src="Assets/random_acc.webp" alt="random_acc" loading="lazy">
+            <h3>random_acc</h3>
+            <p class="role">Staff</p>
+            <a href="#" onclick="return false" style="opacity:0.4;cursor:default;"><i class="fa-solid fa-envelope"></i> Email</a>
           </div>
         </div>
       </div>
