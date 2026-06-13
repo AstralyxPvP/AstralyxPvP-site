@@ -308,6 +308,7 @@ li { margin-bottom: var(--sp-2); }
 /* Glass background when scrolled */
 .nav-scrolled {
   top: 0;
+  padding: 8px 40px 8px;
   border-radius: 0 0 var(--r-pill) var(--r-pill);
   background: rgba(10, 4, 6, 0.85);
   backdrop-filter: blur(14px) saturate(120%);
