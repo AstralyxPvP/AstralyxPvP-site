@@ -42,20 +42,17 @@
         const response = await fetch('Assets/head.html');
         const text = await response.text();
         
-        // Create a temporary DOM to parse the string
         const parser = new DOMParser();
         const doc = parser.parseFromString(text, 'text/html');
         const newNodes = Array.from(doc.head.childNodes);
 
         for (const node of newNodes) {
           if (node.tagName === 'SCRIPT') {
-            // Re-create script tags so they actually execute
             const script = document.createElement('script');
             Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
             script.textContent = node.textContent;
             document.head.appendChild(script);
           } else {
-            // Standard tags (link, meta, title) can just be appended
             document.head.appendChild(node);
           }
         }
@@ -74,47 +71,47 @@
 
   <div class="page-content">
     <section class="lb-section">
-      <h1 class="section-title">Support <span style="color:var(--primary)">AstralyxPvP</span></h1>
+      <h1 class="section-title">Support <span class="text-primary">AstralyxPvP</span></h1>
       <p class="lb-subtitle">Vote daily to earn rewards and help us grow.</p>
 
-      <div class="lb-panel" style="padding: 0; overflow: hidden;">
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0;">
-          <div style="padding: 32px 28px; border-right: 1px solid var(--border);">
-            <h3 style="font-family:var(--font-elegant);color:var(--gold);margin:0 0 18px;text-transform:uppercase;letter-spacing:0.06em;font-size:1.1rem;">Daily Rewards</h3>
-            <ul style="list-style:none;padding:0;margin:0;display:grid;gap:14px;">
-              <li style="display:flex;gap:12px;color:var(--muted);line-height:1.55;font-size:0.92rem;">
-                <i class="fa-solid fa-coins" style="margin-top:3px;color:var(--gold);"></i>
-                <span>Earn <strong style="color:var(--text);">coins, keys, and exclusive cosmetics</strong> every time you vote.</span>
+      <div class="lb-panel p-0 overflow-hidden">
+        <div class="vote-grid">
+          <div class="vote-panel-side">
+            <h3 class="vote-heading">Daily Rewards</h3>
+            <ul class="vote-list">
+              <li>
+                <i class="fa-solid fa-coins"></i>
+                <span>Earn <strong class="text-white">coins, keys, and exclusive cosmetics</strong> every time you vote.</span>
               </li>
-              <li style="display:flex;gap:12px;color:var(--muted);line-height:1.55;font-size:0.92rem;">
-                <i class="fa-solid fa-gift" style="margin-top:3px;color:var(--gold);"></i>
-                <span>Open <strong style="color:var(--text);">vote crates</strong> for rare gear, rank XP, and seasonal items.</span>
+              <li>
+                <i class="fa-solid fa-gift"></i>
+                <span>Open <strong class="text-white">vote crates</strong> for rare gear, rank XP, and seasonal items.</span>
               </li>
-              <li style="display:flex;gap:12px;color:var(--muted);line-height:1.55;font-size:0.92rem;">
-                <i class="fa-solid fa-fire" style="margin-top:3px;color:var(--gold);"></i>
-                <span>Maintain <strong style="color:var(--text);">vote streaks</strong> — longer streaks unlock better rewards.</span>
+              <li>
+                <i class="fa-solid fa-fire"></i>
+                <span>Maintain <strong class="text-white">vote streaks</strong> — longer streaks unlock better rewards.</span>
               </li>
-              <li style="display:flex;gap:12px;color:var(--muted);line-height:1.55;font-size:0.92rem;">
-                <i class="fa-solid fa-trophy" style="margin-top:3px;color:var(--gold);"></i>
-                <span>Compete for <strong style="color:var(--text);">top voter</strong> recognition in Discord each month.</span>
+              <li>
+                <i class="fa-solid fa-trophy"></i>
+                <span>Compete for <strong class="text-white">top voter</strong> recognition in Discord each month.</span>
               </li>
             </ul>
           </div>
-          <div style="padding: 32px 28px; display:flex; flex-direction:column; gap:14px;">
-            <h3 style="font-family:var(--font-elegant);color:var(--gold);margin:0 0 6px;text-transform:uppercase;letter-spacing:0.06em;font-size:1.1rem;">Voting Links</h3>
-            <a class="vote-link" href="https://minecraft-server-list.com/server/519817/" target="_blank" style="margin:0;">
+          <div class="vote-links-col">
+            <h3 class="vote-heading">Voting Links</h3>
+            <a class="vote-link" href="https://minecraft-server-list.com/server/519817/" target="_blank">
               <span><i class="fa-solid fa-list-check"></i> Minecraft-Server-List</span>
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
-            <a class="vote-link" href="https://topg.org/minecraft-servers/server-681955" target="_blank" style="margin:0;">
+            <a class="vote-link" href="https://topg.org/minecraft-servers/server-681955" target="_blank">
               <span><i class="fa-solid fa-ranking-star"></i> TopG</span>
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
-            <a class="vote-link" href="https://minecraft-mp.com/server-s357553" target="_blank" style="margin:0;">
+            <a class="vote-link" href="https://minecraft-mp.com/server-s357553" target="_blank">
               <span><i class="fa-solid fa-trophy"></i> Minecraft-MP</span>
               <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
-            <div style="margin-top:auto; color: var(--muted); font-size: 0.82rem; line-height: 1.6; padding-top:14px; border-top:1px solid var(--border);">
+            <div class="vote-disclaimer border-top">
               After voting, join the server and claim your rewards in-game. If a vote does not register, contact staff in Discord with proof.
             </div>
           </div>
