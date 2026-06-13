@@ -41,7 +41,6 @@
   <style>
     .status-section {
       padding: 80px 9%;
-      text-align: center;
       min-height: 60vh;
       display: flex;
       flex-direction: column;
@@ -55,15 +54,30 @@
       border-radius: 20px;
       padding: 60px 40px;
       backdrop-filter: blur(10px);
-      max-width: 600px;
+      max-width: 720px;
       width: 100%;
       animation: fadeInUp 0.8s ease-out forwards;
     }
 
+    .status-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: start;
+    }
+
+    .status-left {
+      text-align: left;
+    }
+
     .status-badge {
-      font-size: 4rem;
-      margin-bottom: 20px;
+      font-size: 2.8rem;
+      margin-bottom: 16px;
       animation: pulse 2s ease-in-out infinite;
+    }
+
+    .status-badge i {
+      filter: drop-shadow(0 0 12px currentColor);
     }
 
     @keyframes pulse {
@@ -73,45 +87,39 @@
 
     .status-title {
       font-family: var(--font-elegant);
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin: 0 0 12px;
       text-transform: uppercase;
     }
 
     .status-message {
-      font-size: 1.3rem;
+      font-size: 1.2rem;
       color: var(--text);
-      margin-bottom: 15px;
+      margin: 0;
       font-weight: 700;
+    }
+
+    .status-right {
+      text-align: left;
     }
 
     .status-details {
       color: var(--muted);
-      font-size: 1rem;
+      font-size: 0.95rem;
       line-height: 1.8;
-      margin-top: 30px;
-      padding-top: 30px;
-      border-top: 1px solid var(--border);
+      margin: 0;
     }
 
-    .online {
-      color: #00ff44;
-    }
-
-    .offline {
-      color: var(--primary);
-    }
-
-    .maintenance {
-      color: var(--accent);
-    }
+    .online { color: #00ff44; }
+    .offline { color: var(--primary); }
+    .maintenance { color: var(--accent); }
 
     .status-info {
       background: rgba(200, 16, 46, 0.1);
       border-left: 3px solid var(--primary);
       padding: 20px;
-      margin-top: 30px;
+      margin-top: 28px;
       border-radius: 8px;
       text-align: left;
     }
@@ -122,13 +130,9 @@
       margin-bottom: 15px;
     }
 
-    .info-row:last-child {
-      margin-bottom: 0;
-    }
+    .info-row:last-child { margin-bottom: 0; }
 
-    .info-label {
-      color: var(--muted);
-    }
+    .info-label { color: var(--muted); }
 
     .info-value {
       color: var(--text);
@@ -163,6 +167,40 @@
       0%, 100% { opacity: 1; }
       50% { opacity: 0.5; }
     }
+
+    .status-discord {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #5865F2, #4752C4);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(88, 101, 242, 0.4);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+
+    .status-discord:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(88, 101, 242, 0.5);
+    }
+
+    @media (max-width: 660px) {
+      .status-main {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      .status-left { text-align: center; }
+      .status-badge { margin-bottom: 10px; }
+    }
   </style>
 </head>
 <body class="page-enter">
@@ -178,11 +216,15 @@
   <div class="page-content">
     <section class="status-section">
       <div class="status-container">
-        <div class="status-badge" id="status-badge">🔴</div>
-        <h1 class="status-title">Server Status</h1>
-        <p class="status-message" id="status-message">Loading...</p>
-        <div class="status-details" id="status-details">
-          Checking server status...
+        <div class="status-main">
+          <div class="status-left">
+            <div class="status-badge" id="status-badge"><i class="fa-solid fa-circle" style="color:#c8102e;"></i></div>
+            <h1 class="status-title">Server Status</h1>
+            <p class="status-message" id="status-message">Loading...</p>
+          </div>
+          <div class="status-right">
+            <p class="status-details" id="status-details">Checking server status...</p>
+          </div>
         </div>
         <div class="status-info" id="status-info" style="display: none;">
           <div class="info-row">
@@ -198,6 +240,9 @@
             <span class="info-value" id="players-info">N/A</span>
           </div>
         </div>
+        <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener" class="status-discord">
+          <i class="fa-brands fa-discord"></i> Check Announcements & Updates
+        </a>
       </div>
     </section>
   </div>
@@ -222,6 +267,10 @@
       const playersRow = document.getElementById('players-row');
       const playersInfo = document.getElementById('players-info');
 
+      function setBadge(icon, color) {
+        statusBadge.innerHTML = '<i class="fa-solid fa-' + icon + '" style="color:' + color + ';"></i>';
+      }
+
       try {
         const isMaintenance = (yamlData['maintainence'] || '').toLowerCase() === 'yes';
         const expectedEndRaw = (yamlData['maintainence-expected-end'] || '').trim();
@@ -230,7 +279,7 @@
 
         if (isMaintenance) {
           // Server is in maintenance mode
-          statusBadge.textContent = '🔧';
+          setBadge('wrench', '#ffb142');
           statusMessage.textContent = 'Server in Maintenance';
           statusMessage.className = 'status-message maintenance';
           statusDetails.innerHTML = `Server is currently undergoing maintenance to improve your gaming experience.`;
@@ -258,7 +307,7 @@
             const apiData = await apiResponse.json();
 
             if (apiData.online) {
-              statusBadge.textContent = '🟢';
+              setBadge('circle', '#00ff44');
               statusMessage.textContent = 'Server Online';
               statusMessage.className = 'status-message online';
               statusDetails.innerHTML = `The server is running and ready for battle! <strong>${apiData.current}/${apiData.max}</strong> players are currently online. Jump in and start playing.`;
@@ -267,7 +316,7 @@
               playersRow.style.display = 'flex';
               playersInfo.textContent = `${apiData.current}/${apiData.max} Players`;
             } else {
-              statusBadge.textContent = '🔴';
+              setBadge('circle', '#c8102e');
               statusMessage.textContent = 'Server Offline';
               statusMessage.className = 'status-message offline';
               statusDetails.innerHTML = `The server is currently offline. Please check back soon!`;
@@ -277,7 +326,7 @@
             }
           } catch (error) {
             console.error('API error:', error);
-            statusBadge.textContent = '🟢';
+            setBadge('circle', '#00ff44');
             statusMessage.textContent = 'Server Online';
             statusMessage.className = 'status-message online';
             statusDetails.innerHTML = `The server is running. Players are currently online. Jump in and start playing.`;
@@ -289,7 +338,7 @@
         }
       } catch (error) {
         console.error('Error loading server status:', error);
-        statusBadge.textContent = '🟢';
+        setBadge('circle', '#00ff44');
         statusMessage.textContent = 'Server Online';
         statusMessage.className = 'status-message online';
         statusDetails.innerHTML = `The server is running and ready for battle! Jump in and start playing.`;
