@@ -1547,6 +1547,45 @@ footer::before {
   transition: transform var(--t-fast) var(--ease), filter var(--t-fast) ease;
 }
 
+#backToTop {
+  position: fixed;
+  bottom: 96px; right: 24px;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: rgba(18, 8, 10, 0.8);
+  backdrop-filter: blur(12px) saturate(115%);
+  -webkit-backdrop-filter: blur(12px) saturate(115%);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--muted);
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.04);
+  z-index: 99998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(20px);
+  transition: opacity var(--t-med) ease, visibility var(--t-med) ease, transform var(--t-med) ease, color var(--t-fast) ease, background var(--t-fast) ease;
+}
+
+#backToTop.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+#backToTop:hover {
+  color: var(--gold);
+  background: rgba(255, 215, 0, 0.12);
+  border-color: rgba(255, 215, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  #backToTop { bottom: 88px; right: 16px; width: 44px; height: 44px; }
+}
+
 #chatWidgetBtn:hover { transform: scale(1.08); filter: brightness(1.15); }
 
 #chatDock {
