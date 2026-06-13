@@ -1264,40 +1264,41 @@ tbody tr:hover .elo-pill {
 /* Bottom page nav — desktop only */
 .bottom-nav {
   position: fixed;
-  bottom: 16px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
-  gap: 2px;
-  padding: 5px 10px;
-  background: rgba(7, 2, 5, 0.78);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 215, 0, 0.1);
-  border-radius: 999px;
-  z-index: 100;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
-  white-space: nowrap;
+  gap: 8px;
+  padding: 8px 16px;
+  background: rgba(7, 2, 5, 0.9);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 12px;
+  z-index: 9999;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  width: fit-content;
+  max-width: 90vw;
 }
 
 .bottom-nav a {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
   padding: 4px 10px;
-  border-radius: 999px;
+  border-radius: 8px;
   color: var(--muted);
   text-decoration: none;
-  font-size: 0.63rem;
+  font-size: 0.75rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   font-weight: 700;
   transition: color var(--t-fast) ease, background var(--t-fast) ease;
 }
 
 .bottom-nav a:hover {
   color: var(--gold);
-  background: rgba(255, 215, 0, 0.08);
+  background: rgba(255, 215, 0, 0.1);
 }
 
 @media (max-width: 860px) {
