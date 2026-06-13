@@ -444,7 +444,7 @@ nav::before {
   font-size: 0.78rem;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  font-family: 'Fira Code', 'Courier New', monospace;
+  font-family: 'Consolas', 'Lucida Console', 'Courier New', monospace;
   position: relative;
   transition: color var(--t-fast) ease, transform var(--t-fast) ease;
 }
@@ -1189,6 +1189,33 @@ tbody tr:hover .elo-pill {
 /* ============================================================
    DOCS
    ============================================================ */
+.doc-group-title {
+  margin: 36px 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.doc-group-title:first-of-type {
+  margin-top: 0;
+}
+
+.doc-group-title h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.doc-group-title i {
+  color: var(--red);
+  font-size: 1rem;
+}
+
 .doc-block {
   margin-bottom: var(--sp-4);
   padding: var(--sp-5);
