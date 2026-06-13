@@ -1261,6 +1261,49 @@ tbody tr:hover .elo-pill {
 
 .doc-block p strong { color: var(--text); }
 
+/* Bottom page nav — desktop only */
+.bottom-nav {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 4px;
+  padding: 8px 14px;
+  background: rgba(7, 2, 5, 0.82);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+  border-radius: 999px;
+  z-index: 100;
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.55);
+  white-space: nowrap;
+}
+
+.bottom-nav a {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  transition: color var(--t-fast) ease, background var(--t-fast) ease;
+}
+
+.bottom-nav a:hover {
+  color: var(--gold);
+  background: rgba(255, 215, 0, 0.08);
+}
+
+@media (max-width: 860px) {
+  .bottom-nav { display: none; }
+}
+
 .doc-container {
   width: 100%;
   border-radius: var(--r-md);
