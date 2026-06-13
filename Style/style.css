@@ -2049,6 +2049,7 @@ footer::before {
 .store-price { font-size: 2rem; font-weight: 800; }
 .store-btn-full { margin-top: 15px; width: 100%; border: none; cursor: pointer; }
 .btn-youtube { background: linear-gradient(135deg, #FF0000, #8B0000); box-shadow: 0 0 25px rgba(255, 0, 0, 0.5); }
+.btn-discord { background: linear-gradient(135deg, #5865F2, #404EED); box-shadow: 0 0 25px rgba(88, 101, 242, 0.5); }
 
 /* Vote page */
 .vote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }

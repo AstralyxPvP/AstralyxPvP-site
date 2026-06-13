@@ -118,7 +118,7 @@
 
             updateNavStatus();
 
-            // Double-decker wrap detection
+            // Double-decker wrap detection + dynamic padding
             function checkWrap() {
               var items = navLinks.children;
               var wrapped = false;
@@ -127,6 +127,7 @@
                 if (items[i].offsetTop > firstTop) { wrapped = true; break; }
               }
               nav.classList.toggle('double-decker', wrapped);
+              mainContent.style.paddingTop = nav.offsetHeight + 'px';
             }
             var ro = new ResizeObserver(checkWrap);
             ro.observe(navLinks);
