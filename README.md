@@ -53,8 +53,9 @@ cd AstralyxPvP-site
 
 
 2. **Run a Local Server:**
-This project is built using static frontend assets and does not require complex backend setups. To view the pages correctly, open the directory using a local web server tool (such as the **Live Server** extension in VS Code).
-Note that the AI, and some other features will not work on local Environment, as the AI uses environment variables to fetch the API Key. You need to store your key safely and link it into the code.
+This project is built using static frontend assets and does not require complex backend setups. To view the pages correctly, open the directory using a local web server tool (such as the **Live Server** extension in VS Code). <details><summary>Why use a live server instead of `file://`?</summary>When you use `file://`, the webpage may load, but you may encounter issues such as: Longer load times..., NavBar, footer, and other elements blocked by CORS..., And more... </details> 
+
+- Note that the AI, and some other features will not work on local Environment, as the AI uses environment variables to fetch the API Key. You need to store your key safely and link it into the code.
 
 ## 🌐 Live Usage
 
