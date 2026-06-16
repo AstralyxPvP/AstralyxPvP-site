@@ -120,7 +120,7 @@
 
             // Double-decker wrap detection + dynamic padding
             function checkWrap() {
-              var items = navLinks.children;
+              var items = Array.from(navLinks.children).filter(function(el) { return el.tagName === 'A'; });
               var wrapped = false;
               var firstTop = items[0] && items[0].offsetTop;
               for (var i = 1; i < items.length; i++) {

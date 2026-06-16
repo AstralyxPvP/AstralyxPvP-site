@@ -1,16 +1,16 @@
 <div class="nav-backdrop"></div>
 <nav class="main-nav">
-  <div class="nav-left">
-    <div class="logo">
+  <a class="brand" href="/index.html" aria-label="AstralyxPvP home">
+    <span class="brand-mark">
       <img src="/Assets/apple-touch-icon.png" alt="AstralyxPvP Logo">
-      <span class="nav-logo-text">Astralyx<span>PvP</span></span>
-    </div>
-    <div id="nav-status" class="server-pill offline">🔴 Offline</div>
-    <div class="hamburger">
-      <i class="fa-solid fa-bars"></i>
-    </div>
-  </div>
-  <div class="nav-links">
+    </span>
+    <span class="brand-text"><span>Astralyx</span><span>PvP</span></span>
+  </a>
+  <div id="nav-status" class="server-pill offline">🔴 Offline</div>
+  <button class="hamburger" id="mobileToggle" type="button" aria-label="Open menu" aria-expanded="false">
+    <i class="fa-solid fa-bars"></i>
+  </button>
+  <div class="nav-links" id="navLinks">
     <button class="mobile-close"><i class="fa-solid fa-xmark"></i></button>
     <a href="/index.html"><i class="fa-solid fa-house"></i> Home</a>
     <a href="/leaderboard.html"><i class="fa-solid fa-ranking-star"></i> Leaderboard</a>
@@ -19,7 +19,7 @@
     <a href="/contact.html"><i class="fa-solid fa-address-book"></i> Contact</a>
     <a href="/apply.html"><i class="fa-solid fa-user-plus"></i> Join Team</a>
     <a href="/store.html" target="_blank" class="nav-cta">
-      <i class="fa-solid fa-cart-shopping"></i>&nbsp;Store
+      <i class="fa-solid fa-cart-shopping"></i> Store
     </a>
     <span class="nav-footer-hint">Some pages are available in the footer</span>
   </div>
