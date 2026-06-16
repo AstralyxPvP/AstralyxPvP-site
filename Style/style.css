@@ -1250,6 +1250,77 @@ tbody tr:hover .elo-pill {
 
 .doc-block p strong { color: var(--text); }
 
+/* ============================================================
+   DOC ACTION BAR & COLLAPSIBLE
+   ============================================================ */
+.doc-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.btn-doc-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: var(--r-pill);
+  background: rgba(255, 215, 0, 0.06);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all var(--t-fast) ease;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  line-height: 1;
+}
+
+.btn-doc-action:hover {
+  background: rgba(255, 215, 0, 0.15);
+  border-color: rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+}
+
+.btn-doc-action:active {
+  transform: scale(0.96);
+}
+
+.doc-block-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+}
+
+.doc-block-header h3 {
+  margin-bottom: 0;
+}
+
+.toggle-icon {
+  color: var(--gold);
+  font-size: 0.75rem;
+  transition: transform 0.3s ease;
+  opacity: 0.5;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+
+.doc-block.collapsed .toggle-icon {
+  transform: rotate(-90deg);
+}
+
+.doc-block-content {
+  padding-top: 14px;
+}
+
+.doc-block.collapsed .doc-block-content {
+  display: none;
+}
+
 /* Bottom page nav — desktop only */
 .bottom-nav {
   position: fixed;
