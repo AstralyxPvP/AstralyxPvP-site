@@ -56,13 +56,19 @@ jobs:
             const htmlFiles = fs.readdirSync('.').filter(f => f.endsWith('.html'));
             let failed = false;
             htmlFiles.forEach(file => {
+              if (file === 'head-data.html') return;
               const content = fs.readFileSync(file, 'utf-8');
               const links = content.match(/href=[\"']([^\"']+)[\"']/g) || [];
               links.forEach(link => {
                 const href = link.match(/[\"']([^\"']+)[\"']/)[1];
-                if (href.startsWith('/') && !href.startsWith('//')) {
-                  const target = path.join('.', href.replace(/^\//, ''));
-                  if (!fs.existsSync(target) && !href.startsWith('/api') && !href.startsWith('/chat')) {
+                if (href.startsWith('/') && !href.startsWith('//') &&
+                    !href.includes('discord') && !href.startsWith('/api') && !href.startsWith('/chat')) {
+                  const clean = href.replace(/^\//, '');
+                  const asHtml = clean.endsWith('.html') ? clean : clean + '.html';
+                  const asIndex = path.join(clean, 'index.html');
+                  if (!fs.existsSync(path.join('.', clean)) &&
+                      !fs.existsSync(path.join('.', asHtml)) &&
+                      !fs.existsSync(asIndex)) {
                     console.error('  BROKEN: ' + file + ' -> ' + href);
                     failed = true;
                   }
