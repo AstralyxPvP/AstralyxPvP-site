@@ -203,6 +203,102 @@ test('astralyxai.html has speakText function', () => {
   assertIncludes(content, 'function speakText', 'speakText');
 });
 
+test('astralyxai.html has SYSTEM_PROMPT defined', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'const SYSTEM_PROMPT', 'SYSTEM_PROMPT');
+});
+
+test('astralyxai.html has model configuration', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'currentModel', 'currentModel');
+  assertIncludes(content, 'gemini', 'gemini model');
+});
+
+test('astralyxai.html FunctionRegistry has fetchLeaderboard', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'fetchLeaderboard', 'fetchLeaderboard tool');
+});
+
+test('astralyxai.html FunctionRegistry has fetchServerStatus', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'fetchServerStatus', 'fetchServerStatus tool');
+});
+
+test('astralyxai.html sends chat to correct endpoint', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, "/chat',", 'chat endpoint');
+});
+
+test('astralyxai.html has turnstile sitekey', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'data-sitekey=', 'turnstile sitekey');
+});
+
+test('astralyxai.html has welcome message', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'Welcome to AstralyxAI', 'welcome message');
+});
+
+test('astralyxai.html has model status indicator', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'modelStatus', 'model status');
+});
+
+test('astralyxai.html API call uses turnstileToken and sessionToken', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'turnstileToken:', 'turnstileToken in payload');
+  assertIncludes(content, 'sessionToken:', 'sessionToken in payload');
+});
+
+test('astralyxai.html has collapse/expand thinking box logic', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'thinking-container collapsed', 'thinking box');
+  assertIncludes(content, 'thinking-toggle', 'thinking toggle');
+  assertIncludes(content, 'collapsed', 'collapsed class toggle');
+});
+
+test('astralyxai.html has streamIntoMessage function for typewriter effect', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'function streamIntoMessage', 'streamIntoMessage');
+});
+
+test('astralyxai.html has renderOrUpdateMessage function', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'function renderOrUpdateMessage', 'renderOrUpdateMessage');
+});
+
+test('astralyxai.html has showTyping and removeTyping', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'function showTyping', 'showTyping');
+  assertIncludes(content, 'function removeTyping', 'removeTyping');
+});
+
+test('astralyxai.html has generateId function', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'function generateId', 'generateId');
+});
+
+test('astralyxai.html has conversationHistory array', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'conversationHistory', 'conversationHistory');
+});
+
+test('astralyxai.html AI response stream processes multi-query tool calls', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'CALL_FUNCTION:', 'CALL_FUNCTION parsing');
+  assertIncludes(content, 'MULTI-QUERY PARSING LOOP', 'multi-query loop');
+});
+
+test('astralyxai.html has external script.js reference', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'script.js', 'script.js reference');
+});
+
+test('astralyxai.html has style.css reference', () => {
+  const content = read(path.join(HTML_DIR, 'astralyxai.html'));
+  assertIncludes(content, 'style.css', 'style.css reference');
+});
+
 // ============================================================
 // 5. Navbar Validation
 // ============================================================
