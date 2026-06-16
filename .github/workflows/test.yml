@@ -47,6 +47,10 @@ jobs:
             "
           done
 
+      - name: AI Integration Tests
+        run: node tests/ai-test.js
+        timeout-minutes: 2
+
       - name: Scan for broken internal links
         run: |
           echo "Checking internal links..."
