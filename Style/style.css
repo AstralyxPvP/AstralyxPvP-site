@@ -496,9 +496,16 @@ li { margin-bottom: var(--sp-2); }
 
 /* CTA (Store) button */
 .nav-cta {
-  border: 1px solid rgba(255,215,0,0.44) !important;
-  color: var(--gold) !important;
-  box-shadow: 0 0 12px rgba(255,215,0,0.08) !important;
+  background: linear-gradient(135deg, #FFD700, #ff8c00) !important;
+  color: #1b0503 !important;
+  border-color: transparent !important;
+  box-shadow: 0 2px 14px rgba(255,215,0,0.35) !important;
+  font-weight: 800 !important;
+}
+
+.nav-cta:hover {
+  filter: brightness(1.12) !important;
+  box-shadow: 0 4px 24px rgba(255,215,0,0.5) !important;
 }
 
 /* Double-decker layout (links wrap to 2 rows) */
