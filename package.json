@@ -2,10 +2,6 @@
   "name": "astralyxpvp-site",
   "private": true,
   "scripts": {
-    "test": "node tests/validate.js",
-    "test:serve": "node tests/serve.js"
-  },
-  "devDependencies": {
-    "eslint": "^8.56.0"
+    "test": "node tests/validate.js"
   }
 }
