@@ -1,0 +1,4 @@
+Deploy retry trigger - CSS update with new color palette
+
+This file triggers a new deployment to retry GitHub Pages publishing.
+Previous deployment encountered a temporary failure.
