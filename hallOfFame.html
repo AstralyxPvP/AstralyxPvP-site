@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Astralyx PvP - Complete Dev Hall of Fame</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                        pixel: ['Press Start 2P', 'cursive'],
+                    },
+                    colors: {
+                        darkBg: '#05060a',
+                        darkCard: '#111420',
+                        neonCyan: '#55f3ec',
+                        neonBlue: '#38bdf8',
+                        neonPink: '#f43f5e',
+                        gold: '#fbbf24',
+                        emerald: '#10b981'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Custom UI Enhancements */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #05060a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2937;
+            border-radius: 99px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #55f3ec;
+        }
+
+        .neon-border:hover {
+            box-shadow: 0 0 15px rgba(85, 243, 236, 0.3);
+            border-color: #55f3ec;
+        }
+
+        .pink-border:hover {
+            box-shadow: 0 0 15px rgba(244, 63, 94, 0.3);
+            border-color: #f43f5e;
+        }
+
+        /* Custom Cursors - Disabled on Touch to prevent mobile finger lag */
+        @media (hover: hover) {
+            .cursor-axe, .cursor-axe * { cursor: none !important; }
+            .cursor-sword, .cursor-sword * { cursor: none !important; }
+            .cursor-gold, .cursor-gold * { cursor: none !important; }
+        }
+
+        #custom-cursor-element {
+            position: fixed;
+            pointer-events: none;
+            width: 48px;
+            height: 48px;
+            z-index: 99999;
+            transform-origin: 0% 0%;
+            transition: transform 0.05s ease-out;
+            display: none;
+        }
+
+        /* Animations */
+        @keyframes bounce-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+        .anim-bounce-slow {
+            animation: bounce-slow 2.5s infinite ease-in-out;
+        }
+
+        /* Meteorite Fall Zone - Fluid height for tight mobile devices */
+        #meteor-canvas {
+            background: #090a0f;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            width: 100%;
+            height: 220px;
+            touch-action: none;
+        }
+
+        /* Mobile safe active tapping feedback */
+        .tap-active:active {
+            transform: scale(0.96);
+            transition: transform 0.1s;
+        }
+    </style>
+</head>
+<body class="bg-[#05060a] text-gray-200 font-sans min-h-screen selection:bg-neonCyan selection:text-black relative overflow-x-hidden pb-10">
+
+    <!-- Swappable Custom Cursor Element -->
+    <div id="custom-cursor-element">
+        <!-- SVG injected dynamically -->
+    </div>
+
+    <!-- Cosmic Background Glowing Elements -->
+    <div class="absolute top-0 left-0 w-full h-[600px] bg-gradient-to-b from-[#101428] to-transparent opacity-40 pointer-events-none"></div>
+    <div class="absolute top-[10%] left-[-10%] w-[50%] h-[30%] bg-neonCyan/5 blur-[120px] rounded-full pointer-events-none"></div>
+    <div class="absolute top-[40%] right-[-10%] w-[50%] h-[30%] bg-neonPink/5 blur-[120px] rounded-full pointer-events-none"></div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-50 backdrop-blur-md bg-[#05060a]/85 border-b border-gray-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <span class="text-sm sm:text-lg font-bold font-pixel tracking-tighter text-white flex items-center gap-1.5">
+                    <span class="text-neonCyan">&lt;A&gt;</span> ASTRALYX <span class="text-[9px] sm:text-xs bg-neonCyan/10 text-neonCyan py-0.5 px-1.5 rounded border border-neonCyan/20">MEME MUSEUM</span>
+                </span>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 px-2.5 py-1 bg-gray-950 border border-gray-800 rounded-lg text-[10px] sm:text-xs font-mono">
+                    <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="hidden sm:inline">PROD BUILDS PASSING</span>
+                    <span class="sm:hidden">PASSING</span>
+                </div>
+                <a href="#commits-registry" class="px-2.5 py-1.5 rounded-lg bg-gray-900 border border-gray-800 hover:border-neonCyan hover:text-neonCyan text-[10px] sm:text-xs font-mono transition">
+                    Logs
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dynamic Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10 relative z-10 space-y-12 sm:space-y-16">
+
+        <!-- TITLE PLATFORM -->
+        <section class="text-center space-y-3 sm:space-y-4 max-w-4xl mx-auto px-2">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-neonCyan/10 border border-neonCyan/30 text-neonCyan text-[10px] font-mono tracking-wider uppercase anim-bounce-slow">
+                🛠️ PROD-LINE MEME REPOSITORY
+            </div>
+            <h1 class="text-2xl sm:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight">
+                The Complete Hall of <span class="text-transparent bg-clip-text bg-gradient-to-r from-neonCyan via-neonBlue to-neonPink">Dev Brainrot</span>
+            </h1>
+            <p class="text-gray-400 text-xs sm:text-sm lg:text-base max-w-2xl mx-auto leading-relaxed">
+                Behold the actual, uncensored history of the AstralyxPvP website development. Trace the conflicts, check your coordinates, swing your axes, and save granny from meteorites.
+            </p>
+        </section>
+
+        <!-- EXHIBIT A & B: CHATWARS & THE INTERACTIVE SUS.TXT DIALOGUE -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+            
+            <!-- EXHIBIT A: THE SUS.TXT CHAT EMULATOR -->
+            <div class="bg-[#0a0c14] border border-gray-800 rounded-2xl overflow-hidden shadow-2xl flex flex-col justify-between">
+                <div>
+                    <!-- Terminal Top Bar -->
+                    <div class="bg-[#111524] px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-2.5 h-2.5 rounded-full bg-red-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-yellow-500"></span>
+                            <span class="w-2.5 h-2.5 rounded-full bg-green-500"></span>
+                            <span class="text-[10px] sm:text-xs font-mono text-gray-400 ml-1.5">/git-logs/sus.txt</span>
+                        </div>
+                        <span class="text-[9px] sm:text-xs font-mono text-neonCyan bg-neonCyan/10 px-2 py-0.5 rounded border border-neonCyan/10">May 11 - May 15</span>
+                    </div>
+
+                    <div class="p-4 sm:p-5 space-y-3.5 font-mono text-xs sm:text-sm min-h-[220px]" id="sus-chat-viewport">
+                        <!-- Messages render dynamically -->
+                    </div>
+                </div>
+
+                <div class="bg-[#0e111d] px-4 py-3 border-t border-gray-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                    <div class="flex items-center gap-2 w-full sm:w-auto justify-between">
+                        <div class="flex gap-1.5">
+                            <button onclick="stepDialogue(-1)" class="px-2.5 py-1.5 rounded bg-gray-900 border border-gray-800 hover:text-white text-gray-400 text-xs font-mono transition tap-active">
+                                &lt; Prev
+                            </button>
+                            <button onclick="stepDialogue(1)" class="px-2.5 py-1.5 rounded bg-neonCyan/10 border border-neonCyan/20 hover:bg-neonCyan/20 text-neonCyan text-xs font-mono transition tap-active">
+                                Next &gt;
+                            </button>
+                        </div>
+                        <span class="text-xs text-gray-500 font-mono" id="dialogue-counter">Line 0 of 4</span>
+                    </div>
+                    <button onclick="resetDialogue()" class="text-xs text-gray-600 hover:text-gray-400 font-mono underline tap-active">
+                        Flush Log
+                    </button>
+                </div>
+            </div>
+
+            <!-- EXHIBIT B: DONT_TOUCH.JS PROTOCOL HUBRIS -->
+            <div class="bg-[#0a0c14] border border-neonPink/20 rounded-2xl p-5 sm:p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-neonPink/5 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-neonPink/10 text-neonPink border border-neonPink/20 font-mono font-bold uppercase tracking-wider">
+                            May 10 Breach
+                        </span>
+                        <span class="text-xs text-gray-500 font-mono">dont_touch.js Protocol</span>
+                    </div>
+                    <h3 class="text-lg sm:text-2xl font-bold text-white tracking-tight">The forbidden "// i touched it" comment</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                        DreamLong explicitly warned you. He created <code class="text-neonPink bg-neonPink/5 px-1 py-0.5 rounded font-mono text-xs">dont_touch.js</code>. The next morning, you opened it and committed line 1.
+                    </p>
+
+                    <!-- Code Preview Panel -->
+                    <div class="bg-[#06070a] border border-gray-850 rounded-xl p-3 sm:p-4 font-mono text-xs sm:text-sm space-y-2 relative overflow-x-auto">
+                        <div class="absolute top-2 right-3 text-gray-700 text-[10px] sm:text-xs">JS</div>
+                        <p class="text-gray-600">// File: dont_touch.js</p>
+                        <div class="flex items-center gap-2" id="touched-indicator">
+                            <span class="text-gray-600">1</span>
+                            <span class="text-gray-500 italic">// Waiting for deployment...</span>
+                        </div>
+                        <p class="text-gray-650"><span class="mr-2 text-gray-600">2</span>const coreSystemSecurity = true;</p>
+                    </div>
+                </div>
+
+                <div class="pt-5 border-t border-gray-900 flex flex-col sm:flex-row items-center gap-4 mt-5">
+                    <button onclick="executeHubrisTouch()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-neonPink hover:bg-neonPink/90 text-white font-bold text-sm tracking-wide transition shadow-lg shrink-0 tap-active">
+                        🚨 Touch dont_touch.js
+                    </button>
+                    <p class="text-[11px] sm:text-xs text-gray-500 font-mono text-center sm:text-left leading-tight">
+                        Warning: Tapping will force DreamLong to auto-deploy commit <span class="text-neonPink font-semibold">"FUCK YOU ASS BITCH"</span>.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXHIBIT C & D: METEORITE ARCADE & THE CHRONICLES OF CHUCK -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+
+            <!-- EXHIBIT C: METEORITE DEFENDER - SAVE GRANNY! -->
+            <div class="bg-[#0a0c14] border border-gray-800 rounded-2xl p-5 sm:p-6 flex flex-col justify-between shadow-2xl space-y-4">
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] px-2 py-0.5 rounded bg-amber-500/10 text-amber-400 border border-amber-500/20 font-mono font-bold">
+                            COSMIC EMERGENCY
+                        </span>
+                        <span class="text-xs font-mono text-gray-500" id="granny-score">Survived: 0s</span>
+                    </div>
+                    <h3 class="text-lg sm:text-2xl font-bold text-white tracking-tight">Granny vs. Meteorite Simulator</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                        May 26, 2026: <code class="text-amber-400 bg-amber-400/5 px-1 py-0.5 rounded font-mono text-xs">"REST IN PEACE MY GRANNY..."</code>. Drag across screen to position the shield and protect her!
+                    </p>
+                </div>
+
+                <!-- Game Arena Canvas container -->
+                <div class="relative">
+                    <canvas id="meteor-canvas"></canvas>
+                    <div class="absolute inset-0 bg-[#090a0f]/95 flex flex-col items-center justify-center text-center p-4 rounded-xl" id="game-over-screen">
+                        <p class="text-sm sm:text-lg font-pixel text-neonPink tracking-wider">SYSTEM SHATTERED</p>
+                        <p class="text-[10px] text-gray-500 font-mono mt-2 max-w-xs">Granny was hit. Build compiled with cosmic lag.</p>
+                        <button onclick="startGame()" class="mt-4 px-4 py-2 rounded bg-neonCyan text-black font-pixel text-[9px] sm:text-[10px] font-bold tracking-wider hover:bg-neonCyan/80 transition tap-active">
+                            RELOAD SYSTEM
+                        </button>
+                    </div>
+                </div>
+
+                <div class="text-[10px] sm:text-xs font-mono text-gray-500 flex justify-between items-center px-1">
+                    <span>Swipe or slide here to guard.</span>
+                    <span class="text-neonCyan font-bold">SHA: 90034a7</span>
+                </div>
+            </div>
+
+            <!-- EXHIBIT D: THE TRAGIC ADVENTURE OF CHUCK THE VILLAGER -->
+            <div class="bg-[#0a0c14] border border-gray-800 rounded-2xl p-5 sm:p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+                <div class="space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-[10px] px-2.5 py-1 rounded bg-emerald/10 text-emerald border border-emerald/20 font-mono font-bold uppercase tracking-wider">
+                            May 11 Chronicle
+                        </span>
+                        <span class="text-xs text-gray-500 font-mono">Chuck's Story Engine</span>
+                    </div>
+                    <h3 class="text-lg sm:text-2xl font-bold text-white tracking-tight">The Legend of Chuck</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                        On May 11, you deployed a multi-stage saga about Chuck the villager who needed emeralds, got incredibly rich, and immediately left the server. Complete his mission:
+                    </p>
+
+                    <!-- Interactive Chuck Stage Graphic -->
+                    <div class="bg-[#070911] border border-gray-850 rounded-xl p-4 sm:p-6 flex flex-col items-center justify-center text-center space-y-4 relative min-h-[180px]">
+                        
+                        <!-- Visual representation of Chuck / emerald -->
+                        <div class="flex items-center justify-center gap-6" id="chuck-stage-graphic">
+                            <!-- Chuck SVG Dynamic -->
+                            <div class="transition-transform duration-300" id="chuck-sprite-box">
+                                <svg width="50" height="50" viewBox="0 0 512 512">
+                                    <rect x="140" y="140" width="232" height="232" fill="#d3a27f" rx="12"/>
+                                    <!-- Big Villager Nose -->
+                                    <rect x="236" y="220" width="40" height="90" fill="#c08a68" rx="8"/>
+                                    <rect x="180" y="200" width="24" height="24" fill="#000"/>
+                                    <rect x="308" y="200" width="24" height="24" fill="#000"/>
+                                    <!-- Robe -->
+                                    <path d="M100 372h312v140H100z" fill="#7f4c3c"/>
+                                </svg>
+                            </div>
+                            
+                            <!-- Items Indicator -->
+                            <div class="text-2xl anim-bounce-slow" id="chuck-item-display">🪵</div>
+                        </div>
+
+                        <!-- Story Line -->
+                        <p class="text-xs sm:text-sm font-mono text-emerald" id="chuck-story-text">
+                            "this is chuck chuck live in a village he want emerald"
+                        </p>
+                    </div>
+                </div>
+
+                <div class="pt-5 border-t border-gray-900 flex flex-col sm:flex-row items-center justify-between gap-4 mt-5">
+                    <button onclick="progressChuckStory()" id="chuck-btn" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald text-black font-extrabold text-sm tracking-wide transition shadow-lg hover:bg-emerald/90 tap-active">
+                        💰 Find Emeralds
+                    </button>
+                    <div class="text-xs font-mono text-gray-500" id="chuck-status-tag">
+                        Status: Chuck is broke.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- EXHIBIT E & F: CURSOR CONFIGURATOR & POULTRY MUTATOR -->
+        <section class="grid grid-cols-1 lg:grid-cols-3 gap-6 sm:gap-8">
+            
+            <!-- EXHIBIT E: CURSOR ROTATION LAB -->
+            <div class="lg:col-span-2 bg-gradient-to-br from-[#0a0c14] to-[#080a11] border border-gray-800 rounded-2xl p-5 sm:p-8 space-y-6 shadow-2xl">
+                <div class="space-y-2">
+                    <span class="text-xs font-mono text-neonCyan bg-neonCyan/10 px-2.5 py-1 rounded">Cursor Mathematics</span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">Community Weapon Physics Laboratory</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                        Select from the weapons database and configure parameters. <span class="hidden md:inline">Hover & click anywhere on desktop to swing!</span> <span class="md:hidden text-neonCyan font-bold">Use the Test Pad below on mobile devices!</span>
+                    </p>
+                </div>
+
+                <!-- Weapon Select -->
+                <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setWeapon('axe')" id="w-btn-axe" class="p-2 sm:p-3 rounded-xl bg-neonCyan/10 border border-neonCyan/30 text-neonCyan font-mono text-[10px] sm:text-xs text-center flex flex-col items-center justify-center gap-1.5 hover:bg-neonCyan/20 transition tap-active">
+                        <span class="text-lg">🪓</span>
+                        <span>AXE</span>
+                    </button>
+                    <button onclick="setWeapon('sword')" id="w-btn-sword" class="p-2 sm:p-3 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 font-mono text-[10px] sm:text-xs text-center flex flex-col items-center justify-center gap-1.5 hover:bg-gray-800 transition tap-active">
+                        <span class="text-lg">⚔️</span>
+                        <span>SWORD</span>
+                    </button>
+                    <button onclick="setWeapon('gold')" id="w-btn-gold" class="p-2 sm:p-3 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 font-mono text-[10px] sm:text-xs text-center flex flex-col items-center justify-center gap-1.5 hover:bg-gray-800 transition tap-active">
+                        <span class="text-lg">👑</span>
+                        <span>GOLD</span>
+                    </button>
+                </div>
+
+                <!-- Dynamic Config Controls -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-4 border-t border-gray-900">
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+                            <span>ASSET SCALE</span>
+                            <span id="label-scale">40px</span>
+                        </div>
+                        <input type="range" min="20" max="96" value="40" class="w-full accent-neonCyan" id="cur-scale" oninput="updateCursorGeometry()">
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+                            <span>HOVER PIVOT</span>
+                            <span id="label-hover">-95°</span>
+                        </div>
+                        <input type="range" min="-180" max="0" value="-95" class="w-full accent-neonCyan" id="cur-hover" oninput="updateCursorGeometry()">
+                    </div>
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+                            <span>CLICK SWING</span>
+                            <span id="label-click">-140°</span>
+                        </div>
+                        <input type="range" min="-240" max="0" value="-140" class="w-full accent-neonCyan" id="cur-click" oninput="updateCursorGeometry()">
+                    </div>
+                </div>
+
+                <!-- MOBILE EXCLUSIVE SWING TEST PAD -->
+                <div class="p-4 rounded-xl bg-[#090b13] border border-gray-800 flex flex-col items-center justify-center space-y-3 relative overflow-hidden">
+                    <span class="text-[9px] font-mono text-neonCyan absolute top-2 left-3">MOBILE SWING PREVIEW PAD</span>
+                    
+                    <div class="w-20 h-20 flex items-center justify-center mt-3" id="mobile-canvas-holder">
+                        <div id="mobile-weapon-graphic" class="w-12 h-12 origin-top-left transition-transform duration-75">
+                            <!-- Injected dynamically -->
+                        </div>
+                    </div>
+                    
+                    <button id="mobile-swing-button" class="px-5 py-2 w-full rounded-lg bg-neonCyan/10 border border-neonCyan/30 hover:bg-neonCyan/20 text-neonCyan text-xs font-mono font-bold tracking-wider tap-active">
+                        TAP TO SWING WEAPON
+                    </button>
+                </div>
+
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-4 border-t border-gray-900">
+                    <button onclick="toggleSystemCursor()" id="global-cursor-toggle" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gray-900 border border-gray-700 hover:border-neonCyan hover:text-neonCyan font-mono text-xs transition flex items-center justify-center gap-2 tap-active">
+                        <span class="w-2.5 h-2.5 rounded-full bg-red-500" id="cursor-indicator-lamp"></span>
+                        <span id="cursor-toggle-text">ACTIVATE WEB CURSOR (DESKTOP)</span>
+                    </button>
+                    <div class="text-[10px] sm:text-xs font-mono text-gray-500">
+                        Pivot Origin: <code class="text-neonCyan">0% 0%</code> (Cursor Hotspot)
+                    </div>
+                </div>
+            </div>
+
+            <!-- EXHIBIT F: LAVA POULTRY SPAWNER -->
+            <div class="bg-gradient-to-br from-[#1c0d16] to-[#120810] border border-neonPink/25 rounded-2xl p-5 sm:p-8 flex flex-col justify-between shadow-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 w-24 h-24 bg-neonPink/10 rounded-full blur-2xl pointer-events-none"></div>
+                <div class="space-y-4">
+                    <span class="text-[10px] px-2.5 py-1 rounded bg-neonPink/10 text-neonPink border border-neonPink/20 font-mono font-bold">
+                        POULTRY MUTATOR
+                    </span>
+                    <h3 class="text-xl sm:text-2xl font-bold text-white tracking-tight">The Poultry Mutation</h3>
+                    <p class="text-gray-400 text-xs sm:text-sm leading-relaxed">
+                        On May 26, you released <code class="text-neonPink bg-neonPink/5 px-1 py-0.5 rounded font-mono text-xs">"lava cock"</code>. On June 16, it was updated to <code class="text-neonPink bg-neonPink/5 px-1 py-0.5 rounded font-mono text-xs">"Lava CHICKEN"</code>. Deploy a wave of these unhinged birds on your viewport!
+                    </p>
+
+                    <div class="space-y-3 pt-2">
+                        <div class="flex items-center justify-between text-xs font-mono text-gray-400">
+                            <span>MUTATION STATE</span>
+                            <span class="text-neonPink font-bold" id="mutation-badge">LAVA CHICKEN (v2.0)</span>
+                        </div>
+                        <input type="range" min="1" max="2" value="2" class="w-full accent-neonPink" id="chicken-version-slider" oninput="updateChickenMutation()">
+                    </div>
+                </div>
+
+                <div class="pt-5 border-t border-gray-900/40 mt-5">
+                    <button onclick="triggerPoultryInvasion()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-neonPink to-purple-600 hover:from-rose-500 hover:to-purple-500 text-white font-bold tracking-wide transition shadow-lg flex items-center justify-center gap-2 tap-active">
+                        🐔 SPAWN WAVE
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- THE SEARCHABLE MASTER COMMIT REGISTRY -->
+        <section id="commits-registry" class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div class="space-y-1">
+                    <div class="flex items-center gap-2">
+                        <span class="w-3 h-3 rounded-full bg-neonCyan animate-ping"></span>
+                        <h2 class="text-xl sm:text-2xl font-bold text-white tracking-tight">The Complete Commit Timeline</h2>
+                    </div>
+                    <p class="text-gray-400 text-xs sm:text-sm">Search and audit every legendary commit made on the repository.</p>
+                </div>
+                <!-- Search Box -->
+                <div class="relative w-full md:w-80">
+                    <input type="text" id="commit-search" oninput="filterRegistry()" placeholder="Search commit messages..." class="w-full px-4 py-2.5 rounded-xl bg-gray-950 border border-gray-800 focus:border-neonCyan focus:outline-none text-xs sm:text-sm font-mono text-white placeholder-gray-650 transition">
+                </div>
+            </div>
+
+            <!-- Categories filters -->
+            <div class="flex flex-wrap gap-1.5 text-[10px] sm:text-xs font-mono">
+                <button onclick="setCategoryFilter('all')" id="f-all" class="px-3 py-1.5 rounded-lg bg-neonCyan text-black font-extrabold transition tap-active">All</button>
+                <button onclick="setCategoryFilter('ai')" id="f-ai" class="px-3 py-1.5 rounded-lg bg-gray-950 border border-gray-850 text-gray-300 transition tap-active">AI Battles</button>
+                <button onclick="setCategoryFilter('sus')" id="f-sus" class="px-3 py-1.5 rounded-lg bg-gray-950 border border-gray-850 text-gray-300 transition tap-active">Sussy</button>
+                <button onclick="setCategoryFilter('personal')" id="f-personal" class="px-3 py-1.5 rounded-lg bg-gray-950 border border-gray-850 text-gray-300 transition tap-active">Rage & Crises</button>
+                <button onclick="setCategoryFilter('features')" id="f-features" class="px-3 py-1.5 rounded-lg bg-gray-950 border border-gray-850 text-gray-300 transition tap-active">Weapon FX</button>
+            </div>
+
+            <!-- Registry viewport -->
+            <div class="space-y-3" id="commits-viewport-list">
+                <!-- Rendered dynamically -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Custom Floating Toast Message Drawer -->
+    <div id="toast-drawer" class="fixed bottom-4 right-4 left-4 sm:left-auto z-50 transform translate-y-24 opacity-0 transition-all duration-300 ease-out max-w-sm bg-[#0a0c14]/95 border border-neonCyan/35 backdrop-blur-md text-white p-3.5 rounded-xl shadow-2xl flex items-start gap-3">
+        <div class="p-1.5 rounded bg-neonCyan/10 text-neonCyan font-mono text-[10px] font-bold" id="toast-status-code">SYS</div>
+        <div class="space-y-0.5">
+            <h4 class="text-xs sm:text-sm font-bold text-white font-mono" id="toast-header-text">System notification</h4>
+            <p class="text-[11px] text-gray-400 leading-normal" id="toast-body-text">Detail log parameters printed here.</p>
+        </div>
+    </div>
+
+    <!-- Website footer platform -->
+    <footer class="bg-gray-950 border-t border-gray-900 py-10 mt-16 text-center relative z-10 font-mono space-y-4 text-[10px] sm:text-xs">
+        <div class="max-w-7xl mx-auto px-4">
+            <p class="text-gray-500">
+                Created under extreme stress conditions by <span class="text-neonCyan">IndianCoder3</span>. Backed by Gemini 3.1 & Improved by Rage.
+            </p>
+            <p class="text-gray-600">
+                AstralyxPvP © 2026. Last updated: 22nd June 2026. All operations verified in memory.
+            </p>
+        </div>
+    </footer>
+
+    <!-- Comprehensive Application Logic -->
+    <script>
+        // Check for touchscreen to disable custom trail which lags on mobile
+        const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+
+        // MASTER REGISTRY OF ALL HISTORIC COMMITS
+        const masterCommitsList = [
+            { sha: "543dc4f", date: "2026-06-16", author: "IndianCoder3", category: "sus", msg: "sus", notes: "Standard protocol. No description needed. Simply sus." },
+            { sha: "3e7f593", date: "2026-06-16", author: "IndianCoder3", category: "sus", msg: "sus", notes: "The second consecutive sus commit of the morning." },
+            { sha: "b1cf9e2", date: "2026-06-16", author: "IndianCoder3", category: "personal", msg: "Lava CHICKEN", notes: "The legendary evolution of the 'lava cock' asset. Upgraded to v2.0." },
+            { sha: "c2d8d9f", date: "2026-06-16", author: "IndianCoder3", category: "features", msg: "fix: move backToTop button outside <script> block to prevent syntax error breaking all AI functions", notes: "A critical realization that placing static DOM element syntax inside an executable script block crashes every model pipeline." },
+            { sha: "5afd28e", date: "2026-06-16", author: "IndianCoder3", category: "ai", msg: "maybe opencode stupid", notes: "Evaluating the structural logic capabilities of OpenCode model engines when debugging backToTop buttons." },
+            { sha: "fa099d8", date: "2026-06-14", author: "IndianCoder3", category: "ai", msg: "feat: add 18 AI-specific validation tests (SYSTEM_PROMPT, models, FunctionRegistry tools)", notes: "The definitive redemption arc. Moving from raw panic logs to enterprise-grade workflow testing." },
+            { sha: "2da95a8", date: "2026-06-13", author: "IndianCoder3", category: "features", msg: "feat: team member cards with profile pics on contact page", notes: "Adding Voxy, Dravox, Zylox and Lazyron's roles directly to the client viewports." },
+            { sha: "09dfa2a", date: "2026-06-13", author: "IndianCoder3", category: "features", msg: "feat: hero image restructured with orbit ring + inner mark, HUD cards, leaderboard table UI", notes: "Major visual overhaul for the Astralyx landing experience." },
+            { sha: "52819fe", date: "2026-06-12", author: "IndianCoder3", category: "sus", msg: "sus", notes: "Another standard daily validation commit." },
+            { sha: "7bcd920", date: "2026-06-12", author: "IndianCoder3", category: "personal", msg: "fix: maintenance yes, date system shows 22nd June 2026", notes: "Setting maintenance parameters on client pages." },
+            { sha: "e5a49be", date: "2026-06-11", author: "IndianCoder3", category: "personal", msg: "yea i get it some fault was mine as well im sorry dreamlong please", notes: "The post-incident relationship cooling script execution." },
+            { sha: "4383be2", date: "2026-06-11", author: "IndianCoder3", category: "ai", msg: "BRO DREAMLONG PLEASE ATLEAST CHECK BEFORE USING AI BROS REFERENCING GOOGLE LINKS WTF IS THAT", notes: "The day DreamLong copied and pasted code loaded with raw imaginary Google search URLs directly to production workflows." },
+            { sha: "bd63176", date: "2026-06-11", author: "IndianCoder3", category: "personal", msg: "update dreamlong's stupid shit", notes: "A clean up routine deployed directly after DreamLong's AI pipeline failure." },
+            { sha: "cb3bb0e", date: "2026-06-11", author: "IndianCoder3", category: "personal", msg: "ah bring back our readme", notes: "Accidentally wiped the documentation during cleanup. Standard dev behavior." },
+            { sha: "593ced7", date: "2026-06-11", author: "IndianCoder3", category: "features", msg: "feat: diamond axe cursor on hover with swing on click", notes: "Commencement of the legendary seven commits dedicated entirely to rotational mathematics of client cursors." },
+            { sha: "decf271", date: "2026-06-11", author: "IndianCoder3", category: "features", msg: "tweak: axe 40x40, hover -95°, click -140°", notes: "The absolute optimal swing configuration requested explicitly by client players." },
+            { sha: "0bf7fe8", date: "2026-06-11", author: "IndianCoder3", category: "features", msg: "fix: resize cursor to 64x64 (was too big), add JS load log", notes: "Early iterations of the cursor dimensions." },
+            { sha: "90034a7", date: "2026-05-26", author: "IndianCoder3", category: "personal", msg: "REST IN PEACE MY GRANNY SHE GOT HIT BY A METEORIOD", notes: "The ultimate cosmic incident. A deep-space tragedy preserved forever on github records." },
+            { sha: "4985cdf", date: "2026-05-26", author: "IndianCoder3", category: "ai", msg: "Trust Gemini its good", notes: "The initial, short-lived declaration of absolute trust in neural models." },
+            { sha: "fd65830", date: "2026-05-26", author: "ai", msg: "fuck chatgpt", notes: "Unfiltered developmental feedback regarding alternative LLM offerings." },
+            { sha: "8febe79", date: "2026-05-26", author: "IndianCoder3", category: "personal", msg: "lava cock", notes: "The alpha version deployment of the lava chicken entities." },
+            { sha: "87dbd62", date: "2026-05-26", author: "DreamLong", category: "personal", msg: "stop airplaning the twin towers", notes: "DreamLong attempts to moderate the terminal discourse." },
+            { sha: "14f5394", date: "2026-05-11", author: "IndianCoder3", category: "personal", msg: "this is chuck chuck live in a village he want emerald", notes: "Stage 1 of the villager saga deployed to the main branch." },
+            { sha: "d5d5ca8", date: "2026-05-11", author: "IndianCoder3", category: "personal", msg: "Chuck have many emeralds. Chuck now very happy. Chuck leave village with emeralds", notes: "Stage 2 of the villager saga. Chuck is successful." },
+            { sha: "856f712", date: "2026-05-11", author: "IndianCoder3", category: "personal", msg: "RIP COMEDY", notes: "The third and final chapter of Chuck the villager. Absolute existential finality." },
+            { sha: "0456360", date: "2026-05-11", author: "IndianCoder3", category: "personal", msg: "MG Comet le aayo", notes: "Suddenly flexing an electric micro-car inside the main repository log." },
+            { sha: "f6e57a6", date: "2026-05-10", author: "DreamLong", category: "personal", msg: "FUCK YOU ASS BITCH", notes: "DreamLong opens his editor, finds the comments in dont_touch.js, and logs his unfiltered response." },
+            { sha: "a6049fc", date: "2026-05-09", author: "DreamLong", category: "sus", msg: "Create dont_touch.js", notes: "Establishing local repository safety guidelines. Deployed 24 hours before complete mental collapse." }
+        ];
+
+        // LOGIC CHAT DATA - SUS.TXT
+        const susChatLogs = [
+            { sender: "IndianCoder3", text: "hello dont del code I beg u", color: "text-neonCyan", icon: "🤖" },
+            { sender: "DreamLong", text: "I'll del u dw", color: "text-neonPink", icon: "😡" },
+            { sender: "IndianCoder3", text: "I'll del ur push access dw", color: "text-neonCyan", icon: "🛠️" },
+            { sender: "DreamLong", text: "just stfu and do your work", color: "text-neonPink", icon: "💀" }
+        ];
+
+        let dialogueIdx = 0;
+        let activeWeapon = 'axe';
+        let webCursorActive = false;
+        let currentFilter = 'all';
+        let searchQuery = '';
+        let chickenMutationVersion = 2; // Default is v2 Lava Chicken
+
+        // SVG Graphics for Weapons
+        const weaponAssets = {
+            axe: `
+                <svg viewBox="0 0 512 512" class="w-full h-full">
+                    <path fill="#2c3e50" d="M120 360l232-232 32 32-232 232z"/>
+                    <path fill="#55f3ec" d="M328 88l96-16-16 96-48-16-16 16 16 16-32 32-48-48 32-32 16 16z" stroke="#000" stroke-width="8"/>
+                    <path fill="#111" d="M64 448l32-32-32-32-32 32 16 16z"/>
+                </svg>
+            `,
+            sword: `
+                <svg viewBox="0 0 512 512" class="w-full h-full">
+                    <path fill="#111" d="M100 412l32-32-32-32-32 32 32 32z" stroke="#fff" stroke-width="8"/>
+                    <path fill="#55f3ec" d="M120 392L392 120l32 32-272 272z" stroke="#000" stroke-width="12"/>
+                    <path fill="#fff" d="M380 132l40-40-40 40z"/>
+                    <rect x="110" y="360" width="80" height="24" transform="rotate(-45 110 360)" fill="#7f8c8d" />
+                </svg>
+            `,
+            gold: `
+                <svg viewBox="0 0 512 512" class="w-full h-full">
+                    <path fill="#111" d="M100 412l32-32-32-32-32 32 32 32z" stroke="#fff" stroke-width="8"/>
+                    <path fill="#fbbf24" d="M120 392L392 120l32 32-272 272z" stroke="#000" stroke-width="12"/>
+                    <circle cx="392" cy="120" r="16" fill="#f43f5e" />
+                    <rect x="110" y="360" width="80" height="24" transform="rotate(-45 110 360)" fill="#fbbf24" />
+                </svg>
+            `
+        };
+
+        let cursorConfig = {
+            scale: 40,
+            hover: -95,
+            click: -140
+        };
+
+        // Custom Cursor Tracker Movement (Only used when mouse hovered is supported)
+        const customCursor = document.getElementById('custom-cursor-element');
+
+        document.addEventListener('mousemove', (e) => {
+            if (!webCursorActive || isTouchDevice) return;
+            customCursor.style.left = e.clientX + 'px';
+            customCursor.style.top = e.clientY + 'px';
+        });
+
+        document.addEventListener('mousedown', () => {
+            if (!webCursorActive || isTouchDevice) return;
+            customCursor.style.transform = `rotate(${cursorConfig.click}deg)`;
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (!webCursorActive || isTouchDevice) return;
+            customCursor.style.transform = `rotate(${cursorConfig.hover}deg)`;
+        });
+
+        // Set Swappable Custom Cursor Weapon
+        function setWeapon(type) {
+            activeWeapon = type;
+            const buttons = ['axe', 'sword', 'gold'];
+            buttons.forEach(b => {
+                const el = document.getElementById(`w-btn-${b}`);
+                if (b === type) {
+                    el.className = "p-2 sm:p-3 rounded-xl bg-neonCyan/10 border border-neonCyan/30 text-neonCyan font-mono text-[10px] sm:text-xs text-center flex flex-col items-center justify-center gap-1.5 hover:bg-neonCyan/20 transition tap-active";
+                } else {
+                    el.className = "p-2 sm:p-3 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 font-mono text-[10px] sm:text-xs text-center flex flex-col items-center justify-center gap-1.5 hover:bg-gray-800 transition tap-active";
+                }
+            });
+
+            customCursor.innerHTML = weaponAssets[type];
+            document.getElementById('mobile-weapon-graphic').innerHTML = weaponAssets[type];
+            updateCursorGeometry();
+
+            showNotification("LAB", `${type.toUpperCase()} MOUNTED`, `Equipped custom weapon model.`);
+        }
+
+        // Configure Geometry
+        function updateCursorGeometry() {
+            cursorConfig.scale = document.getElementById('cur-scale').value;
+            cursorConfig.hover = document.getElementById('cur-hover').value;
+            cursorConfig.click = document.getElementById('cur-click').value;
+
+            document.getElementById('label-scale').textContent = cursorConfig.scale + 'px';
+            document.getElementById('label-hover').textContent = cursorConfig.hover + '°';
+            document.getElementById('label-click').textContent = cursorConfig.click + '°';
+
+            customCursor.style.width = cursorConfig.scale + 'px';
+            customCursor.style.height = cursorConfig.scale + 'px';
+
+            const mobileGraphic = document.getElementById('mobile-weapon-graphic');
+            mobileGraphic.style.transform = `rotate(${cursorConfig.hover}deg)`;
+
+            if (webCursorActive && !isTouchDevice) {
+                customCursor.style.transform = `rotate(${cursorConfig.hover}deg)`;
+            }
+        }
+
+        // Setup Mobile Exclusive Swing Pad Touch Listeners
+        const swingBtn = document.getElementById('mobile-swing-button');
+        const mobileGraphic = document.getElementById('mobile-weapon-graphic');
+
+        function triggerMobileSwing() {
+            mobileGraphic.style.transform = `rotate(${cursorConfig.click}deg)`;
+            playBeepFrequency(650, 0.08);
+            setTimeout(() => {
+                mobileGraphic.style.transform = `rotate(${cursorConfig.hover}deg)`;
+            }, 120);
+        }
+
+        swingBtn.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            triggerMobileSwing();
+        });
+        swingBtn.addEventListener('click', () => {
+            if (!isTouchDevice) triggerMobileSwing();
+        });
+
+        // Toggle Web Cursor
+        function toggleSystemCursor() {
+            const lamp = document.getElementById('cursor-indicator-lamp');
+            const btn = document.getElementById('global-cursor-toggle');
+            const toggleText = document.getElementById('cursor-toggle-text');
+
+            if (isTouchDevice) {
+                showNotification("SYSTEM", "TOUCH DEVICE DETECTED", "Pointers are optimized to run inline on mobile touch pads.");
+                return;
+            }
+
+            webCursorActive = !webCursorActive;
+            const body = document.body;
+
+            if (webCursorActive) {
+                body.className = `bg-[#05060a] text-gray-200 font-sans min-h-screen selection:bg-neonCyan selection:text-black relative overflow-x-hidden cursor-${activeWeapon}`;
+                customCursor.style.display = 'block';
+                customCursor.style.transform = `rotate(${cursorConfig.hover}deg)`;
+                lamp.className = "w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse";
+                toggleText.textContent = "DEACTIVATE WEB CURSOR";
+                showNotification("CURSOR", "OVERRIDE ACTIVE", "Hover custom SVG has replaced system pointer UI.");
+            } else {
+                body.className = `bg-[#05060a] text-gray-200 font-sans min-h-screen selection:bg-neonCyan selection:text-black relative overflow-x-hidden`;
+                customCursor.style.display = 'none';
+                lamp.className = "w-2.5 h-2.5 rounded-full bg-red-500";
+                toggleText.textContent = "ACTIVATE WEB CURSOR (DESKTOP)";
+            }
+        }
+
+        // EXHIBIT A: SUS.TXT DIALOGUE LOG PLAYBACK
+        function stepDialogue(dir) {
+            dialogueIdx += dir;
+            if (dialogueIdx < 0) dialogueIdx = 0;
+            if (dialogueIdx > susChatLogs.length) dialogueIdx = susChatLogs.length;
+
+            const viewport = document.getElementById('sus-chat-viewport');
+            viewport.innerHTML = '';
+
+            for (let i = 0; i < dialogueIdx; i++) {
+                const item = susChatLogs[i];
+                const msgBlock = `
+                    <div class="flex items-start gap-2.5 p-2 rounded-lg bg-gray-900/30 border border-gray-850/45">
+                        <span class="text-[10px] sm:text-xs font-bold px-1.5 py-0.5 rounded bg-gray-900 border border-gray-800 ${item.color}">${item.icon} @${item.sender}:</span>
+                        <p class="text-gray-300 font-mono tracking-wide leading-relaxed text-xs sm:text-sm">${item.text}</p>
+                    </div>
+                `;
+                viewport.insertAdjacentHTML('beforeend', msgBlock);
+            }
+
+            document.getElementById('dialogue-counter').textContent = `Line ${dialogueIdx} of ${susChatLogs.length}`;
+        }
+
+        function resetDialogue() {
+            dialogueIdx = 0;
+            document.getElementById('sus-chat-viewport').innerHTML = `<p class="text-gray-650 italic text-center py-10">Log container empty. Advance line to replay.</p>`;
+            document.getElementById('dialogue-counter').textContent = `Line 0 of ${susChatLogs.length}`;
+            showNotification("SYS", "LOGS RESET", "Cleared dialogue simulation buffers.");
+        }
+
+        // EXHIBIT B: DONT_TOUCH.JS INCIDENT EXECUTION
+        function executeHubrisTouch() {
+            const container = document.getElementById('touched-indicator');
+            container.innerHTML = `
+                <span class="text-neonPink">1</span>
+                <span class="text-white font-bold bg-neonPink/20 px-2 py-0.5 rounded border border-neonPink/30">i touched it</span>
+                <span class="text-xs text-neonPink font-mono ml-auto">BREACH DETECTED!</span>
+            `;
+
+            showNotification("ALERT", "CORE SCRIPT BREACH", "IndianCoder3 left core signature comment inside dont_touch.js.");
+
+            setTimeout(() => {
+                showNotification("CRITICAL", "DREAMLONG RESPONDING", 'DreamLong committed "FUCK YOU ASS BITCH" to main!');
+            }, 1500);
+        }
+
+        // EXHIBIT D: THE TRAGIC CHUCK SAGA INTERACTIVE
+        let chuckStage = 1;
+        function progressChuckStory() {
+            const storyText = document.getElementById('chuck-story-text');
+            const spriteBox = document.getElementById('chuck-sprite-box');
+            const itemBox = document.getElementById('chuck-item-display');
+            const btn = document.getElementById('chuck-btn');
+            const status = document.getElementById('chuck-status-tag');
+
+            if (chuckStage === 1) {
+                chuckStage = 2;
+                storyText.textContent = `"Chuck have many emeralds. Chuck now very happy. Chuck leave village with emeralds"`;
+                spriteBox.style.transform = "scale(1.15) rotate(10deg)";
+                itemBox.textContent = "emerald 💎";
+                btn.textContent = "Finish Chronicles";
+                btn.className = "w-full sm:w-auto px-5 py-2.5 rounded-xl bg-neonPink text-white font-extrabold text-sm tracking-wide transition shadow-lg hover:bg-neonPink/90 tap-active";
+                status.innerHTML = "Status: <span class='text-emerald font-bold'>Rich & Successful</span>";
+                showNotification("STORY", "CHUCK SAGA", "Chuck received his gems and has prepared coordinates.");
+            } else if (chuckStage === 2) {
+                chuckStage = 3;
+                storyText.innerHTML = `"<span class='text-neonPink font-bold'>RIP COMEDY</span>" <br><span class='text-[10px] text-gray-550'>Chuck has abandoned the village. All operations closed.</span>`;
+                spriteBox.style.transform = "scale(0) rotate(-90deg)";
+                itemBox.textContent = "🪦";
+                btn.textContent = "Reset Story Cycle";
+                btn.className = "w-full sm:w-auto px-5 py-2.5 rounded-xl bg-gray-900 border border-gray-800 text-gray-400 font-extrabold text-xs sm:text-sm tracking-wide transition shadow-lg hover:bg-gray-800 tap-active";
+                status.innerHTML = "Status: <span class='text-gray-500 font-bold'>Existential Comedy Death</span>";
+                showNotification("STORY", "RIP COMEDY", "The Chuck villager saga reached finality.");
+            } else {
+                chuckStage = 1;
+                storyText.textContent = `"this is chuck chuck live in a village he want emerald"`;
+                spriteBox.style.transform = "scale(1) rotate(0deg)";
+                itemBox.textContent = "🪵";
+                btn.textContent = "💰 Find Emeralds";
+                btn.className = "w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald text-black font-extrabold text-sm tracking-wide transition shadow-lg hover:bg-emerald/90 tap-active";
+                status.innerHTML = "Status: Chuck is broke.";
+            }
+        }
+
+        // EXHIBIT F: LAVA POULTRY WAVE SPAWNER
+        function updateChickenMutation() {
+            const version = document.getElementById('chicken-version-slider').value;
+            chickenMutationVersion = parseInt(version);
+            const badge = document.getElementById('mutation-badge');
+            if (chickenMutationVersion === 1) {
+                badge.textContent = "LAVA COCK (v1.0)";
+                badge.className = "text-amber-500 font-bold";
+            } else {
+                badge.textContent = "LAVA CHICKEN (v2.0)";
+                badge.className = "text-neonPink font-bold";
+            }
+        }
+
+        function triggerPoultryInvasion() {
+            showNotification("MUTATOR", "WAVE INITIATED", `Spawning mutation entities into local viewport bounds.`);
+            for (let i = 0; i < 5; i++) {
+                setTimeout(spawnSingleChicken, i * 200);
+            }
+        }
+
+        function spawnSingleChicken() {
+            const chick = document.createElement('div');
+            chick.style.position = 'fixed';
+            chick.style.pointerEvents = 'none';
+            chick.style.zIndex = '9999';
+
+            // Mobile-Safe Positioning coordinates inside viewport bounds
+            const widthOffset = window.innerWidth > 500 ? 80 : 60;
+            const heightOffset = window.innerHeight > 500 ? 80 : 60;
+            const startX = Math.random() * (window.innerWidth - widthOffset);
+            const startY = Math.random() * (window.innerHeight - heightOffset);
+            chick.style.left = startX + 'px';
+            chick.style.top = startY + 'px';
+
+            const size = window.innerWidth > 500 ? (48 + Math.random() * 24) : (36 + Math.random() * 16);
+            chick.style.width = size + 'px';
+            chick.style.height = size + 'px';
+
+            let chickenColor = (chickenMutationVersion === 1) ? "#d35400" : "#f43f5e";
+            let eyeColor = (chickenMutationVersion === 1) ? "#000" : "#fbbf24";
+            let glowColor = (chickenMutationVersion === 1) ? "rgba(211, 84, 0, 0.5)" : "rgba(244, 63, 94, 0.6)";
+
+            chick.innerHTML = `
+                <svg viewBox="0 0 512 512" class="w-full h-full animate-bounce" style="filter: drop-shadow(0 0 10px ${glowColor});">
+                    <rect x="120" y="160" width="220" height="220" fill="${chickenColor}" rx="40"/>
+                    <rect x="300" y="200" width="80" height="40" fill="#f1c40f"/>
+                    <circle cx="200" cy="240" r="24" fill="${eyeColor}"/>
+                    <circle cx="195" cy="235" r="8" fill="#fff"/>
+                    <rect x="220" y="380" width="20" height="60" fill="#e74c3c"/>
+                    <rect x="280" y="380" width="20" height="60" fill="#e74c3c"/>
+                </svg>
+            `;
+
+            document.body.appendChild(chick);
+            playBeepFrequency(320, 0.15);
+
+            setTimeout(() => {
+                chick.remove();
+            }, 4000);
+        }
+
+        function playBeepFrequency(freq, duration) {
+            try {
+                const ctx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(freq / 4, ctx.currentTime + duration);
+                gain.gain.setValueAtTime(0.06, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // EXHIBIT C: GRANNY vs. METEORITE MINI-ARCADE LOGIC
+        const canvas = document.getElementById('meteor-canvas');
+        const ctx = canvas.getContext('2d');
+        const gameOverScreen = document.getElementById('game-over-screen');
+
+        let gameActive = false;
+        let score = 0;
+        let shieldX = 150;
+        let meteorites = [];
+        let playerX = 150;
+        let animationFrameId;
+        let shieldWidth = window.innerWidth > 500 ? 60 : 45; // slightly smaller on mobile
+        let gameTimer = 0;
+
+        // Resize Canvas correctly
+        function resizeGameCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = 220;
+            shieldWidth = window.innerWidth > 500 ? 60 : 45;
+        }
+
+        // Setup touch and mouse tracking relative to bounding limits
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            shieldX = e.clientX - rect.left - shieldWidth/2;
+        });
+
+        // Touch drag positioning logic mapped smoothly
+        canvas.addEventListener('touchmove', (e) => {
+            if (e.touches.length > 0) {
+                e.preventDefault(); // blocks native viewport scrolling mechanics
+                const rect = canvas.getBoundingClientRect();
+                shieldX = e.touches[0].clientX - rect.left - shieldWidth/2;
+            }
+        }, { passive: false });
+
+        function spawnMeteorite() {
+            if (meteorites.length < 5) {
+                meteorites.push({
+                    x: Math.random() * (canvas.width - 20),
+                    y: -10,
+                    size: 8 + Math.random() * 12,
+                    speed: 1.8 + Math.random() * 2.5
+                });
+            }
+        }
+
+        function startGame() {
+            resizeGameCanvas();
+            gameActive = true;
+            score = 0;
+            meteorites = [];
+            shieldX = canvas.width / 2 - shieldWidth/2;
+            playerX = canvas.width / 2;
+            gameOverScreen.style.display = 'none';
+            gameTimer = Date.now();
+            
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (!gameActive) return;
+
+            // Clear frame
+            ctx.fillStyle = '#090a0f';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw Stars background
+            ctx.fillStyle = '#374151';
+            for (let i = 0; i < 15; i++) {
+                ctx.fillRect((i * 55) % canvas.width, (i * 30) % canvas.height, 1.5, 1.5);
+            }
+
+            // Draw Granny Target at the bottom
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath();
+            ctx.arc(playerX, canvas.height - 18, 12, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = '9px monospace';
+            ctx.fillText("👵 GRNY", playerX - 18, canvas.height - 35);
+
+            // Draw shield
+            ctx.fillStyle = '#55f3ec';
+            ctx.shadowColor = '#55f3ec';
+            ctx.shadowBlur = 6;
+            ctx.fillRect(shieldX, canvas.height - 48, shieldWidth, 6);
+            ctx.shadowBlur = 0; // reset
+
+            // Spawn & Update Meteorites
+            if (Math.random() < 0.04) spawnMeteorite();
+
+            for (let i = meteorites.length - 1; i >= 0; i--) {
+                const m = meteorites[i];
+                m.y += m.speed;
+
+                // Draw Meteorite
+                ctx.fillStyle = '#fbbf24';
+                ctx.beginPath();
+                ctx.arc(m.x, m.y, m.size, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Collision with shield
+                if (m.y >= canvas.height - 48 && m.y <= canvas.height - 42) {
+                    if (m.x >= shieldX && m.x <= shieldX + shieldWidth) {
+                        // Deflected!
+                        meteorites.splice(i, 1);
+                        score++;
+                        playBeepFrequency(600, 0.08);
+                        continue;
+                    }
+                }
+
+                // Collision with Granny
+                if (m.y >= canvas.height - 30) {
+                    const dist = Math.abs(m.x - playerX);
+                    if (dist < 25) {
+                        // Game Over!
+                        gameActive = false;
+                        gameOverScreen.style.display = 'flex';
+                        break;
+                    }
+                    // Missed cleanly
+                    if (m.y > canvas.height + 15) {
+                        meteorites.splice(i, 1);
+                    }
+                }
+            }
+
+            const secs = Math.floor((Date.now() - gameTimer)/1000);
+            document.getElementById('granny-score').textContent = `Deflected: ${score} | Survived: ${secs}s`;
+
+            if (gameActive) {
+                animationFrameId = requestAnimationFrame(gameLoop);
+            }
+        }
+
+        // REGISTRY SEARCH & RENDERING LOGIC
+        function renderRegistry(list) {
+            const container = document.getElementById('commits-viewport-list');
+            container.innerHTML = '';
+
+            if (list.length === 0) {
+                container.innerHTML = `<p class="text-gray-500 font-mono text-center py-8 border border-dashed border-gray-850 rounded-xl">No logs match search pattern.</p>`;
+                return;
+            }
+
+            list.forEach(item => {
+                let badgeClass = "bg-gray-900 text-gray-400 border-gray-800";
+                if (item.category === 'ai') badgeClass = "bg-purple-500/10 text-purple-400 border-purple-500/20";
+                if (item.category === 'sus') badgeClass = "bg-pink-500/10 text-pink-400 border-pink-500/20";
+                if (item.category === 'personal') badgeClass = "bg-red-500/10 text-red-400 border-red-500/20";
+                if (item.category === 'features') badgeClass = "bg-green-500/10 text-green-400 border-green-500/20";
+
+                const row = `
+                    <div class="bg-[#0b0c13]/55 border border-gray-900 rounded-xl p-3.5 sm:p-5 hover:border-gray-800 transition duration-150 flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
+                        <div class="space-y-1 w-full">
+                            <div class="flex flex-wrap items-center gap-1.5">
+                                <span class="text-[10px] font-mono text-gray-500">${item.date}</span>
+                                <span class="text-[10px] font-mono font-bold text-neonCyan">@${item.author}</span>
+                                <span class="text-[8px] uppercase font-mono tracking-wider border px-1.5 py-0.2 rounded ${badgeClass}">${item.category}</span>
+                            </div>
+                            <h4 class="text-xs sm:text-sm font-bold text-white font-mono tracking-tight">&ldquo;${item.msg}&rdquo;</h4>
+                            <p class="text-[11px] text-gray-450 leading-relaxed font-sans">${item.notes}</p>
+                        </div>
+                        <div class="flex items-center gap-1.5 font-mono text-[10px] sm:text-xs text-gray-500 shrink-0 mt-2 md:mt-0 self-end md:self-center">
+                            <span>${item.sha}</span>
+                            <button onclick="copyHashSHA('${item.sha}')" class="p-1 rounded bg-gray-950 hover:bg-gray-900 border border-gray-850 text-gray-400 hover:text-white transition tap-active" title="Copy commit SHA">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        // Set category filtering active state
+        function setCategoryFilter(cat) {
+            currentFilter = cat;
+            const buttons = ['all', 'ai', 'sus', 'personal', 'features'];
+            
+            buttons.forEach(b => {
+                const el = document.getElementById(`f-${b}`);
+                if (b === cat) {
+                    el.className = "px-3 py-1.5 rounded-lg bg-neonCyan text-black font-extrabold transition tap-active";
+                } else {
+                    el.className = "px-3 py-1.5 rounded-lg bg-gray-950 border border-gray-850 text-gray-300 transition tap-active";
+                }
+            });
+
+            filterRegistry();
+        }
+
+        // Master dynamic filter function
+        function filterRegistry() {
+            searchQuery = document.getElementById('commit-search').value.toLowerCase();
+            let filteredList = masterCommitsList;
+
+            // Apply category filter
+            if (currentFilter !== 'all') {
+                filteredList = filteredList.filter(item => item.category === currentFilter);
+            }
+
+            // Apply search query
+            if (searchQuery.trim() !== '') {
+                filteredList = filteredList.filter(item => 
+                    item.msg.toLowerCase().includes(searchQuery) || 
+                    item.notes.toLowerCase().includes(searchQuery) ||
+                    item.sha.toLowerCase().includes(searchQuery)
+                );
+            }
+
+            renderRegistry(filteredList);
+        }
+
+        function copyHashSHA(sha) {
+            const input = document.createElement('textarea');
+            input.value = sha;
+            document.body.appendChild(input);
+            input.select();
+            document.execCommand('copy');
+            document.body.removeChild(input);
+            showNotification("SUCCESS", "SHA COPIED", `Copied hash indicator: ${sha}`);
+        }
+
+        // Floating Toast message drawer trigger
+        function showNotification(status, title, body) {
+            const toast = document.getElementById('toast-drawer');
+            document.getElementById('toast-status-code').textContent = status;
+            document.getElementById('toast-header-text').textContent = title;
+            document.getElementById('toast-body-text').textContent = body;
+
+            // Show Toast slide in
+            toast.className = "fixed bottom-4 right-4 left-4 sm:left-auto z-50 transform translate-y-0 opacity-100 transition-all duration-300 ease-out max-w-sm bg-[#0a0c14]/95 border border-neonCyan/35 backdrop-blur-md text-white p-3.5 rounded-xl shadow-2xl flex items-start gap-3";
+
+            setTimeout(() => {
+                // Hide Toast slide out
+                toast.className = "fixed bottom-4 right-4 left-4 sm:left-auto z-50 transform translate-y-24 opacity-0 transition-all duration-300 ease-out max-w-sm bg-[#0a0c14]/95 border border-neonCyan/35 backdrop-blur-md text-white p-3.5 rounded-xl shadow-2xl flex items-start gap-3";
+            }, 3000);
+        }
+
+        // Adjust layout elements on window resize
+        window.addEventListener('resize', () => {
+            if (gameActive) resizeGameCanvas();
+        });
+
+        // Initialize setup on load
+        window.onload = function() {
+            // If touch interface, hide pointer instructions
+            if (isTouchDevice) {
+                document.getElementById('global-cursor-toggle').style.display = 'none';
+            }
+
+            setWeapon('axe');
+            stepDialogue(1); // Load first chat dialogue line
+            renderRegistry(masterCommitsList);
+            startGame(); // Load asteroid defense game loop
+        };
+    </script>
+</body>
+</html>
