@@ -35,12 +35,19 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
         fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers })
       ]);
 
-      if (rolesRes.ok) guildRoles = await rolesRes.json();
+      if (rolesRes.ok) {
+        guildRoles = await rolesRes.json();
+      } else {
+        console.error(`Failed to fetch roles (${rolesRes.status}):`, await rolesRes.text());
+      }
+
       if (channelsRes.ok) {
         const channels = await channelsRes.json();
         if (Array.isArray(channels)) {
           channels.forEach(ch => guildChannelsMap.set(ch.id, ch.name));
         }
+      } else {
+        console.error(`Failed to fetch channels (${channelsRes.status}):`, await channelsRes.text());
       }
     } catch (e) {
       console.warn("Failed to fetch guild roles or channels metadata:", e);
@@ -49,26 +56,48 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
   const roleMap = new Map(guildRoles.map(r => [r.id, r]));
 
+  // Cache to avoid spamming the member endpoint for repeat authors
+  const memberRolesCache = new Map();
+
+  // Helper to resolve user role IDs (uses cached API lookup if msg.member is missing)
+  const getUserRoles = async (userId, msgMember) => {
+    if (msgMember?.roles && Array.isArray(msgMember.roles)) {
+      return msgMember.roles;
+    }
+    if (memberRolesCache.has(userId)) {
+      return memberRolesCache.get(userId);
+    }
+    if (!guildId || !userId) return [];
+
+    try {
+      const res = await fetch(
+        `https://discord.com/api/v10/guilds/${guildId}/members/${userId}`,
+        { headers }
+      );
+      if (res.ok) {
+        const memberData = await res.json();
+        const roles = memberData.roles || [];
+        memberRolesCache.set(userId, roles);
+        return roles;
+      }
+    } catch (err) {
+      console.warn(`Failed to fetch member details for user ${userId}:`, err);
+    }
+
+    memberRolesCache.set(userId, []);
+    return [];
+  };
+
+  // Sort guild roles once descending by position
+  const sortedGuildRoles = [...guildRoles].sort((a, b) => b.position - a.position);
+
   // Helper function to find highest role name from raw role IDs
   const getHighestRole = (memberRoles = []) => {
-    if (!guildRoles.length) return "Member2";
+    if (!sortedGuildRoles.length) return "Member";
 
-    // 1. Sort guild roles descending by position (highest position first)
-    // If positions are equal, place managed/hoisted roles higher
-    const sortedGuildRoles = [...guildRoles].sort((a, b) => {
-      if (b.position !== a.position) {
-        return b.position - a.position;
-      }
-      return 0;
-    });
-
-    // 2. Filter down to only roles the member actually has
     const userRoleIds = new Set(Array.isArray(memberRoles) ? memberRoles : []);
-
-    // 3. Find the highest matching role (excluding @everyone if they have other roles)
     const highest = sortedGuildRoles.find((role) => userRoleIds.has(role.id));
 
-    // 4. Return the role name, or fallback if none match
     if (highest && highest.name !== "@everyone") {
       return highest.name;
     }
@@ -80,6 +109,10 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
   for (const msg of rawMessages) {
     const content = msg.content || "";
+    const authorId = msg.author?.id;
+
+    // Retrieve roles directly from msg.member or fallback to member API fetch
+    const userRoleIds = await getUserRoles(authorId, msg.member);
 
     const mentionsMetadata = {
       users: [],
@@ -129,13 +162,12 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Discord Avatar Construction (Safe modulo calculation without BigInt hazards)
+    // Discord Avatar Construction
     let avatarUrl;
     if (msg.author && msg.author.avatar) {
       const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
       avatarUrl = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.${ext}?size=128`;
     } else {
-      const lastDigits = parseInt((msg.author?.id || "0").slice(-4), 10);
       const defaultIndex = msg.author?.id 
         ? Number((BigInt(msg.author.id) >> 22n) % 6n) 
         : 0;
@@ -159,7 +191,7 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
         displayName: msg.member?.nick || msg.author?.global_name || msg.author?.username || "Unknown User",
         avatarUrl: avatarUrl
       },
-      highestRank: getHighestRole(msg.member?.roles),
+      highestRank: getHighestRole(userRoleIds),
       mentions: mentionsMetadata,
       embeds: msg.embeds || [],
       pictures: [...imageAttachments, ...embedImages],
