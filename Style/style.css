@@ -456,6 +456,7 @@ li { margin-bottom: var(--sp-2); }
 /* Desktop: glass pill links */
 @media (min-width: 861px) {
   .nav-links {
+    flex-wrap: nowrap; /* Prevent sudden multi-row height jumps */
     padding: 0.25rem;
     border-radius: 999px;
     border: 1px solid rgba(255,255,255,0.06);
@@ -465,10 +466,11 @@ li { margin-bottom: var(--sp-2); }
   }
 
   .nav-links a {
+    white-space: nowrap; /* Keeps link text on one line */
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    padding: 0.55rem 0.8rem;
+    padding: 0.45rem 0.65rem; /* Slightly tighter padding for tighter screens */
     border-radius: 999px;
     background: rgba(18, 8, 10, 0.68);
     backdrop-filter: blur(14px) saturate(115%);
@@ -478,14 +480,6 @@ li { margin-bottom: var(--sp-2); }
     transition: color 360ms var(--ease), background 360ms var(--ease),
                 border-color 360ms var(--ease), transform 360ms var(--ease);
   }
-
-  .nav-links a:hover {
-    color: var(--text);
-    background: rgba(200,16,46,0.14);
-    border-color: rgba(255,215,0,0.25);
-    transform: translateY(-2px);
-  }
-
   .nav-links a.active {
     color: var(--gold);
     text-shadow: 0 0 12px rgba(255,215,0,0.25);
