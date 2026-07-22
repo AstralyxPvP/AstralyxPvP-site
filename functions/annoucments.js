@@ -30,50 +30,44 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
   if (guildId) {
     try {
-      const [rolesRes, channelsRes] = await Promise.all([
+      // Fetch Roles, Guild Channels, and Active Guild Threads in parallel
+      const [rolesRes, channelsRes, threadsRes] = await Promise.all([
         fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, { headers }),
-        fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers })
+        fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers }),
+        fetch(`https://discord.com/api/v10/guilds/${guildId}/threads/active`, { headers })
       ]);
 
       if (rolesRes.ok) {
         guildRoles = await rolesRes.json();
-      } else {
-        console.error(`Failed to fetch roles (${rolesRes.status}):`, await rolesRes.text());
       }
 
-      if (channelsRes.ok) {
-        const channels = await channelsRes.json();
-        if (Array.isArray(channels)) {
-          channels.forEach(ch => guildChannelsMap.set(ch.id, ch.name));
-        }
-      } else {
-        console.error(`Failed to fetch channels (${channelsRes.status}):`, await channelsRes.text());
-      }
+      const rawChannels = channelsRes.ok ? await channelsRes.json() : [];
+      const rawThreads = threadsRes.ok ? ((await threadsRes.json()).threads || []) : [];
+
+      // Populate channels & threads into lookup map
+      [...rawChannels, ...rawThreads].forEach(ch => {
+        guildChannelsMap.set(ch.id, {
+          id: ch.id,
+          name: ch.name,
+          type: ch.type, // 0: Text, 5: Announcement, 10/11/12: Threads
+          parentId: ch.parent_id || null
+        });
+      });
     } catch (e) {
-      console.warn("Failed to fetch guild roles or channels metadata:", e);
+      console.warn("Failed to fetch guild metadata:", e);
     }
   }
 
   const roleMap = new Map(guildRoles.map(r => [r.id, r]));
-
-  // Cache to avoid spamming the member endpoint for repeat authors
   const memberRolesCache = new Map();
 
-  // Helper to resolve user role IDs (uses cached API lookup if msg.member is missing)
   const getUserRoles = async (userId, msgMember) => {
-    if (msgMember?.roles && Array.isArray(msgMember.roles)) {
-      return msgMember.roles;
-    }
-    if (memberRolesCache.has(userId)) {
-      return memberRolesCache.get(userId);
-    }
+    if (msgMember?.roles && Array.isArray(msgMember.roles)) return msgMember.roles;
+    if (memberRolesCache.has(userId)) return memberRolesCache.get(userId);
     if (!guildId || !userId) return [];
 
     try {
-      const res = await fetch(
-        `https://discord.com/api/v10/guilds/${guildId}/members/${userId}`,
-        { headers }
-      );
+      const res = await fetch(`https://discord.com/api/v10/guilds/${guildId}/members/${userId}`, { headers });
       if (res.ok) {
         const memberData = await res.json();
         const roles = memberData.roles || [];
@@ -88,21 +82,33 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
     return [];
   };
 
-  // Sort guild roles once descending by position
   const sortedGuildRoles = [...guildRoles].sort((a, b) => b.position - a.position);
 
-  // Helper function to find highest role name from raw role IDs
   const getHighestRole = (memberRoles = []) => {
     if (!sortedGuildRoles.length) return "Member";
-
     const userRoleIds = new Set(Array.isArray(memberRoles) ? memberRoles : []);
     const highest = sortedGuildRoles.find((role) => userRoleIds.has(role.id));
+    return (highest && highest.name !== "@everyone") ? highest.name : "Member";
+  };
 
-    if (highest && highest.name !== "@everyone") {
-      return highest.name;
+  // Helper to format channel metadata for frontend
+  const getChannelMetadata = (chId) => {
+    const ch = guildChannelsMap.get(chId);
+    if (!ch) return { id: chId, name: "channel", isThread: false, parentName: null, type: 0 };
+
+    const isThread = [10, 11, 12].includes(ch.type) || Boolean(ch.parentId && guildChannelsMap.has(ch.parentId) && [0, 5].includes(guildChannelsMap.get(ch.parentId)?.type));
+    let parentName = null;
+    if (isThread && ch.parentId) {
+      parentName = guildChannelsMap.get(ch.parentId)?.name || null;
     }
 
-    return "Member";
+    return {
+      id: ch.id,
+      name: ch.name,
+      type: ch.type,
+      isThread: isThread,
+      parentName: parentName
+    };
   };
 
   const outputDictionary = {};
@@ -110,8 +116,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
   for (const msg of rawMessages) {
     const content = msg.content || "";
     const authorId = msg.author?.id;
-
-    // Retrieve roles directly from msg.member or fallback to member API fetch
     const userRoleIds = await getUserRoles(authorId, msg.member);
 
     const mentionsMetadata = {
@@ -120,24 +124,29 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       channels: []
     };
 
-    // Channel Mentions (<#123456789>)
+    // Extract raw channel/thread mentions (<#123456789>)
     const channelMatches = [...content.matchAll(/<#(\d+)>/g)];
     const processedChannelIds = new Set();
     for (const match of channelMatches) {
       const chId = match[1];
       if (!processedChannelIds.has(chId)) {
         processedChannelIds.add(chId);
-        const name = guildChannelsMap.get(chId) || "channel";
-        mentionsMetadata.channels.push({
-          id: chId,
-          name: `#${name}`,
-          color: "#3897f0"
-        });
+        mentionsMetadata.channels.push(getChannelMetadata(chId));
       }
     }
 
-    // User Mentions (<@123456789>)
-    if (Array.isArray(msg.mentions) && msg.mentions.length > 0) {
+    // Extract channels from Message Links (https://discord.com/channels/.../CHANNEL_ID/...)
+    const msgLinkMatches = [...content.matchAll(/https:\/\/(?:canary\.|ptb\.)?discord\.com\/channels\/(?:\d+|@me)\/(\d+)\/\d+/g)];
+    for (const match of msgLinkMatches) {
+      const chId = match[1];
+      if (!processedChannelIds.has(chId)) {
+        processedChannelIds.add(chId);
+        mentionsMetadata.channels.push(getChannelMetadata(chId));
+      }
+    }
+
+    // User Mentions
+    if (Array.isArray(msg.mentions)) {
       msg.mentions.forEach(u => {
         mentionsMetadata.users.push({
           id: u.id,
@@ -148,8 +157,8 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Role Mentions (<@&123456789>)
-    if (Array.isArray(msg.mention_roles) && msg.mention_roles.length > 0) {
+    // Role Mentions
+    if (Array.isArray(msg.mention_roles)) {
       msg.mention_roles.forEach(roleId => {
         const roleData = roleMap.get(roleId);
         if (roleData) {
@@ -162,15 +171,13 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Discord Avatar Construction
+    // Avatar Construction
     let avatarUrl;
-    if (msg.author && msg.author.avatar) {
+    if (msg.author?.avatar) {
       const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
       avatarUrl = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.${ext}?size=128`;
     } else {
-      const defaultIndex = msg.author?.id 
-        ? Number((BigInt(msg.author.id) >> 22n) % 6n) 
-        : 0;
+      const defaultIndex = msg.author?.id ? Number((BigInt(msg.author.id) >> 22n) % 6n) : 0;
       avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
     }
 

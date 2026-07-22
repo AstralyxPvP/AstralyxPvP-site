@@ -11,23 +11,19 @@
   <link rel="stylesheet" href="Style/style.css">
   
   <style>
-    /* Container & Forum Grid */
     .announcements-container {
       max-width: 1100px;
       margin: 40px auto;
       padding: 0 20px;
     }
     
-    /* Forum grid layout: Left to Right, 2 columns */
     .forum-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
     }
     @media (max-width: 768px) {
-      .forum-grid {
-        grid-template-columns: 1fr;
-      }
+      .forum-grid { grid-template-columns: 1fr; }
     }
 
     .announcement-card {
@@ -60,20 +56,9 @@
       object-fit: cover;
       background: #2b2d31;
     }
-    .user-info {
-      display: flex;
-      flex-direction: column;
-    }
-    .username-row {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .username {
-      font-weight: 700;
-      font-size: 0.95rem;
-    }
+    .user-info { display: flex; flex-direction: column; }
+    .username-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .username { font-weight: 700; font-size: 0.95rem; }
     .badge-role {
       font-size: 0.7rem;
       padding: 2px 6px;
@@ -83,11 +68,7 @@
       font-weight: 600;
       text-transform: uppercase;
     }
-    .timestamp {
-      font-size: 0.72rem;
-      color: #949ba4;
-      margin-top: 2px;
-    }
+    .timestamp { font-size: 0.72rem; color: #949ba4; margin-top: 2px; }
     .announcement-body {
       font-size: 0.92rem;
       line-height: 1.45;
@@ -105,13 +86,7 @@
       height: 40px;
       background: linear-gradient(transparent, #1e1f22);
     }
-    .read-more-tag {
-      color: #5865f2;
-      font-weight: 600;
-      font-size: 0.8rem;
-      margin-top: 10px;
-      display: inline-block;
-    }
+    .read-more-tag { color: #5865f2; font-weight: 600; font-size: 0.8rem; margin-top: 10px; display: inline-block; }
     .media-preview img {
       max-width: 100%;
       max-height: 180px;
@@ -120,13 +95,17 @@
       object-fit: cover;
     }
 
-    /* Discord Markdown Formatting Rules */
-    .discord-h3 { font-size: 1.15em; font-weight: bold; margin: 8px 0 4px; color: #fff; }
+    /* Discord Markdown Rules */
+    .discord-h1 { font-size: 1.45em; font-weight: bold; margin: 12px 0 6px; color: #fff; border-bottom: 1px solid #35363c; padding-bottom: 4px; }
+    .discord-h2 { font-size: 1.28em; font-weight: bold; margin: 10px 0 5px; color: #fff; }
+    .discord-h3 { font-size: 1.12em; font-weight: bold; margin: 8px 0 4px; color: #fff; }
     .discord-bold { font-weight: bold; }
     .discord-italic { font-style: italic; }
     .discord-underline { text-decoration: underline; }
     .discord-strike { text-decoration: line-through; }
     .discord-code { background: #2b2d31; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
+    .discord-link { color: #00a8fc; text-decoration: none; }
+    .discord-link:hover { text-decoration: underline; }
 
     /* Mention Bubbles */
     .mention-bubble {
@@ -136,14 +115,44 @@
       font-size: 0.85em;
       display: inline-block;
       margin: 0 1px;
+      text-decoration: none;
     }
-    .mention-channel, .mention-user {
-      background: rgba(88, 101, 242, 0.15);
+    .mention-channel, .mention-user { background: rgba(88, 101, 242, 0.15); color: #c9cdfb; }
+    .mention-everyone { background: rgba(240, 71, 71, 0.15); color: #f04747; }
+
+    /* Discord Message Link Pill Styling (Matches Images 1 & 2) */
+    .discord-msg-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: #2b2d38;
       color: #c9cdfb;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.85em;
+      font-weight: 600;
+      text-decoration: none;
+      vertical-align: middle;
+      margin: 0 2px;
+      transition: background 0.15s ease, color 0.15s ease;
     }
-    .mention-everyone {
-      background: rgba(240, 71, 71, 0.15);
-      color: #f04747;
+    .discord-msg-link:hover {
+      background: #363947;
+      color: #ffffff;
+    }
+    .discord-msg-link .link-chevron {
+      color: #949ba4;
+      font-weight: 400;
+      margin: 0 1px;
+    }
+    .discord-msg-link svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+    .discord-msg-link .bubble-icon {
+      color: #8a9cf8;
     }
 
     /* Modal Styling */
@@ -151,35 +160,22 @@
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-      opacity: 0;
-      pointer-events: none;
+      display: flex; justify-content: center; align-items: center;
+      z-index: 9999; opacity: 0; pointer-events: none;
       transition: opacity 0.2s ease;
     }
-    .modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
+    .modal-overlay.active { opacity: 1; pointer-events: auto; }
     .modal-content {
       background: #313338;
       border-radius: 8px;
-      width: 90%;
-      max-width: 700px;
-      max-height: 85vh;
-      overflow-y: auto;
-      padding: 24px;
-      color: #dbdee1;
+      width: 90%; max-width: 700px; max-height: 85vh;
+      overflow-y: auto; padding: 24px; color: #dbdee1;
       position: relative;
     }
     .modal-close {
-      position: absolute;
-      top: 14px; right: 18px;
+      position: absolute; top: 14px; right: 18px;
       background: none; border: none;
-      color: #b5bac1; font-size: 1.5rem;
-      cursor: pointer;
+      color: #b5bac1; font-size: 1.5rem; cursor: pointer;
     }
   </style>
 
@@ -259,23 +255,66 @@
 <script>
   let announcementsData = {};
 
-  // Parse Discord Markdown & Mentions
-  function parseDiscordFormatting(content, mentions) {
-    let html = content;
+  // Discord SVG Icons
+  const SVG_BULLHORN = `<svg viewBox="0 0 24 24"><path d="M3.5 10c-.83 0-1.5.67-1.5 1.5v1c0 .83.67 1.5 1.5 1.5H5l4 3.5V6.5L5 10H3.5zm12.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
+  const SVG_HASHTAG = `<svg viewBox="0 0 24 24"><path d="M5.886 21 7.05 14.5H2l.363-2h5.051l1.103-6H3.466l.363-2h5.152l1.163-6h2.099l-1.163 6h6.077l1.163-6h2.099l-1.163 6H24l-.363 2h-5.051l-1.103 6h5.051l-.363 2h-5.152l-1.163 6h-2.099l1.163-6H8.892l-1.163 6H5.886Zm5.312-8.5h6.077l1.103-6h-6.077l-1.103 6Z"/></svg>`;
+  const SVG_THREAD = `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.18-9 7.1 0 2.14 1.22 4.05 3.12 5.34-.23.82-.82 2.15-2.12 3.18 0 0 2.22.18 4.41-1.32.12.02.24.03.37.03 4.97 0 9-3.18 9-7.1S16.97 3 12 3z"/></svg>`;
+  const SVG_BUBBLE = `<svg class="bubble-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.141 2 11.25c0 2.44 1.033 4.654 2.73 6.27-.406 1.488-1.554 3.16-1.572 3.185a.5.5 0 0 0 .548.78c2.47-.643 4.542-1.851 5.61-2.541A10.87 10.87 0 0 0 12 20.5c5.523 0 10-4.141 10-9.25S17.523 2 12 2z"/></svg>`;
 
-    // 1. Mentions (@everyone, @here)
+  // Parse Discord Formatting
+  function parseDiscordFormatting(content, mentions = {}) {
+    let html = content || "";
+
+    // 1. Masked Links [text](url)
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="discord-link">$1</a>');
+
+    // 2. Discord Message & Thread Links (Matches Images 1 & 2)
+    const msgLinkRegex = /https:\/\/(?:canary\.|ptb\.)?discord\.com\/channels\/(?:\d+|@me)\/(\d+)\/(\d+)/g;
+    html = html.replace(msgLinkRegex, (match, channelId) => {
+      const channel = mentions.channels ? mentions.channels.find(c => c.id === channelId) : null;
+
+      if (channel && channel.isThread) {
+        // IMAGE 2 STYLE: [Thread Icon] [Parent Channel] › [Bubble Icon] [Thread Name]
+        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
+          ${SVG_THREAD}
+          <span>${channel.parentName || 'channel'}</span>
+          <span class="link-chevron">›</span>
+          ${SVG_BUBBLE}
+          <span>${channel.name}</span>
+        </a>`;
+      } else if (channel) {
+        // IMAGE 1 STYLE: [Channel/Announcement Icon] [Channel Name] › [Bubble Icon]
+        const icon = channel.type === 5 ? SVG_BULLHORN : SVG_HASHTAG;
+        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
+          ${icon}
+          <span>${channel.name}</span>
+          <span class="link-chevron">›</span>
+          ${SVG_BUBBLE}
+        </a>`;
+      } else {
+        // Fallback Link
+        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
+          ${SVG_HASHTAG}
+          <span>channel</span>
+          <span class="link-chevron">›</span>
+          ${SVG_BUBBLE}
+        </a>`;
+      }
+    });
+
+    // 3. Mentions (@everyone, @here)
     html = html.replace(/@everyone/g, `<span class="mention-bubble mention-everyone">@everyone</span>`);
     html = html.replace(/@here/g, `<span class="mention-bubble mention-everyone">@here</span>`);
 
-    // 2. Channel mentions
+    // 4. Channel mentions (<#123456789>)
     if (mentions.channels) {
       mentions.channels.forEach(ch => {
         const regex = new RegExp(`<#${ch.id}>`, 'g');
-        html = html.replace(regex, `<span class="mention-bubble mention-channel">${ch.name}</span>`);
+        html = html.replace(regex, `<span class="mention-bubble mention-channel">#${ch.name}</span>`);
       });
     }
 
-    // 3. User mentions
+    // 5. User mentions
     if (mentions.users) {
       mentions.users.forEach(u => {
         const regex = new RegExp(`<@!?${u.id}>`, 'g');
@@ -283,7 +322,7 @@
       });
     }
 
-    // 4. Role mentions
+    // 6. Role mentions
     if (mentions.roles) {
       mentions.roles.forEach(r => {
         const regex = new RegExp(`<@&${r.id}>`, 'g');
@@ -292,8 +331,12 @@
       });
     }
 
-    // 5. Discord Markdown formatting
+    // 7. Discord Headers (#, ##, ###)
     html = html.replace(/^### (.*$)/gim, '<div class="discord-h3">$1</div>');
+    html = html.replace(/^## (.*$)/gim, '<div class="discord-h2">$1</div>');
+    html = html.replace(/^# (.*$)/gim, '<div class="discord-h1">$1</div>');
+
+    // 8. Discord Inline Formatting
     html = html.replace(/\*\*(.*?)\*\*/g, '<span class="discord-bold">$1</span>');
     html = html.replace(/\*(.*?)\*/g, '<span class="discord-italic">$1</span>');
     html = html.replace(/__(.*?)__/g, '<span class="discord-underline">$1</span>');
@@ -322,8 +365,6 @@
         const msg = announcementsData[id];
         const formattedDate = new Date(msg.timestamp).toLocaleString();
         const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
-        
-        // Truncation check (if content > 150 chars or contains multiple lines)
         const isLongText = msg.content.length > 150 || (msg.content.match(/\n/g) || []).length > 2;
 
         const card = document.createElement('div');
