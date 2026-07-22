@@ -71,7 +71,7 @@
    ============================================================ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scrollbar-gutter: stable; overflow-y: scroll;}
 
 img { user-select: none; -webkit-user-drag: none; display: block; max-width: 100%; }
 
