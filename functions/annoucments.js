@@ -22,29 +22,35 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
   }
 
   const rawMessages = await messagesResponse.json();
-  if (rawMessages.length === 0) return {};
+  if (!Array.isArray(rawMessages) || rawMessages.length === 0) return {};
 
   const guildId = rawMessages[0].guild_id;
   let guildRoles = [];
   let guildChannelsMap = new Map();
 
   if (guildId) {
-    const [rolesRes, channelsRes] = await Promise.all([
-      fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, { headers }),
-      fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers })
-    ]);
+    try {
+      const [rolesRes, channelsRes] = await Promise.all([
+        fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, { headers }),
+        fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers })
+      ]);
 
-    if (rolesRes.ok) guildRoles = await rolesRes.json();
-    if (channelsRes.ok) {
-      const channels = await channelsRes.json();
-      channels.forEach(ch => guildChannelsMap.set(ch.id, ch.name));
+      if (rolesRes.ok) guildRoles = await rolesRes.json();
+      if (channelsRes.ok) {
+        const channels = await channelsRes.json();
+        if (Array.isArray(channels)) {
+          channels.forEach(ch => guildChannelsMap.set(ch.id, ch.name));
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to fetch guild roles or channels metadata:", e);
     }
   }
 
   const roleMap = new Map(guildRoles.map(r => [r.id, r]));
 
   const getHighestRole = (memberRoles = []) => {
-    if (!memberRoles || !memberRoles.length || !guildRoles.length) return "Member";
+    if (!Array.isArray(memberRoles) || !memberRoles.length || !guildRoles.length) return "Member";
     const sortedGuildRoles = [...guildRoles].sort((a, b) => b.position - a.position);
     const highest = sortedGuildRoles.find((role) => memberRoles.includes(role.id));
     return highest ? highest.name : "Member";
@@ -61,7 +67,7 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       channels: []
     };
 
-    // Channel Mentions
+    // Channel Mentions (<#123456789>)
     const channelMatches = [...content.matchAll(/<#(\d+)>/g)];
     const processedChannelIds = new Set();
     for (const match of channelMatches) {
@@ -77,8 +83,8 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       }
     }
 
-    // User Mentions
-    if (msg.mentions && msg.mentions.length > 0) {
+    // User Mentions (<@123456789>)
+    if (Array.isArray(msg.mentions) && msg.mentions.length > 0) {
       msg.mentions.forEach(u => {
         mentionsMetadata.users.push({
           id: u.id,
@@ -89,8 +95,8 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Role Mentions
-    if (msg.mention_roles && msg.mention_roles.length > 0) {
+    // Role Mentions (<@&123456789>)
+    if (Array.isArray(msg.mention_roles) && msg.mention_roles.length > 0) {
       msg.mention_roles.forEach(roleId => {
         const roleData = roleMap.get(roleId);
         if (roleData) {
@@ -103,13 +109,14 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Build real Discord Avatar URL
+    // Discord Avatar Construction (Safe modulo calculation without BigInt hazards)
     let avatarUrl;
-    if (msg.author.avatar) {
+    if (msg.author && msg.author.avatar) {
       const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
       avatarUrl = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.${ext}?size=128`;
     } else {
-      const defaultIndex = BigInt(msg.author.id) % 5n;
+      const lastDigits = parseInt((msg.author?.id || "0").slice(-4), 10);
+      const defaultIndex = isNaN(lastDigits) ? 0 : lastDigits % 5;
       avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
     }
 
@@ -125,9 +132,9 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       content: content,
       timestamp: msg.timestamp,
       user: {
-        id: msg.author.id,
-        username: msg.author.username,
-        displayName: msg.member?.nick || msg.author.global_name || msg.author.username,
+        id: msg.author?.id || "",
+        username: msg.author?.username || "Unknown",
+        displayName: msg.member?.nick || msg.author?.global_name || msg.author?.username || "Unknown User",
         avatarUrl: avatarUrl
       },
       highestRank: getHighestRole(msg.member?.roles),
@@ -162,7 +169,7 @@ export async function onRequestGet(context) {
     });
   } catch (err) {
     return new Response(
-      JSON.stringify({ error: err.message }),
+      JSON.stringify({ error: err.message || "An unexpected error occurred." }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
