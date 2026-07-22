@@ -2,20 +2,16 @@
  * Helper to convert decimal color to Hex (#RRGGBB)
  */
 function decimalToHex(decimalColor) {
-  if (!decimalColor) return "#5865F2"; // Default Discord blurple
+  if (!decimalColor) return "#5865F2";
   return `#${decimalColor.toString(16).padStart(6, '0')}`;
 }
 
-/**
- * Fetch and parse channel content with full mention metadata
- */
 async function fetchChannelContent(channelId, botKey, limit = 50) {
   const headers = {
     'Authorization': `Bot ${botKey}`,
     'Content-Type': 'application/json',
   };
 
-  // 1. Fetch channel messages via Discord REST API
   const messagesResponse = await fetch(
     `https://discord.com/api/v10/channels/${channelId}/messages?limit=${limit}`,
     { headers }
@@ -29,8 +25,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
   if (rawMessages.length === 0) return {};
 
   const guildId = rawMessages[0].guild_id;
-
-  // 2. Fetch Guild Roles & Channels in parallel
   let guildRoles = [];
   let guildChannelsMap = new Map();
 
@@ -49,56 +43,53 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
   const roleMap = new Map(guildRoles.map(r => [r.id, r]));
 
-  // Helper function to resolve highest role name from role IDs
   const getHighestRole = (memberRoles = []) => {
-    if (!memberRoles.length || !guildRoles.length) return "@everyone";
+    if (!memberRoles || !memberRoles.length || !guildRoles.length) return "Member";
     const sortedGuildRoles = [...guildRoles].sort((a, b) => b.position - a.position);
     const highest = sortedGuildRoles.find((role) => memberRoles.includes(role.id));
-    return highest ? highest.name : "@everyone";
+    return highest ? highest.name : "Member";
   };
 
   const outputDictionary = {};
 
-  // 3. Process every message
   for (const msg of rawMessages) {
     const content = msg.content || "";
 
     const mentionsMetadata = {
       users: [],
       roles: [],
-      channels: [] // Extracted channels for blue bubble rendering
+      channels: []
     };
 
-    // Extract all channel mentions (<#channel_id>)
+    // Channel Mentions
     const channelMatches = [...content.matchAll(/<#(\d+)>/g)];
     const processedChannelIds = new Set();
-
     for (const match of channelMatches) {
       const chId = match[1];
       if (!processedChannelIds.has(chId)) {
         processedChannelIds.add(chId);
-        const name = guildChannelsMap.get(chId) || "unknown-channel";
+        const name = guildChannelsMap.get(chId) || "channel";
         mentionsMetadata.channels.push({
           id: chId,
           name: `#${name}`,
-          color: "#3897f0" // Blue color indicator for frontend bubble styling
+          color: "#3897f0"
         });
       }
     }
 
-    // Process user mentions (<@123> or <@!123>)
+    // User Mentions
     if (msg.mentions && msg.mentions.length > 0) {
       msg.mentions.forEach(u => {
         mentionsMetadata.users.push({
           id: u.id,
           username: u.username,
           displayName: u.global_name || u.username,
-          color: "#3897f0" // User color (blue)
+          color: "#3897f0"
         });
       });
     }
 
-    // Process role mentions (<@&123>)
+    // Role Mentions
     if (msg.mention_roles && msg.mention_roles.length > 0) {
       msg.mention_roles.forEach(roleId => {
         const roleData = roleMap.get(roleId);
@@ -112,7 +103,16 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Extract images
+    // Build real Discord Avatar URL
+    let avatarUrl;
+    if (msg.author.avatar) {
+      const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
+      avatarUrl = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.${ext}?size=128`;
+    } else {
+      const defaultIndex = BigInt(msg.author.id) % 5n;
+      avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
+    }
+
     const imageAttachments = (msg.attachments || [])
       .filter((att) => att.content_type && att.content_type.startsWith('image/'))
       .map((att) => att.url);
@@ -121,14 +121,14 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       .filter((embed) => embed.image && embed.image.url)
       .map((embed) => embed.image.url);
 
-    // Structure response
     outputDictionary[msg.id] = {
-      content: content, // Preserves <#1477033205017346259> intact
+      content: content,
       timestamp: msg.timestamp,
       user: {
         id: msg.author.id,
         username: msg.author.username,
         displayName: msg.member?.nick || msg.author.global_name || msg.author.username,
+        avatarUrl: avatarUrl
       },
       highestRank: getHighestRole(msg.member?.roles),
       mentions: mentionsMetadata,

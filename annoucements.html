@@ -11,22 +11,36 @@
   <link rel="stylesheet" href="Style/style.css">
   
   <style>
-    /* Discord Feed Styling */
+    /* Container & Forum Grid */
     .announcements-container {
-      max-width: 850px;
+      max-width: 1100px;
       margin: 40px auto;
       padding: 0 20px;
     }
+    
+    /* Forum grid layout: Left to Right, 2 columns */
+    .forum-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 768px) {
+      .forum-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
     .announcement-card {
       background: #1e1f22;
       border-radius: 8px;
       padding: 18px;
-      margin-bottom: 20px;
       border: 1px solid #2b2d31;
       color: #dcddde;
       font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
       box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
       transition: transform 0.2s, border-color 0.2s;
     }
     .announcement-card:hover {
@@ -37,13 +51,14 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .avatar {
       width: 44px;
       height: 44px;
       border-radius: 50%;
-      background: #5865f2;
+      object-fit: cover;
+      background: #2b2d31;
     }
     .user-info {
       display: flex;
@@ -53,32 +68,35 @@
       display: flex;
       align-items: center;
       gap: 8px;
+      flex-wrap: wrap;
     }
     .username {
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
     .badge-role {
-      font-size: 0.72rem;
+      font-size: 0.7rem;
       padding: 2px 6px;
       border-radius: 4px;
-      background: rgba(255,255,255,0.08);
+      background: rgba(88, 101, 242, 0.2);
+      color: #5865f2;
       font-weight: 600;
       text-transform: uppercase;
     }
     .timestamp {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       color: #949ba4;
       margin-top: 2px;
     }
     .announcement-body {
-      font-size: 0.95rem;
+      font-size: 0.92rem;
       line-height: 1.45;
-      max-height: 120px;
+      max-height: 110px;
       overflow: hidden;
       position: relative;
       word-break: break-word;
       white-space: pre-wrap;
+      flex-grow: 1;
     }
     .announcement-body.truncated::after {
       content: "";
@@ -90,23 +108,32 @@
     .read-more-tag {
       color: #5865f2;
       font-weight: 600;
-      font-size: 0.85rem;
-      margin-top: 6px;
+      font-size: 0.8rem;
+      margin-top: 10px;
       display: inline-block;
     }
     .media-preview img {
       max-width: 100%;
-      max-height: 300px;
+      max-height: 180px;
       border-radius: 6px;
       margin-top: 10px;
+      object-fit: cover;
     }
+
+    /* Discord Markdown Formatting Rules */
+    .discord-h3 { font-size: 1.15em; font-weight: bold; margin: 8px 0 4px; color: #fff; }
+    .discord-bold { font-weight: bold; }
+    .discord-italic { font-style: italic; }
+    .discord-underline { text-decoration: underline; }
+    .discord-strike { text-decoration: line-through; }
+    .discord-code { background: #2b2d31; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
 
     /* Mention Bubbles */
     .mention-bubble {
       padding: 2px 6px;
       border-radius: 4px;
       font-weight: 600;
-      font-size: 0.9em;
+      font-size: 0.85em;
       display: inline-block;
       margin: 0 1px;
     }
@@ -114,8 +141,9 @@
       background: rgba(88, 101, 242, 0.15);
       color: #c9cdfb;
     }
-    .mention-channel:hover, .mention-user:hover {
-      background: rgba(88, 101, 242, 0.3);
+    .mention-everyone {
+      background: rgba(240, 71, 71, 0.15);
+      color: #f04747;
     }
 
     /* Modal Styling */
@@ -189,7 +217,7 @@
   <main class="page-content">
     <div class="announcements-container">
       <h1 style="text-align:center; margin-bottom: 30px;">📢 Server Announcements</h1>
-      <div id="announcements-feed">Loading announcements...</div>
+      <div id="announcements-feed" class="forum-grid">Loading announcements...</div>
     </div>
   </main>
 </div>
@@ -231,11 +259,15 @@
 <script>
   let announcementsData = {};
 
-  // Parse Discord mentions to HTML Bubbles
-  function parseContentToBubbles(content, mentions) {
+  // Parse Discord Markdown & Mentions
+  function parseDiscordFormatting(content, mentions) {
     let html = content;
 
-    // 1. Channel mentions <#123456>
+    // 1. Mentions (@everyone, @here)
+    html = html.replace(/@everyone/g, `<span class="mention-bubble mention-everyone">@everyone</span>`);
+    html = html.replace(/@here/g, `<span class="mention-bubble mention-everyone">@here</span>`);
+
+    // 2. Channel mentions
     if (mentions.channels) {
       mentions.channels.forEach(ch => {
         const regex = new RegExp(`<#${ch.id}>`, 'g');
@@ -243,7 +275,7 @@
       });
     }
 
-    // 2. User mentions <@123456> or <@!123456>
+    // 3. User mentions
     if (mentions.users) {
       mentions.users.forEach(u => {
         const regex = new RegExp(`<@!?${u.id}>`, 'g');
@@ -251,7 +283,7 @@
       });
     }
 
-    // 3. Role mentions <@&123456>
+    // 4. Role mentions
     if (mentions.roles) {
       mentions.roles.forEach(r => {
         const regex = new RegExp(`<@&${r.id}>`, 'g');
@@ -260,10 +292,17 @@
       });
     }
 
+    // 5. Discord Markdown formatting
+    html = html.replace(/^### (.*$)/gim, '<div class="discord-h3">$1</div>');
+    html = html.replace(/\*\*(.*?)\*\*/g, '<span class="discord-bold">$1</span>');
+    html = html.replace(/\*(.*?)\*/g, '<span class="discord-italic">$1</span>');
+    html = html.replace(/__(.*?)__/g, '<span class="discord-underline">$1</span>');
+    html = html.replace(/~~(.*?)~~/g, '<span class="discord-strike">$1</span>');
+    html = html.replace(/`(.*?)`/g, '<code class="discord-code">$1</code>');
+
     return html;
   }
 
-  // Fetch and display announcements
   async function loadAnnouncements() {
     const feed = document.getElementById('announcements-feed');
     try {
@@ -275,15 +314,17 @@
 
       const messageKeys = Object.keys(announcementsData);
       if (messageKeys.length === 0) {
-        feed.innerHTML = '<p style="text-align:center">No announcements found.</p>';
+        feed.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">No announcements found.</p>';
         return;
       }
 
       messageKeys.forEach(id => {
         const msg = announcementsData[id];
         const formattedDate = new Date(msg.timestamp).toLocaleString();
-        const parsedBody = parseContentToBubbles(msg.content, msg.mentions);
-        const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${msg.user.id}`;
+        const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
+        
+        // Truncation check (if content > 150 chars or contains multiple lines)
+        const isLongText = msg.content.length > 150 || (msg.content.match(/\n/g) || []).length > 2;
 
         const card = document.createElement('div');
         card.className = 'announcement-card';
@@ -291,7 +332,7 @@
 
         card.innerHTML = `
           <div class="announcement-header">
-            <img class="avatar" src="${avatarUrl}" alt="${msg.user.displayName}">
+            <img class="avatar" src="${msg.user.avatarUrl}" alt="${msg.user.displayName}" onerror="this.src='https://cdn.discordapp.com/embed/avatars/0.png'">
             <div class="user-info">
               <div class="username-row">
                 <span class="username">${msg.user.displayName}</span>
@@ -300,29 +341,27 @@
               <span class="timestamp">${formattedDate}</span>
             </div>
           </div>
-          <div class="announcement-body truncated">${parsedBody}</div>
-          <span class="read-more-tag">Click to read full announcement →</span>
+          <div class="announcement-body ${isLongText ? 'truncated' : ''}">${parsedBody}</div>
+          ${isLongText ? '<span class="read-more-tag">Click to read full announcement →</span>' : ''}
           ${msg.pictures.length > 0 ? `<div class="media-preview"><img src="${msg.pictures[0]}" /></div>` : ''}
         `;
         feed.appendChild(card);
       });
     } catch (err) {
-      feed.innerHTML = `<p style="color:red; text-align:center">${err.message}</p>`;
+      feed.innerHTML = `<p style="color:red; text-align:center; grid-column: 1/-1;">${err.message}</p>`;
     }
   }
 
-  // Modal logic
   function openModal(id) {
     const msg = announcementsData[id];
     if (!msg) return;
 
     const modalBody = document.getElementById('modalBody');
-    const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${msg.user.id}`;
-    const parsedBody = parseContentToBubbles(msg.content, msg.mentions);
+    const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
 
     modalBody.innerHTML = `
       <div class="announcement-header">
-        <img class="avatar" src="${avatarUrl}" alt="${msg.user.displayName}">
+        <img class="avatar" src="${msg.user.avatarUrl}" alt="${msg.user.displayName}">
         <div class="user-info">
           <div class="username-row">
             <span class="username">${msg.user.displayName}</span>
