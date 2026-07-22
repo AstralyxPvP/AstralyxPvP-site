@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google-site-verification" content="kYWtU-P7VA6R31WMyTMMOKQ2ZHby0qlITXmdnE-xNZA" />
+  <meta name="google-site-verification" content="dwWOJSf9PK5NvguaxcjVUYJCZK2Ehc_ZpdgavYEGgcs" />
+  <meta name="google-site-verification" content="5x4oetuwUCYoInPARiV5ebPUEToLUzxiI1MfjvNc128" />
+  <link rel="canonical" href="https://astralyxpvp.pages.dev" />
+  <meta name="description" content="Official Announcements for AstralyxPvP." />
+  <link rel="stylesheet" href="Style/style.css">
+  
+  <style>
+    /* Discord Feed Styling */
+    .announcements-container {
+      max-width: 850px;
+      margin: 40px auto;
+      padding: 0 20px;
+    }
+    .announcement-card {
+      background: #1e1f22;
+      border-radius: 8px;
+      padding: 18px;
+      margin-bottom: 20px;
+      border: 1px solid #2b2d31;
+      color: #dcddde;
+      font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .announcement-card:hover {
+      border-color: #5865f2;
+      transform: translateY(-2px);
+    }
+    .announcement-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #5865f2;
+    }
+    .user-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .username-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .username {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+    .badge-role {
+      font-size: 0.72rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .timestamp {
+      font-size: 0.75rem;
+      color: #949ba4;
+      margin-top: 2px;
+    }
+    .announcement-body {
+      font-size: 0.95rem;
+      line-height: 1.45;
+      max-height: 120px;
+      overflow: hidden;
+      position: relative;
+      word-break: break-word;
+      white-space: pre-wrap;
+    }
+    .announcement-body.truncated::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 40px;
+      background: linear-gradient(transparent, #1e1f22);
+    }
+    .read-more-tag {
+      color: #5865f2;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      display: inline-block;
+    }
+    .media-preview img {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    /* Mention Bubbles */
+    .mention-bubble {
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+      font-size: 0.9em;
+      display: inline-block;
+      margin: 0 1px;
+    }
+    .mention-channel, .mention-user {
+      background: rgba(88, 101, 242, 0.15);
+      color: #c9cdfb;
+    }
+    .mention-channel:hover, .mention-user:hover {
+      background: rgba(88, 101, 242, 0.3);
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-content {
+      background: #313338;
+      border-radius: 8px;
+      width: 90%;
+      max-width: 700px;
+      max-height: 85vh;
+      overflow-y: auto;
+      padding: 24px;
+      color: #dbdee1;
+      position: relative;
+    }
+    .modal-close {
+      position: absolute;
+      top: 14px; right: 18px;
+      background: none; border: none;
+      color: #b5bac1; font-size: 1.5rem;
+      cursor: pointer;
+    }
+  </style>
+
+  <script>
+    async function loadHead() {
+      try {
+        const response = await fetch('Assets/head.html');
+        const text = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const newNodes = Array.from(doc.head.childNodes);
+        for (const node of newNodes) {
+          if (node.tagName === 'SCRIPT') {
+            const script = document.createElement('script');
+            Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
+            script.textContent = node.textContent;
+            document.head.appendChild(script);
+          } else {
+            document.head.appendChild(node);
+          }
+        }
+      } catch (err) {
+        console.error('Failed to load head:', err);
+      }
+    }
+    loadHead();
+  </script>
+</head>
+
+<body>
+<div class="page-enter">
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="page-content">
+    <div class="announcements-container">
+      <h1 style="text-align:center; margin-bottom: 30px;">📢 Server Announcements</h1>
+      <div id="announcements-feed">Loading announcements...</div>
+    </div>
+  </main>
+</div>
+
+<!-- Modal Dialog -->
+<div class="modal-overlay" id="announcementModal" onclick="closeModal(event)">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<div id="footer"></div>
+
+<button id="backToTop" onclick="scrollToTop()" title="Back to top" aria-label="Back to top">
+  <i class="fa-solid fa-arrow-up"></i>
+</button>
+
+<button id="chatWidgetBtn" onclick="toggleChatDock()" title="Chat with AstralyxAI">
+  <i class="fa-solid fa-comments"></i>
+</button>
+
+<div id="chatDock">
+  <div class="chat-dock-header">
+    <span>AstralyxAI Assistant</span>
+    <button onclick="toggleChatDock()" class="chat-close-btn">&times;</button>
+  </div>
+  <iframe
+    src="/astralyxai"
+    class="chat-dock-iframe"
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+    sandbox="allow-scripts allow-same-origin allow-forms allow-modals"
+    title="Astralyx AI Chat"
+  ></iframe>
+</div>
+
+<script src="Script/script.js"></script>
+
+<script>
+  let announcementsData = {};
+
+  // Parse Discord mentions to HTML Bubbles
+  function parseContentToBubbles(content, mentions) {
+    let html = content;
+
+    // 1. Channel mentions <#123456>
+    if (mentions.channels) {
+      mentions.channels.forEach(ch => {
+        const regex = new RegExp(`<#${ch.id}>`, 'g');
+        html = html.replace(regex, `<span class="mention-bubble mention-channel">${ch.name}</span>`);
+      });
+    }
+
+    // 2. User mentions <@123456> or <@!123456>
+    if (mentions.users) {
+      mentions.users.forEach(u => {
+        const regex = new RegExp(`<@!?${u.id}>`, 'g');
+        html = html.replace(regex, `<span class="mention-bubble mention-user" style="color:${u.color}">@${u.displayName}</span>`);
+      });
+    }
+
+    // 3. Role mentions <@&123456>
+    if (mentions.roles) {
+      mentions.roles.forEach(r => {
+        const regex = new RegExp(`<@&${r.id}>`, 'g');
+        const bg = r.color ? `${r.color}22` : 'rgba(88,101,242,0.15)';
+        html = html.replace(regex, `<span class="mention-bubble" style="background:${bg}; color:${r.color}">@${r.name}</span>`);
+      });
+    }
+
+    return html;
+  }
+
+  // Fetch and display announcements
+  async function loadAnnouncements() {
+    const feed = document.getElementById('announcements-feed');
+    try {
+      const res = await fetch('/annoucments?channelId=1477033205017346259');
+      if (!res.ok) throw new Error('Failed to load announcements');
+
+      announcementsData = await res.json();
+      feed.innerHTML = '';
+
+      const messageKeys = Object.keys(announcementsData);
+      if (messageKeys.length === 0) {
+        feed.innerHTML = '<p style="text-align:center">No announcements found.</p>';
+        return;
+      }
+
+      messageKeys.forEach(id => {
+        const msg = announcementsData[id];
+        const formattedDate = new Date(msg.timestamp).toLocaleString();
+        const parsedBody = parseContentToBubbles(msg.content, msg.mentions);
+        const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${msg.user.id}`;
+
+        const card = document.createElement('div');
+        card.className = 'announcement-card';
+        card.onclick = () => openModal(id);
+
+        card.innerHTML = `
+          <div class="announcement-header">
+            <img class="avatar" src="${avatarUrl}" alt="${msg.user.displayName}">
+            <div class="user-info">
+              <div class="username-row">
+                <span class="username">${msg.user.displayName}</span>
+                <span class="badge-role">${msg.highestRank}</span>
+              </div>
+              <span class="timestamp">${formattedDate}</span>
+            </div>
+          </div>
+          <div class="announcement-body truncated">${parsedBody}</div>
+          <span class="read-more-tag">Click to read full announcement →</span>
+          ${msg.pictures.length > 0 ? `<div class="media-preview"><img src="${msg.pictures[0]}" /></div>` : ''}
+        `;
+        feed.appendChild(card);
+      });
+    } catch (err) {
+      feed.innerHTML = `<p style="color:red; text-align:center">${err.message}</p>`;
+    }
+  }
+
+  // Modal logic
+  function openModal(id) {
+    const msg = announcementsData[id];
+    if (!msg) return;
+
+    const modalBody = document.getElementById('modalBody');
+    const avatarUrl = `https://api.dicebear.com/7.x/identicon/svg?seed=${msg.user.id}`;
+    const parsedBody = parseContentToBubbles(msg.content, msg.mentions);
+
+    modalBody.innerHTML = `
+      <div class="announcement-header">
+        <img class="avatar" src="${avatarUrl}" alt="${msg.user.displayName}">
+        <div class="user-info">
+          <div class="username-row">
+            <span class="username">${msg.user.displayName}</span>
+            <span class="badge-role">${msg.highestRank}</span>
+          </div>
+          <span class="timestamp">${new Date(msg.timestamp).toLocaleString()}</span>
+        </div>
+      </div>
+      <div style="white-space: pre-wrap; line-height: 1.5; margin-top: 15px;">${parsedBody}</div>
+      ${msg.pictures.map(pic => `<div style="margin-top:15px"><img src="${pic}" style="max-width:100%; border-radius:6px;"/></div>`).join('')}
+    `;
+
+    document.getElementById('announcementModal').classList.add('active');
+  }
+
+  function closeModal(e) {
+    if (!e || e.target.id === 'announcementModal' || e.target.classList.contains('modal-close')) {
+      document.getElementById('announcementModal').classList.remove('active');
+    }
+  }
+
+  loadAnnouncements();
+</script>
+</body>
+</html>
