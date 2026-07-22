@@ -1,6 +1,6 @@
 (async function() {
-    const API_BASE = "https://astralyxpvp.chessmrbeaston.workers.dev/api/";
-    const IP = "java.astralyx.int.it";
+    const API_BASE = "https://astralyxpvp.chessmrbeaston.workers.dev/api";
+    const IP = "java.astralyxpvp.int.yt";
 
     const escapeHtml = (s) => (s ?? '').toString().replace(/[&<>"']/g, c => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -11,11 +11,11 @@
         const img = new Image();
         img.onload = () => console.log('[Cursor] Diamond sword cursor loaded successfully');
         img.onerror = () => console.warn('[Cursor] Failed to load cursor image — check path or file format');
-        img.src = '../Assets/cursor-sword.png';
+        img.src = 'Assets/cursor-sword.png';
     })();
 
+    // Context Menu Handling
     const contextMenu = document.getElementById("contextMenu");
-
     if (contextMenu) {
         window.addEventListener("contextmenu", (e) => {
             e.preventDefault();
@@ -44,6 +44,7 @@
         });
     }
 
+    // Dynamic Navbar Initialization
     async function initNavbar() {
         const container = document.getElementById('navbar-placeholder');
         if (!container) return;
@@ -103,8 +104,8 @@
             // Active link logic
             const currentPath = (window.location.pathname.split("/").pop() || "index.html").replace(/\.html$/, '');
             container.querySelectorAll('.nav-links a').forEach(link => {
-              const href = link.getAttribute('href').replace(/\.html$/, '');
-              if (href === '/' + currentPath || href === currentPath) link.classList.add('active');
+                const href = link.getAttribute('href').replace(/\.html$/, '');
+                if (href === '/' + currentPath || href === currentPath) link.classList.add('active');
             });
 
             // Adjust main content padding so it's not hidden under a fixed nav
@@ -116,38 +117,37 @@
                 });
             }
 
-            updateNavStatus();
-
             // Double-decker wrap detection + dynamic padding
             function checkWrap() {
-              var items = Array.from(navLinks.children).filter(function(el) { return el.tagName === 'A'; });
-              var wrapped = false;
-              var firstTop = items[0] && items[0].offsetTop;
-              for (var i = 1; i < items.length; i++) {
-                if (items[i].offsetTop > firstTop) { wrapped = true; break; }
-              }
-              nav.classList.toggle('double-decker', wrapped);
-              mainContent.style.paddingTop = nav.offsetHeight + 'px';
+                var items = Array.from(navLinks.children).filter(function(el) { return el.tagName === 'A'; });
+                var wrapped = false;
+                var firstTop = items[0] && items[0].offsetTop;
+                for (var i = 1; i < items.length; i++) {
+                    if (items[i].offsetTop > firstTop) { wrapped = true; break; }
+                }
+                if (nav) nav.classList.toggle('double-decker', wrapped);
+                if (mainContent && nav) mainContent.style.paddingTop = nav.offsetHeight + 'px';
             }
             var ro = new ResizeObserver(checkWrap);
-            ro.observe(navLinks);
+            if (navLinks) ro.observe(navLinks);
             checkWrap();
 
-            // Glass nav on scroll — starts transparent at top
+            // Glass nav on scroll
             function checkScroll() {
-              nav.classList.toggle('nav-scrolled', window.scrollY >= 20);
+                if (nav) nav.classList.toggle('nav-scrolled', window.scrollY >= 20);
             }
             window.addEventListener('scroll', checkScroll, { passive: true });
             checkScroll();
 
-            // Re-check wrap on resize (fallback for browsers without ResizeObserver)
             window.addEventListener('resize', checkWrap);
         } catch (error) {
             console.error('Navbar error:', error);
         }
     }
+
+    // Dynamic Footer Initialization
     async function initFooter() {
-        const container = document.getElementById('footer'); // Ensure your HTML has <div id="footer"></div>
+        const container = document.getElementById('footer');
         if (!container) return;
     
         try {
@@ -170,32 +170,48 @@
 
         } catch (error) {
             console.error('Footer error:', error);
-            // Fallback content in case the fetch fails
             container.innerHTML = `<footer style="text-align:center; padding:20px; color:var(--muted);">
                 &copy; ${new Date().getFullYear()} AstralyxPvP. All rights reserved.
             </footer>`;
         }
     }
 
-    async function updateNavStatus() {
-        const el = document.getElementById('nav-status');
-        if (!el) return;
+    // Combined Server Status Updates (Navbar Pill + Hero Card)
+    async function updateAllStatus() {
+        const navPill = document.getElementById('nav-status');
+        const heroPlayers = document.getElementById('heroPlayers');
+        const heroStatusText = document.getElementById('heroStatusText');
 
         try {
             const response = await fetch(`${API_BASE}?serverStatus=true`);
             const data = await response.json();
 
             if (data.online) {
-                el.className = 'server-pill online';
-                el.textContent = `🟢 ${data.current}/${data.max} Online`;
+                // Update Nav Pill
+                if (navPill) {
+                    navPill.className = 'server-pill online';
+                    navPill.textContent = `🟢 ${data.current}/${data.max} Online`;
+                }
+                // Update Hero Card
+                if (heroPlayers) heroPlayers.textContent = `${data.current} / ${data.max}`;
+                if (heroStatusText) {
+                    const mode = (data.text || "").includes("Live") ? "Live" : "Fallback Probe";
+                    heroStatusText.textContent = `Online • ${data.version || "1.21"} (${mode})`;
+                }
             } else {
-                el.className = 'server-pill offline'; el.textContent = '🔴 Offline';
+                // Offline States
+                if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
+                if (heroPlayers) heroPlayers.textContent = "Offline";
+                if (heroStatusText) heroStatusText.textContent = "Server is currently offline";
             }
         } catch (error) {
-            el.className = 'server-pill offline'; el.textContent = '🔴 Offline';
+            if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
+            if (heroPlayers) heroPlayers.textContent = "Offline";
+            if (heroStatusText) heroStatusText.textContent = "Unable to connect to status API";
         }
     }
 
+    // Leaderboard System
     async function initLeaderboard() {
         const select = document.getElementById('gm');
         if (!select) return;
@@ -210,9 +226,9 @@
                 const urlGm = new URLSearchParams(window.location.search).get('gamemode');
                 if (urlGm && gms.includes(urlGm)) select.value = urlGm;
             } else {
-            select.innerHTML = '<option disabled selected>No gamemodes available</option>';
-            const out = document.getElementById('lb');
-            if (out) out.innerHTML = '<div style="text-align:center;padding:14px 0">No gamemodes found.</div>';
+                select.innerHTML = '<option disabled selected>No gamemodes available</option>';
+                const out = document.getElementById('lb');
+                if (out) out.innerHTML = '<div style="text-align:center;padding:14px 0">No gamemodes found.</div>';
             }
         } catch (err) { console.error("GM Load Error:", err); }
 
@@ -277,11 +293,12 @@
             initFooter(),
             initLeaderboard()
         ]).then(() => {
-            setInterval(updateNavStatus, 20000);
+            updateAllStatus();
+            setInterval(updateAllStatus, 20000);
         }).catch(err => console.error("Init failed:", err));
     });
 
-    // Smooth Page Transitions
+    // Page Exit Transitions
     document.addEventListener('click', e => {
         const a = e.target.closest('a');
         if(!a || a.target === '_blank' || a.hostname !== window.location.hostname || a.hash) return;
@@ -291,31 +308,33 @@
     });
 })();
 
-// Some AI Button CSS? YES SIR
+// AI Chat Dock Toggle
 function toggleChatDock() {
-  const dock = document.getElementById('chatDock');
-  dock.classList.toggle('open');
+    const dock = document.getElementById('chatDock');
+    if (dock) dock.classList.toggle('open');
 }
 
+// Clipboard IP Copy
 window.copyServerIP = function() {
-  const ip = document.getElementById('server-ip');
-  if (!ip) return;
-  navigator.clipboard.writeText(ip.textContent.trim()).catch(() => {});
+    const ip = document.getElementById('server-ip');
+    if (!ip) return;
+    navigator.clipboard.writeText(ip.textContent.trim()).catch(() => {});
 };
 
 document.addEventListener('click', e => {
-  const btn = e.target.closest('[data-menu-copy]');
-  if (btn) window.copyServerIP();
+    const btn = e.target.closest('[data-menu-copy]');
+    if (btn) window.copyServerIP();
 });
 
+// Scroll to Top
 function scrollToTop() {
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 document.addEventListener('scroll', () => {
-  const btn = document.getElementById('backToTop');
-  if (btn) {
-    if (window.scrollY > 300) btn.classList.add('visible');
-    else btn.classList.remove('visible');
-  }
+    const btn = document.getElementById('backToTop');
+    if (btn) {
+        if (window.scrollY > 300) btn.classList.add('visible');
+        else btn.classList.remove('visible');
+    }
 }, { passive: true });
