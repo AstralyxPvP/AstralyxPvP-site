@@ -49,23 +49,31 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
   const roleMap = new Map(guildRoles.map(r => [r.id, r]));
 
-  // Pre-sort guild roles by hierarchy position descending (highest role first)
-  const sortedGuildRoles = [...guildRoles].sort((a, b) => b.position - a.position);
-
   // Helper function to find highest role name from raw role IDs
   const getHighestRole = (memberRoles = []) => {
-    if (!sortedGuildRoles.length || !Array.isArray(memberRoles) || memberRoles.length === 0) {
-      return "Member";
+    if (!guildRoles.length) return "Member2";
+
+    // 1. Sort guild roles descending by position (highest position first)
+    // If positions are equal, place managed/hoisted roles higher
+    const sortedGuildRoles = [...guildRoles].sort((a, b) => {
+      if (b.position !== a.position) {
+        return b.position - a.position;
+      }
+      return 0;
+    });
+
+    // 2. Filter down to only roles the member actually has
+    const userRoleIds = new Set(Array.isArray(memberRoles) ? memberRoles : []);
+
+    // 3. Find the highest matching role (excluding @everyone if they have other roles)
+    const highest = sortedGuildRoles.find((role) => userRoleIds.has(role.id));
+
+    // 4. Return the role name, or fallback if none match
+    if (highest && highest.name !== "@everyone") {
+      return highest.name;
     }
 
-    const userRoleIds = new Set(memberRoles);
-
-    // Find the first role in sorted order that the user possesses
-    const highest = sortedGuildRoles.find(
-      (role) => userRoleIds.has(role.id) && role.name !== "@everyone"
-    );
-
-    return highest ? highest.name : "Member";
+    return "Member";
   };
 
   const outputDictionary = {};
@@ -121,12 +129,13 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Discord Avatar Construction
+    // Discord Avatar Construction (Safe modulo calculation without BigInt hazards)
     let avatarUrl;
     if (msg.author && msg.author.avatar) {
       const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
       avatarUrl = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.${ext}?size=128`;
     } else {
+      const lastDigits = parseInt((msg.author?.id || "0").slice(-4), 10);
       const defaultIndex = msg.author?.id 
         ? Number((BigInt(msg.author.id) >> 22n) % 6n) 
         : 0;
