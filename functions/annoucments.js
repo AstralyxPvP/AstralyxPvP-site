@@ -12,48 +12,64 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
     'Content-Type': 'application/json',
   };
 
-  const messagesResponse = await fetch(
-    `https://discord.com/api/v10/channels/${channelId}/messages?limit=${limit}`,
-    { headers }
-  );
-
-  if (!messagesResponse.ok) {
-    throw new Error(`Discord API Error (${messagesResponse.status}): ${messagesResponse.statusText}`);
+  // 1. Fetch channel info first to get guild_id reliably (works for regular channels & threads)
+  let guildId = null;
+  const channelRes = await fetch(`https://discord.com/api/v10/channels/${channelId}`, { headers });
+  
+  if (!channelRes.ok) {
+    throw new Error(`Discord API Error (${channelRes.status}): Failed to fetch channel details. Check permissions or Channel ID.`);
   }
 
-  const rawMessages = await messagesResponse.json();
+  const channelData = await channelRes.json();
+  guildId = channelData.guild_id;
+
+  // 2. Fetch messages in parallel with guild roles & channels if guildId exists
+  const [messagesRes, rolesRes, channelsRes] = await Promise.all([
+    fetch(`https://discord.com/api/v10/channels/${channelId}/messages?limit=${limit}`, { headers }),
+    guildId ? fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, { headers }) : Promise.resolve(null),
+    guildId ? fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers }) : Promise.resolve(null),
+  ]);
+
+  if (!messagesRes.ok) {
+    throw new Error(`Discord API Error (${messagesRes.status}): ${messagesRes.statusText}`);
+  }
+
+  const rawMessages = await messagesRes.json();
   if (!Array.isArray(rawMessages) || rawMessages.length === 0) return {};
 
-  const guildId = rawMessages[0].guild_id;
   let guildRoles = [];
   let guildChannelsMap = new Map();
 
-  if (guildId) {
-    try {
-      const [rolesRes, channelsRes] = await Promise.all([
-        fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, { headers }),
-        fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers })
-      ]);
+  if (rolesRes && rolesRes.ok) {
+    guildRoles = await rolesRes.json();
+  } else if (rolesRes) {
+    console.warn(`Failed to fetch roles (${rolesRes.status}). Check if bot has 'Manage Roles' or server member access.`);
+  }
 
-      if (rolesRes.ok) guildRoles = await rolesRes.json();
-      if (channelsRes.ok) {
-        const channels = await channelsRes.json();
-        if (Array.isArray(channels)) {
-          channels.forEach(ch => guildChannelsMap.set(ch.id, ch.name));
-        }
-      }
-    } catch (e) {
-      console.warn("Failed to fetch guild roles or channels metadata:", e);
+  if (channelsRes && channelsRes.ok) {
+    const channels = await channelsRes.json();
+    if (Array.isArray(channels)) {
+      channels.forEach(ch => guildChannelsMap.set(ch.id, ch.name));
     }
   }
 
   const roleMap = new Map(guildRoles.map(r => [r.id, r]));
 
+  // Helper to resolve the user's highest role by position
   const getHighestRole = (memberRoles = []) => {
-    if (!Array.isArray(memberRoles) || !memberRoles.length || !guildRoles.length) return "Member";
+    if (!guildRoles.length) return "Member";
+
+    // Sort descending by position (highest position = top role)
     const sortedGuildRoles = [...guildRoles].sort((a, b) => b.position - a.position);
-    const highest = sortedGuildRoles.find((role) => memberRoles.includes(role.id));
-    return highest ? highest.name : "Member";
+    const userRoleIds = new Set(Array.isArray(memberRoles) ? memberRoles : []);
+
+    const highest = sortedGuildRoles.find((role) => userRoleIds.has(role.id));
+
+    if (highest && highest.name !== "@everyone") {
+      return highest.name;
+    }
+
+    return "Member";
   };
 
   const outputDictionary = {};
@@ -109,14 +125,15 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Discord Avatar Construction (Safe modulo calculation without BigInt hazards)
+    // Discord Avatar Construction
     let avatarUrl;
     if (msg.author && msg.author.avatar) {
       const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
       avatarUrl = `https://cdn.discordapp.com/avatars/${msg.author.id}/${msg.author.avatar}.${ext}?size=128`;
     } else {
-      const lastDigits = parseInt((msg.author?.id || "0").slice(-4), 10);
-      const defaultIndex = isNaN(lastDigits) ? 0 : lastDigits % 5;
+      const defaultIndex = msg.author?.id 
+        ? Number((BigInt(msg.author.id) >> 22n) % 6n) 
+        : 0;
       avatarUrl = `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
     }
 
@@ -145,32 +162,4 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
   }
 
   return outputDictionary;
-}
-
-export async function onRequestGet(context) {
-  const { request, env } = context;
-  const url = new URL(request.url);
-  const channelId = url.searchParams.get("channelId") || "1477033205017346259";
-
-  if (!env.BOT_KEY) {
-    return new Response(
-      JSON.stringify({ error: "BOT_KEY environment variable is missing." }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
-  }
-
-  try {
-    const data = await fetchChannelContent(channelId, env.BOT_KEY);
-    return new Response(JSON.stringify(data, null, 2), {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    });
-  } catch (err) {
-    return new Response(
-      JSON.stringify({ error: err.message || "An unexpected error occurred." }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
-  }
 }
