@@ -188,6 +188,31 @@
       box-shadow: 0 12px 30px rgba(88, 101, 242, 0.5);
     }
 
+    .status-announcements {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 24px;
+      padding: 14px 28px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #eff258, #c4c247);
+      color: #fff;
+      font-weight: 800;
+      text-decoration: none;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 0.06em;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 20px rgba(239, 242, 88, 0.4);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+    }
+
+    .status-announcements:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 12px 30px rgba(242, 237, 88, 0.5);
+    }
+
     @media (max-width: 660px) {
       .status-main {
         grid-template-columns: 1fr;
@@ -238,8 +263,8 @@
         <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener" class="status-discord">
           <i class="fa-brands fa-discord"></i> Check Updates
         </a>
-        <a href="annoucements.html" target="_blank" rel="noopener" class="status-discord">
-          <i class="fa-brands fa-discord"></i> Check Announcements
+        <a href="annoucements.html" target="_blank" rel="noopener" class="status-announcements">
+          <i class="fa-brands fa-bullhorn"></i> Check Announcements
         </a>
       </div>
     </section>
