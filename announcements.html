@@ -9,12 +9,18 @@
   <link rel="canonical" href="https://astralyxpvp.pages.dev" />
   <meta name="description" content="Official Announcements for AstralyxPvP." />
   <link rel="stylesheet" href="Style/style.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   
   <style>
     .announcements-container {
       max-width: 1100px;
       margin: 40px auto;
       padding: 0 20px;
+    }
+    .turnstile-wrapper {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
     }
     /* Discord Timestamp Styling */
     .discord-timestamp {
@@ -134,7 +140,7 @@
     .mention-channel, .mention-user { background: rgba(88, 101, 242, 0.15); color: #c9cdfb; }
     .mention-everyone { background: rgba(240, 71, 71, 0.15); color: #f04747; }
 
-    /* Discord Message Link Pill Styling (Matches Images 1 & 2) */
+    /* Discord Message Link Pill Styling */
     .discord-msg-link {
       display: inline-flex;
       align-items: center;
@@ -226,7 +232,13 @@
 
   <main class="page-content">
     <div class="announcements-container">
-      <h1 style="text-align:center; margin-bottom: 30px;">📢 Server Announcements</h1>
+      <h1 style="text-align:center; margin-bottom: 20px;">📢 Server Announcements</h1>
+      
+      <!-- Turnstile CAPTCHA Widget Container -->
+      <div class="turnstile-wrapper">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt"></div>
+      </div>
+
       <div id="announcements-feed" class="forum-grid">Loading announcements...</div>
     </div>
   </main>
@@ -268,46 +280,41 @@
 
 <script>
   let announcementsData = {};
+  let activeSessionToken = null;
 
-  // Helper function to format Discord Unix Timestamps (<t:TIMESTAMP:STYLE>)
   function formatDiscordTimestamp(unixSec, style = 'f') {
     const timestamp = Number(unixSec) * 1000;
     const date = new Date(timestamp);
     
-    if (isNaN(date.getTime())) return `<t:${unixSec}:${style}>`; // Fallback if invalid
+    if (isNaN(date.getTime())) return `<t:${unixSec}:${style}>`;
 
     const fullTooltip = date.toLocaleString([], {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
     });
 
     let formattedText = '';
 
     switch (style) {
-      case 't': // Short Time (e.g., 14:30)
+      case 't':
         formattedText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
         break;
-      case 'T': // Long Time (e.g., 14:30:45)
+      case 'T':
         formattedText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
         break;
-      case 'd': // Short Date (e.g., 01/20/2026)
+      case 'd':
         formattedText = date.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' });
         break;
-      case 'D': // Long Date (e.g., January 20, 2026)
+      case 'D':
         formattedText = date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' });
         break;
-      case 'f': // Short Date/Time (e.g., January 20, 2026 14:30)
+      case 'f':
         formattedText = `${date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
         break;
-      case 'F': // Long Date/Time (e.g., Tuesday, January 20, 2026 14:30)
+      case 'F':
         formattedText = `${date.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
         break;
-      case 'R': // Relative Time (e.g., "2 hours ago", "in 5 minutes")
+      case 'R':
         formattedText = getRelativeTimeString(date);
         break;
       default:
@@ -317,7 +324,6 @@
     return `<span class="discord-timestamp" title="${fullTooltip}">${formattedText}</span>`;
   }
 
-  // Relative time calculation for <t:123456789:R>
   function getRelativeTimeString(date) {
     const diffInSeconds = Math.floor((date.getTime() - Date.now()) / 1000);
     const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
@@ -340,20 +346,16 @@
     return rtf.format(value, units[unitIndex]);
   }
 
-  // Discord SVG Icons
   const SVG_BULLHORN = `<svg viewBox="0 0 24 24"><path d="M3.5 10c-.83 0-1.5.67-1.5 1.5v1c0 .83.67 1.5 1.5 1.5H5l4 3.5V6.5L5 10H3.5zm12.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
   const SVG_HASHTAG = `<svg viewBox="0 0 24 24"><path d="M5.886 21 7.05 14.5H2l.363-2h5.051l1.103-6H3.466l.363-2h5.152l1.163-6h2.099l-1.163 6h6.077l1.163-6h2.099l-1.163 6H24l-.363 2h-5.051l-1.103 6h5.051l-.363 2h-5.152l-1.163 6h-2.099l1.163-6H8.892l-1.163 6H5.886Zm5.312-8.5h6.077l1.103-6h-6.077l-1.103 6Z"/></svg>`;
   const SVG_THREAD = `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.18-9 7.1 0 2.14 1.22 4.05 3.12 5.34-.23.82-.82 2.15-2.12 3.18 0 0 2.22.18 4.41-1.32.12.02.24.03.37.03 4.97 0 9-3.18 9-7.1S16.97 3 12 3z"/></svg>`;
   const SVG_BUBBLE = `<svg class="bubble-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.141 2 11.25c0 2.44 1.033 4.654 2.73 6.27-.406 1.488-1.554 3.16-1.572 3.185a.5.5 0 0 0 .548.78c2.47-.643 4.542-1.851 5.61-2.541A10.87 10.87 0 0 0 12 20.5c5.523 0 10-4.141 10-9.25S17.523 2 12 2z"/></svg>`;
 
-  // Parse Discord Formatting
   function parseDiscordFormatting(content, mentions = {}) {
     let html = content || "";
 
-    // 1. Masked Links [text](url)
     html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="discord-link">$1</a>');
 
-    // 2. Discord Message & Thread Links
     const msgLinkRegex = /https:\/\/(?:canary\.|ptb\.)?discord\.com\/channels\/(?:\d+|@me)\/(\d+)\/(\d+)/g;
     html = html.replace(msgLinkRegex, (match, channelId) => {
       const channel = mentions.channels ? mentions.channels.find(c => c.id === channelId) : null;
@@ -384,16 +386,13 @@
       }
     });
 
-    // 3. Discord Dynamic Timestamps (<t:1672531199:F> or <t:1672531199>)
     html = html.replace(/<t:(-?\d+)(?::([tTdDfFR]))?>/g, (match, timestamp, style) => {
       return formatDiscordTimestamp(timestamp, style || 'f');
     });
 
-    // 4. Mentions (@everyone, @here)
     html = html.replace(/@everyone/g, `<span class="mention-bubble mention-everyone">@everyone</span>`);
     html = html.replace(/@here/g, `<span class="mention-bubble mention-everyone">@here</span>`);
 
-    // 5. Channel mentions (<#123456789>)
     if (mentions.channels) {
       mentions.channels.forEach(ch => {
         const regex = new RegExp(`<#${ch.id}>`, 'g');
@@ -401,7 +400,6 @@
       });
     }
 
-    // 6. User mentions
     if (mentions.users) {
       mentions.users.forEach(u => {
         const regex = new RegExp(`<@!?${u.id}>`, 'g');
@@ -409,7 +407,6 @@
       });
     }
 
-    // 7. Role mentions
     if (mentions.roles) {
       mentions.roles.forEach(r => {
         const regex = new RegExp(`<@&${r.id}>`, 'g');
@@ -418,12 +415,10 @@
       });
     }
 
-    // 8. Discord Headers (#, ##, ###)
     html = html.replace(/^### (.*$)/gim, '<div class="discord-h3">$1</div>');
     html = html.replace(/^## (.*$)/gim, '<div class="discord-h2">$1</div>');
     html = html.replace(/^# (.*$)/gim, '<div class="discord-h1">$1</div>');
 
-    // 9. Discord Inline Formatting
     html = html.replace(/\*\*(.*?)\*\*/g, '<span class="discord-bold">$1</span>');
     html = html.replace(/\*(.*?)\*/g, '<span class="discord-italic">$1</span>');
     html = html.replace(/__(.*?)__/g, '<span class="discord-underline">$1</span>');
@@ -435,11 +430,35 @@
 
   async function loadAnnouncements() {
     const feed = document.getElementById('announcements-feed');
-    try {
-      const res = await fetch('/annoucments?channelId=1477033205017346259');
-      if (!res.ok) throw new Error('Failed to load announcements');
+    let requestHeaders = {};
 
-      announcementsData = await res.json();
+    // 1. Resolve Authorization Token (Session Token vs Turnstile Token)
+    if (activeSessionToken) {
+      requestHeaders['x-session-token'] = activeSessionToken;
+    } else {
+      const turnstileToken = turnstile.getResponse();
+      if (!turnstileToken) {
+        feed.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Please complete the CAPTCHA above to load announcements.</p>';
+        return;
+      }
+      requestHeaders['x-turnstile-token'] = turnstileToken;
+    }
+
+    try {
+      const res = await fetch('/annoucments?channelId=1477033205017346259', {
+        headers: requestHeaders
+      });
+
+      if (!res.ok) throw new Error(`Failed to load announcements (Status: ${res.status})`);
+
+      const payload = await res.json();
+
+      // 2. Save rotated session token for subsequent calls
+      if (payload.sessionToken) {
+        activeSessionToken = payload.sessionToken;
+      }
+
+      announcementsData = payload.announcements || {};
       feed.innerHTML = '';
 
       const messageKeys = Object.keys(announcementsData);
@@ -511,7 +530,15 @@
     }
   }
 
-  loadAnnouncements();
+  // Automatically trigger when Turnstile initializes/solves
+  window.onload = () => {
+    // Attempt initial load or wait for widget solve
+    setTimeout(() => {
+      if (typeof turnstile !== 'undefined') {
+        loadAnnouncements();
+      }
+    }, 500);
+  };
 </script>
 </body>
 </html>

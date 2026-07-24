@@ -1,9 +1,36 @@
+// announcement.js
+
 /**
  * Helper to convert decimal color to Hex (#RRGGBB)
  */
 function decimalToHex(decimalColor) {
   if (!decimalColor) return "#5865F2";
   return `#${decimalColor.toString(16).padStart(6, '0')}`;
+}
+
+// Generates a secure session token using HMAC-SHA256
+async function createSessionToken(secret) {
+  const data = `session_${Date.now()}`;
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(data));
+  const hashHex = Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
+  return `${data}.${hashHex}`;
+}
+
+// Securely verifies the HMAC signature of an incoming session token
+async function verifySessionToken(token, secret) {
+  if (!token || !token.startsWith('session_') || !token.includes('.')) {
+    return false;
+  }
+
+  const [data, providedSignature] = token.split('.');
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const expectedSignatureBuffer = await crypto.subtle.sign("HMAC", key, encoder.encode(data));
+  const expectedSignature = Array.from(new Uint8Array(expectedSignatureBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+  return providedSignature === expectedSignature;
 }
 
 async function fetchChannelContent(channelId, botKey, limit = 50) {
@@ -30,7 +57,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
   if (guildId) {
     try {
-      // Fetch Roles, Guild Channels, and Active Guild Threads in parallel
       const [rolesRes, channelsRes, threadsRes] = await Promise.all([
         fetch(`https://discord.com/api/v10/guilds/${guildId}/roles`, { headers }),
         fetch(`https://discord.com/api/v10/guilds/${guildId}/channels`, { headers }),
@@ -44,12 +70,11 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       const rawChannels = channelsRes.ok ? await channelsRes.json() : [];
       const rawThreads = threadsRes.ok ? ((await threadsRes.json()).threads || []) : [];
 
-      // Populate channels & threads into lookup map
       [...rawChannels, ...rawThreads].forEach(ch => {
         guildChannelsMap.set(ch.id, {
           id: ch.id,
           name: ch.name,
-          type: ch.type, // 0: Text, 5: Announcement, 10/11/12: Threads
+          type: ch.type,
           parentId: ch.parent_id || null
         });
       });
@@ -91,7 +116,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
     return (highest && highest.name !== "@everyone") ? highest.name : "Member";
   };
 
-  // Helper to format channel metadata for frontend
   const getChannelMetadata = (chId) => {
     const ch = guildChannelsMap.get(chId);
     if (!ch) return { id: chId, name: "channel", isThread: false, parentName: null, type: 0 };
@@ -124,7 +148,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       channels: []
     };
 
-    // Extract raw channel/thread mentions (<#123456789>)
     const channelMatches = [...content.matchAll(/<#(\d+)>/g)];
     const processedChannelIds = new Set();
     for (const match of channelMatches) {
@@ -135,7 +158,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       }
     }
 
-    // Extract channels from Message Links (https://discord.com/channels/.../CHANNEL_ID/...)
     const msgLinkMatches = [...content.matchAll(/https:\/\/(?:canary\.|ptb\.)?discord\.com\/channels\/(?:\d+|@me)\/(\d+)\/\d+/g)];
     for (const match of msgLinkMatches) {
       const chId = match[1];
@@ -145,7 +167,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       }
     }
 
-    // User Mentions
     if (Array.isArray(msg.mentions)) {
       msg.mentions.forEach(u => {
         mentionsMetadata.users.push({
@@ -157,7 +178,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Role Mentions
     if (Array.isArray(msg.mention_roles)) {
       msg.mention_roles.forEach(roleId => {
         const roleData = roleMap.get(roleId);
@@ -171,7 +191,6 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
       });
     }
 
-    // Avatar Construction
     let avatarUrl;
     if (msg.author?.avatar) {
       const ext = msg.author.avatar.startsWith('a_') ? 'gif' : 'png';
@@ -213,21 +232,56 @@ export async function onRequestGet(context) {
   const url = new URL(request.url);
   const channelId = "1477033205017346259";
 
-  if (!env.BOT_KEY) {
+  if (!env.BOT_KEY || !env.TURNSTILE_SECRET_KEY) {
     return new Response(
-      JSON.stringify({ error: "BOT_KEY environment variable is missing." }),
+      JSON.stringify({ error: "BOT_KEY or TURNSTILE_SECRET_KEY configuration is missing." }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
 
-  try {
-    const data = await fetchChannelContent(channelId, env.BOT_KEY);
-    return new Response(JSON.stringify(data, null, 2), {
-      headers: {
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
+  // Support reading tokens from headers or URL parameters
+  const turnstileToken = url.searchParams.get('turnstileToken') || request.headers.get('x-turnstile-token');
+  const sessionToken = url.searchParams.get('sessionToken') || request.headers.get('x-session-token');
+
+  let isAuthorized = false;
+
+  // 1. Authorization Check
+  if (sessionToken) {
+    isAuthorized = await verifySessionToken(sessionToken, env.TURNSTILE_SECRET_KEY);
+  } else if (turnstileToken) {
+    const formData = new FormData();
+    formData.append('secret', env.TURNSTILE_SECRET_KEY);
+    formData.append('response', turnstileToken);
+
+    const verifyResult = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
+      method: 'POST',
+      body: formData
     });
+    const verifyData = await verifyResult.json();
+    isAuthorized = verifyData.success;
+  }
+
+  if (!isAuthorized) {
+    return new Response(
+      JSON.stringify({ error: "Unauthorized access. CAPTCHA verification required." }),
+      { status: 403, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  // Pre-generate rotated session token for response
+  const nextSessionToken = await createSessionToken(env.TURNSTILE_SECRET_KEY);
+
+  try {
+    const announcements = await fetchChannelContent(channelId, env.BOT_KEY);
+    return new Response(
+      JSON.stringify({ announcements, sessionToken: nextSessionToken }),
+      {
+        headers: {
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      }
+    );
   } catch (err) {
     return new Response(
       JSON.stringify({ error: err.message || "An unexpected error occurred." }),
