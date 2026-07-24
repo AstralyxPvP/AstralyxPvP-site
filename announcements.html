@@ -9,12 +9,11 @@
   <link rel="canonical" href="https://astralyxpvp.pages.dev/announcements" />
   <meta name="description" content="Official Announcements for AstralyxPvP — server updates, events, and news." />
   <link rel="stylesheet" href="Style/style.css">
-
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   <!-- marked.js for full Markdown rendering -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
   <!-- DOMPurify to sanitize rendered HTML -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
-
   <style>
     /* ── Page Layout ────────────────────────────────────────────── */
     .ann-container {
@@ -806,7 +805,13 @@
 
   <main class="page-content">
     <div class="announcements-container">
-      <h1 style="text-align:center; margin-bottom: 30px;">📢 Server Announcements</h1>
+      <h1 style="text-align:center; margin-bottom: 20px;">📢 Server Announcements</h1>
+      
+      <!-- Cloudflare Turnstile Verification Widget -->
+      <div style="display:flex; justify-content:center; margin-bottom: 20px;">
+        <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt" data-callback="loadAnnouncements"></div>
+      </div>
+
       <div id="announcements-feed" class="forum-grid">Loading announcements...</div>
     </div>
   </main>
@@ -847,177 +852,36 @@
 <script src="Script/script.js"></script>
 
 <script>
+  let activeSessionToken = null;
   let announcementsData = {};
-
-  // Helper function to format Discord Unix Timestamps (<t:TIMESTAMP:STYLE>)
-  function formatDiscordTimestamp(unixSec, style = 'f') {
-    const timestamp = Number(unixSec) * 1000;
-    const date = new Date(timestamp);
-    
-    if (isNaN(date.getTime())) return `<t:${unixSec}:${style}>`; // Fallback if invalid
-
-    const fullTooltip = date.toLocaleString([], {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit'
-    });
-
-    let formattedText = '';
-
-    switch (style) {
-      case 't': // Short Time (e.g., 14:30)
-        formattedText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-        break;
-      case 'T': // Long Time (e.g., 14:30:45)
-        formattedText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-        break;
-      case 'd': // Short Date (e.g., 01/20/2026)
-        formattedText = date.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' });
-        break;
-      case 'D': // Long Date (e.g., January 20, 2026)
-        formattedText = date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' });
-        break;
-      case 'f': // Short Date/Time (e.g., January 20, 2026 14:30)
-        formattedText = `${date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-        break;
-      case 'F': // Long Date/Time (e.g., Tuesday, January 20, 2026 14:30)
-        formattedText = `${date.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
-        break;
-      case 'R': // Relative Time (e.g., "2 hours ago", "in 5 minutes")
-        formattedText = getRelativeTimeString(date);
-        break;
-      default:
-        formattedText = date.toLocaleString();
-    }
-
-    return `<span class="discord-timestamp" title="${fullTooltip}">${formattedText}</span>`;
-  }
-
-  // Relative time calculation for <t:123456789:R>
-  function getRelativeTimeString(date) {
-    const diffInSeconds = Math.floor((date.getTime() - Date.now()) / 1000);
-    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
-
-    const cutoffs = [60, 3600, 86400, 86400 * 7, 86400 * 30, 86400 * 365, Infinity];
-    const units = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
-
-    let unitIndex = 0;
-    let absDiff = Math.abs(diffInSeconds);
-
-    if (absDiff < 5) return 'just now';
-
-    while (absDiff >= cutoffs[unitIndex]) {
-      unitIndex++;
-    }
-
-    const divisor = unitIndex === 0 ? 1 : cutoffs[unitIndex - 1];
-    const value = Math.round(diffInSeconds / divisor);
-
-    return rtf.format(value, units[unitIndex]);
-  }
-
-  // Discord SVG Icons
-  const SVG_BULLHORN = `<svg viewBox="0 0 24 24"><path d="M3.5 10c-.83 0-1.5.67-1.5 1.5v1c0 .83.67 1.5 1.5 1.5H5l4 3.5V6.5L5 10H3.5zm12.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
-  const SVG_HASHTAG = `<svg viewBox="0 0 24 24"><path d="M5.886 21 7.05 14.5H2l.363-2h5.051l1.103-6H3.466l.363-2h5.152l1.163-6h2.099l-1.163 6h6.077l1.163-6h2.099l-1.163 6H24l-.363 2h-5.051l-1.103 6h5.051l-.363 2h-5.152l-1.163 6h-2.099l1.163-6H8.892l-1.163 6H5.886Zm5.312-8.5h6.077l1.103-6h-6.077l-1.103 6Z"/></svg>`;
-  const SVG_THREAD = `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.18-9 7.1 0 2.14 1.22 4.05 3.12 5.34-.23.82-.82 2.15-2.12 3.18 0 0 2.22.18 4.41-1.32.12.02.24.03.37.03 4.97 0 9-3.18 9-7.1S16.97 3 12 3z"/></svg>`;
-  const SVG_BUBBLE = `<svg class="bubble-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.141 2 11.25c0 2.44 1.033 4.654 2.73 6.27-.406 1.488-1.554 3.16-1.572 3.185a.5.5 0 0 0 .548.78c2.47-.643 4.542-1.851 5.61-2.541A10.87 10.87 0 0 0 12 20.5c5.523 0 10-4.141 10-9.25S17.523 2 12 2z"/></svg>`;
-
-  // Parse Discord Formatting
-  function parseDiscordFormatting(content, mentions = {}) {
-    let html = content || "";
-
-    // 1. Masked Links [text](url)
-    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="discord-link">$1</a>');
-
-    // 2. Discord Message & Thread Links
-    const msgLinkRegex = /https:\/\/(?:canary\.|ptb\.)?discord\.com\/channels\/(?:\d+|@me)\/(\d+)\/(\d+)/g;
-    html = html.replace(msgLinkRegex, (match, channelId) => {
-      const channel = mentions.channels ? mentions.channels.find(c => c.id === channelId) : null;
-
-      if (channel && channel.isThread) {
-        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
-          ${SVG_THREAD}
-          <span>${channel.parentName || 'channel'}</span>
-          <span class="link-chevron">›</span>
-          ${SVG_BUBBLE}
-          <span>${channel.name}</span>
-        </a>`;
-      } else if (channel) {
-        const icon = channel.type === 5 ? SVG_BULLHORN : SVG_HASHTAG;
-        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
-          ${icon}
-          <span>${channel.name}</span>
-          <span class="link-chevron">›</span>
-          ${SVG_BUBBLE}
-        </a>`;
-      } else {
-        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
-          ${SVG_HASHTAG}
-          <span>channel</span>
-          <span class="link-chevron">›</span>
-          ${SVG_BUBBLE}
-        </a>`;
-      }
-    });
-
-    // 3. Discord Dynamic Timestamps (<t:1672531199:F> or <t:1672531199>)
-    html = html.replace(/<t:(-?\d+)(?::([tTdDfFR]))?>/g, (match, timestamp, style) => {
-      return formatDiscordTimestamp(timestamp, style || 'f');
-    });
-
-    // 4. Mentions (@everyone, @here)
-    html = html.replace(/@everyone/g, `<span class="mention-bubble mention-everyone">@everyone</span>`);
-    html = html.replace(/@here/g, `<span class="mention-bubble mention-everyone">@here</span>`);
-
-    // 5. Channel mentions (<#123456789>)
-    if (mentions.channels) {
-      mentions.channels.forEach(ch => {
-        const regex = new RegExp(`<#${ch.id}>`, 'g');
-        html = html.replace(regex, `<span class="mention-bubble mention-channel">#${ch.name}</span>`);
-      });
-    }
-
-    // 6. User mentions
-    if (mentions.users) {
-      mentions.users.forEach(u => {
-        const regex = new RegExp(`<@!?${u.id}>`, 'g');
-        html = html.replace(regex, `<span class="mention-bubble mention-user" style="color:${u.color}">@${u.displayName}</span>`);
-      });
-    }
-
-    // 7. Role mentions
-    if (mentions.roles) {
-      mentions.roles.forEach(r => {
-        const regex = new RegExp(`<@&${r.id}>`, 'g');
-        const bg = r.color ? `${r.color}22` : 'rgba(88,101,242,0.15)';
-        html = html.replace(regex, `<span class="mention-bubble" style="background:${bg}; color:${r.color}">@${r.name}</span>`);
-      });
-    }
-
-    // 8. Discord Headers (#, ##, ###)
-    html = html.replace(/^### (.*$)/gim, '<div class="discord-h3">$1</div>');
-    html = html.replace(/^## (.*$)/gim, '<div class="discord-h2">$1</div>');
-    html = html.replace(/^# (.*$)/gim, '<div class="discord-h1">$1</div>');
-
-    // 9. Discord Inline Formatting
-    html = html.replace(/\*\*(.*?)\*\*/g, '<span class="discord-bold">$1</span>');
-    html = html.replace(/\*(.*?)\*/g, '<span class="discord-italic">$1</span>');
-    html = html.replace(/__(.*?)__/g, '<span class="discord-underline">$1</span>');
-    html = html.replace(/~~(.*?)~~/g, '<span class="discord-strike">$1</span>');
-    html = html.replace(/`(.*?)`/g, '<code class="discord-code">$1</code>');
-
-    return html;
-  }
 
   async function loadAnnouncements() {
     const feed = document.getElementById('announcements-feed');
+    const headers = {};
+
+    if (activeSessionToken) {
+      headers['X-Session-Token'] = activeSessionToken;
+    } else {
+      const turnstileToken = typeof turnstile !== 'undefined' ? turnstile.getResponse() : null;
+      if (!turnstileToken) {
+        feed.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Please complete verification above.</p>';
+        return;
+      }
+      headers['X-Turnstile-Token'] = turnstileToken;
+    }
+
     try {
-      const res = await fetch('/annoucments?channelId=1477033205017346259');
+      const res = await fetch('/annoucments', { headers });
+
+      if (res.status === 403) {
+        activeSessionToken = null;
+        throw new Error('Verification failed. Please re-verify via CAPTCHA.');
+      }
+
       if (!res.ok) throw new Error('Failed to load announcements');
+
+      const newToken = res.headers.get('X-Session-Token');
+      if (newToken) activeSessionToken = newToken;
 
       announcementsData = await res.json();
       feed.innerHTML = '';
@@ -1031,7 +895,7 @@
       messageKeys.forEach(id => {
         const msg = announcementsData[id];
         const formattedDate = new Date(msg.timestamp).toLocaleString();
-        const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
+        const parsedBody = typeof parseDiscordFormatting === 'function' ? parseDiscordFormatting(msg.content, msg.mentions) : msg.content;
         const isLongText = msg.content.length > 150 || (msg.content.match(/\n/g) || []).length > 2;
 
         const card = document.createElement('div');
@@ -1051,7 +915,7 @@
           </div>
           <div class="announcement-body ${isLongText ? 'truncated' : ''}">${parsedBody}</div>
           ${isLongText ? '<span class="read-more-tag">Click to read full announcement →</span>' : ''}
-          ${msg.pictures.length > 0 ? `<div class="media-preview"><img src="${msg.pictures[0]}" /></div>` : ''}
+          ${msg.pictures && msg.pictures.length > 0 ? `<div class="media-preview"><img src="${msg.pictures[0]}" /></div>` : ''}
         `;
         feed.appendChild(card);
       });
@@ -1065,7 +929,7 @@
     if (!msg) return;
 
     const modalBody = document.getElementById('modalBody');
-    const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
+    const parsedBody = typeof parseDiscordFormatting === 'function' ? parseDiscordFormatting(msg.content, msg.mentions) : msg.content;
 
     modalBody.innerHTML = `
       <div class="announcement-header">
@@ -1079,7 +943,7 @@
         </div>
       </div>
       <div style="white-space: pre-wrap; line-height: 1.5; margin-top: 15px;">${parsedBody}</div>
-      ${msg.pictures.map(pic => `<div style="margin-top:15px"><img src="${pic}" style="max-width:100%; border-radius:6px;"/></div>`).join('')}
+      ${msg.pictures ? msg.pictures.map(pic => `<div style="margin-top:15px"><img src="${pic}" style="max-width:100%; border-radius:6px;"/></div>`).join('') : ''}
     `;
 
     document.getElementById('announcementModal').classList.add('active');
@@ -1091,7 +955,9 @@
     }
   }
 
-  loadAnnouncements();
+  window.addEventListener('DOMContentLoaded', () => {
+    if (activeSessionToken) loadAnnouncements();
+  });
 </script>
 </body>
 </html>
