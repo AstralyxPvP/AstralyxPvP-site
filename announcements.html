@@ -6,480 +6,17 @@
   <meta name="google-site-verification" content="kYWtU-P7VA6R31WMyTMMOKQ2ZHby0qlITXmdnE-xNZA" />
   <meta name="google-site-verification" content="dwWOJSf9PK5NvguaxcjVUYJCZK2Ehc_ZpdgavYEGgcs" />
   <meta name="google-site-verification" content="5x4oetuwUCYoInPARiV5ebPUEToLUzxiI1MfjvNc128" />
-  <link rel="canonical" href="https://astralyxpvp.pages.dev/announcements" />
-  <meta name="description" content="Official Announcements for AstralyxPvP — server updates, events, and news." />
+  <link rel="canonical" href="https://astralyxpvp.pages.dev" />
+  <meta name="description" content="Official Announcements for AstralyxPvP." />
   <link rel="stylesheet" href="Style/style.css">
-  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
-  <!-- marked.js for full Markdown rendering -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
-  <!-- DOMPurify to sanitize rendered HTML -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+  
   <style>
-    /* ── Page Layout ────────────────────────────────────────────── */
-    .ann-container {
+    .announcements-container {
       max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 20px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-    .ann-title {
-      text-align: center;
-      font-family: var(--font-display);
-      font-size: clamp(1.6rem, 4vw, 2.4rem);
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-    .ann-subtitle {
-      text-align: center;
-      color: var(--text-muted);
-      font-size: 0.9rem;
-      margin-bottom: 32px;
-    }
-
-    /* ── Tab Switcher ───────────────────────────────────────────── */
-    .tab-row {
-      display: flex;
-      gap: 8px;
-      justify-content: center;
-      margin-bottom: 32px;
-      flex-wrap: wrap;
-    }
-    .tab-btn {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(200,16,46,0.25);
-      border-radius: 8px;
-      color: var(--muted);
-      padding: 8px 20px;
-      font-size: 0.9rem;
-      font-family: var(--font-body);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      gap: 7px;
-    }
-    .tab-btn:hover {
-      border-color: rgba(200,16,46,0.5);
-      color: var(--text);
-      background: rgba(200,16,46,0.08);
-    }
-    .tab-btn.active {
-      background: rgba(200,16,46,0.18);
-      border-color: var(--red);
-      color: #fff;
-      font-weight: 600;
-      box-shadow: 0 0 16px rgba(200,16,46,0.2);
-    }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* ── Admin link ─────────────────────────────────────────────── */
-    .admin-link-row {
-      text-align: right;
-      margin-bottom: 16px;
-    }
-    .admin-link-row a {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-      text-decoration: none;
-      opacity: 0.6;
-      transition: opacity 0.2s;
-    }
-    .admin-link-row a:hover { opacity: 1; color: var(--gold); }
-
-    /* ════════════════════════════════════════════════════════════
-       WEB POSTS PANEL
-    ════════════════════════════════════════════════════════════ */
-
-    /* Filter bar */
-    .wp-filter-bar {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .wp-tag-filter {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      color: var(--muted);
-      padding: 4px 14px;
-      font-size: 0.78rem;
-      cursor: pointer;
-      transition: all 0.18s;
-    }
-    .wp-tag-filter:hover { border-color: var(--gold); color: var(--gold); }
-    .wp-tag-filter.active {
-      background: rgba(255,215,0,0.12);
-      border-color: var(--gold);
-      color: var(--gold);
-      font-weight: 600;
-    }
-
-    /* Grid */
-    .wp-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 20px;
-    }
-
-    /* Card */
-    .wp-card {
-      background: linear-gradient(145deg, #0f0608 0%, #130810 100%);
-      border: 1px solid rgba(200,16,46,0.2);
-      border-radius: 12px;
-      padding: 22px;
-      cursor: pointer;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      position: relative;
-      overflow: hidden;
-    }
-    .wp-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--red), var(--gold));
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-    .wp-card:hover {
-      border-color: rgba(200,16,46,0.55);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(200,16,46,0.12);
-    }
-    .wp-card:hover::before { opacity: 1; }
-
-    .wp-card.pinned {
-      border-color: rgba(255,215,0,0.35);
-      background: linear-gradient(145deg, #100d02 0%, #130f03 100%);
-    }
-    .wp-card.pinned::before {
-      background: linear-gradient(90deg, var(--gold), var(--red));
-      opacity: 1;
-    }
-
-    .wp-pin-badge {
-      position: absolute;
-      top: 12px; right: 14px;
-      font-size: 0.7rem;
-      color: var(--gold);
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      opacity: 0.85;
-    }
-
-    .wp-card-title {
-      font-family: var(--font-display);
-      font-size: 1.05rem;
-      color: var(--text);
-      line-height: 1.3;
-      margin: 0;
-      padding-right: 60px;
-    }
-
-    .wp-card-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .wp-avatar {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      object-fit: cover;
-      background: rgba(200,16,46,0.15);
-      border: 1px solid rgba(200,16,46,0.3);
-      flex-shrink: 0;
-    }
-    .wp-meta-text { display: flex; flex-direction: column; }
-    .wp-author-name {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1;
-    }
-    .wp-author-role-date {
-      font-size: 0.7rem;
-      color: var(--text-muted);
-      margin-top: 1px;
-    }
-
-    .wp-card-preview {
-      font-size: 0.85rem;
-      color: var(--muted);
-      line-height: 1.55;
-      max-height: 72px;
-      overflow: hidden;
-      position: relative;
-    }
-    .wp-card-preview::after {
-      content: '';
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      height: 32px;
-      background: linear-gradient(transparent, #0f0608);
-    }
-
-    .wp-card-thumb {
-      width: 100%;
-      max-height: 150px;
-      object-fit: cover;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.06);
-    }
-
-    .wp-tags {
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-    .wp-tag {
-      font-size: 0.68rem;
-      padding: 2px 8px;
-      border-radius: 20px;
-      background: rgba(255,215,0,0.09);
-      border: 1px solid rgba(255,215,0,0.22);
-      color: #c8a400;
-      font-weight: 600;
-    }
-
-    .wp-read-more {
-      font-size: 0.78rem;
-      color: var(--red);
-      font-weight: 600;
-      margin-top: auto;
-    }
-
-    /* ════════════════════════════════════════════════════════════
-       WEB POST MODAL
-    ════════════════════════════════════════════════════════════ */
-    .wp-modal-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.88);
-      z-index: 9999;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 40px 16px;
-      overflow-y: auto;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.2s ease;
-    }
-    .wp-modal-overlay.active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-    .wp-modal {
-      background: #0a0305;
-      border: 1px solid rgba(200,16,46,0.35);
-      border-radius: 14px;
-      width: 100%;
-      max-width: 760px;
-      position: relative;
-      overflow: hidden;
-      box-shadow: 0 24px 64px rgba(0,0,0,0.7);
-    }
-    .wp-modal-bar {
-      height: 3px;
-      background: linear-gradient(90deg, var(--red), var(--gold), var(--red));
-      background-size: 200%;
-      animation: shimmer 3s linear infinite;
-    }
-    @keyframes shimmer { 0% { background-position: 0%; } 100% { background-position: 200%; } }
-
-    .wp-modal-inner { padding: 28px 28px 36px; }
-
-    .wp-modal-close {
-      position: absolute;
-      top: 14px; right: 16px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 6px;
-      color: var(--muted);
-      font-size: 1.2rem;
-      width: 32px; height: 32px;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: all 0.15s;
-      z-index: 10;
-    }
-    .wp-modal-close:hover { color: #fff; border-color: var(--red); background: rgba(200,16,46,0.18); }
-
-    .wp-modal-header { margin-bottom: 20px; }
-    .wp-modal-pin-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 0.72rem;
-      color: var(--gold);
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .wp-modal-title {
-      font-family: var(--font-display);
-      font-size: clamp(1.3rem, 3vw, 1.85rem);
-      color: var(--text);
-      line-height: 1.25;
-      margin: 0 0 14px;
-    }
-    .wp-modal-meta {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 0;
-      border-top: 1px solid rgba(255,255,255,0.07);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
-      margin-bottom: 24px;
-    }
-    .wp-modal-avatar {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 1.5px solid rgba(200,16,46,0.4);
-    }
-
-    /* Markdown rendered content */
-    .wp-modal-body {
-      font-family: var(--font-body);
-      color: var(--text);
-      font-size: 0.95rem;
-      line-height: 1.75;
-    }
-    .wp-modal-body h1 {
-      font-family: var(--font-display);
-      font-size: 1.6rem;
-      color: var(--text);
-      border-bottom: 1px solid rgba(200,16,46,0.3);
-      padding-bottom: 8px;
-      margin: 28px 0 14px;
-    }
-    .wp-modal-body h2 {
-      font-family: var(--font-display);
-      font-size: 1.3rem;
-      color: var(--text);
-      margin: 24px 0 10px;
-    }
-    .wp-modal-body h3 {
-      font-size: 1.1rem;
-      color: var(--text);
-      margin: 18px 0 8px;
-    }
-    .wp-modal-body p { margin: 10px 0; }
-    .wp-modal-body strong { color: #fff; font-weight: 700; }
-    .wp-modal-body em { color: var(--muted); }
-    .wp-modal-body a { color: #7aacf0; text-decoration: underline; }
-    .wp-modal-body a:hover { color: var(--gold); }
-    .wp-modal-body code {
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 4px;
-      padding: 1px 6px;
-      font-family: 'Fira Code', monospace;
-      font-size: 0.88em;
-      color: #e6c07b;
-    }
-    .wp-modal-body pre {
-      background: #0e0710;
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 8px;
-      padding: 14px 16px;
-      overflow-x: auto;
-      margin: 14px 0;
-    }
-    .wp-modal-body pre code {
-      background: none;
-      border: none;
-      padding: 0;
-      font-size: 0.85rem;
-      color: #abb2bf;
-    }
-    .wp-modal-body blockquote {
-      border-left: 3px solid var(--red);
-      padding-left: 14px;
-      margin: 14px 0;
-      color: var(--muted);
-      font-style: italic;
-    }
-    .wp-modal-body ul, .wp-modal-body ol {
-      padding-left: 22px;
-      margin: 10px 0;
-    }
-    .wp-modal-body li { margin: 4px 0; }
-    .wp-modal-body table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 16px 0;
-      font-size: 0.88rem;
-    }
-    .wp-modal-body th {
-      background: rgba(200,16,46,0.12);
-      color: var(--text);
-      padding: 8px 12px;
-      text-align: left;
-      border: 1px solid rgba(255,255,255,0.1);
-    }
-    .wp-modal-body td {
-      padding: 7px 12px;
-      border: 1px solid rgba(255,255,255,0.07);
-      color: var(--muted);
-    }
-    .wp-modal-body tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
-    .wp-modal-body img {
-      max-width: 100%;
-      border-radius: 8px;
-      margin: 12px 0;
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .wp-modal-body hr {
-      border: none;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      margin: 24px 0;
-    }
-
-    .wp-modal-images {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 10px;
-      margin-top: 20px;
-    }
-    .wp-modal-images img {
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid rgba(255,255,255,0.08);
-      cursor: zoom-in;
-      transition: transform 0.2s;
-    }
-    .wp-modal-images img:hover { transform: scale(1.02); }
-
-    .wp-modal-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px solid rgba(255,255,255,0.07);
-    }
-
-    .wp-modal-edited {
-      font-size: 0.72rem;
-      color: var(--text-faint);
-      margin-top: 16px;
-      font-style: italic;
-    }
-
-    /* ════════════════════════════════════════════════════════════
-       DISCORD PANEL (existing styles — preserved)
-    ════════════════════════════════════════════════════════════ */
+    /* Discord Timestamp Styling */
     .discord-timestamp {
       background: rgba(255, 255, 255, 0.08);
       padding: 1px 6px;
@@ -490,130 +27,14 @@
       cursor: help;
       display: inline-block;
     }
-    .discord-timestamp:hover { background: rgba(255, 255, 255, 0.14); color: #ffffff; }
+    .discord-timestamp:hover {
+      background: rgba(255, 255, 255, 0.14);
+      color: #ffffff;
+    }
     .forum-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 20px;
-    }
-    @media (max-width: 768px) { .forum-grid { grid-template-columns: 1fr; } }
-    .announcement-card {
-      background: #1e1f22;
-      border-radius: 8px;
-      padding: 18px;
-      border: 1px solid #2b2d31;
-      color: #dcddde;
-      font-family: 'gg sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .announcement-card:hover { border-color: #5865f2; transform: translateY(-2px); }
-    .announcement-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
-    .avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: #2b2d31; }
-    .user-info { display: flex; flex-direction: column; }
-    .username-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .username { font-weight: 700; font-size: 0.95rem; }
-    .badge-role { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: rgba(88, 101, 242, 0.2); color: #5865f2; font-weight: 600; text-transform: uppercase; }
-    .timestamp { font-size: 0.72rem; color: #949ba4; margin-top: 2px; }
-    .announcement-body { font-size: 0.92rem; line-height: 1.45; max-height: 110px; overflow: hidden; position: relative; word-break: break-word; white-space: pre-wrap; flex-grow: 1; }
-    .announcement-body.truncated::after { content: ""; position: absolute; bottom: 0; left: 0; right: 0; height: 40px; background: linear-gradient(transparent, #1e1f22); }
-    .read-more-tag { color: #5865f2; font-weight: 600; font-size: 0.8rem; margin-top: 10px; display: inline-block; }
-    .media-preview img { max-width: 100%; max-height: 180px; border-radius: 6px; margin-top: 10px; object-fit: cover; }
-    .discord-h1 { font-size: 1.45em; font-weight: bold; margin: 12px 0 6px; color: #fff; border-bottom: 1px solid #35363c; padding-bottom: 4px; }
-    .discord-h2 { font-size: 1.28em; font-weight: bold; margin: 10px 0 5px; color: #fff; }
-    .discord-h3 { font-size: 1.12em; font-weight: bold; margin: 8px 0 4px; color: #fff; }
-    .discord-bold { font-weight: bold; }
-    .discord-italic { font-style: italic; }
-    .discord-underline { text-decoration: underline; }
-    .discord-strike { text-decoration: line-through; }
-    .discord-code { background: #2b2d31; padding: 2px 4px; border-radius: 4px; font-family: monospace; }
-    .discord-link { color: #00a8fc; text-decoration: none; }
-    .discord-link:hover { text-decoration: underline; }
-    .mention-bubble { padding: 2px 6px; border-radius: 4px; font-weight: 600; font-size: 0.85em; display: inline-block; margin: 0 1px; text-decoration: none; }
-    .mention-channel, .mention-user { background: rgba(88, 101, 242, 0.15); color: #c9cdfb; }
-    .mention-everyone { background: rgba(240, 71, 71, 0.15); color: #f04747; }
-    .discord-msg-link { display: inline-flex; align-items: center; gap: 5px; background: #2b2d38; color: #c9cdfb; padding: 3px 8px; border-radius: 4px; font-size: 0.85em; font-weight: 600; text-decoration: none; vertical-align: middle; margin: 0 2px; transition: background 0.15s ease, color 0.15s ease; }
-    .discord-msg-link:hover { background: #363947; color: #ffffff; }
-    .discord-msg-link .link-chevron { color: #949ba4; font-weight: 400; margin: 0 1px; }
-    .discord-msg-link svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
-    .discord-msg-link .bubble-icon { color: #8a9cf8; }
-    /* Discord modal */
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.85); display: flex; justify-content: center; align-items: center; z-index: 9999; opacity: 0; pointer-events: none; transition: opacity 0.2s ease; }
-    .modal-overlay.active { opacity: 1; pointer-events: auto; }
-    .modal-content { background: #313338; border-radius: 8px; width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto; padding: 24px; color: #dbdee1; position: relative; }
-    .modal-close { position: absolute; top: 14px; right: 18px; background: none; border: none; color: #b5bac1; font-size: 1.5rem; cursor: pointer; }
-
-    /* Loading / empty states */
-    .wp-state {
-      text-align: center;
-      padding: 60px 20px;
-      color: var(--text-muted);
-      grid-column: 1 / -1;
-    }
-    .wp-state-icon { font-size: 2.5rem; margin-bottom: 12px; }
-    .wp-state p { font-size: 0.9rem; }
-
-    @media (max-width: 768px) {
-      .wp-grid { grid-template-columns: 1fr; }
-      .wp-modal-inner { padding: 20px 18px 28px; }
-    }
-  </style>
-
-  <script>
-    async function loadHead() {
-      try {
-        const response = await fetch('Assets/head.html');
-        const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const newNodes = Array.from(doc.head.childNodes);
-        for (const node of newNodes) {
-          if (node.tagName === 'SCRIPT') {
-            const script = document.createElement('script');
-            Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
-            script.textContent = node.textContent;
-            document.head.appendChild(script);
-          } else {
-            document.head.appendChild(node);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load head:', err);
-      }
-    }
-    loadHead();
-  </script>
-</head>
-
-<body>
-<div class="page-enter">
-  <div id="navbar-placeholder"></div>
-
-  <main class="page-content">
-    <div class="ann-container">
-      <h1 class="ann-title">📢 Announcements</h1>
-      <p class="ann-subtitle">Server updates, events, and news from the AstralyxPvP team.</p>
-
-      <!-- Tab Switcher -->
-      <div class="tab-row">
-        <button class="tab-btn active" onclick="switchTab('web')" id="tab-web">
-          <i class="fa-solid fa-newspaper"></i> Web Posts
-        </button>
-        <button class="tab-btn" onclick="switchTab('discord')" id="tab-discord">
-          <i class="fa-brands fa-discord"></i> Discord Feed
-        </button>
-      </div>
-
-      <!-- ── WEB POSTS PANEL ──────────────────────────────── -->
-      <div id="panel-web" class="tab-panel active">
-        <div class="admin-link-row">
-          <a href="/admin-announcements.html"><i class="fa-solid fa-lock"></i> Staff Portal</a>
-        </div>
-        <div id="wp-filter-bar" class="wp-filter-bar" style="display:none;">
-       gap: 20px;
     }
     @media (max-width: 768px) {
       .forum-grid { grid-template-columns: 1fr; }
@@ -805,13 +226,7 @@
 
   <main class="page-content">
     <div class="announcements-container">
-      <h1 style="text-align:center; margin-bottom: 20px;">📢 Server Announcements</h1>
-      
-      <!-- Cloudflare Turnstile Verification Widget -->
-      <div style="display:flex; justify-content:center; margin-bottom: 20px;">
-        <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt" data-callback="loadAnnouncements"></div>
-      </div>
-
+      <h1 style="text-align:center; margin-bottom: 30px;">📢 Server Announcements</h1>
       <div id="announcements-feed" class="forum-grid">Loading announcements...</div>
     </div>
   </main>
@@ -852,36 +267,177 @@
 <script src="Script/script.js"></script>
 
 <script>
-  let activeSessionToken = null;
   let announcementsData = {};
+
+  // Helper function to format Discord Unix Timestamps (<t:TIMESTAMP:STYLE>)
+  function formatDiscordTimestamp(unixSec, style = 'f') {
+    const timestamp = Number(unixSec) * 1000;
+    const date = new Date(timestamp);
+    
+    if (isNaN(date.getTime())) return `<t:${unixSec}:${style}>`; // Fallback if invalid
+
+    const fullTooltip = date.toLocaleString([], {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit'
+    });
+
+    let formattedText = '';
+
+    switch (style) {
+      case 't': // Short Time (e.g., 14:30)
+        formattedText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        break;
+      case 'T': // Long Time (e.g., 14:30:45)
+        formattedText = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        break;
+      case 'd': // Short Date (e.g., 01/20/2026)
+        formattedText = date.toLocaleDateString([], { month: '2-digit', day: '2-digit', year: 'numeric' });
+        break;
+      case 'D': // Long Date (e.g., January 20, 2026)
+        formattedText = date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' });
+        break;
+      case 'f': // Short Date/Time (e.g., January 20, 2026 14:30)
+        formattedText = `${date.toLocaleDateString([], { month: 'long', day: 'numeric', year: 'numeric' })} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        break;
+      case 'F': // Long Date/Time (e.g., Tuesday, January 20, 2026 14:30)
+        formattedText = `${date.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })} ${date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`;
+        break;
+      case 'R': // Relative Time (e.g., "2 hours ago", "in 5 minutes")
+        formattedText = getRelativeTimeString(date);
+        break;
+      default:
+        formattedText = date.toLocaleString();
+    }
+
+    return `<span class="discord-timestamp" title="${fullTooltip}">${formattedText}</span>`;
+  }
+
+  // Relative time calculation for <t:123456789:R>
+  function getRelativeTimeString(date) {
+    const diffInSeconds = Math.floor((date.getTime() - Date.now()) / 1000);
+    const rtf = new Intl.RelativeTimeFormat('en', { numeric: 'auto' });
+
+    const cutoffs = [60, 3600, 86400, 86400 * 7, 86400 * 30, 86400 * 365, Infinity];
+    const units = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
+
+    let unitIndex = 0;
+    let absDiff = Math.abs(diffInSeconds);
+
+    if (absDiff < 5) return 'just now';
+
+    while (absDiff >= cutoffs[unitIndex]) {
+      unitIndex++;
+    }
+
+    const divisor = unitIndex === 0 ? 1 : cutoffs[unitIndex - 1];
+    const value = Math.round(diffInSeconds / divisor);
+
+    return rtf.format(value, units[unitIndex]);
+  }
+
+  // Discord SVG Icons
+  const SVG_BULLHORN = `<svg viewBox="0 0 24 24"><path d="M3.5 10c-.83 0-1.5.67-1.5 1.5v1c0 .83.67 1.5 1.5 1.5H5l4 3.5V6.5L5 10H3.5zm12.5 2c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/></svg>`;
+  const SVG_HASHTAG = `<svg viewBox="0 0 24 24"><path d="M5.886 21 7.05 14.5H2l.363-2h5.051l1.103-6H3.466l.363-2h5.152l1.163-6h2.099l-1.163 6h6.077l1.163-6h2.099l-1.163 6H24l-.363 2h-5.051l-1.103 6h5.051l-.363 2h-5.152l-1.163 6h-2.099l1.163-6H8.892l-1.163 6H5.886Zm5.312-8.5h6.077l1.103-6h-6.077l-1.103 6Z"/></svg>`;
+  const SVG_THREAD = `<svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 3.18-9 7.1 0 2.14 1.22 4.05 3.12 5.34-.23.82-.82 2.15-2.12 3.18 0 0 2.22.18 4.41-1.32.12.02.24.03.37.03 4.97 0 9-3.18 9-7.1S16.97 3 12 3z"/></svg>`;
+  const SVG_BUBBLE = `<svg class="bubble-icon" viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.141 2 11.25c0 2.44 1.033 4.654 2.73 6.27-.406 1.488-1.554 3.16-1.572 3.185a.5.5 0 0 0 .548.78c2.47-.643 4.542-1.851 5.61-2.541A10.87 10.87 0 0 0 12 20.5c5.523 0 10-4.141 10-9.25S17.523 2 12 2z"/></svg>`;
+
+  // Parse Discord Formatting
+  function parseDiscordFormatting(content, mentions = {}) {
+    let html = content || "";
+
+    // 1. Masked Links [text](url)
+    html = html.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="discord-link">$1</a>');
+
+    // 2. Discord Message & Thread Links
+    const msgLinkRegex = /https:\/\/(?:canary\.|ptb\.)?discord\.com\/channels\/(?:\d+|@me)\/(\d+)\/(\d+)/g;
+    html = html.replace(msgLinkRegex, (match, channelId) => {
+      const channel = mentions.channels ? mentions.channels.find(c => c.id === channelId) : null;
+
+      if (channel && channel.isThread) {
+        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
+          ${SVG_THREAD}
+          <span>${channel.parentName || 'channel'}</span>
+          <span class="link-chevron">›</span>
+          ${SVG_BUBBLE}
+          <span>${channel.name}</span>
+        </a>`;
+      } else if (channel) {
+        const icon = channel.type === 5 ? SVG_BULLHORN : SVG_HASHTAG;
+        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
+          ${icon}
+          <span>${channel.name}</span>
+          <span class="link-chevron">›</span>
+          ${SVG_BUBBLE}
+        </a>`;
+      } else {
+        return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="discord-msg-link">
+          ${SVG_HASHTAG}
+          <span>channel</span>
+          <span class="link-chevron">›</span>
+          ${SVG_BUBBLE}
+        </a>`;
+      }
+    });
+
+    // 3. Discord Dynamic Timestamps (<t:1672531199:F> or <t:1672531199>)
+    html = html.replace(/<t:(-?\d+)(?::([tTdDfFR]))?>/g, (match, timestamp, style) => {
+      return formatDiscordTimestamp(timestamp, style || 'f');
+    });
+
+    // 4. Mentions (@everyone, @here)
+    html = html.replace(/@everyone/g, `<span class="mention-bubble mention-everyone">@everyone</span>`);
+    html = html.replace(/@here/g, `<span class="mention-bubble mention-everyone">@here</span>`);
+
+    // 5. Channel mentions (<#123456789>)
+    if (mentions.channels) {
+      mentions.channels.forEach(ch => {
+        const regex = new RegExp(`<#${ch.id}>`, 'g');
+        html = html.replace(regex, `<span class="mention-bubble mention-channel">#${ch.name}</span>`);
+      });
+    }
+
+    // 6. User mentions
+    if (mentions.users) {
+      mentions.users.forEach(u => {
+        const regex = new RegExp(`<@!?${u.id}>`, 'g');
+        html = html.replace(regex, `<span class="mention-bubble mention-user" style="color:${u.color}">@${u.displayName}</span>`);
+      });
+    }
+
+    // 7. Role mentions
+    if (mentions.roles) {
+      mentions.roles.forEach(r => {
+        const regex = new RegExp(`<@&${r.id}>`, 'g');
+        const bg = r.color ? `${r.color}22` : 'rgba(88,101,242,0.15)';
+        html = html.replace(regex, `<span class="mention-bubble" style="background:${bg}; color:${r.color}">@${r.name}</span>`);
+      });
+    }
+
+    // 8. Discord Headers (#, ##, ###)
+    html = html.replace(/^### (.*$)/gim, '<div class="discord-h3">$1</div>');
+    html = html.replace(/^## (.*$)/gim, '<div class="discord-h2">$1</div>');
+    html = html.replace(/^# (.*$)/gim, '<div class="discord-h1">$1</div>');
+
+    // 9. Discord Inline Formatting
+    html = html.replace(/\*\*(.*?)\*\*/g, '<span class="discord-bold">$1</span>');
+    html = html.replace(/\*(.*?)\*/g, '<span class="discord-italic">$1</span>');
+    html = html.replace(/__(.*?)__/g, '<span class="discord-underline">$1</span>');
+    html = html.replace(/~~(.*?)~~/g, '<span class="discord-strike">$1</span>');
+    html = html.replace(/`(.*?)`/g, '<code class="discord-code">$1</code>');
+
+    return html;
+  }
 
   async function loadAnnouncements() {
     const feed = document.getElementById('announcements-feed');
-    const headers = {};
-
-    if (activeSessionToken) {
-      headers['X-Session-Token'] = activeSessionToken;
-    } else {
-      const turnstileToken = typeof turnstile !== 'undefined' ? turnstile.getResponse() : null;
-      if (!turnstileToken) {
-        feed.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Please complete verification above.</p>';
-        return;
-      }
-      headers['X-Turnstile-Token'] = turnstileToken;
-    }
-
     try {
-      const res = await fetch('/annoucments', { headers });
-
-      if (res.status === 403) {
-        activeSessionToken = null;
-        throw new Error('Verification failed. Please re-verify via CAPTCHA.');
-      }
-
+      const res = await fetch('/annoucments?channelId=1477033205017346259');
       if (!res.ok) throw new Error('Failed to load announcements');
-
-      const newToken = res.headers.get('X-Session-Token');
-      if (newToken) activeSessionToken = newToken;
 
       announcementsData = await res.json();
       feed.innerHTML = '';
@@ -895,7 +451,7 @@
       messageKeys.forEach(id => {
         const msg = announcementsData[id];
         const formattedDate = new Date(msg.timestamp).toLocaleString();
-        const parsedBody = typeof parseDiscordFormatting === 'function' ? parseDiscordFormatting(msg.content, msg.mentions) : msg.content;
+        const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
         const isLongText = msg.content.length > 150 || (msg.content.match(/\n/g) || []).length > 2;
 
         const card = document.createElement('div');
@@ -915,7 +471,7 @@
           </div>
           <div class="announcement-body ${isLongText ? 'truncated' : ''}">${parsedBody}</div>
           ${isLongText ? '<span class="read-more-tag">Click to read full announcement →</span>' : ''}
-          ${msg.pictures && msg.pictures.length > 0 ? `<div class="media-preview"><img src="${msg.pictures[0]}" /></div>` : ''}
+          ${msg.pictures.length > 0 ? `<div class="media-preview"><img src="${msg.pictures[0]}" /></div>` : ''}
         `;
         feed.appendChild(card);
       });
@@ -929,7 +485,7 @@
     if (!msg) return;
 
     const modalBody = document.getElementById('modalBody');
-    const parsedBody = typeof parseDiscordFormatting === 'function' ? parseDiscordFormatting(msg.content, msg.mentions) : msg.content;
+    const parsedBody = parseDiscordFormatting(msg.content, msg.mentions);
 
     modalBody.innerHTML = `
       <div class="announcement-header">
@@ -943,7 +499,7 @@
         </div>
       </div>
       <div style="white-space: pre-wrap; line-height: 1.5; margin-top: 15px;">${parsedBody}</div>
-      ${msg.pictures ? msg.pictures.map(pic => `<div style="margin-top:15px"><img src="${pic}" style="max-width:100%; border-radius:6px;"/></div>`).join('') : ''}
+      ${msg.pictures.map(pic => `<div style="margin-top:15px"><img src="${pic}" style="max-width:100%; border-radius:6px;"/></div>`).join('')}
     `;
 
     document.getElementById('announcementModal').classList.add('active');
@@ -955,9 +511,7 @@
     }
   }
 
-  window.addEventListener('DOMContentLoaded', () => {
-    if (activeSessionToken) loadAnnouncements();
-  });
+  loadAnnouncements();
 </script>
 </body>
 </html>
