@@ -10,5 +10,23 @@
   },
   "compatibility_flags": [
     "nodejs_compat"
-  ]
+  ],
+
+  // ── D1 Database binding for Web Announcements ──────────────────────────
+  // Step 1: Create the DB →  wrangler d1 create astralyx-db
+  // Step 2: Copy the output "database_id" into the field below
+  // Step 3: Run migration →  wrangler d1 execute astralyx-db --remote --file=web_announcements_migration.sql
+  "d1_databases": [
+    {
+      "binding": "DB",                         // accessed as env.DB in functions
+      "database_name": "astralyx-db",
+      "database_id": "REPLACE_WITH_YOUR_D1_ID" // ← paste ID from step 1 here
+    }
+  ],
+
+  // ── Secrets (set via dashboard or wrangler secret put) ────────────────
+  // ADMIN_KEY  →  the password for /admin-announcements.html
+  // Set it with:  wrangler secret put ADMIN_KEY
+  // (BOT_KEY for Discord already set — no change needed)
+  "vars": {}
 }
