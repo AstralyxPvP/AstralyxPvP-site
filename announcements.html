@@ -282,6 +282,11 @@
   let announcementsData = {};
   let activeSessionToken = null;
 
+  // Explicitly attach callback to window object before Turnstile calls it
+  window.onTurnstileSuccess = function(token) {
+    loadAnnouncements(token);
+  };
+
   function formatDiscordTimestamp(unixSec, style = 'f') {
     const timestamp = Number(unixSec) * 1000;
     const date = new Date(timestamp);
@@ -428,32 +433,35 @@
     return html;
   }
 
-  async function loadAnnouncements() {
+  async function loadAnnouncements(explicitTurnstileToken = null) {
     const feed = document.getElementById('announcements-feed');
-    let requestHeaders = {};
+    const wrapper = document.getElementById('turnstileWrapper');
 
-    // 1. Resolve Authorization Token (Session Token vs Turnstile Token)
+    // Use URL Search Parameters instead of custom headers to prevent CORS issues
+    const params = new URLSearchParams({ channelId: '1477033205017346259' });
+
     if (activeSessionToken) {
-      requestHeaders['x-session-token'] = activeSessionToken;
+      params.set('sessionToken', activeSessionToken);
     } else {
-      const turnstileToken = turnstile.getResponse();
-      if (!turnstileToken) {
-        feed.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Please complete the CAPTCHA above to load announcements.</p>';
+      const token = explicitTurnstileToken || (typeof turnstile !== 'undefined' ? turnstile.getResponse() : null);
+      if (!token) {
+        feed.innerHTML = '<p style="text-align:center; grid-column: 1/-1;">Please complete the security check above.</p>';
         return;
       }
-      requestHeaders['x-turnstile-token'] = turnstileToken;
+      params.set('turnstileToken', token);
     }
 
     try {
-      const res = await fetch('/annoucments?channelId=1477033205017346259', {
-        headers: requestHeaders
-      });
-
-      if (!res.ok) throw new Error(`Failed to load announcements (Status: ${res.status})`);
-
+      const res = await fetch(`/annoucments?${params.toString()}`);
       const payload = await res.json();
 
-      // 2. Save rotated session token for subsequent calls
+      if (!res.ok) {
+        throw new Error(payload.error || `Server returned error status ${res.status}`);
+      }
+
+      // Hide CAPTCHA widget once verification succeeds
+      if (wrapper) wrapper.style.display = 'none';
+
       if (payload.sessionToken) {
         activeSessionToken = payload.sessionToken;
       }
@@ -495,7 +503,7 @@
         feed.appendChild(card);
       });
     } catch (err) {
-      feed.innerHTML = `<p style="color:red; text-align:center; grid-column: 1/-1;">${err.message}</p>`;
+      feed.innerHTML = `<p style="color:#ff4d6d; text-align:center; grid-column: 1/-1;">Error: ${err.message}</p>`;
     }
   }
 
@@ -529,16 +537,6 @@
       document.getElementById('announcementModal').classList.remove('active');
     }
   }
-
-  // Automatically trigger when Turnstile initializes/solves
-  window.onload = () => {
-    // Attempt initial load or wait for widget solve
-    setTimeout(() => {
-      if (typeof turnstile !== 'undefined') {
-        loadAnnouncements();
-      }
-    }, 500);
-  };
 </script>
 </body>
 </html>
