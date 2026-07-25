@@ -4,29 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AstralyxPvP Status</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* Modern CSS Reset & Variables */
-        :root {
-            --bg-dark: #0f0505;
-            --bg-card: rgba(30, 15, 15, 0.6);
-            --bg-card-hover: rgba(45, 20, 20, 0.8);
-            --border-color: rgba(255, 50, 50, 0.15);
-            --border-hover: rgba(255, 215, 0, 0.4);
-            --gold: #FFD700;
-            --gold-glow: rgba(255, 215, 0, 0.2);
-            --text-main: #f3f4f6;
-            --text-muted: #9ca3af;
-            --success: #10b981;
-            --success-bg: rgba(16, 185, 129, 0.15);
-            --danger: #ef4444;
-            --danger-bg: rgba(239, 68, 68, 0.15);
-            --warning: #f59e0b;
-            --unknown: #6b7280;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -34,47 +12,23 @@
         }
 
         body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: radial-gradient(circle at top center, #2a0808 0%, var(--bg-dark) 100%);
-            background-attachment: fixed;
-            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom, #1a0a0a, #2d1515, #1a0a0a);
+            color: #e0e0e0;
             min-height: 100vh;
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
         }
 
-        /* Scrollbar Styling */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-dark);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Header */
         header {
-            border-bottom: 1px solid var(--border-color);
-            background: rgba(15, 5, 5, 0.7);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+            border-bottom: 1px solid rgba(139, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 0;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
+            padding: 0 1rem;
         }
 
         .header-content {
@@ -86,195 +40,148 @@
         .header-left {
             display: flex;
             align-items: center;
-            gap: 1.25rem;
+            gap: 1rem;
         }
 
         .logo {
-            width: 48px;
-            height: 48px;
-            flex: 0 0 48px;
+            width: 44px;
+            height: 44px;
+            flex: 0 0 44px;
             display: block;
             overflow: hidden;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            border-radius: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 15px var(--gold-glow);
-            transition: transform 0.3s ease;
-        }
-        
-        .logo:hover {
-            transform: scale(1.05);
+            border: 1px solid rgba(255, 215, 0, 0.45);
+            border-radius: 8px;
+            background: rgba(0, 0, 0, 0.35);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
         }
 
         .logo img {
             display: block;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
         h1 {
             font-size: 1.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #FFF 0%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            letter-spacing: 1.5px;
+            font-weight: 700;
+            color: #FFD700;
+            letter-spacing: 1px;
         }
 
-        /* Status Indicator */
         .status-indicator {
             display: flex;
             align-items: center;
             gap: 0.5rem;
             font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            background: rgba(255, 255, 255, 0.03);
-            padding: 0.5rem 1rem;
-            border-radius: 9999px;
-            border: 1px solid rgba(255,255,255,0.05);
+            color: #b0b0b0;
         }
 
         .status-dot {
-            width: 10px;
-            height: 10px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
-            box-shadow: 0 0 10px currentColor;
+            animation: pulse 2s infinite;
         }
 
-        .status-dot.online { background-color: var(--success); color: var(--success); animation: pulse-green 2s infinite; }
-        .status-dot.offline { background-color: var(--danger); color: var(--danger); animation: pulse-red 2s infinite; }
-        .status-dot.loading { background-color: var(--unknown); color: var(--unknown); }
-
-        @keyframes pulse-green {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        .status-dot.online {
+            background-color: #22c55e;
         }
-        @keyframes pulse-red {
-            0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+
+        .status-dot.offline {
+            background-color: #ef4444;
+        }
+
+        .status-dot.loading {
+            background-color: #888888;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
         }
 
         main {
             padding: 3rem 0;
-            animation: fadeIn 0.6s ease-out;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Stats Grid */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
         }
 
         .stat-card {
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            padding: 1.75rem;
-            border-radius: 16px;
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            background: rgba(50, 50, 50, 0.3);
+            padding: 1.5rem;
+            border-radius: 8px;
             text-align: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            transition: all 0.3s ease;
         }
-
-        .stat-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; height: 3px;
-            background: var(--unknown);
-            opacity: 0.5;
-        }
-        .stat-card.operational::before { background: var(--success); opacity: 1; box-shadow: 0 0 15px var(--success); }
-        .stat-card.down::before { background: var(--danger); opacity: 1; box-shadow: 0 0 15px var(--danger); }
-        .stat-card.unknown::before { background: var(--warning); opacity: 1; box-shadow: 0 0 15px var(--warning); }
 
         .stat-card:hover {
-            transform: translateY(-4px);
-            border-color: var(--border-hover);
-            background: var(--bg-card-hover);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+            border-color: rgba(100, 100, 100, 0.5);
+            background: rgba(50, 50, 50, 0.5);
         }
 
         .stat-number {
-            font-size: 2.75rem;
-            font-weight: 800;
-            margin-bottom: 0.25rem;
-            line-height: 1;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
         }
-
-        .stat-card.operational .stat-number { color: var(--success); }
-        .stat-card.down .stat-number { color: var(--danger); }
-        .stat-card.unknown .stat-number { color: var(--warning); }
 
         .stat-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-size: 0.875rem;
+            color: #888888;
         }
 
-        /* Section Titles */
+        .stat-card.operational .stat-number {
+            color: #22c55e;
+        }
+
+        .stat-card.down .stat-number {
+            color: #ef4444;
+        }
+
+        .stat-card.unknown .stat-number {
+            color: #FFD700;
+        }
+
         .section-title {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             font-weight: 700;
-            color: var(--text-main);
-            margin-bottom: 1.5rem;
+            color: #FFD700;
+            margin-bottom: 1rem;
             letter-spacing: 0.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
         }
 
-        .section-title::before {
-            content: '';
-            width: 8px;
-            height: 24px;
-            background: var(--gold);
-            border-radius: 4px;
-            box-shadow: 0 0 10px var(--gold-glow);
-        }
-
-        /* Services List */
         .services-list {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
+            space-y: 0.5rem;
         }
 
         .service-item {
             display: flex;
             flex-direction: column;
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            padding: 1.5rem;
-            border-radius: 16px;
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            background: rgba(50, 50, 50, 0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
             transition: all 0.3s ease;
         }
 
         .service-item:hover {
-            border-color: var(--border-hover);
-            background: var(--bg-card-hover);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border-color: rgba(100, 100, 100, 0.5);
+            background: rgba(50, 50, 50, 0.5);
         }
 
         .service-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 1.25rem;
+            margin-bottom: 0.75rem;
         }
 
         .service-left {
@@ -285,15 +192,12 @@
         }
 
         .service-icon {
-            width: 32px;
-            height: 32px;
+            width: 20px;
+            height: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 16px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 8px;
-            font-weight: bold;
+            font-size: 12px;
         }
 
         .service-info {
@@ -303,190 +207,172 @@
         }
 
         .service-name {
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--text-main);
+            font-weight: 500;
+            color: #e0e0e0;
         }
 
         .service-time {
-            font-size: 0.8rem;
-            color: var(--text-muted);
+            font-size: 0.75rem;
+            color: #666666;
         }
 
-        .status-badge {
-            padding: 0.4rem 1rem;
-            border-radius: 8px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
-            border: 1px solid transparent;
-        }
-
-        .status-badge.operational {
-            background: var(--success-bg);
-            color: var(--success);
-            border-color: rgba(16, 185, 129, 0.3);
-        }
-
-        .status-badge.down {
-            background: var(--danger-bg);
-            color: var(--danger);
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-
-        .status-badge.unknown {
-            background: rgba(107, 114, 128, 0.15);
-            color: #d1d5db;
-            border-color: rgba(107, 114, 128, 0.3);
-        }
-
-        /* Uptime Bars */
-        .uptime-container {
+        .service-right {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
 
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-badge.operational {
+            background: rgba(34, 197, 94, 0.2);
+            color: #86efac;
+        }
+
+        .status-badge.down {
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        .status-badge.unknown {
+            background: rgba(100, 100, 100, 0.2);
+            color: #d1d5db;
+        }
+
+        .uptime-container {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
         .uptime-bars {
             flex: 1;
-            display: grid;
-            grid-template-columns: repeat(30, minmax(4px, 1fr));
-            align-items: stretch;
-            gap: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 5px;
             height: 40px;
             min-width: 0;
+            flex-wrap: wrap;
         }
 
         .uptime-bar {
-            width: 100%;
-            height: 100%;
-            border-radius: 4px;
-            background: var(--unknown);
-            opacity: 0.4;
-            transition: all 0.2s ease;
-            cursor: pointer;
+            flex: 0 0 auto;
+            width: 10px;
+            height: 24px;
+            border-radius: 50%;
+            background: #6b7280;
+            opacity: 0.65;
+            transition: transform 0.15s ease, opacity 0.15s ease, filter 0.15s ease, box-shadow 0.15s ease;
+            cursor: help;
             position: relative;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
         }
 
-        .uptime-bar.operational { background: var(--success); opacity: 0.8; }
-        .uptime-bar.down { background: var(--danger); opacity: 0.9; }
+        .uptime-bar.operational {
+            background: #22c55e;
+            opacity: 1;
+            box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+        }
+
+        .uptime-bar.down {
+            background: #ef4444;
+            opacity: 1;
+            box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4);
+        }
+
+        .uptime-bar.unknown {
+            background: #6b7280;
+            opacity: 0.65;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
 
         .uptime-bar:hover,
         .uptime-bar:focus-visible {
             opacity: 1;
-            transform: scaleY(1.15) translateY(-2px);
+            filter: brightness(1.2);
+            transform: scale(1.15);
             outline: none;
-            z-index: 10;
         }
-        
-        .uptime-bar.operational:hover { box-shadow: 0 0 10px var(--success); }
-        .uptime-bar.down:hover { box-shadow: 0 0 10px var(--danger); }
 
         .uptime-bar-tooltip {
             position: absolute;
-            bottom: calc(100% + 10px);
+            bottom: 100%;
             left: 50%;
-            transform: translateX(-50%) translateY(5px);
-            background: rgba(0, 0, 0, 0.9);
-            border: 1px solid rgba(255,255,255,0.1);
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
             color: #fff;
-            padding: 0.5rem 0.75rem;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: 500;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.65rem;
             white-space: nowrap;
             opacity: 0;
             pointer-events: none;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-            z-index: 20;
-        }
-
-        /* Tooltip Arrow */
-        .uptime-bar-tooltip::after {
-            content: '';
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            margin-left: -5px;
-            border-width: 5px;
-            border-style: solid;
-            border-color: rgba(255,255,255,0.1) transparent transparent transparent;
+            transition: opacity 0.2s ease;
+            margin-bottom: 5px;
         }
 
         .uptime-bar:hover .uptime-bar-tooltip {
             opacity: 1;
-            transform: translateX(-50%) translateY(0);
         }
 
         .uptime-percentage {
-            font-size: 1.125rem;
-            font-weight: 700;
-            color: var(--gold);
-            min-width: 60px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #FFD700;
+            min-width: 50px;
             text-align: right;
-            text-shadow: 0 0 10px var(--gold-glow);
         }
 
         .next-check {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            margin-top: 1rem;
-            padding-top: 1rem;
-            border-top: 1px dashed rgba(255,255,255,0.1);
-            display: flex;
-            justify-content: flex-end;
+            font-size: 0.75rem;
+            color: #666666;
+            margin-top: 0.5rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid rgba(100, 100, 100, 0.2);
         }
 
-        /* Error States */
         .error-message {
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            background: var(--danger-bg);
-            backdrop-filter: blur(12px);
-            padding: 2rem;
-            border-radius: 16px;
+            border: 1px solid rgba(239, 68, 68, 0.5);
+            background: rgba(239, 68, 68, 0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
             text-align: center;
             color: #fca5a5;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.1);
         }
 
         .error-message svg {
-            width: 48px;
-            height: 48px;
+            width: 32px;
+            height: 32px;
             margin: 0 auto 1rem;
-            opacity: 0.8;
         }
 
-        /* History Section */
         .history-section {
-            margin-top: 4rem;
+            margin-top: 3rem;
         }
 
         .history-list {
-            border: 1px solid var(--border-color);
-            background: var(--bg-card);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            max-height: 350px;
+            border: 1px solid rgba(100, 100, 100, 0.3);
+            background: rgba(50, 50, 50, 0.2);
+            border-radius: 8px;
+            max-height: 300px;
             overflow-y: auto;
-            padding: 0.5rem;
+            padding: 1rem;
         }
 
         .history-item {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 1rem 1.5rem;
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.9rem;
-            transition: background 0.2s ease;
-            border-radius: 8px;
-        }
-
-        .history-item:hover {
-            background: rgba(255,255,255,0.03);
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(100, 100, 100, 0.2);
+            font-size: 0.875rem;
         }
 
         .history-item:last-child {
@@ -494,168 +380,46 @@
         }
 
         .history-time {
-            color: var(--text-muted);
-            font-weight: 500;
+            color: #888888;
         }
 
         .history-status {
             font-weight: 600;
-            padding: 0.25rem 0.75rem;
-            border-radius: 6px;
-            background: rgba(0,0,0,0.2);
         }
 
-        .history-status.operational { color: var(--success); border: 1px solid rgba(16,185,129,0.2); }
-        .history-status.outage { color: var(--danger); border: 1px solid rgba(239,68,68,0.2); }
+        .history-status.operational {
+            color: #86efac;
+        }
 
-        /* Footer */
+        .history-status.outage {
+            color: #fca5a5;
+        }
+
         footer {
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 2rem 0;
-            margin-top: 4rem;
+            border-top: 1px solid rgba(100, 100, 100, 0.2);
+            padding: 1.5rem 0;
+            margin-top: 3rem;
             text-align: center;
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
+            color: #666666;
+            font-size: 0.875rem;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .header-content {
                 flex-direction: column;
-                gap: 1.25rem;
+                gap: 1rem;
             }
 
             .stats-grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
             }
 
             .service-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 1rem;
             }
 
             .service-right {
-                width: 100%;
-            }
-            
-            .status-badge {
-                text-align: center;
-                display: block;
-            }
-
-            .uptime-container {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-            }
-
-            .uptime-bars {
-                width: 100%;
-                height: 36px;
-                gap: 2px;
-            }
-
-            .uptime-percentage {
-                text-align: left;
-                width: 100%;
-            }
-        }
-    </style>
-</head>
-<body>
-    <header>
-        <div class="container">
-            <div class="header-content">
-                <div class="header-left">
-                    <div class="logo">
-                        <img src="Assets/logo.png" alt="AstralyxPvP logo" onerror="this.src='https://via.placeholder.com/48?text=A'">
-                    </div>
-                    <h1>ASTRALYX STATUS</h1>
-                </div>
-                <div class="status-indicator">
-                    <div class="status-dot loading" id="statusDot"></div>
-                    <span id="statusText">Loading...</span>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <main class="container">
-        <!-- Stats Grid -->
-        <div class="stats-grid">
-            <div class="stat-card operational">
-                <div class="stat-number" id="statOperational">0</div>
-                <div class="stat-label">Operational</div>
-            </div>
-            <div class="stat-card down">
-                <div class="stat-number" id="statDown">0</div>
-                <div class="stat-label">Down</div>
-            </div>
-            <div class="stat-card unknown">
-                <div class="stat-number" id="statUnknown">0</div>
-                <div class="stat-label">Unknown</div>
-            </div>
-        </div>
-
-        <!-- Services Section -->
-        <div>
-            <h2 class="section-title">System Status</h2>
-            <div class="services-list" id="servicesList"></div>
-        </div>
-
-        <!-- History Section -->
-        <div class="history-section" id="historySection" style="display: none;">
-            <h2 class="section-title">Incident History</h2>
-            <div class="history-list" id="historyList"></div>
-        </div>
-
-        <!-- Footer -->
-        <footer>
-            <p>Last updated: <span id="lastUpdate">—</span> &nbsp;•&nbsp; Next check: <span id="nextCheck">—</span></p>
-        </footer>
-    </main>
-
-    <script>
-        const API_URL = 'https://uptime-worker.chessmrbeaston.workers.dev/';
-        const CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
-        const MAX_BARS = 30; // Show last 30 checks
-        let allHistory = [];
-        let lastUpdatedAt = null;
-        let refreshTimerId = null;
-        let isFetching = false;
-
-        const serviceNames = {
-            discord_mod_bot: 'Discord Mod Bot',
-            discord_ai_bot: 'Discord AI Bot',
-            website: 'Website',
-            mc_server_online: 'Minecraft Server',
-            mc_server_api: 'Minecraft Server API'
-        };
-
-        function getNextCheckTime() {
-            if (!lastUpdatedAt) return null;
-
-            // Align every browser to the API record's 5-minute cadence rather
-            // than starting a new 5-minute interval when this page is opened.
-            const elapsed = Date.now() - lastUpdatedAt.getTime();
-            const completedIntervals = Math.max(0, Math.floor(elapsed / CHECK_INTERVAL));
-            return new Date(lastUpdatedAt.getTime() + (completedIntervals + 1) * CHECK_INTERVAL);
-        }
-
-        function scheduleNextRefresh() {
-            if (refreshTimerId) {
-                clearTimeout(refreshTimerId);
-            }
-
-            const nextTime = getNextCheckTime();
-            const delay = nextTime
-                ? Math.max(nextTime.getTime() - Date.now(), 0)
-                : CHECK_INTERVAL;
-
-            refreshTimerId = windowvice-right {
                 width: 100%;
                 margin-top: 0.5rem;
                 justify-content: space-between;
@@ -672,8 +436,8 @@
 
             .uptime-bars {
                 width: 100%;
-                height: 32px;
-                gap: 2px;
+                height: 36px;
+                gap: 4px;
             }
 
             .uptime-percentage {
@@ -738,7 +502,7 @@
     <script>
         const API_URL = 'https://uptime-worker.chessmrbeaston.workers.dev/';
         const CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes in milliseconds
-        const MAX_BARS = 30; // Show last 30 checks
+        const HOURS_TO_SHOW = 48; // Show last 48 hours
         let allHistory = [];
         let lastUpdatedAt = null;
         let refreshTimerId = null;
@@ -914,52 +678,103 @@
         }
 
         function generateUptimeBars(serviceKey) {
-            // Get last MAX_BARS records
-            const recentRecords = allHistory.slice(0, MAX_BARS).reverse();
-            
-            let barsHTML = '';
-            for (let i = 0; i < MAX_BARS; i++) {
-                if (i < recentRecords.length) {
-                    const record = recentRecords[i];
-                    const status = record.statuses[serviceKey];
-                    let barClass = 'unknown';
-                    let tooltip = new Date(record.timestamp).toLocaleTimeString('de-DE');
+            // Generate 48 hourly bars (one per hour for the last 48 hours)
+            const now = new Date();
+            const hourlyData = [];
 
-                    if (status === true) {
-                        barClass = 'operational';
-                        tooltip += ' - Operational';
-                    } else if (status === false) {
-                        barClass = 'down';
-                        tooltip += ' - Down';
-                    } else {
-                        barClass = 'unknown';
-                        tooltip += ' - No Data';
+            // Create 48 hourly slots
+            for (let i = HOURS_TO_SHOW - 1; i >= 0; i--) {
+                const hourStart = new Date(now);
+                hourStart.setHours(hourStart.getHours() - i);
+                hourStart.setMinutes(0);
+                hourStart.setSeconds(0);
+                hourStart.setMilliseconds(0);
+
+                const hourEnd = new Date(hourStart);
+                hourEnd.setHours(hourEnd.getHours() + 1);
+
+                // Find all records within this hour for this service
+                const recordsInHour = allHistory.filter(record => {
+                    const recordTime = new Date(record.timestamp);
+                    return recordTime >= hourStart && recordTime < hourEnd;
+                });
+
+                // Determine the hour's status based on UptimeRobot logic:
+                // - If ANY record shows DOWN (false), the hour is DOWN
+                // - If ALL records show UP (true), the hour is UP
+                // - Otherwise, it's UNKNOWN (no data or mixed)
+                let hourStatus = 'unknown';
+                let hasData = false;
+
+                if (recordsInHour.length > 0) {
+                    const statuses = recordsInHour.map(r => r.statuses[serviceKey]);
+                    const hasDown = statuses.some(s => s === false);
+                    const hasUp = statuses.some(s => s === true);
+
+                    if (hasDown) {
+                        hourStatus = 'down';
+                    } else if (hasUp && !hasDown) {
+                        hourStatus = 'operational';
                     }
-
-                    barsHTML += `<div class="uptime-bar ${barClass}" tabindex="0" aria-label="${tooltip}"><div class="uptime-bar-tooltip">${tooltip}</div></div>`;
-                } else {
-                    // Empty bars for missing data
-                    barsHTML += `<div class="uptime-bar unknown" tabindex="0" aria-label="No data"><div class="uptime-bar-tooltip">No Data</div></div>`;
+                    hasData = true;
                 }
+
+                hourlyData.push({
+                    hourStart,
+                    hourEnd,
+                    status: hourStatus,
+                    hasData
+                });
             }
+
+            // Generate bar HTML
+            let barsHTML = '';
+            hourlyData.forEach(hourData => {
+                const barClass = hourData.status;
+                const timeStr = hourData.hourStart.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+                const dateStr = hourData.hourStart.toLocaleDateString('de-DE');
+                const statusText = hourData.status === 'operational' ? 'Up' : hourData.status === 'down' ? 'Down' : 'No Data';
+                const tooltip = `${dateStr} ${timeStr} - ${statusText}`;
+
+                barsHTML += `<div class="uptime-bar ${barClass}" tabindex="0" aria-label="${tooltip}"><div class="uptime-bar-tooltip">${tooltip}</div></div>`;
+            });
+
             return barsHTML;
         }
 
         function calculateUptime(serviceKey) {
-            if (allHistory.length === 0) return 0;
+            // Calculate uptime based on the last 48 hours
+            const now = new Date();
+            let upHours = 0;
+            let totalHours = 0;
 
-            let upCount = 0;
-            let totalCount = 0;
+            for (let i = HOURS_TO_SHOW - 1; i >= 0; i--) {
+                const hourStart = new Date(now);
+                hourStart.setHours(hourStart.getHours() - i);
+                hourStart.setMinutes(0);
+                hourStart.setSeconds(0);
+                hourStart.setMilliseconds(0);
 
-            allHistory.forEach(record => {
-                const status = record.statuses[serviceKey];
-                if (typeof status === 'boolean') {
-                    if (status) upCount++;
-                    totalCount++;
+                const hourEnd = new Date(hourStart);
+                hourEnd.setHours(hourEnd.getHours() + 1);
+
+                const recordsInHour = allHistory.filter(record => {
+                    const recordTime = new Date(record.timestamp);
+                    return recordTime >= hourStart && recordTime < hourEnd;
+                });
+
+                if (recordsInHour.length > 0) {
+                    const statuses = recordsInHour.map(r => r.statuses[serviceKey]);
+                    const hasDown = statuses.some(s => s === false);
+
+                    if (!hasDown) {
+                        upHours++;
+                    }
+                    totalHours++;
                 }
-            });
+            }
 
-            return totalCount > 0 ? Math.round((upCount / totalCount) * 100) : 0;
+            return totalHours > 0 ? Math.round((upHours / totalHours) * 100) : 0;
         }
 
         function updateHistory() {
