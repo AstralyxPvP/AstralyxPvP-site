@@ -4,37 +4,717 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AstralyxPvP Status</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
 /* =========================================================
-   1. Variables & Global Reset
+   1. Core Layout & Reset
    ========================================================= */
-:root {
-    --bg-main: #0c080d;
-    --card-bg: rgba(25, 18, 28, 0.5);
-    --card-border: rgba(255, 215, 0, 0.12);
-    --card-hover-border: rgba(255, 215, 0, 0.28);
-    
-    --text-primary: #f3f4f6;
-    --text-muted: #9ca3af;
-    --text-accent: #ffd700;
-    
-    --status-up: #10b981;
-    --status-up-bg: rgba(16, 185, 129, 0.12);
-    --status-down: #ef4444;
-    --status-down-bg: rgba(239, 68, 68, 0.12);
-    --status-neutral: #6b7280;
-    --status-neutral-bg: rgba(107, 114, 128, 0.12);
-}
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(to bottom, #1a0a0a, #2d1515, #1a0a0a);
+    color: #e0e0e0;
+    min-height: 100vh;
+}
+
+header {
+    border-bottom: 1px solid rgba(139, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem 0;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    background: linear-gradient(135deg, #FFD700, #FF4500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #1a0a0a;
+    font-size: 12px;
+}
+
+h1 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #FFD700;
+    letter-spacing: 1px;
+}
+
+.status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #b0b0b0;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+.status-dot.online { background-color: #22c55e; }
+.status-dot.offline { background-color: #ef4444; }
+.status-dot.loading { background-color: #888888; }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+main { 
+    padding: 3rem 0; 
+}
+
+/* =========================================================
+   2. Stats Grid
+   ========================================================= */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    border: 1px solid rgba(100, 100, 100, 0.3);
+    background: rgba(50, 50, 50, 0.3);
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-card:hover {
+    border-color: rgba(100, 100, 100, 0.5);
+    background: rgba(50, 50, 50, 0.5);
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.875rem;
+    color: #888888;
+}
+
+.stat-card.operational .stat-number { color: #22c55e; }
+.stat-card.down .stat-number { color: #ef4444; }
+.stat-card.unknown .stat-number { color: #FFD700; }
+
+.section-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #FFD700;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+/* =========================================================
+   3. Service Cards & Layout
+   ========================================================= */
+.services-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.service-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid rgba(100, 100, 100, 0.3);
+    background: rgba(50, 50, 50, 0.3);
+    padding: 1rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.service-item:hover {
+    border-color: rgba(100, 100, 100, 0.5);
+    background: rgba(50, 50, 50, 0.5);
+}
+
+.service-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+}
+
+.service-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.service-icon {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+.service-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.service-name {
+    font-weight: 500;
+    color: #e0e0e0;
+}
+
+.service-time {
+    font-size: 0.75rem;
+    color: #666666;
+}
+
+.service-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-badge.operational {
+    background: rgba(34, 197, 94, 0.2);
+    color: #86efac;
+}
+
+.status-badge.down {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.status-badge.unknown {
+    background: rgba(100, 100, 100, 0.2);
+    color: #d1d5db;
+}
+
+/* =========================================================
+   4. UptimeRobot Style Bars & Tooltips
+   ========================================================= */
+.uptime-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.uptime-bars {
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 40px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+}
+
+.uptime-bar {
+    flex: 1;
+    min-width: 3px;
+    height: 100%;
+    border-radius: 3px;
+    transition: opacity 0.2s ease;
+    cursor: pointer;
+    position: relative;
+}
+
+.uptime-bar.operational { 
+    background-color: #22c55e; 
+}
+
+.uptime-bar.down { 
+    background-color: #ef4444; 
+}
+
+.uptime-bar.nodata, 
+.uptime-bar.unknown {
+    background-color: #4b5563;
+    opacity: 0.4;
+}
+
+.uptime-bar:hover { 
+    opacity: 0.8; 
+}
+
+.uptime-bar-tooltip {
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.85);
+    color: #fff;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.65rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+    margin-bottom: 5px;
+    z-index: 10;
+}
+
+.uptime-bar:hover .uptime-bar-tooltip { 
+    opacity: 1; 
+}
+
+.uptime-percentage {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #FFD700;
+    min-width: 50px;
+    text-align: right;
+}
+
+.next-check {
+    font-size: 0.75rem;
+    color: #666666;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(100, 100, 100, 0.2);
+}
+
+/* =========================================================
+   5. Error Message & History List
+   ========================================================= */
+.error-message {
+    border: 1px solid rgba(239, 68, 68, 0.5);
+    background: rgba(239, 68, 68, 0.1);
+    padding: 1.5rem;
+    border-radius: 8px;
+    text-align: center;
+    color: #fca5a5;
+}
+
+.error-message svg {
+    width: 32px;
+    height: 32px;
+    margin: 0 auto 1rem;
+}
+
+.history-section { 
+    margin-top: 3rem; 
+}
+
+.history-list {
+    border: 1px solid rgba(100, 100, 100, 0.3);
+    background: rgba(50, 50, 50, 0.2);
+    border-radius: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.history-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(100, 100, 100, 0.2);
+    font-size: 0.875rem;
+}
+
+.history-item:last-child { 
+    border-bottom: none; 
+}
+
+.history-time { 
+    color: #888888; 
+}
+
+.history-status { 
+    font-weight: 600; 
+}
+
+.history-status.operational { color: #86efac; }
+.history-status.outage { color: #fca5a5; }
+
+footer {
+    border-top: 1px solid rgba(100, 100, 100, 0.2);
+    padding: 1.5rem 0;
+    margin-top: 3rem;
+    text-align: center;
+    color: #666666;
+    font-size: 0.875rem;
+}
+
+/* =========================================================
+   6. Mobile Responsiveness
+   ========================================================= */
+@media (max-width: 768px) {
+    .header-content { 
+        flex-direction: column; 
+        gap: 1rem; 
+    }
+    .stats-grid { 
+        grid-template-columns: 1fr; 
+    }
+    .service-header { 
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+    .service-right { 
+        width: 100%; 
+        margin-top: 0.5rem; 
+        justify-content: space-between; 
+    }
+    h1 { 
+        font-size: 1.25rem; 
+    }
+    .uptime-container { 
+        flex-direction: column; 
+        align-items: flex-start; 
+    }
+    .uptime-bars { 
+        width: 100%; 
+    }
+    .uptime-percentage { 
+        text-align: left; 
+    }
+}
+</style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">AX</div>
+                    <h1>ASTRALYX STATUS</h1>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot loading" id="statusDot"></div>
+                    <span id="statusText">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Stats Grid -->
+        <div class="stats-grid">
+            <div class="stat-card operational">
+                <div class="stat-number" id="statOperational">0</div>
+                <div class="stat-label">Operational</div>
+            </div>
+            <div class="stat-card down">
+                <div class="stat-number" id="statDown">0</div>
+                <div class="stat-label">Down</div>
+            </div>
+            <div class="stat-card unknown">
+                <div class="stat-number" id="statUnknown">0</div>
+                <div class="stat-label">Unknown</div>
+            </div>
+        </div>
+
+        <!-- Services Section -->
+        <div>
+            <h2 class="section-title">SERVICE STATUS</h2>
+            <div class="services-list" id="servicesList"></div>
+        </div>
+
+        <!-- History Section -->
+        <div class="history-section" id="historySection" style="display: none;">
+            <h2 class="section-title">HISTORY</h2>
+            <div class="history-list" id="historyList"></div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Last updated: <span id="lastUpdate">—</span> • Next check: <span id="nextCheck">—</span></p>
+        </footer>
+    </main>
+
+    <script>
+        const API_URL = 'https://uptime-worker.chessmrbeaston.workers.dev/';
+        const CHECK_INTERVAL = 5 * 60 * 1000; // 5 minutes in ms
+        const MAX_BARS = 60; // Up to 60 check slots
+        let allHistory = [];
+        let serverLastCheckTime = null;
+
+        const serviceNames = {
+            discord_mod_bot: 'Discord Mod Bot',
+            discord_ai_bot: 'Discord AI Bot',
+            website: 'Website',
+            mc_server_online: 'Minecraft Server',
+            mc_server_api: 'Minecraft Server API'
+        };
+
+        function getNextCheckTime() {
+            if (!serverLastCheckTime) return null;
+            return new Date(serverLastCheckTime.getTime() + CHECK_INTERVAL);
+        }
+
+        function formatTimeUntilCheck(nextTime) {
+            if (!nextTime) return '—';
+            const now = new Date();
+            const diff = nextTime.getTime() - now.getTime();
+
+            if (diff <= 0) return 'Pending check...';
+
+            const minutes = Math.floor(diff / 60000);
+            const seconds = Math.floor((diff % 60000) / 1000);
+
+            if (minutes > 0) {
+                return `in ${minutes}m ${seconds}s`;
+            } else {
+                return `in ${seconds}s`;
+            }
+        }
+
+        function updateNextCheckDisplay() {
+            const nextTime = getNextCheckTime();
+            if (nextTime) {
+                const nextTimeStr = nextTime.toLocaleTimeString('de-DE');
+                const timeUntil = formatTimeUntilCheck(nextTime);
+                document.getElementById('nextCheck').textContent = `${nextTimeStr} (${timeUntil})`;
+            }
+        }
+
+        async function fetchStatus() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (Array.isArray(data) && data.length > 0) {
+                    allHistory = data;
+                    serverLastCheckTime = new Date(data[0].timestamp);
+                    updateUI(data[0]);
+                    updateStatusIndicator(true);
+                } else {
+                    updateStatusIndicator(false);
+                }
+            } catch (error) {
+                console.error('Failed to fetch status:', error);
+                updateStatusIndicator(false);
+                showErrorMessage();
+            }
+
+            updateNextCheckDisplay();
+        }
+
+        function updateUI(latestRecord) {
+            const timestamp = new Date(latestRecord.timestamp);
+            const timeStr = timestamp.toLocaleTimeString('de-DE');
+
+            document.getElementById('lastUpdate').textContent = timeStr;
+
+            const statuses = latestRecord.statuses;
+            let operational = 0, down = 0, unknown = 0;
+
+            const servicesList = document.getElementById('servicesList');
+            let accumulatedServicesHTML = '';
+
+            Object.entries(serviceNames).forEach(([key, name]) => {
+                const status = statuses[key];
+                if (status === true) operational++;
+                else if (status === false) down++;
+                else unknown++;
+
+                const uptime = calculateUptime(key);
+                
+                const statusClass = status === true ? 'operational' : status === false ? 'down' : 'unknown';
+                const statusText = status === true ? 'Operational' : status === false ? 'Down' : 'Unknown';
+                const icon = status === true ? '✓' : status === false ? '✕' : '?';
+
+                const nextTime = getNextCheckTime();
+                const nextTimeStr = nextTime ? nextTime.toLocaleTimeString('de-DE') : '—';
+                const barsHTML = generateUptimeBars(key);
+
+                accumulatedServicesHTML += `
+                    <div class="service-item">
+                        <div class="service-header">
+                            <div class="service-left">
+                                <div class="service-icon" style="color: ${status === true ? '#22c55e' : status === false ? '#ef4444' : '#888888'}">
+                                    ${icon}
+                                </div>
+                                <div class="service-info">
+                                    <div class="service-name">${name}</div>
+                                    <div class="service-time">Last check: ${timeStr}</div>
+                                </div>
+                            </div>
+                            <div class="service-right">
+                                <div class="status-badge ${statusClass}">${statusText}</div>
+                            </div>
+                        </div>
+                        <div class="uptime-container">
+                            <div class="uptime-bars">
+                                ${barsHTML}
+                            </div>
+                            <div class="uptime-percentage">${uptime}%</div>
+                        </div>
+                        <div class="next-check">Next check: ${nextTimeStr}</div>
+                    </div>
+                `;
+            });
+
+            servicesList.innerHTML = accumulatedServicesHTML;
+
+            document.getElementById('statOperational').textContent = operational;
+            document.getElementById('statDown').textContent = down;
+            document.getElementById('statUnknown').textContent = unknown;
+
+            if (allHistory.length > 1) {
+                updateHistory();
+            }
+        }
+
+        function generateUptimeBars(serviceKey) {
+            const recentRecords = allHistory.slice(0, MAX_BARS).reverse();
+            let barsHTML = '';
+
+            for (let i = 0; i < MAX_BARS; i++) {
+                if (i < recentRecords.length) {
+                    const record = recentRecords[i];
+                    const status = record.statuses[serviceKey];
+                    let barClass = 'nodata';
+                    let tooltip = new Date(record.timestamp).toLocaleTimeString('de-DE');
+
+                    if (status === true) {
+                        barClass = 'operational';
+                        tooltip += ' - Operational';
+                    } else if (status === false) {
+                        barClass = 'down';
+                        tooltip += ' - Service Outage';
+                    } else {
+                        barClass = 'nodata';
+                        tooltip += ' - No Data';
+                    }
+
+                    barsHTML += `<div class="uptime-bar ${barClass}"><div class="uptime-bar-tooltip">${tooltip}</div></div>`;
+                } else {
+                    barsHTML += `<div class="uptime-bar nodata"><div class="uptime-bar-tooltip">No Data</div></div>`;
+                }
+            }
+            return barsHTML;
+        }
+
+        function calculateUptime(serviceKey) {
+            if (allHistory.length === 0) return 0;
+
+            let upCount = 0;
+            let totalCount = 0;
+
+            allHistory.forEach(record => {
+                const status = record.statuses[serviceKey];
+                if (typeof status === 'boolean') {
+                    if (status) upCount++;
+                    totalCount++;
+                }
+            });
+
+            return totalCount > 0 ? Math.round((upCount / totalCount) * 100) : 0;
+        }
+
+        function updateHistory() {
+            const historySection = document.getElementById('historySection');
+            const historyList = document.getElementById('historyList');
+
+            historySection.style.display = 'block';
+
+            let accumulatedHistoryHTML = '';
+            allHistory.forEach(record => {
+                const timestamp = new Date(record.timestamp);
+                const timeStr = timestamp.toLocaleString('de-DE', {
+                    day: '2-digit',
+                    month: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                const statuses = Object.values(record.statuses);
+                
+                const allUp = statuses.every(s => s === true);
+                const statusText = allUp ? 'All Operational' : 'Partial Outage';
+                const statusClass = allUp ? 'operational' : 'outage';
+
+                accumulatedHistoryHTML += `
+                    <div class="history-item">
+                        <span class="history-time">${timeStr}</span>
+                        <span class="history-status ${statusClass}">${statusText}</span>
+                    </div>
+                `;
+            });
+
+            historyList.innerHTML = accumulatedHistoryHTML;
+        }
+
+        function updateStatusIndicator(online) {
+            const dot = document.getElementById('statusDot');
+            const text = document.getElementById('statusText');
+
+            if (online) {
+                dot.className = 'status-dot online';
+                text.textContent = 'Live';
+            } else {
+                dot.className = 'status-dot offline';
+                text.textContent = 'API Offline';
+            }
+        }
+
+        function showErrorMessage() {
+            const servicesList = document.getElementById('servicesList');
+            servicesList.innerHTML = `
+                <div class="error-message">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="8" x2="12" y2="12"></line>
+                        <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                    </svg>
+                    <p>Unable to fetch status. API is currently offline.</p>
+                </div>
+            `;
+        }
+
+        fetchStatus();
+        setInterval(updateNextCheckDisplay, 1000);
+        setInterval(fetchStatus, CHECK_INTERVAL);
+    </script>
+</body>
+</html>
 body {
     font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
     background-color: var(--bg-main);
