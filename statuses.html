@@ -414,7 +414,8 @@
             servicesListContainer.innerHTML = '';
 
             serviceKeys.forEach((key) => {
-                const isUp = statuses[key] === true;
+                const serviceData = statuses[key] || {};
+                const isUp = serviceData.online === true;
                 if (isUp) opCount++; else downCount++;
 
                 const meta = serviceMeta[key] || {
@@ -425,6 +426,7 @@
                 };
 
                 const uptimePct = calculate48HourUptime(key);
+                const currentPing = serviceData.ping;
                 const avgLatency = calculateAvgLatency(key);
                 const barsHTML = render48HourlyBars(key);
 
@@ -450,7 +452,7 @@
 
                             <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto space-x-2 sm:space-x-3 shrink-0 mt-1 sm:mt-0">
                                 <span class="text-[10px] sm:text-xs font-mono text-gray-400 bg-black/30 px-2 py-1 rounded border border-white/5 whitespace-nowrap">
-                                    ⚡ ${avgLatency} ms
+                                    ⚡ ${typeof currentPing === 'number' ? currentPing + ' ms' : (avgLatency > 0 ? avgLatency + ' ms' : '— ms')}
                                 </span>
                                 <span class="px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-semibold font-mono border whitespace-nowrap flex items-center gap-1.5 ${statusColorClass}">
                                     <span class="w-1.5 h-1.5 rounded-full ${isUp ? 'bg-emerald-400' : 'bg-rose-400'} animate-pulse"></span>
@@ -529,7 +531,7 @@
                 let status = 'unknown';
                 if (recordsInHour.length > 0) {
                     status = 'operational';
-                    const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] === false);
+                    const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] && r.statuses[serviceKey].online === false);
                     if (hasDown) status = 'down';
                 }
 
@@ -587,7 +589,7 @@ function calculate48HourUptime(serviceKey) {
                 });
 
                 if (recordsInHour.length > 0) {
-                    const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] === false);
+                    const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] && r.statuses[serviceKey].online === false);
                     if (!hasDown) upHours++;
                     totalHours++;
                 }
@@ -599,8 +601,8 @@ function calculate48HourUptime(serviceKey) {
         function calculateAvgLatency(serviceKey) {
             if (!allHistory || allHistory.length === 0) return 0;
             const latencies = allHistory
-                .filter(r => r.latencies && r.latencies[serviceKey])
-                .map(r => r.latencies[serviceKey]);
+                .filter(r => r.statuses && r.statuses[serviceKey] && typeof r.statuses[serviceKey].ping === 'number')
+                .map(r => r.statuses[serviceKey].ping);
 
             if (latencies.length === 0) return 0;
             const sum = latencies.reduce((a, b) => a + b, 0);
