@@ -37,30 +37,7 @@
   <meta property="og:url" content="astralyxpvp.pages.dev" />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="Style/style.css">
-  <script>
-    async function loadHead() {
-      try {
-        const response = await fetch('Assets/head.html');
-        const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const newNodes = Array.from(doc.head.childNodes);
-        for (const node of newNodes) {
-          if (node.tagName === 'SCRIPT') {
-            const script = document.createElement('script');
-            Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
-            script.textContent = node.textContent;
-            document.head.appendChild(script);
-          } else {
-            document.head.appendChild(node);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load head:', err);
-      }
-    }
-    loadHead();
-  </script>
+  
   <script>
     if (window.location.hostname === 'news.astralyxpvp.int.yt') {
       window.location.href = 'https://www.astralyxpvp.int.yt/news' + window.location.pathname;
