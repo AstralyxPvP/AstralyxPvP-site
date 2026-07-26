@@ -454,7 +454,7 @@ li { margin-bottom: var(--sp-2); }
 }
 
 /* Desktop: glass pill links */
-@media (min-width: 861px) {
+@media (min-width: 1025px) {
   .nav-links {
     flex-wrap: nowrap; /* Prevent sudden multi-row height jumps */
     padding: 0.25rem;
@@ -503,7 +503,7 @@ li { margin-bottom: var(--sp-2); }
 }
 
 /* Double-decker layout (links wrap to 2 rows) */
-@media (min-width: 861px) {
+@media (min-width: 1025px) {
   .double-decker .brand-text { display: none; }
   .double-decker .brand-mark { width: 52px; height: 52px; }
 }
@@ -1471,7 +1471,7 @@ tbody tr:hover .elo-pill {
   transform: translateY(0) scale(0.98);
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .bottom-nav { display: none; }
 }
 
@@ -1965,7 +1965,7 @@ footer::before {
   .hero-image { max-width: 360px; }
 }
 
-@media (max-width: 860px) {
+@media (max-width: 1024px) {
   .brand-text { display: none; }
   #nav-status { display: none; }
   .hamburger { display: flex !important; }
