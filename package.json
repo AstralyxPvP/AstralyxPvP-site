@@ -1,7 +1,0 @@
-{
-  "name": "astralyxpvp-site",
-  "private": true,
-  "scripts": {
-    "test": "node tests/validate.js"
-  }
-}
