@@ -668,9 +668,10 @@ function renderAuth() {
 
 function doLogin() {
   sessionStorage.setItem('oauth_state', crypto.randomUUID());
-  const redir = astralyxpvp.int.yt/discord-callback`);
+  const redir = encodeURIComponent(`${location.origin}/discord-callback`);
   location.href = `https://discord.com/oauth2/authorize?client_id=${CLIENT_ID}&redirect_uri=${redir}&response_type=code&scope=identify+guilds.members.read`;
 }
+
 function logout() {
   sessionStorage.removeItem('np_token'); ME = null;
   document.getElementById('npFab').style.display = 'none';
