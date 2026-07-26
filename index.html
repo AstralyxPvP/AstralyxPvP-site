@@ -3,76 +3,79 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="google-site-verification" content="kYWtU-P7VA6R31WMyTMMOKQ2ZHby0qlITXmdnE-xNZA" />
-  <meta name="google-site-verification" content="dwWOJSf9PK5NvguaxcjVUYJCZK2Ehc_ZpdgavYEGgcs" />
-  <meta name="google-site-verification" content="5x4oetuwUCYoInPARiV5ebPUEToLUzxiI1MfjvNc128" />
+  
+  <!-- Primary Meta Tags -->
+  <title>AstralyxPvP | #1 Indian 1.9+ FFA Minecraft PvP Server</title>
+  <meta name="title" content="AstralyxPvP | #1 Indian 1.9+ FFA Minecraft PvP Server" />
+  <meta name="description" content="Join AstralyxPvP, India's premier 1.9+ FFA PvP server. Dominate fast-paced combat, track live ELO leaderboards, unlock crates, and join a thriving community." />
   <link rel="canonical" href="https://astralyxpvp.pages.dev" />
-  <meta name="description" content="Join AstralyxPvP, the premier India-based 1.9+ FFA PvP server. Experience fast-paced combat, skill-based battles, ELO Live Leaderboards, crates, and a thriving community. Prove your dominance in the arena today!" />
-  <meta name="keywords" content="Minecraft PvP server, 1.9 PvP, FFA PvP, India Minecraft server, ELO Leaderboard, Minecraft crates, skill-based PvP, free Minecraft server, cracked Minecraft server, astralyx, astralyxpvp" />
-  <meta name="author" content="Frostrax (Owner), IndianCoder3 &amp; DreamLong (NebulaGames Developers)" />
+
+  <!-- Verification Tag -->
+  <meta name="google-site-verification" content="kYWtU-P7VA6R31WMyTMMOKQ2ZHby0qlITXmdnE-xNZA" />
+
+  <!-- Open Graph / Facebook / Discord -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://astralyxpvp.pages.dev/" />
+  <meta property="og:title" content="AstralyxPvP - The Ultimate 1.9+ FFA PvP Battlefield" />
+  <meta property="og:description" content="Experience fast-paced 1.9+ combat, skill-based battles, live ELO leaderboards, and custom crates on India's premier Minecraft PvP server." />
+  <meta property="og:image" content="https://astralyxpvp.pages.dev/Assets/logo-compress.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://astralyxpvp.pages.dev/" />
+  <meta name="twitter:title" content="AstralyxPvP - India's Premier 1.9+ FFA PvP Server" />
+  <meta name="twitter:description" content="Experience fast-paced 1.9+ combat, skill-based battles, live ELO leaderboards, and custom crates." />
+  <meta name="twitter:image" content="https://astralyxpvp.pages.dev/Assets/logo-compress.png" />
+
+  <!-- Structured Data / JSON-LD for Search & AI Engines (SEO + GEO) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "GameServer",
-    "name": "AstralyxPvP",
-    "description": "An intense India-based 1.9+ FFA Minecraft PvP server tracking custom skill-based ELO standings.",
-    "url": "https://astralyxpvp.pages.dev",
-    "game": {
-      "@type": "VideoGame",
-      "name": "Minecraft",
-      "playMode": "MultiPlayer",
-      "gamePlatform": "PC game"
-    },
-    "playersOnline": {
-      "@type": "QuantitativeValue",
-      "description": "Active Minecraft players currently engaged in FFA and 1v1 arenas"
-    },
-    "serverStatus": "schema.org"
+    "@graph": [
+      {
+        "@type": "GameServer",
+        "@id": "https://astralyxpvp.pages.dev/#server",
+        "name": "AstralyxPvP",
+        "description": "An intense India-based 1.9+ FFA Minecraft PvP server tracking custom skill-based ELO standings.",
+        "url": "https://astralyxpvp.pages.dev",
+        "game": {
+          "@type": "VideoGame",
+          "name": "Minecraft",
+          "playMode": "MultiPlayer",
+          "gamePlatform": "PC game"
+        },
+        "serverStatus": "Online"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://astralyxpvp.pages.dev/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What is AstralyxPvP?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AstralyxPvP is a premier India-based 1.9+ FFA Minecraft PvP server featuring fast-paced combat, live ELO leaderboards, crates, and an active community."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What Minecraft versions are supported on AstralyxPvP?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "AstralyxPvP supports Minecraft versions 1.9 and above, focusing specifically on skill-based 1.9+ combat mechanics."
+            }
+          }
+        ]
+      }
+    ]
   }
   </script>
-  <meta property="og:title" content="AstralyxPvP - The Ultimate 1.9 FFA PvP Battlefield" />
-  <meta property="og:description" content="Join AstralyxPvP, the premier India-based 1.9+ FFA PvP server. Experience fast-paced combat, skill-based battles, ELO Live Leaderboards, crates, and a thriving community." />
-  <meta property="og:image" content="astralyxpvp.pages.dev/Assets/logo-compress.png" />
-  <meta property="og:url" content="astralyxpvp.pages.dev" />
-  <meta property="og:type" content="website" />
-  <link rel="stylesheet" href="Style/style.css">
-  <script>
-    async function loadHead() {
-      try {
-        const response = await fetch('Assets/head.html');
-        const text = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const newNodes = Array.from(doc.head.childNodes);
-        for (const node of newNodes) {
-          if (node.tagName === 'SCRIPT') {
-            const script = document.createElement('script');
-            Array.from(node.attributes).forEach(attr => script.setAttribute(attr.name, attr.value));
-            script.textContent = node.textContent;
-            document.head.appendChild(script);
-          } else {
-            document.head.appendChild(node);
-          }
-        }
-      } catch (err) {
-        console.error('Failed to load head:', err);
-      }
-    }
-    loadHead();
-  </script>
-  <script>
-    if (window.location.hostname === 'news.astralyxpvp.int.yt') {
-      window.location.href = 'https://www.astralyxpvp.int.yt/news' + window.location.pathname;
-    }
-  </script>
-  <script>
-    if (window.location.hostname === 'status.astralyxpvp.int.yt') {
-      window.location.href = 'https://www.astralyxpvp.int.yt/statuses' + window.location.pathname;
-    }
-  </script>
-  
 
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="Style/style.css">
 </head>
+
 
 <body>
 <div class="page-enter">
