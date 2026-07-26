@@ -655,7 +655,7 @@ function renderAuth() {
       <span class="np-badge">Staff</span>
       <button class="np-btn np-btn-ghost" onclick="logout()">Sign out</button>
     </div>`;
-    document.getElementById('npFab').style.display = '';
+    document.getElementById('npFab').style.display = 'flex';
     document.getElementById('npCta').style.display = 'none';
   } else {
     el.innerHTML = `<button class="np-btn np-btn-discord" onclick="doLogin()">
