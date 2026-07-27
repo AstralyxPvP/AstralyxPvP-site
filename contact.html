@@ -62,6 +62,34 @@
   </script>
 
   <style>
+    .email-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #fff;
+      padding: 18px 40px;
+      border-radius: 999px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      border: 1px rgba(255, 255, 255, 0.5);
+      box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+      font-size: 1rem;
+      text-transform: uppercase;
+    }
+
+    .email-button:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 30px rgba(245, 158, 11, 0.4), 0 0 50px rgba(245, 158, 11, 0.2);
+      color: #fff;
+    }
+
+    .email-button:active {
+      transform: translateY(-2px) scale(0.98);
+    }
     .contact-section {
       padding: 80px 9%;
       text-align: center;
