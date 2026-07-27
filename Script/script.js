@@ -316,7 +316,7 @@ function toggleChatDock() {
 
 // Clipboard IP Copy
 window.copyServerIP = function() {
-    const ip = document.getElementById('server-ip');
+    const ip = IP;
     if (!ip) return;
     navigator.clipboard.writeText(ip.textContent.trim()).catch(() => {});
 };
