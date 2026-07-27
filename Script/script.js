@@ -316,9 +316,10 @@ function toggleChatDock() {
 
 // Clipboard IP Copy
 window.copyServerIP = function() {
-    const ip = IP;
-    if (!ip) return;
-    navigator.clipboard.writeText(ip.textContent.trim()).catch(() => {});
+    const serverIP = "java.astralyxpvp.int.yt";
+    navigator.clipboard.writeText(serverIP).catch(err => {
+        console.error("Failed to copy IP:", err);
+    });
 };
 
 document.addEventListener('click', e => {
