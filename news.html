@@ -688,6 +688,9 @@ async function loadPosts() {
     posts = await r.json();
     document.getElementById('npCount').textContent = `${posts.length} post${posts.length!==1?'s':''}`;
     buildFilters(); renderGrid();
+
+    const initialPost = new URLSearchParams(location.search).get('post');
+    if (initialPost) openRead(Number(initialPost), true);
   } catch(e) {
     document.getElementById('npGrid').innerHTML =
       `<div class="np-state"><div class="np-state-icon">⚠️</div><p>${x(e.message)}</p></div>`;
@@ -744,7 +747,7 @@ function renderGrid() {
 }
 
 /* ── READ MODAL ── */
-function openRead(id) {
+function openRead(id, skipPush) {
   const p = posts.find(q=>q.id===id); if (!p) return;
   marked.setOptions({breaks:true,gfm:true});
   const html = DOMPurify.sanitize(marked.parse(p.content.replace(/\\n/g,'\n')));
@@ -769,13 +772,52 @@ function openRead(id) {
     ${tags?`<div class="np-rtags">${tags}</div>`:''}
     ${p.edited_at?`<p class="np-redited">Edited ${rel(p.edited_at)}</p>`:''}
     <div style="height:10px"></div>
-    <button class="np-btn np-btn-outline" onclick="closeRead()">← Close</button>`;
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <button class="np-btn np-btn-outline" onclick="closeRead()">← Close</button>
+      <button class="np-btn" onclick="sharePost(${id})"><i class="fa-solid fa-share-nodes"></i> Share</button>
+    </div>`;
   document.getElementById('npReadOvl').classList.add('open');
   document.body.style.overflow = 'hidden';
+
+  if (!skipPush) {
+    const url = new URL(location.href);
+    url.searchParams.set('post', id);
+    history.pushState({ npPost: id }, '', url);
+  }
 }
 function closeRead(e) {
-  if (!e || e.target.id==='npReadOvl') { document.getElementById('npReadOvl').classList.remove('open'); document.body.style.overflow = ''; }
+  if (!e || e.target.id==='npReadOvl') {
+    document.getElementById('npReadOvl').classList.remove('open');
+    document.body.style.overflow = '';
+    const url = new URL(location.href);
+    if (url.searchParams.has('post')) {
+      url.searchParams.delete('post');
+      history.pushState({}, '', url);
+    }
+  }
 }
+async function sharePost(id) {
+  const p = posts.find(q=>q.id===id); if (!p) return;
+  const url = new URL(location.href);
+  url.searchParams.set('post', id);
+  const shareUrl = url.toString();
+  if (navigator.share) {
+    try { await navigator.share({ title: p.title, url: shareUrl }); return; }
+    catch (err) { if (err.name === 'AbortError') return; }
+  }
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    alert('Post link copied to clipboard!');
+  } catch (err) {
+    prompt('Copy this link:', shareUrl);
+  }
+}
+window.addEventListener('popstate', () => {
+  const p = new URLSearchParams(location.search);
+  const postId = p.get('post');
+  if (postId) { openRead(Number(postId), true); }
+  else { closeRead({ target: { id: 'npReadOvl' } }); }
+});
 
 /* ── EDITOR ── */
 let edTags = [];
