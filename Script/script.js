@@ -101,12 +101,36 @@
                 backdrop.addEventListener('click', closeMenu);
             }
 
+            // Community dropdown (desktop = hover via CSS, click works everywhere)
+            const dropdown = container.querySelector('.nav-dropdown');
+            const dropdownToggle = container.querySelector('.nav-dropdown-toggle');
+            const dropdownMenu = container.querySelector('.nav-dropdown-menu');
+            if (dropdown && dropdownToggle && dropdownMenu) {
+                dropdownToggle.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const isOpen = dropdown.classList.toggle('open');
+                    dropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                });
+                dropdownMenu.querySelectorAll('a').forEach(item => {
+                    item.addEventListener('click', () => {
+                        dropdown.classList.remove('open');
+                        dropdownToggle.setAttribute('aria-expanded', 'false');
+                        if (window.innerWidth <= 1024) closeMenu();
+                    });
+                });
+            }
+
             // Active link logic
             const currentPath = (window.location.pathname.split("/").pop() || "index.html").replace(/\.html$/, '');
             container.querySelectorAll('.nav-links a').forEach(link => {
                 const href = link.getAttribute('href').replace(/\.html$/, '');
                 if (href === '/' + currentPath || href === currentPath) link.classList.add('active');
             });
+
+            // Highlight Community toggle when one of its pages is open
+            if (dropdown && dropdownMenu && dropdownMenu.querySelector('.active')) {
+                dropdown.classList.add('active');
+            }
 
             // Adjust main content padding so it's not hidden under a fixed nav
             const nav = container.querySelector('nav');
