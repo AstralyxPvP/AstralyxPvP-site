@@ -236,39 +236,75 @@
     }
 
     // Leaderboard System
-    async function initLeaderboard() {
-        const select = document.getElementById('gm');
-        if (!select) return;
+    const GM_DEFS = [
+        { id: 'swordffa',   label: 'SWORDFFA',   match: ['swordffa'] },
+        { id: 'maceffa',    label: 'MACEFFA',    match: ['maceffa', 'macepvpffa'] },
+        { id: 'nethpotffa', label: 'NETHPOTFFA', match: ['nethpotffa', 'netheritepotffa'] }
+    ];
+    let lbAvailable = {};
+    let lbActive = null;
 
+    async function initLeaderboard() {
+        const container = document.getElementById('gm');
+        if (!container) return;
+
+        let gms = [];
         try {
             const res = await fetch(`${API_BASE}?gamemodes=true`);
             const data = await res.json();
-            const gms = data?.gamemodes || [];
-
-            if (gms.length > 0) {
-                select.innerHTML = gms.map(gm => `<option value="${gm}">${gm}</option>`).join('');
-                const urlGm = new URLSearchParams(window.location.search).get('gamemode');
-                if (urlGm && gms.includes(urlGm)) select.value = urlGm;
-            } else {
-                select.innerHTML = '<option disabled selected>No gamemodes available</option>';
-                const out = document.getElementById('lb');
-                if (out) out.innerHTML = '<div style="text-align:center;padding:14px 0">No gamemodes found.</div>';
-            }
+            gms = data?.gamemodes || [];
         } catch (err) { console.error("GM Load Error:", err); }
 
-        select.addEventListener('change', refreshLB);
+        lbAvailable = {};
+        gms.forEach(gm => {
+            const norm = gm.toLowerCase();
+            GM_DEFS.forEach(def => {
+                if (lbAvailable[def.id]) return;
+                if (def.match.some(frag => norm.includes(frag))) lbAvailable[def.id] = gm;
+            });
+        });
+
+        const urlGm = new URLSearchParams(window.location.search).get('gamemode');
+        const urlMatch = Object.entries(lbAvailable).find(([, name]) => name.toLowerCase() === (urlGm || '').toLowerCase());
+        const active = (urlMatch && urlMatch[0]) || Object.keys(lbAvailable)[0] || null;
+
+        container.innerHTML = '';
+        GM_DEFS.forEach(def => {
+            const available = !!lbAvailable[def.id];
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'gm-btn' + (available ? '' : ' unavailable');
+            if (available) btn.classList.toggle('active', active === def.id);
+            btn.dataset.gm = def.id;
+            btn.innerHTML = `<span class="gm-label">${def.label}</span><span class="gm-status">${available ? 'LIVE' : 'MAINTENANCE'}</span>`;
+            if (!available) btn.disabled = true;
+            else btn.addEventListener('click', () => selectGM(def.id));
+            container.appendChild(btn);
+        });
+
+        if (active) selectGM(active);
+        else {
+            const out = document.getElementById('lb');
+            if (out) out.innerHTML = '<div class="lb-empty">No gamemodes available right now.</div>';
+        }
+    }
+
+    function selectGM(id) {
+        if (!lbAvailable[id]) return;
+        lbActive = id;
+        document.querySelectorAll('.gm-btn').forEach(b => b.classList.toggle('active', b.dataset.gm === id));
         refreshLB();
     }
 
     async function refreshLB() {
-        const gmSelect = document.getElementById('gm');
         const out = document.getElementById('lb');
-        if (!gmSelect || !out) return;
+        const gm = lbActive && lbAvailable[lbActive];
+        if (!out || !gm) return;
 
         out.innerHTML = '<div class="lb-loading">Loading...</div>';
 
         try {
-            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(gmSelect.value)}`);
+            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(gm)}`);
             const data = await res.json();
 
             if (!Array.isArray(data) || data.length === 0) {
@@ -299,12 +335,14 @@
             out.innerHTML = html + '</tbody></table>';
 
             const u = new URL(location.href);
-            u.searchParams.set('gamemode', gmSelect.value);
+            u.searchParams.set('gamemode', gm);
             history.replaceState({}, '', u.toString());
         } catch (err) {
             out.innerHTML = '<div class="lb-error">Error loading leaderboard.</div>';
         }
     }
+
+    window.refreshLB = refreshLB;
 
     function onReady(fn) {
         if (document.readyState !== 'loading') fn();
