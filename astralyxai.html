@@ -513,11 +513,33 @@
         }
       });
     }
+
+    function onTurnstileSuccess() {
+      document.querySelectorAll('.cf-turnstile').forEach(function (el) {
+        el.style.display = 'none';
+      });
+    }
+
+    function onTurnstileExpired() {
+      document.querySelectorAll('.cf-turnstile').forEach(function (el) {
+        el.style.display = '';
+      });
+      if (window.turnstile) turnstile.reset();
+    }
+
+    function onTurnstileError() {
+      document.querySelectorAll('.cf-turnstile').forEach(function (el) {
+        el.style.display = '';
+      });
+    }
   </script>
 
   <div class="chat-header">
     <h1>AstralyxAI</h1>
-    <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt"></div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt"
+         data-callback="onTurnstileSuccess"
+         data-expired-callback="onTurnstileExpired"
+         data-error-callback="onTurnstileError"></div>
   </div>
 
   <main class="chat-messages" id="chatMessages">
