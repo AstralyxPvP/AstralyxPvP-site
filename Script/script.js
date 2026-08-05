@@ -101,11 +101,11 @@
                 backdrop.addEventListener('click', closeMenu);
             }
 
-            // Community dropdown (desktop = hover via CSS, click works everywhere)
-            const dropdown = container.querySelector('.nav-dropdown');
-            const dropdownToggle = container.querySelector('.nav-dropdown-toggle');
-            const dropdownMenu = container.querySelector('.nav-dropdown-menu');
-            if (dropdown && dropdownToggle && dropdownMenu) {
+            // Group dropdowns (desktop = hover via CSS, click works everywhere)
+            container.querySelectorAll('.nav-dropdown').forEach(dropdown => {
+                const dropdownToggle = dropdown.querySelector('.nav-dropdown-toggle');
+                const dropdownMenu = dropdown.querySelector('.nav-dropdown-menu');
+                if (!dropdownToggle || !dropdownMenu) return;
                 dropdownToggle.addEventListener('click', (e) => {
                     e.preventDefault();
                     const isOpen = dropdown.classList.toggle('open');
@@ -118,7 +118,11 @@
                         if (window.innerWidth <= 1024) closeMenu();
                     });
                 });
-            }
+                // Highlight the group toggle when one of its pages is open
+                if (dropdownMenu.querySelector('.active')) {
+                    dropdown.classList.add('active');
+                }
+            });
 
             // Active link logic
             const currentPath = (window.location.pathname.split("/").pop() || "index.html").replace(/\.html$/, '');
@@ -126,11 +130,6 @@
                 const href = link.getAttribute('href').replace(/\.html$/, '');
                 if (href === '/' + currentPath || href === currentPath) link.classList.add('active');
             });
-
-            // Highlight Community toggle when one of its pages is open
-            if (dropdown && dropdownMenu && dropdownMenu.querySelector('.active')) {
-                dropdown.classList.add('active');
-            }
 
             // Adjust main content padding so it's not hidden under a fixed nav
             const nav = container.querySelector('nav');
@@ -143,7 +142,9 @@
 
             // Double-decker wrap detection + dynamic padding
             function checkWrap() {
-                var items = Array.from(navLinks.children).filter(function(el) { return el.tagName === 'A'; });
+                var items = Array.from(navLinks.children).filter(function(el) {
+                    return el.offsetParent !== null && (el.tagName === 'A' || el.classList.contains('nav-dropdown'));
+                });
                 var wrapped = false;
                 var firstTop = items[0] && items[0].offsetTop;
                 for (var i = 1; i < items.length; i++) {
@@ -239,7 +240,8 @@
     const GM_DEFS = [
         { id: 'swordffa',   label: 'SWORDFFA',   match: ['swordffa'] },
         { id: 'maceffa',    label: 'MACEFFA',    match: ['maceffa', 'macepvpffa'] },
-        { id: 'nethpotffa', label: 'NETHPOTFFA', match: ['nethpotffa', 'netheritepotffa'] }
+        { id: 'nethpotffa', label: 'NETHPOTFFA', match: ['nethpotffa', 'netheritepotffa'] },
+        { id: 'other', label: 'Other', match: [] }
     ];
     let lbAvailable = {};
     let lbActive = null;
@@ -256,13 +258,20 @@
         } catch (err) { console.error("GM Load Error:", err); }
 
         lbAvailable = {};
+        const known = new Set();
         gms.forEach(gm => {
             const norm = gm.toLowerCase();
             GM_DEFS.forEach(def => {
                 if (lbAvailable[def.id]) return;
-                if (def.match.some(frag => norm.includes(frag))) lbAvailable[def.id] = gm;
+                if (def.match.some(frag => norm.includes(frag))) {
+                    lbAvailable[def.id] = gm;
+                    known.add(gm);
+                }
             });
         });
+
+        const unknownGms = gms.filter(gm => !known.has(gm));
+        if (unknownGms.length) lbAvailable.other = unknownGms[0];
 
         const urlGm = new URLSearchParams(window.location.search).get('gamemode');
         const urlMatch = Object.entries(lbAvailable).find(([, name]) => name.toLowerCase() === (urlGm || '').toLowerCase());

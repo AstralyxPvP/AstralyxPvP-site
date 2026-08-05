@@ -13,11 +13,17 @@
   <div class="nav-links" id="navLinks">
     <button class="mobile-close"><i class="fa-solid fa-xmark"></i></button>
     <a href="/index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="/leaderboard.html"><i class="fa-solid fa-ranking-star"></i> Leaderboard</a>
-    <a href="/status.html"><i class="fa-solid fa-server"></i> Status</a>
-    <a href="/vote.html"><i class="fa-solid fa-check"></i> Vote</a>
-    <a href="/contact.html"><i class="fa-solid fa-address-book"></i> Contact</a>
-    <a href="/apply.html"><i class="fa-solid fa-user-plus"></i> Join Team</a>
+    <div class="nav-dropdown">
+      <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-database"></i> Server
+        <i class="fa-solid fa-chevron-down nav-dropdown-caret"></i>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="/leaderboard.html"><i class="fa-solid fa-ranking-star"></i> Leaderboard</a>
+        <a href="/status.html"><i class="fa-solid fa-heart-pulse"></i> Status</a>
+        <a href="/vote.html"><i class="fa-solid fa-check"></i> Vote</a>
+      </div>
+    </div>
     <div class="nav-dropdown">
       <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
         <i class="fa-solid fa-users"></i> Community
@@ -27,6 +33,16 @@
         <a href="/announcements.html"><i class="fa-solid fa-bullhorn"></i> Announcements</a>
         <a href="/news.html"><i class="fa-solid fa-newspaper"></i> News</a>
         <a href="https://forums.astralyxpvp.int.yt" target="_blank" rel="noopener"><i class="fa-solid fa-comments"></i> Forums</a>
+      </div>
+    </div>
+    <div class="nav-dropdown align-right">
+      <button class="nav-dropdown-toggle" type="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-headset"></i> Support
+        <i class="fa-solid fa-chevron-down nav-dropdown-caret"></i>
+      </button>
+      <div class="nav-dropdown-menu">
+        <a href="/contact.html"><i class="fa-solid fa-address-book"></i> Contact</a>
+        <a href="/apply.html"><i class="fa-solid fa-user-plus"></i> Join Team</a>
       </div>
     </div>
     <a href="/store.html" target="_blank" class="nav-cta">

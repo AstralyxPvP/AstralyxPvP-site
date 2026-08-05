@@ -478,15 +478,46 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.2); }
+
+    /* Compact mode: when embedded inside the chat widget card */
+    body.embedded .chat-header { display: none; }
+    body.embedded .chat-messages { padding: 18px 14px 110px; max-width: 100%; gap: 14px; }
+    body.embedded .welcome-message { padding: 18px 12px; }
+    body.embedded .welcome-message h2 { font-size: 1.4rem; letter-spacing: -0.4px; }
+    body.embedded .welcome-message p { font-size: 0.9rem; max-width: 420px; }
+    body.embedded .message { max-width: 92%; }
+    body.embedded .message-content { padding: 10px 14px; font-size: 0.9rem; border-radius: 14px; }
+    body.embedded .message-sender { font-size: 0.7rem; margin-bottom: 4px; }
+    body.embedded .thinking-body { font-size: 0.8rem; }
+    body.embedded .thinking-title { font-size: 0.7rem; }
+    body.embedded .tool-log-container { font-size: 0.75rem; padding: 6px 10px; }
+    body.embedded .chat-input-container { bottom: 10px; padding: 0 12px; max-width: 100%; }
+    body.embedded .chat-input-area { border-radius: 22px; padding: 6px 6px 6px 16px; gap: 8px; }
+    body.embedded .chat-input { font-size: 0.95rem; padding: 8px 0; max-height: 80px; }
+    body.embedded .send-btn, body.embedded .mic-btn { width: 38px; height: 38px; font-size: 0.95rem; }
+    body.embedded .model-indicator { font-size: 0.62rem; margin-top: 6px; letter-spacing: 0.2px; }
+    body.embedded #backToTop { display: none; }
   </style>
 </head>
 
 <body class="page-enter chat-page">
+  <script>
+    if (window.self !== window.top) {
+      document.body.classList.add('embedded');
+      document.addEventListener('DOMContentLoaded', function () {
+        var t = document.querySelector('.chat-header .cf-turnstile');
+        var wrap = document.querySelector('.chat-input-container');
+        if (t && wrap) {
+          t.style.margin = '0 auto 8px';
+          wrap.insertBefore(t, wrap.firstChild);
+        }
+      });
+    }
+  </script>
 
   <div class="chat-header">
     <h1>AstralyxAI</h1>
     <div class="cf-turnstile" data-sitekey="0x4AAAAAADWtJVafyNps0ZGt"></div>
-    <div id="modelStatus" class="text-xs text-muted">Gemini 3.1 Flash Lite</div>
   </div>
 
   <main class="chat-messages" id="chatMessages">

@@ -567,6 +567,20 @@ li { margin-bottom: var(--sp-2); }
 .nav-dropdown-menu a.active { color: var(--gold); }
 .nav-dropdown-menu a.active i { color: var(--gold); }
 
+/* Right-edge dropdowns: align menu to the toggle's right edge so it can't overflow the viewport */
+@media (min-width: 1025px) {
+  .nav-dropdown.align-right .nav-dropdown-menu {
+    left: auto;
+    right: 0;
+    transform: translateX(0) translateY(8px);
+  }
+  .nav-dropdown.align-right:hover .nav-dropdown-menu,
+  .nav-dropdown.align-right.open .nav-dropdown-menu,
+  .nav-dropdown.align-right:focus-within .nav-dropdown-menu {
+    transform: translateX(0) translateY(0);
+  }
+}
+
 /* CTA (Store) button */
 .nav-cta {
   background: linear-gradient(135deg, #FFD700, #ff8c00) !important;
@@ -1213,6 +1227,83 @@ li { margin-bottom: var(--sp-2); }
 .step-card p strong { color: var(--text); }
 
 /* ============================================================
+   FAQ
+   ============================================================ */
+.faq-section {
+  padding: 60px 9% 90px;
+}
+
+.faq-list {
+  max-width: 760px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: rgba(7, 2, 5, 0.6);
+  border: 1px solid rgba(200, 16, 46, 0.15);
+  border-radius: var(--r-lg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  overflow: hidden;
+  transition: border-color var(--t-med) ease, box-shadow var(--t-med) ease;
+}
+
+.faq-item[open] {
+  border-color: rgba(255, 215, 0, 0.3);
+  box-shadow: 0 0 24px rgba(255, 215, 0, 0.08);
+}
+
+.faq-item summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 18px 22px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--text);
+  font-size: 1.05rem;
+  user-select: none;
+  transition: color var(--t-med) ease;
+}
+
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::marker { content: ''; }
+
+.faq-item summary::after {
+  content: '+';
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--gold);
+  flex-shrink: 0;
+  line-height: 1;
+  transition: transform var(--t-med) ease;
+}
+
+.faq-item[open] summary::after { transform: rotate(45deg); }
+
+.faq-item summary:hover { color: var(--gold); }
+
+.faq-answer {
+  padding: 0 22px 18px;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.75;
+  text-align: left;
+}
+
+.faq-answer p { margin: 0; }
+
+.faq-answer p + p { margin-top: 8px; }
+
+.faq-answer a { color: var(--gold); }
+
+/* ============================================================
    LEADERBOARD
    ============================================================ */
 .lb-section { text-align: center; }
@@ -1553,20 +1644,21 @@ tbody tr:hover .elo-pill {
   display: none;
 }
 
-/* Bottom page nav — desktop only */
+/* Left page nav — desktop only, icon rail with labels on hover */
 .bottom-nav {
   position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
+  flex-direction: column;
   gap: 6px;
-  padding: 6px 10px;
+  padding: 8px;
   background: rgba(18, 8, 10, 0.65);
   backdrop-filter: blur(14px) saturate(115%);
   -webkit-backdrop-filter: blur(14px) saturate(115%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 999px;
+  border-radius: 18px;
   z-index: 9998;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   width: fit-content;
@@ -1576,9 +1668,9 @@ tbody tr:hover .elo-pill {
 .bottom-nav a {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 14px;
-  border-radius: 999px;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 12px;
   background: rgba(18, 8, 10, 0.7);
   backdrop-filter: blur(14px) saturate(115%);
   -webkit-backdrop-filter: blur(14px) saturate(115%);
@@ -1591,6 +1683,26 @@ tbody tr:hover .elo-pill {
   font-weight: 700;
   font-family: 'Consolas', 'Lucida Console', 'Courier New', monospace;
   transition: color var(--t-fast) ease, background var(--t-fast) ease, transform var(--t-fast) ease, border-color var(--t-fast) ease;
+}
+
+.bottom-nav a i {
+  width: 16px;
+  text-align: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+
+.bottom-nav a span {
+  max-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  opacity: 0;
+  transition: max-width var(--t-med) ease, opacity var(--t-med) ease;
+}
+
+.bottom-nav a:hover span {
+  max-width: 130px;
+  opacity: 1;
 }
 
 .bottom-nav a:hover {
@@ -1719,6 +1831,18 @@ tbody tr:hover .elo-pill {
 
 .credit-item { color: var(--muted); font-size: 0.95rem; margin-bottom: 10px; display: flex; gap: 8px; }
 .credit-item:last-child { margin-bottom: 0; }
+
+.secret-link {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--t-fast) ease;
+}
+.secret-link:hover {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
 .credit-item strong { color: var(--gold); font-weight: 700; }
 
 /* ============================================================
