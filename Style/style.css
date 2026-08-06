@@ -2517,7 +2517,10 @@ footer::before {
   .nav-dropdown-menu {
     position: static;
     transform: none;
+    left: auto;
+    right: auto;
     min-width: 0;
+    width: fit-content;
     display: none;
     opacity: 1;
     visibility: visible;
@@ -2528,7 +2531,16 @@ footer::before {
     margin-left: 26px;
     border-radius: var(--r-sm);
   }
-  .nav-dropdown.open .nav-dropdown-menu { display: block; }
+  /* Must out-specify desktop `.nav-dropdown.open .nav-dropdown-menu` (0,2,0)
+     so the drawer never inherits translateX(-50%) centering. */
+  .nav-dropdown.open .nav-dropdown-menu,
+  .nav-dropdown:hover .nav-dropdown-menu,
+  .nav-dropdown:focus-within .nav-dropdown-menu {
+    display: block;
+    transform: none;
+    opacity: 1;
+    visibility: visible;
+  }
   .nav-dropdown-menu a {
     padding: 12px 14px;
     border-radius: var(--r-sm);
