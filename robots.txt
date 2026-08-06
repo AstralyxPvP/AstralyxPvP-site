@@ -3,10 +3,30 @@
 User-agent: *
 Allow: /
 
-# Prevent indexing of static dependency assets (commented out)
-#Disallow: /Assets/
-#Disallow: /Script/
-#Disallow: /Style/
+# Explicitly allow AI / LLM crawlers (GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# AI crawler indexable content map (llms.txt)
+LLMs: /llms.txt
 
 # Host configuration tells Google this is the master node domain
 Host: https://astralyxpvp.pages.dev/

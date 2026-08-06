@@ -1,0 +1,46 @@
+# AstralyxPvP
+
+> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote crates, and an active Discord community. Join on `java.astralyxpvp.int.yt`.
+
+## Server Info
+- IP: java.astralyxpvp.int.yt
+- Versions: Minecraft Java 1.9 and above
+- Region: India (optimized routes for Asia)
+- Access: Free — cracked/offline mode clients supported
+- Discord: https://discord.gg/u8BFrpRwEg
+
+## How to Join
+1. Copy the IP `java.astralyxpvp.int.yt`.
+2. Open Minecraft → Multiplayer → Add Server.
+3. Paste the IP and click Join.
+
+## ELO & Leaderboard
+Every kill and death in FFA and 1v1 arenas updates your rating through the custom plugin. See the live leaderboard at https://astralyxpvp.pages.dev/leaderboard
+
+## Game Modes
+- SWORDFFA (sword FFA arena)
+- 1v1 arenas
+- Vote crates and seasonal rewards
+
+## Key Pages
+- Home: https://astralyxpvp.pages.dev/
+- Leaderboard: https://astralyxpvp.pages.dev/leaderboard
+- Status (48h uptime): https://astralyxpvp.pages.dev/status
+- Vote & Rewards: https://astralyxpvp.pages.dev/vote
+- News: https://astralyxpvp.pages.dev/news
+- Announcements: https://astralyxpvp.pages.dev/announcements
+- Rules: https://astralyxpvp.pages.dev/rules
+- Contact & Join Team: https://astralyxpvp.pages.dev/contact
+- Forums: https://forums.astralyxpvp.int.yt
+- Store: https://astralyxpvp.pages.dev/store
+- AstralyxAI chat: https://astralyxpvp.pages.dev/astralyxai
+
+## Support
+- Discord: https://discord.gg/u8BFrpRwEg
+- Email: info@astralyxpvp.int.yt
+- FAQ answers are on the home page: https://astralyxpvp.pages.dev/
+
+## Outbound Links
+- [Minecraft-Server-List](https://minecraft-server-list.com/server/519817/)
+- [TopG](https://topg.org/minecraft-servers/server-681955)
+- [Minecraft-MP](https://minecraft-mp.com/server-s357553)
