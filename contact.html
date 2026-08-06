@@ -286,6 +286,107 @@
       justify-content: center;
       flex-wrap: wrap;
     }
+
+    /* Join Team FAQ */
+    .join-faq {
+      max-width: 900px;
+      margin: 0 auto 36px;
+      text-align: left;
+    }
+
+    .join-faq details {
+      background: rgba(200, 16, 46, 0.06);
+      border: 1px solid rgba(200, 16, 46, 0.18);
+      border-radius: 14px;
+      margin-bottom: 12px;
+      overflow: hidden;
+      transition: border-color var(--t-fast) ease;
+    }
+
+    .join-faq details[open] {
+      border-color: rgba(255, 215, 0, 0.35);
+    }
+
+    .join-faq summary {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      font-family: var(--font-elegant);
+      font-size: 1.05rem;
+      color: var(--text);
+      cursor: pointer;
+      list-style: none;
+      user-select: none;
+    }
+
+    .join-faq summary::-webkit-details-marker { display: none; }
+
+    .join-q-icon {
+      width: 34px;
+      height: 34px;
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 215, 0, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 10px;
+      color: var(--gold);
+      font-size: 0.95rem;
+    }
+
+    .join-caret {
+      margin-left: auto;
+      color: var(--gold);
+      font-size: 0.8rem;
+      transition: transform var(--t-med) var(--ease);
+    }
+
+    .join-faq details[open] .join-caret { transform: rotate(180deg); }
+
+    .join-body {
+      padding: 0 20px 18px 66px;
+    }
+
+    .join-body p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+
+    .join-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .join-list li {
+      position: relative;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      padding-left: 20px;
+      margin-bottom: 8px;
+    }
+
+    .join-list li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 11px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--gold);
+    }
+
+    .join-list strong { color: var(--text); }
+
+    @media (max-width: 660px) {
+      .join-body { padding-left: 20px; }
+    }
   </style>
 </head>
 <body>
@@ -395,6 +496,32 @@
             <p class="role">Admin</p>
             <a href="https://discord.com/users/1507700205921898526" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
           </div>
+        </div>
+
+        <div class="team-section-title" id="join-team"><i class="fa-solid fa-user-plus"></i> Join the Team</div>
+        <div class="join-faq">
+          <details>
+            <summary><span class="join-q-icon"><i class="fa-solid fa-gavel"></i></span> Staff Requirements <i class="fa-solid fa-chevron-down join-caret"></i></summary>
+            <div class="join-body">
+              <p>Before applying, make sure you meet our expectations. The requirements below apply to every role.</p>
+              <ul class="join-list">
+                <li><strong>Conduct</strong> — Treat all players with respect. No harassment or abuse of power. Remain calm in difficult situations.</li>
+                <li><strong>Activity</strong> — Stay active in-game and on Discord. Log at least 5 hours per week. Report absences to management.</li>
+                <li><strong>Responsibility</strong> — Secure your staff account. Never leak internal discussions. Report bugs and hackers immediately.</li>
+              </ul>
+            </div>
+          </details>
+          <details>
+            <summary><span class="join-q-icon"><i class="fa-solid fa-clipboard-list"></i></span> How to Apply <i class="fa-solid fa-chevron-down join-caret"></i></summary>
+            <div class="join-body">
+              <p>We only accept applications through our official Discord server. Join below, read the #apply rules, and open a ticket.</p>
+              <div class="text-center mt-18">
+                <a href="https://discord.gg/VKDcsrBCPe" target="_blank" class="discord-button">
+                  <i class="fa-brands fa-discord"></i> Apply on Discord
+                </a>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
     </section>
