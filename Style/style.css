@@ -2529,6 +2529,20 @@ footer::before {
   .player-cell { gap: 5px; }
   .player-cell img { width: 18px; height: 18px; }
   .elo-pill { padding: 1px 8px; font-size: 0.75rem; }
+
+  /* Vote page — phone-first */
+  .lb-panel { margin: 0; border-radius: var(--r-md); }
+  .vote-panel-side, .vote-links-col { padding: 22px 16px; }
+  .vote-heading { font-size: 0.95rem; letter-spacing: 0.08em; }
+  .vote-list { gap: 12px; }
+  .vote-list li { font-size: 0.88rem; }
+  .vote-link {
+    padding: 16px;
+    min-height: 54px;
+    font-size: 0.9rem;
+  }
+  .vote-link:hover { transform: none; }
+  .vote-disclaimer { font-size: 0.78rem; }
 }
 
 /* ============================================================
