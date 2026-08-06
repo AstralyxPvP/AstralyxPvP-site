@@ -840,6 +840,87 @@ li { margin-bottom: var(--sp-2); }
   max-width: 46ch;
 }
 
+/* ── HERO STATUS PILLS ── */
+.hero-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: var(--sp-5);
+}
+
+.hero-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--r-pill);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  background: rgba(15, 8, 10, 0.85);
+  border: 1px solid rgba(255, 215, 0, 0.25);
+  color: var(--text);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  white-space: nowrap;
+}
+
+.hero-pill .pill-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #888;
+  box-shadow: 0 0 8px rgba(136, 136, 136, 0.6);
+  transition: background var(--t-fast) ease, box-shadow var(--t-fast) ease;
+}
+
+.hero-pill.status-pill.online .pill-dot { background: #3ddc84; box-shadow: 0 0 10px rgba(61, 220, 132, 0.8); }
+.hero-pill.status-pill.offline .pill-dot { background: #C8102E; box-shadow: 0 0 10px rgba(200, 16, 46, 0.8); }
+
+.hero-pill.status-pill.online { border-color: rgba(61, 220, 132, 0.35); }
+.hero-pill.status-pill.offline { border-color: rgba(200, 16, 46, 0.4); }
+
+a.hero-pill.discord-pill {
+  text-decoration: none;
+  color: var(--text);
+  border-color: rgba(88, 101, 242, 0.4);
+  transition: border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, transform var(--t-fast) ease;
+}
+
+a.hero-pill.discord-pill:hover {
+  border-color: rgba(88, 101, 242, 0.9);
+  box-shadow: 0 0 18px rgba(88, 101, 242, 0.35);
+  transform: translateY(-2px);
+}
+
+.hero-pill.discord-pill .fa-discord { color: #5865F2; }
+
+/* ── HERO TYPING TAGLINE ── */
+.hero-tagline {
+  color: var(--gold);
+  font-size: 1rem;
+  font-weight: 600;
+  min-height: 1.6em;
+  margin-bottom: var(--sp-4);
+  max-width: 46ch;
+}
+
+.tag-caret {
+  display: inline-block;
+  width: 2px;
+  height: 1.1em;
+  background: var(--gold);
+  vertical-align: -0.15em;
+  margin-left: 2px;
+  animation: caretBlink 0.8s steps(1) infinite;
+}
+
+@keyframes caretBlink { 50% { opacity: 0; } }
+
+.hero-desc { margin-bottom: var(--sp-6); }
+
 /* ============================================================
    BUTTONS
    ============================================================ */
@@ -2488,6 +2569,8 @@ footer::before {
   .hero-inner-split { flex-direction: column-reverse; text-align: center; gap: 24px; padding-inline: 5%; }
   .hero-text { text-align: center; }
   .hero-text p { max-width: 100%; }
+  .hero-pills { justify-content: center; }
+  .hero-pill { font-size: 0.75rem; padding: 7px 13px; }
   .hero-image {
     width: min(260px, 70vw);
     height: min(260px, 70vw);

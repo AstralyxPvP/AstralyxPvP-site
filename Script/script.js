@@ -206,6 +206,8 @@
         const navPill = document.getElementById('nav-status');
         const heroPlayers = document.getElementById('heroPlayers');
         const heroStatusText = document.getElementById('heroStatusText');
+        const heroPill = document.getElementById('heroServerPill');
+        const heroPillText = document.getElementById('heroServerPillText');
 
         try {
             const response = await fetch(`${API_BASE}?serverStatus=true`);
@@ -223,17 +225,77 @@
                     const mode = (data.text || "").includes("Live") ? "Live" : "Fallback Probe";
                     heroStatusText.textContent = `Online • ${data.version || "1.21"} (${mode})`;
                 }
+                // Update Hero Pill
+                if (heroPill) heroPill.className = 'hero-pill status-pill online';
+                if (heroPillText) heroPillText.textContent = `${data.current}/${data.max} Online`;
             } else {
                 // Offline States
                 if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
                 if (heroPlayers) heroPlayers.textContent = "Offline";
                 if (heroStatusText) heroStatusText.textContent = "Server is currently offline";
+                if (heroPill) heroPill.className = 'hero-pill status-pill offline';
+                if (heroPillText) heroPillText.textContent = "Server Offline";
             }
         } catch (error) {
             if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
             if (heroPlayers) heroPlayers.textContent = "Offline";
             if (heroStatusText) heroStatusText.textContent = "Unable to connect to status API";
+            if (heroPill) heroPill.className = 'hero-pill status-pill offline';
+            if (heroPillText) heroPillText.textContent = "Status Unavailable";
         }
+    }
+
+    // Discord live presence (real data from Discord widget API)
+    const DISCORD_INVITE = "u8BFrpRwEg";
+    async function updateDiscordCount() {
+        const el = document.getElementById('heroDiscordCount');
+        if (!el) return;
+        try {
+            const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE}?with_counts=true`);
+            const data = await res.json();
+            const count = data?.approximate_presence_count;
+            if (typeof count === 'number') el.textContent = count;
+        } catch (error) {
+            el.textContent = "—";
+        }
+    }
+
+    // Hero typing tagline
+    const TAGLINES = [
+        "India-based 1.9+ FFA PvP arena",
+        "Climb the live ELO leaderboard",
+        "Cracked & free for every player",
+        "Fast-paced shield & axe combat",
+        "Low-latency pings across Asia"
+    ];
+    function initHeroTag() {
+        const el = document.getElementById('heroTag');
+        if (!el) return;
+        let line = 0, pos = 0, deleting = false;
+        function tick() {
+            const current = TAGLINES[line];
+            if (!deleting) {
+                pos++;
+                el.textContent = current.slice(0, pos);
+                if (pos === current.length) {
+                    deleting = true;
+                    setTimeout(tick, 2200);
+                    return;
+                }
+                setTimeout(tick, 55);
+            } else {
+                pos--;
+                el.textContent = current.slice(0, pos);
+                if (pos === 0) {
+                    deleting = false;
+                    line = (line + 1) % TAGLINES.length;
+                    setTimeout(tick, 350);
+                    return;
+                }
+                setTimeout(tick, 28);
+            }
+        }
+        setTimeout(tick, 500);
     }
 
     // Leaderboard System
@@ -366,6 +428,9 @@
         ]).then(() => {
             updateAllStatus();
             setInterval(updateAllStatus, 20000);
+            updateDiscordCount();
+            setInterval(updateDiscordCount, 60000);
+            initHeroTag();
         }).catch(err => console.error("Init failed:", err));
     });
 
