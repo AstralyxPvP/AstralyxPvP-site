@@ -2310,6 +2310,7 @@ footer::before {
     transition: right var(--t-med) var(--ease);
     z-index: 9500;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
   }
 
@@ -2390,6 +2391,8 @@ footer::before {
     padding: 12px 14px;
     border-radius: var(--r-sm);
     font-size: 0.9rem;
+    white-space: normal;
+    min-height: 0;
   }
 
   /* X close btn — top-right of drawer */
