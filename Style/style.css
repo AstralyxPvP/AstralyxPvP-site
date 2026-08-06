@@ -1160,6 +1160,20 @@ li { margin-bottom: var(--sp-2); }
     box-shadow 0.4s ease;
 }
 
+.step-card::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  left: -60%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.06), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  transition: left 0.7s var(--ease);
+}
+
+.step-card:hover::after { left: 120%; }
+
 .step-card::before {
   content: '';
   position: absolute;
@@ -1320,7 +1334,23 @@ li { margin-bottom: var(--sp-2); }
   margin-inline: auto;
   animation: fadeInUp 1s ease;
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  position: relative;
+  overflow: hidden;
 }
+
+.lb-panel::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  left: -60%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.05), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  transition: left 0.9s var(--ease);
+}
+
+.lb-panel:hover::after { left: 120%; }
 
 .controls {
   display: flex;
@@ -1538,8 +1568,23 @@ tbody tr:hover .elo-pill {
   -webkit-backdrop-filter: blur(8px);
   text-align: left;
   position: relative;
+  overflow: hidden;
   transition: border-color var(--t-med) ease, box-shadow var(--t-med) ease, transform var(--t-med) ease;
 }
+
+.doc-block::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  left: -60%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.05), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  transition: left 0.8s var(--ease);
+}
+
+.doc-block:hover::after { left: 120%; }
 
 .doc-block:hover {
   border-color: rgba(255, 215, 0, 0.25);
@@ -1808,8 +1853,24 @@ tbody tr:hover .elo-pill {
   padding: 35px;
   backdrop-filter: blur(10px);
   animation: fadeInUp 0.6s ease-out both;
+  position: relative;
+  overflow: hidden;
   transition: transform var(--t-med) var(--ease), border-color var(--t-med) ease, box-shadow var(--t-med) ease;
 }
+
+.credit-card::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 40%;
+  left: -60%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.07), transparent);
+  transform: skewX(-18deg);
+  pointer-events: none;
+  transition: left 0.7s var(--ease);
+}
+
+.credit-card:hover::after { left: 120%; }
 
 .credit-card:hover {
   transform: translateY(-10px);
