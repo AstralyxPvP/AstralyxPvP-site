@@ -502,8 +502,8 @@ input:checked + .np-togsl::before { transform: translateX(18px); }
     </div>
   </a>
   <div class="np-spacer"></div>
-  <a class="np-back" href="/announcements.html">
-    <i class="fa-solid fa-arrow-left"></i> Announcements
+  <a class="np-back" href="/announcements.html" onclick="if(history.length > 1 && document.referrer && document.referrer.startsWith(location.origin)){event.preventDefault();history.back();}">
+    <i class="fa-solid fa-arrow-left"></i> Back
   </a>
   <div id="npAuthBtn"></div>
 </nav>
