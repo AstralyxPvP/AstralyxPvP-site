@@ -108,7 +108,6 @@
 
     .online { color: #00ff44; }
     .offline { color: var(--primary); }
-    .maintenance { color: var(--accent); }
 
     .status-info {
       background: rgba(200, 16, 46, 0.1);
@@ -151,11 +150,6 @@
     .pulse-dot.offline {
       background: var(--primary);
       box-shadow: 0 0 10px var(--primary);
-    }
-
-    .pulse-dot.maintenance {
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
     }
 
     @keyframes pulseDot {
@@ -746,10 +740,6 @@
             <span class="info-label">Status:</span>
             <span class="info-value"><span class="pulse-dot" id="pulse-indicator"></span><span id="status-indicator">Unknown</span></span>
           </div>
-          <div class="info-row" id="maintenance-row" style="display: none;">
-            <span class="info-label">Maintenance Expected End:</span>
-            <span class="info-value" id="maintenance-info">N/A</span>
-          </div>
           <div class="info-row" id="players-row" style="display: none;">
             <span class="info-label">Players Online:</span>
             <span class="info-value" id="players-info">N/A</span>
@@ -846,10 +836,6 @@
   <script>
     // ======== STATUS PAGE - SERVER STATUS LOADER ========
     const API_BASE = "https://astralyxpvp.chessmrbeaston.workers.dev/api/";
-    const yamlData = {
-      'maintainence': 'yes',
-      'maintainence-expected-end': '2026-06-22'
-    };
 
     async function loadServerStatus() {
       const statusMessage = document.getElementById('status-message');
@@ -858,8 +844,6 @@
       const statusInfo = document.getElementById('status-info');
       const statusIndicator = document.getElementById('status-indicator');
       const pulseIndicator = document.getElementById('pulse-indicator');
-      const maintenanceRow = document.getElementById('maintenance-row');
-      const maintenanceInfo = document.getElementById('maintenance-info');
       const playersRow = document.getElementById('players-row');
       const playersInfo = document.getElementById('players-info');
 
@@ -868,69 +852,40 @@
       }
 
       try {
-        const isMaintenance = (yamlData['maintainence'] || '').toLowerCase() === 'yes';
-        const expectedEndRaw = (yamlData['maintainence-expected-end'] || '').trim();
-
         statusInfo.style.display = 'block';
 
-        if (isMaintenance) {
-          // Server is in maintenance mode
-          setBadge('wrench', '#ffb142');
-          statusMessage.textContent = 'Server in Maintenance';
-          statusMessage.className = 'status-message maintenance';
-          statusDetails.innerHTML = `Server is currently undergoing maintenance to improve your gaming experience.`;
-          statusIndicator.textContent = 'MAINTENANCE MODE';
-          pulseIndicator.className = 'pulse-dot maintenance';
-          maintenanceRow.style.display = 'flex';
-          if (!expectedEndRaw) {
-            maintenanceInfo.textContent = `We don't have an estimate right now`;
-          } else {
-            // Format the date nicely (e.g., "22nd June 2026")
-            var parts = expectedEndRaw.split('-');
-            var d = new Date(parseInt(parts[0]), parseInt(parts[1]) - 1, parseInt(parts[2]));
-            var day = d.getDate();
-            var suffix = 'th';
-            if (day === 1 || day === 21 || day === 31) suffix = 'st';
-            else if (day === 2 || day === 22) suffix = 'nd';
-            else if (day === 3 || day === 23) suffix = 'rd';
-            var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-            maintenanceInfo.textContent = day + suffix + ' ' + months[d.getMonth()] + ' ' + d.getFullYear();
-          }
-        } else {
-          // Server is not in maintenance, check if online
-          try {
-            const apiResponse = await fetch(`${API_BASE}?serverStatus=true`);
-            const apiData = await apiResponse.json();
+        try {
+          const apiResponse = await fetch(`${API_BASE}?serverStatus=true`);
+          const apiData = await apiResponse.json();
 
-            if (apiData.online) {
-              setBadge('circle', '#00ff44');
-              statusMessage.textContent = 'Server Online';
-              statusMessage.className = 'status-message online';
-              statusDetails.innerHTML = `The server is running and ready for battle! <strong>${apiData.current}/${apiData.max}</strong> players are currently online. Jump in and start playing.`;
-              statusIndicator.textContent = 'ONLINE';
-              pulseIndicator.className = 'pulse-dot online';
-              playersRow.style.display = 'flex';
-              playersInfo.textContent = `${apiData.current}/${apiData.max} Players`;
-            } else {
-              setBadge('circle', '#c8102e');
-              statusMessage.textContent = 'Server Offline';
-              statusMessage.className = 'status-message offline';
-              statusDetails.innerHTML = `The server is currently offline. Please check back soon!`;
-              statusIndicator.textContent = 'OFFLINE';
-              pulseIndicator.className = 'pulse-dot offline';
-              playersRow.style.display = 'none';
-            }
-          } catch (error) {
-            console.error('API error:', error);
+          if (apiData.online) {
             setBadge('circle', '#00ff44');
             statusMessage.textContent = 'Server Online';
             statusMessage.className = 'status-message online';
-            statusDetails.innerHTML = `The server is running. Players are currently online. Jump in and start playing.`;
+            statusDetails.innerHTML = `The server is running and ready for battle! <strong>${apiData.current}/${apiData.max}</strong> players are currently online. Jump in and start playing.`;
             statusIndicator.textContent = 'ONLINE';
             pulseIndicator.className = 'pulse-dot online';
             playersRow.style.display = 'flex';
-            playersInfo.textContent = 'Players Online';
+            playersInfo.textContent = `${apiData.current}/${apiData.max} Players`;
+          } else {
+            setBadge('circle', '#c8102e');
+            statusMessage.textContent = 'Server Offline';
+            statusMessage.className = 'status-message offline';
+            statusDetails.innerHTML = `The server is currently offline. Please check back soon!`;
+            statusIndicator.textContent = 'OFFLINE';
+            pulseIndicator.className = 'pulse-dot offline';
+            playersRow.style.display = 'none';
           }
+        } catch (error) {
+          console.error('API error:', error);
+          setBadge('circle', '#00ff44');
+          statusMessage.textContent = 'Server Online';
+          statusMessage.className = 'status-message online';
+          statusDetails.innerHTML = `The server is running. Players are currently online. Jump in and start playing.`;
+          statusIndicator.textContent = 'ONLINE';
+          pulseIndicator.className = 'pulse-dot online';
+          playersRow.style.display = 'flex';
+          playersInfo.textContent = 'Players Online';
         }
       } catch (error) {
         console.error('Error loading server status:', error);
