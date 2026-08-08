@@ -7,8 +7,8 @@
   <meta name="google-site-verification" content="dwWOJSf9PK5NvguaxcjVUYJCZK2Ehc_ZpdgavYEGgcs" />
   <meta name="google-site-verification" content="5x4oetuwUCYoInPARiV5ebPUEToLUzxiI1MfjvNc128" />
   <link rel="canonical" href="https://astralyxpvp.pages.dev/status" />
-  <meta name="description" content="Join AstralyxPvP, the premier India-based 1.9+ FFA PvP server. Experience fast-paced combat, skill-based battles, ELO Live Leaderboards, crates, and a thriving community. Prove your dominance in the arena today!" />
-  <meta name="keywords" content="Minecraft PvP server, 1.9 PvP, FFA PvP, India Minecraft server, ELO Leaderboard, Minecraft crates, skill-based PvP, free Minecraft server, cracked Minecraft server, astralyx, astralyxpvp" />
+  <meta name="description" content="Live status for AstralyxPvP: Minecraft server, Discord bots, website and store. Real-time 48h uptime monitoring for the whole Astralyx network." />
+  <meta name="keywords" content="Minecraft PvP server, 1.9 PvP, FFA PvP, India Minecraft server, ELO Leaderboard, Minecraft crates, skill-based PvP, free Minecraft server, cracked Minecraft server, astralyx, astralyxpvp, server status" />
   <meta name="author" content="Frostrax (Owner), IndianCoder3 &amp; DreamLong (NebulaGames Developers)" />
   <script type="application/ld+json">
   {
@@ -30,8 +30,8 @@
     "serverStatus": "schema.org"
   }
   </script>
-  <meta property="og:title" content="AstralyxPvP - The Ultimate 1.9 FFA PvP Battlefield" />
-  <meta property="og:description" content="Join AstralyxPvP, the premier India-based 1.9+ FFA PvP server. Experience fast-paced combat, skill-based battles, ELO Live Leaderboards, crates, and a thriving community." />
+  <meta property="og:title" content="AstralyxPvP - Server & Network Status" />
+  <meta property="og:description" content="Real-time status for the AstralyxPvP Minecraft server, Discord bots, website and store — including 48 hour uptime history." />
   <meta property="og:image" content="astralyxpvp.pages.dev/Assets/logo-compress.png" />
   <meta property="og:url" content="astralyxpvp.pages.dev" />
   <meta property="og:type" content="website" />
@@ -163,12 +163,19 @@
       50% { opacity: 0.5; }
     }
 
-    .status-discord {
+    .status-actions {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .status-discord {
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin-top: 24px;
       padding: 14px 28px;
       border-radius: 999px;
       background: linear-gradient(135deg, #5865F2, #4752C4);
@@ -189,11 +196,10 @@
     }
 
     .status-announcements {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 10px;
-      margin-top: 24px;
       padding: 14px 28px;
       border-radius: 999px;
       background: linear-gradient(135deg, #eff258, #c4c247);
@@ -220,6 +226,495 @@
       }
       .status-left { text-align: center; }
       .status-badge { margin-bottom: 10px; }
+      .status-section { padding: 70px 5%; min-height: 0; }
+    }
+
+    /* ============================================================
+       LIVE STATUS DASHBOARD (merged from statuses.html)
+       ============================================================ */
+    .dash-section {
+      padding: 30px 9% 90px;
+      max-width: 1240px;
+      margin-inline: auto;
+    }
+
+    .dash-hero {
+      position: relative;
+      overflow: hidden;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 30px 32px;
+      backdrop-filter: blur(12px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 24px;
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .dash-hero::after {
+      content: '';
+      position: absolute;
+      top: -40%; right: -10%;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: rgba(61, 220, 132, 0.08);
+      filter: blur(90px);
+      pointer-events: none;
+    }
+
+    .dash-hero-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .dash-hero-tag .dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--text-faint);
+    }
+
+    .dash-hero-tag .dot.ok { background: #00ff44; box-shadow: 0 0 12px #00ff44; }
+    .dash-hero-tag .dot.partial { background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+    .dash-hero-tag .dot.bad { background: var(--primary); box-shadow: 0 0 12px var(--primary); }
+
+    .dash-hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 800;
+      color: var(--text);
+      margin: 14px 0 10px;
+      letter-spacing: 0.02em;
+    }
+
+    .dash-hero-title.ok { color: var(--text); }
+    .dash-hero-title.partial { color: var(--accent); }
+    .dash-hero-title.bad { color: var(--primary); }
+
+    .dash-hero-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.7;
+      max-width: 60ch;
+      margin: 0;
+    }
+
+    .dash-countdown {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 16px 20px;
+      align-self: flex-start;
+      flex-shrink: 0;
+    }
+
+    .dash-ring {
+      position: relative;
+      width: 52px; height: 52px;
+      flex-shrink: 0;
+    }
+
+    .dash-ring svg {
+      width: 52px; height: 52px;
+      transform: rotate(-90deg);
+    }
+
+    .dash-ring circle {
+      fill: transparent;
+      stroke-width: 4;
+    }
+
+    .dash-ring .ring-bg { stroke: rgba(255,255,255,0.12); }
+    .dash-ring .ring-fg {
+      stroke: var(--accent);
+      stroke-linecap: round;
+      stroke-dasharray: 138;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 1s linear;
+    }
+
+    .dash-ring span {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .dash-countdown-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-family: 'Fira Code', monospace;
+      margin: 0 0 4px;
+    }
+
+    .dash-countdown-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text);
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .dash-refresh {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 10px;
+      padding: 10px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .dash-refresh:hover {
+      color: var(--text);
+      border-color: var(--gold);
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+
+    .dash-refresh svg { width: 18px; height: 18px; }
+
+    .dash-refresh.spinning svg { animation: dashSpin 0.7s linear infinite; }
+
+    @keyframes dashSpin { to { transform: rotate(360deg); } }
+
+    .dash-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .dash-stat {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 18px 20px;
+      backdrop-filter: blur(12px);
+      transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+      animation: fadeInUp 0.8s ease-out both;
+    }
+
+    .dash-stat:hover {
+      border-color: var(--border-hover);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.45), 0 0 18px var(--gold-glow);
+    }
+
+    .dash-stat-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dash-stat-label .ico {
+      width: 26px; height: 26px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+    }
+
+    .dash-stat-label .ico.green { background: rgba(0,255,68,0.12); color: #00ff44; }
+    .dash-stat-label .ico.red { background: rgba(200,16,46,0.14); color: var(--primary); }
+    .dash-stat-label .ico.amber { background: rgba(255,215,0,0.12); color: var(--accent); }
+    .dash-stat-label .ico.blue { background: rgba(70,130,255,0.12); color: #4682ff; }
+
+    .dash-stat-value {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: var(--text);
+      margin-top: 12px;
+    }
+
+    .dash-stat-value .unit { font-size: 0.85rem; color: var(--text-muted); }
+
+    .dash-stat-sub {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.7rem;
+      margin-top: 8px;
+      color: var(--text-faint);
+    }
+
+    .dash-stat-sub.green { color: rgba(0,255,68,0.7); }
+
+    .dash-timeline-head {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin: 34px 4px 12px;
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dash-legend {
+      display: flex;
+      gap: 16px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: none;
+    }
+
+    .dash-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .dash-legend i { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+    .dash-legend .lg-up { background: #00ff44; }
+    .dash-legend .lg-down { background: var(--primary); }
+
+    .dash-services { display: flex; flex-direction: column; gap: 16px; }
+
+    .dash-card {
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      padding: 22px 24px;
+      backdrop-filter: blur(12px);
+      animation: fadeInUp 0.8s ease-out both;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dash-card::after {
+      content: '';
+      position: absolute;
+      top: 0; bottom: 0;
+      width: 40%;
+      left: -60%;
+      background: linear-gradient(105deg, transparent, rgba(255,255,255,0.04), transparent);
+      transform: skewX(-18deg);
+      pointer-events: none;
+      transition: left 0.9s var(--ease);
+    }
+
+    .dash-card:hover::after { left: 120%; }
+
+    .dash-card-top {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .dash-card-id {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .dash-card-ico {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: rgba(0,0,0,0.6);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      flex-shrink: 0;
+    }
+
+    .dash-card-name {
+      font-weight: 800;
+      color: var(--text);
+      font-size: 1rem;
+      letter-spacing: 0.03em;
+      margin: 0 0 3px;
+    }
+
+    .dash-card-desc {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin: 0;
+    }
+
+    .dash-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+    }
+
+    .dash-ping {
+      font-family: 'Fira Code', monospace;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      background: rgba(0,0,0,0.4);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      border-radius: 8px;
+      white-space: nowrap;
+    }
+
+    .dash-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      font-family: 'Fira Code', monospace;
+      border: 1px solid;
+      white-space: nowrap;
+    }
+
+    .dash-status.up {
+      color: #00ff44;
+      background: rgba(0,255,68,0.08);
+      border-color: rgba(0,255,68,0.35);
+    }
+
+    .dash-status.down {
+      color: var(--primary);
+      background: rgba(200,16,46,0.1);
+      border-color: rgba(200,16,46,0.4);
+    }
+
+    .dash-status .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulseDot 1.6s ease-in-out infinite; }
+
+    .dash-bars-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 18px 0 8px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .dash-bars-head .uptime { color: var(--accent); font-weight: 700; }
+
+    .uptime-scroll {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 30px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .uptime-scroll::-webkit-scrollbar { display: none; }
+    .uptime-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+    .uptime-bar {
+      height: 100%;
+      border-radius: 3px;
+      flex: 1 1 0;
+      min-width: 5px;
+      cursor: pointer;
+      position: relative;
+      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .uptime-bar:hover { transform: scaleY(1.3) scaleX(1.1); z-index: 20; }
+
+    .uptime-bar.up { background: #00ff44; opacity: 0.75; box-shadow: 0 0 6px rgba(0,255,68,0.35); }
+    .uptime-bar.down { background: var(--primary); opacity: 0.9; box-shadow: 0 0 6px rgba(200,16,46,0.4); }
+    .uptime-bar.unknown { background: var(--text-faint); opacity: 0.35; }
+
+    .uptime-bar .tip {
+      opacity: 0;
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.66rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      white-space: nowrap;
+      pointer-events: none;
+      z-index: 30;
+      transition: opacity 0.2s ease;
+    }
+
+    .uptime-bar:hover .tip { opacity: 1; }
+
+    .dash-skeleton {
+      background: rgba(0,0,0,0.5);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      height: 130px;
+      animation: dashSkel 1.4s ease-in-out infinite;
+    }
+
+    @keyframes dashSkel {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    .dash-footer {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-family: 'Fira Code', monospace;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .dash-footer .ok { color: #00ff44; font-weight: 700; }
+    .dash-footer .bad { color: var(--primary); font-weight: 700; }
+
+    @media (max-width: 860px) {
+      .dash-section { padding: 24px 5% 70px; }
+      .dash-stats { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 480px) {
+      .dash-stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+      .dash-stat { padding: 14px 14px; }
+      .dash-stat-value { font-size: 1.5rem; }
+      .dash-hero { padding: 22px 18px; }
+      .dash-card { padding: 18px 16px; }
+      .dash-countdown { padding: 12px 14px; }
     }
   </style>
 </head>
@@ -260,15 +755,90 @@
             <span class="info-value" id="players-info">N/A</span>
           </div>
         </div>
-        <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener" class="status-discord">
-          <i class="fa-brands fa-discord"></i> Check Updates
-        </a>
-        <a href="announcements.html" target="_blank" rel="noopener" class="status-announcements">
-          <i class="fa-solid fa-bullhorn"></i> Check Announcements
-        </a>
-        <a href="statuses.html" target="_blank" rel="noopener" class="status-announcements">
-          <i class="fa-solid fa-circle"></i> Check Live Status (new!)
-        </a>
+        <div class="status-actions">
+          <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener" class="status-discord">
+            <i class="fa-brands fa-discord"></i> Check Updates
+          </a>
+          <a href="announcements.html" target="_blank" rel="noopener" class="status-announcements">
+            <i class="fa-solid fa-bullhorn"></i> Check Announcements
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="dash-section">
+      <h2 class="section-title">Live Status Dashboard</h2>
+
+      <div class="dash-hero" id="heroBanner">
+        <div>
+          <span class="dash-hero-tag"><span class="dot" id="heroIndicatorDot"></span><span id="heroIndicatorText">SYSTEM OVERVIEW</span></span>
+          <h3 class="dash-hero-title" id="heroTitle">All Systems Operational</h3>
+          <p class="dash-hero-desc" id="heroDescription">
+            All Astralyx Minecraft servers, Discord bots, and web applications are functioning normally without interruptions.
+          </p>
+        </div>
+        <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;">
+          <div class="dash-countdown">
+            <div class="dash-ring">
+              <svg viewBox="0 0 52 52">
+                <circle class="ring-bg" cx="26" cy="26" r="22"></circle>
+                <circle class="ring-fg" id="timerProgressCircle" cx="26" cy="26" r="22"></circle>
+              </svg>
+              <span id="timerSeconds">300s</span>
+            </div>
+            <div>
+              <p class="dash-countdown-label">Next Auto Sync</p>
+              <p class="dash-countdown-value" id="nextCheckFormatted">Counting down...</p>
+            </div>
+          </div>
+          <button class="dash-refresh" id="refreshBtn" onclick="fetchStatus(true)" title="Force Refresh Status" aria-label="Refresh status">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="dash-stats">
+        <div class="dash-stat">
+          <div class="dash-stat-label"><span>Operational</span><span class="ico green"><i class="fa-solid fa-check"></i></span></div>
+          <div class="dash-stat-value"><span id="statOperational">0</span> <span class="unit">/ <span id="statTotal">5</span></span></div>
+          <div class="dash-stat-sub green">Operational Status</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-label"><span>Services Down</span><span class="ico red"><i class="fa-solid fa-xmark"></i></span></div>
+          <div class="dash-stat-value"><span id="statDown">0</span></div>
+          <div class="dash-stat-sub">Active outages</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-label"><span>Avg Uptime</span><span class="ico amber"><i class="fa-solid fa-bolt"></i></span></div>
+          <div class="dash-stat-value"><span id="statAvgUptime">99.9%</span></div>
+          <div class="dash-stat-sub">Over 48 hours</div>
+        </div>
+        <div class="dash-stat">
+          <div class="dash-stat-label"><span>Avg Latency</span><span class="ico blue"><i class="fa-solid fa-clock"></i></span></div>
+          <div class="dash-stat-value"><span id="statAvgLatency">—</span> <span class="unit">ms</span></div>
+          <div class="dash-stat-sub green">Latest monitored ping</div>
+        </div>
+      </div>
+
+      <div class="dash-timeline-head">
+        <span>48-Hour Hourly Timeline</span>
+        <div class="dash-legend">
+          <span><i class="lg-up"></i> Operational</span>
+          <span><i class="lg-down"></i> Outage</span>
+        </div>
+      </div>
+
+      <div class="dash-services" id="servicesList">
+        <div class="dash-skeleton"></div>
+        <div class="dash-skeleton"></div>
+        <div class="dash-skeleton"></div>
+      </div>
+
+      <div class="dash-footer">
+        <span>Worker API: <span id="footerApiStatus" class="ok">Active</span></span>
+        <span>Last Sync: <span id="lastUpdateTimestamp">—</span></span>
       </div>
     </section>
   </div>
@@ -376,9 +946,362 @@
 
     // Load status on page load
     document.addEventListener('DOMContentLoaded', loadServerStatus);
-    
+
     // Refresh every 30 seconds
     setInterval(loadServerStatus, 30000);
+  </script>
+
+  <script>
+    // ======== STATUS PAGE - LIVE UPTIME DASHBOARD ========
+    const DASH_API_URL = 'https://uptime-worker.chessmrbeaston.workers.dev/';
+    const DASH_CHECK_INTERVAL_MS = 5 * 60 * 1000; // 5 minute check interval
+
+    let allHistory = [];
+    let lastUpdatedAt = null;
+    let countdownTimer = 300;
+    let timerInterval = null;
+    let fetchInProgress = false;
+    let refreshTimerId = null;
+
+    function getHoursToShow() {
+      // 48 hours on desktop (>640px), 36 hours on mobile (<=640px)
+      return window.innerWidth > 640 ? 48 : 36;
+    }
+
+    const serviceMeta = {
+      mc_server_online: {
+        name: 'Minecraft Server (Java)',
+        icon: 'fa-gamepad',
+        desc: 'Main game network and player sessions'
+      },
+      mc_server_api: {
+        name: 'Minecraft Server API',
+        icon: 'fa-bolt',
+        desc: 'Player stats, leaderboard sync, and backend'
+      },
+      discord_mod_bot: {
+        name: 'Discord Mod Bot',
+        icon: 'fa-shield-halved',
+        desc: 'Automated ticket management and server moderation'
+      },
+      discord_ai_bot: {
+        name: 'Discord AI Bot',
+        icon: 'fa-robot',
+        desc: 'Astralyx AI support assistant and player helper'
+      },
+      website: {
+        name: 'Website & Store',
+        icon: 'fa-globe',
+        desc: 'Web portal, player forums, and webshop'
+      }
+    };
+
+    function scheduleNextRefresh() {
+      if (refreshTimerId) clearTimeout(refreshTimerId);
+      if (!lastUpdatedAt) {
+        refreshTimerId = setTimeout(fetchStatus, DASH_CHECK_INTERVAL_MS);
+        return;
+      }
+
+      // Align refresh to 5-minute intervals from the API record's timestamp
+      const elapsed = Date.now() - lastUpdatedAt.getTime();
+      const completedIntervals = Math.max(0, Math.floor(elapsed / DASH_CHECK_INTERVAL_MS));
+      const nextRefreshTime = lastUpdatedAt.getTime() + (completedIntervals + 1) * DASH_CHECK_INTERVAL_MS;
+      const delay = Math.max(nextRefreshTime - Date.now(), 0);
+
+      refreshTimerId = setTimeout(fetchStatus, delay);
+    }
+
+    async function fetchStatus(forceUserRefresh = false) {
+      if (fetchInProgress) return;
+      fetchInProgress = true;
+
+      const refreshBtn = document.getElementById('refreshBtn');
+      if (refreshBtn) refreshBtn.classList.add('spinning');
+
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
+
+        const response = await fetch(DASH_API_URL, {
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+
+        if (Array.isArray(data) && data.length > 0) {
+          allHistory = data;
+          // Use the API record's timestamp as the source of truth for refresh scheduling
+          lastUpdatedAt = new Date(data[0].timestamp || Date.now());
+          updateUI(data[0]);
+          updateApiStatusBadge(true, "Live API Connected");
+        } else {
+          throw new Error("Empty payload from API");
+        }
+      } catch (err) {
+        console.error('API Fetch failed:', err.message);
+        updateApiStatusBadge(false, "API Unreachable");
+      } finally {
+        fetchInProgress = false;
+        if (refreshBtn) refreshBtn.classList.remove('spinning');
+        resetCountdownTimer();
+        scheduleNextRefresh();
+      }
+    }
+
+    function updateUI(latestRecord) {
+      const timestamp = lastUpdatedAt ? lastUpdatedAt : new Date();
+      const formattedTime = timestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
+      document.getElementById('lastUpdateTimestamp').textContent = formattedTime;
+
+      const statuses = latestRecord.statuses || {};
+      let opCount = 0, downCount = 0;
+
+      // Generate list dynamically based purely on the payload sent by worker
+      const serviceKeys = Object.keys(statuses);
+      let totalCount = serviceKeys.length;
+
+      const servicesListContainer = document.getElementById('servicesList');
+      servicesListContainer.innerHTML = '';
+
+      let uptimeSum = 0, uptimeCount = 0, latencySum = 0, latencyCount = 0;
+
+      serviceKeys.forEach((key) => {
+        const serviceData = statuses[key] || {};
+        const isUp = serviceData.online === true;
+        if (isUp) opCount++; else downCount++;
+
+        const meta = serviceMeta[key] || {
+          name: key.replace(/_/g, ' ').toUpperCase(),
+          icon: 'fa-server',
+          desc: 'System component hooked via API'
+        };
+
+        const uptimePct = calculate48HourUptime(key);
+        const currentPing = serviceData.ping;
+        const avgLatency = calculateAvgLatency(key);
+        const barsHTML = render48HourlyBars(key);
+
+        uptimeSum += uptimePct; uptimeCount++;
+
+        const pingToShow = typeof currentPing === 'number' ? currentPing : (avgLatency > 0 ? avgLatency : null);
+        if (typeof pingToShow === 'number') { latencySum += pingToShow; latencyCount++; }
+
+        const statusHTML = isUp
+          ? '<span class="dash-status up"><span class="dot"></span>Operational</span>'
+          : '<span class="dash-status down"><span class="dot"></span>Outage</span>';
+
+        const pingText = pingToShow !== null ? pingToShow + ' ms' : '— ms';
+
+        const cardHTML = `
+          <div class="dash-card">
+            <div class="dash-card-top">
+              <div class="dash-card-id">
+                <div class="dash-card-ico"><i class="fa-solid ${meta.icon}"></i></div>
+                <div>
+                  <h3 class="dash-card-name">${meta.name}</h3>
+                  <p class="dash-card-desc">${meta.desc}</p>
+                </div>
+              </div>
+              <div class="dash-card-meta">
+                <span class="dash-ping">⚡ ${pingText}</span>
+                ${statusHTML}
+              </div>
+            </div>
+            <div class="dash-bars-head">
+              <span>48 Hours History</span>
+              <span class="uptime">${uptimePct}% Uptime</span>
+            </div>
+            <div class="uptime-scroll">
+              ${barsHTML}
+            </div>
+          </div>
+        `;
+        servicesListContainer.innerHTML += cardHTML;
+      });
+
+      // Edge Case: Empty Config
+      if (serviceKeys.length === 0) {
+        servicesListContainer.innerHTML = '<div class="dash-card" style="text-align:center;color:var(--text-muted);font-family:\'Fira Code\',monospace;font-size:0.85rem;">Waiting for service payload from API...</div>';
+        totalCount = 0;
+      }
+
+      const avgUptime = uptimeCount > 0 ? (uptimeSum / uptimeCount).toFixed(1) : 0;
+      const avgLatencyMs = latencyCount > 0 ? Math.round(latencySum / latencyCount) : '—';
+
+      document.getElementById('statAvgUptime').textContent = avgUptime + '%';
+      document.getElementById('statAvgLatency').textContent = avgLatencyMs;
+
+      // Update Header Hero Banner
+      const heroTitle = document.getElementById('heroTitle');
+      const heroDescription = document.getElementById('heroDescription');
+      const heroIndicatorDot = document.getElementById('heroIndicatorDot');
+
+      if (downCount === 0 && totalCount > 0) {
+        heroTitle.textContent = "All Systems Operational";
+        heroTitle.className = "dash-hero-title ok";
+        heroDescription.textContent = "All mapped Astralyx services are returning successful pings to the worker node.";
+        heroIndicatorDot.className = "dot ok";
+      } else if (downCount > 0 && downCount < totalCount) {
+        heroTitle.textContent = "Partial System Outage Detected";
+        heroTitle.className = "dash-hero-title partial";
+        heroDescription.textContent = "Some network services are currently failing checks. Diagnostics are recorded by the worker.";
+        heroIndicatorDot.className = "dot partial";
+      } else if (totalCount > 0) {
+        heroTitle.textContent = "Major Infrastructure Outage";
+        heroTitle.className = "dash-hero-title bad";
+        heroDescription.textContent = "Critical system components are timing out or returning errors.";
+        heroIndicatorDot.className = "dot bad";
+      }
+
+      // Update stats grid numbers
+      document.getElementById('statOperational').textContent = opCount;
+      document.getElementById('statTotal').textContent = totalCount;
+      document.getElementById('statDown').textContent = downCount;
+
+      // Pin the latest bars into view on mobile
+      pinLatestTimelineMobile();
+    }
+
+    function render48HourlyBars(serviceKey) {
+      const now = new Date();
+      let barsHTML = '';
+      const hoursToShow = getHoursToShow();
+
+      for (let i = hoursToShow - 1; i >= 0; i--) {
+        const hourStart = new Date(now.getTime() - i * 60 * 60 * 1000);
+        hourStart.setMinutes(0, 0, 0);
+
+        const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000);
+
+        const recordsInHour = allHistory.filter(r => {
+          const t = new Date(r.timestamp);
+          return t >= hourStart && t < hourEnd;
+        });
+
+        let status = 'unknown';
+        if (recordsInHour.length > 0) {
+          status = 'operational';
+          const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] && r.statuses[serviceKey].online === false);
+          if (hasDown) status = 'down';
+        }
+
+        let colorClass = 'unknown';
+        let labelStatus = 'No Data Available';
+
+        if (status === 'operational') {
+          colorClass = 'up';
+          labelStatus = 'Operational';
+        } else if (status === 'down') {
+          colorClass = 'down';
+          labelStatus = 'Degraded / Down';
+        }
+
+        const dateFormatted = hourStart.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }) + ' (' + hourStart.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit' }) + ')';
+        const tooltipText = `${dateFormatted}: ${labelStatus}`;
+
+        barsHTML += `
+          <div class="uptime-bar ${colorClass}" title="${tooltipText}">
+            <span class="tip">${tooltipText}</span>
+          </div>
+        `;
+      }
+      return barsHTML;
+    }
+
+    function pinLatestTimelineMobile() {
+      if (window.innerWidth >= 640) return;
+      requestAnimationFrame(()=>{
+        document.querySelectorAll('.uptime-scroll').forEach(el=>{
+          el.scrollLeft = el.scrollWidth - el.clientWidth;
+        });
+      });
+    }
+
+    function calculate48HourUptime(serviceKey) {
+      if (!allHistory || allHistory.length === 0) return 0;
+      const hoursToShow = getHoursToShow();
+      const now = new Date();
+      let upHours = 0;
+      let totalHours = 0;
+
+      for (let i = hoursToShow - 1; i >= 0; i--) {
+        const hourStart = new Date(now.getTime() - i * 60 * 60 * 1000);
+        hourStart.setMinutes(0, 0, 0);
+        const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000);
+
+        const recordsInHour = allHistory.filter(r => {
+          const t = new Date(r.timestamp);
+          return t >= hourStart && t < hourEnd;
+        });
+
+        if (recordsInHour.length > 0) {
+          const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] && r.statuses[serviceKey].online === false);
+          if (!hasDown) upHours++;
+          totalHours++;
+        }
+      }
+
+      return totalHours > 0 ? ((upHours / totalHours) * 100).toFixed(1) : 0;
+    }
+
+    function calculateAvgLatency(serviceKey) {
+      if (!allHistory || allHistory.length === 0) return 0;
+      const latencies = allHistory
+        .filter(r => r.statuses && r.statuses[serviceKey] && typeof r.statuses[serviceKey].ping === 'number')
+        .map(r => r.statuses[serviceKey].ping);
+
+      if (latencies.length === 0) return 0;
+      const sum = latencies.reduce((a, b) => a + b, 0);
+      return Math.round(sum / latencies.length);
+    }
+
+    function resetCountdownTimer() {
+      countdownTimer = 300;
+      if (timerInterval) clearInterval(timerInterval);
+
+      timerInterval = setInterval(() => {
+        countdownTimer--;
+        if (countdownTimer <= 0) {
+          fetchStatus();
+        } else {
+          document.getElementById('timerSeconds').textContent = `${countdownTimer}s`;
+          const percent = (countdownTimer / 300) * 138;
+          document.getElementById('timerProgressCircle').style.strokeDashoffset = 138 - percent;
+
+          const m = Math.floor(countdownTimer / 60);
+          const s = countdownTimer % 60;
+          document.getElementById('nextCheckFormatted').textContent = `In ${m}m ${s < 10 ? '0' : ''}${s}s`;
+        }
+      }, 1000);
+    }
+
+    function updateApiStatusBadge(connected, text) {
+      const footerApiStatus = document.getElementById('footerApiStatus');
+      const heroIndicatorText = document.getElementById('heroIndicatorText');
+      if (heroIndicatorText) heroIndicatorText.textContent = text;
+      if (footerApiStatus) {
+        footerApiStatus.textContent = connected ? 'Active' : 'Degraded / Error';
+        footerApiStatus.className = connected ? 'ok' : 'bad';
+      }
+    }
+
+    // Initialize dashboard on startup
+    window.addEventListener('load', () => {
+      fetchStatus();
+      scheduleNextRefresh();
+    });
+
+    // Handle window resize to recalculate hours on responsive change
+    window.addEventListener('resize', () => {
+      if (allHistory.length > 0) {
+        updateUI(allHistory[0]);
+      }
+    });
   </script>
 
   <div id="footer"></div>
@@ -396,6 +1319,7 @@
       <button onclick="toggleChatDock()" class="chat-close-btn">&times;</button>
     </div>
     <iframe src="/astralyxai" class="chat-dock-iframe"></iframe>
+  </div>
   </div>
 </body>
 </html>
