@@ -1,5 +1,5 @@
 # User-Agent directives for AstralyxPvP Crawler Hub
-# Primary Authority: https://astralyxpvp.pages.dev/
+# Primary Authority: https://astralyxpvp.org/
 User-agent: *
 Allow: /
 
@@ -29,7 +29,7 @@ Allow: /
 LLMs: /llms.txt
 
 # Host configuration tells Google this is the master node domain
-Host: https://astralyxpvp.pages.dev/
+Host: https://astralyxpvp.org/
 
 # Points crawler bots directly to your structural mapping file
-Sitemap: https://astralyxpvp.pages.dev/sitemap.xml
+Sitemap: https://astralyxpvp.org/sitemap.xml

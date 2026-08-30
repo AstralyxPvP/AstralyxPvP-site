@@ -2,82 +2,82 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/</loc>
+    <loc>https://astralyxpvp.org/</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://astralyxpvp.pages.dev/announcements</loc>
+    <loc>https://astralyxpvp.org/announcements</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://astralyxpvp.pages.dev/news</loc>
+    <loc>https://astralyxpvp.org/news</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/leaderboard</loc>
+    <loc>https://astralyxpvp.org/leaderboard</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/rules</loc>
+    <loc>https://astralyxpvp.org/rules</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/status</loc>
+    <loc>https://astralyxpvp.org/status</loc>
     <lastmod>2026-08-07</lastmod>
     <changefreq>hourly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/vote</loc>
+    <loc>https://astralyxpvp.org/vote</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/apply</loc>
+    <loc>https://astralyxpvp.org/apply</loc>
     <lastmod>2026-08-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/contact</loc>
+    <loc>https://astralyxpvp.org/contact</loc>
     <lastmod>2026-08-06</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/support</loc>
+    <loc>https://astralyxpvp.org/support</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/terms</loc>
+    <loc>https://astralyxpvp.org/terms</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
 
   <url>
-    <loc>https://astralyxpvp.pages.dev/privacy</loc>
+    <loc>https://astralyxpvp.org/privacy</loc>
     <lastmod>2026-05-10</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>

@@ -1,6 +1,6 @@
 (async function() {
     const API_BASE = "https://astralworker.chessmrbeaston.workers.dev/api";
-    const IP = "java.astralyxpvp.int.yt";
+    const IP = "play.astralyxpvp.org";
 
     const escapeHtml = (s) => (s ?? '').toString().replace(/[&<>"']/g, c => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -452,7 +452,7 @@ function toggleChatDock() {
 
 // Clipboard IP Copy
 window.copyServerIP = function() {
-    const serverIP = "java.astralyxpvp.int.yt";
+    const serverIP = "play.astralyxpvp.org";
     navigator.clipboard.writeText(serverIP).catch(err => {
         console.error("Failed to copy IP:", err);
     });
