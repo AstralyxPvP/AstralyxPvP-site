@@ -376,9 +376,12 @@
 
         try {
             const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(gm)}`);
-            const data = await res.json();
+            const json = await res.json();
 
-            if (!Array.isArray(data) || data.length === 0) {
+            // Support both new { top100: [...] } and legacy [...] structures
+            const players = Array.isArray(json) ? json : (json?.top100 || []);
+
+            if (!Array.isArray(players) || players.length === 0) {
                 out.innerHTML = '<div class="lb-empty">No data found.</div>';
                 return;
             }
@@ -391,7 +394,7 @@
             };
 
             let html = '<table><thead><tr><th>Rank</th><th>Player</th><th>ELO</th></tr></thead><tbody>';
-            data.slice(0, 100).forEach((p, i) => {
+            players.slice(0, 100).forEach((p, i) => {
                 html += `<tr>
                     <td class="${rankClass(i)}">#${i + 1}</td>
                     <td>
