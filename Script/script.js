@@ -56,7 +56,6 @@
             const html = await response.text();
             container.innerHTML = html;
 
-            // Hamburger menu toggle
             const hamburger = container.querySelector('.hamburger');
             const navLinks = container.querySelector('.nav-links');
             const mobileClose = container.querySelector('.mobile-close');
@@ -101,7 +100,7 @@
                 backdrop.addEventListener('click', closeMenu);
             }
 
-            // Group dropdowns (desktop = hover via CSS, click works everywhere)
+            // Group dropdowns
             container.querySelectorAll('.nav-dropdown').forEach(dropdown => {
                 const dropdownToggle = dropdown.querySelector('.nav-dropdown-toggle');
                 const dropdownMenu = dropdown.querySelector('.nav-dropdown-menu');
@@ -118,7 +117,6 @@
                         if (window.innerWidth <= 1024) closeMenu();
                     });
                 });
-                // Highlight the group toggle when one of its pages is open
                 if (dropdownMenu.querySelector('.active')) {
                     dropdown.classList.add('active');
                 }
@@ -131,7 +129,7 @@
                 if (href === '/' + currentPath || href === currentPath) link.classList.add('active');
             });
 
-            // Adjust main content padding so it's not hidden under a fixed nav
+            // Adjust main content padding
             const nav = container.querySelector('nav');
             const mainContent = document.querySelector('.page-content');
             if (nav && mainContent) {
@@ -140,7 +138,7 @@
                 });
             }
 
-            // Double-decker wrap detection + dynamic padding
+            // Double-decker wrap detection
             function checkWrap() {
                 var items = Array.from(navLinks.children).filter(function(el) {
                     return el.offsetParent !== null && (el.tagName === 'A' || el.classList.contains('nav-dropdown'));
@@ -174,7 +172,7 @@
     async function initFooter() {
         const container = document.getElementById('footer');
         if (!container) return;
-    
+      
         try {
             const response = await fetch('Assets/footer.html');
             if (!response.ok) throw new Error('Footer asset could not be fetched');
@@ -201,7 +199,7 @@
         }
     }
 
-    // Combined Server Status Updates (Navbar Pill + Hero Card)
+    // Combined Server Status Updates
     async function updateAllStatus() {
         const navPill = document.getElementById('nav-status');
         const heroPlayers = document.getElementById('heroPlayers');
@@ -214,22 +212,18 @@
             const data = await response.json();
 
             if (data.online) {
-                // Update Nav Pill
                 if (navPill) {
                     navPill.className = 'server-pill online';
                     navPill.textContent = `🟢 ${data.current}/${data.max} Online`;
                 }
-                // Update Hero Card
                 if (heroPlayers) heroPlayers.textContent = `${data.current} / ${data.max}`;
                 if (heroStatusText) {
                     const mode = (data.text || "").includes("Live") ? "Live" : "Fallback Probe";
                     heroStatusText.textContent = `Online • ${data.version || "1.21"} (${mode})`;
                 }
-                // Update Hero Pill
                 if (heroPill) heroPill.className = 'hero-pill status-pill online';
                 if (heroPillText) heroPillText.textContent = `${data.current}/${data.max} Online`;
             } else {
-                // Offline States
                 if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
                 if (heroPlayers) heroPlayers.textContent = "Offline";
                 if (heroStatusText) heroStatusText.textContent = "Server is currently offline";
@@ -245,7 +239,7 @@
         }
     }
 
-    // Discord live presence (real data from Discord widget API)
+    // Discord live presence
     const DISCORD_INVITE = "u8BFrpRwEg";
     async function updateDiscordCount() {
         const el = document.getElementById('heroDiscordCount');
@@ -299,17 +293,36 @@
     }
 
     // Leaderboard System
-    const GM_DEFS = [
-        { id: 'swordffa',   label: 'SWORDFFA',   match: ['swordffa'] },
-        { id: 'maceffa',    label: 'MACEFFA',    match: ['maceffa', 'macepvpffa'] },
-        { id: 'nethpotffa', label: 'NETHPOTFFA', match: ['nethpotffa', 'netheritepotffa'] },
-        { id: 'other', label: 'Other', match: [] }
-    ];
-    let lbAvailable = {};
     let lbActive = null;
+
+    // Splits and cleans gamemode names (e.g. "swordffa" -> "SWORD FFA")
+    function formatGMLabel(name) {
+        if (!name) return '';
+        let str = name.trim();
+        str = str.replace(/(ffa|pvp|pot)/gi, ' $1');
+        return str.replace(/\s+/g, ' ').trim().toUpperCase();
+    }
+
+    // Formats ISO timestamp cleanly
+    function formatTimeAgo(isoString) {
+        if (!isoString) return '—';
+        try {
+            const date = new Date(isoString);
+            if (isNaN(date.getTime())) return '—';
+            return date.toLocaleDateString(undefined, {
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        } catch {
+            return '—';
+        }
+    }
 
     async function initLeaderboard() {
         const container = document.getElementById('gm');
+        const out = document.getElementById('lb');
         if (!container) return;
 
         let gms = [];
@@ -317,74 +330,67 @@
             const res = await fetch(`${API_BASE}?gamemodes=true`);
             const data = await res.json();
             gms = data?.gamemodes || [];
-        } catch (err) { console.error("GM Load Error:", err); }
+        } catch (err) {
+            console.error("GM Load Error:", err);
+        }
 
-        lbAvailable = {};
-        const known = new Set();
-        gms.forEach(gm => {
-            const norm = gm.toLowerCase();
-            GM_DEFS.forEach(def => {
-                if (lbAvailable[def.id]) return;
-                if (def.match.some(frag => norm.includes(frag))) {
-                    lbAvailable[def.id] = gm;
-                    known.add(gm);
-                }
-            });
-        });
+        const activeModes = Array.isArray(gms) ? gms.filter(Boolean) : [];
 
-        const unknownGms = gms.filter(gm => !known.has(gm));
-        if (unknownGms.length) lbAvailable.other = unknownGms[0];
+        // If no modes exist in the backend, don't show any buttons
+        if (activeModes.length === 0) {
+            container.innerHTML = '';
+            if (out) out.innerHTML = '<div class="lb-empty">No active gamemodes found.</div>';
+            return;
+        }
 
         const urlGm = new URLSearchParams(window.location.search).get('gamemode');
-        const urlMatch = Object.entries(lbAvailable).find(([, name]) => name.toLowerCase() === (urlGm || '').toLowerCase());
-        const active = (urlMatch && urlMatch[0]) || Object.keys(lbAvailable)[0] || null;
+        const urlMatch = activeModes.find(gm => gm.toLowerCase() === (urlGm || '').toLowerCase());
+        const initialActive = urlMatch || activeModes[0];
 
         container.innerHTML = '';
-        GM_DEFS.forEach(def => {
-            const available = !!lbAvailable[def.id];
+        activeModes.forEach(gm => {
             const btn = document.createElement('button');
             btn.type = 'button';
-            btn.className = 'gm-btn' + (available ? '' : ' unavailable');
-            if (available) btn.classList.toggle('active', active === def.id);
-            btn.dataset.gm = def.id;
-            btn.innerHTML = `<span class="gm-label">${def.label}</span><span class="gm-status">${available ? 'LIVE' : 'MAINTENANCE'}</span>`;
-            if (!available) btn.disabled = true;
-            else btn.addEventListener('click', () => selectGM(def.id));
+            btn.className = 'gm-btn';
+            btn.classList.toggle('active', gm === initialActive);
+            btn.dataset.gm = gm;
+            btn.innerHTML = `<span class="gm-label">${escapeHtml(formatGMLabel(gm))}</span><span class="gm-status">LIVE</span>`;
+            
+            btn.addEventListener('click', () => selectGM(gm));
             container.appendChild(btn);
         });
 
-        if (active) selectGM(active);
-        else {
-            const out = document.getElementById('lb');
-            if (out) out.innerHTML = '<div class="lb-empty">No gamemodes available right now.</div>';
-        }
+        selectGM(initialActive);
     }
 
-    function selectGM(id) {
-        if (!lbAvailable[id]) return;
-        lbActive = id;
-        document.querySelectorAll('.gm-btn').forEach(b => b.classList.toggle('active', b.dataset.gm === id));
+    function selectGM(gm) {
+        lbActive = gm;
+        document.querySelectorAll('.gm-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.gm === gm);
+        });
         refreshLB();
     }
 
     async function refreshLB() {
         const out = document.getElementById('lb');
-        const gm = lbActive && lbAvailable[lbActive];
-        if (!out || !gm) return;
+        if (!out || !lbActive) return;
 
-        out.innerHTML = '<div class="lb-loading">Loading...</div>';
+        out.innerHTML = '<div class="lb-loading">Loading standings...</div>';
 
         try {
-            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(gm)}`);
+            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(lbActive)}`);
             const json = await res.json();
 
-            // Support both new { top100: [...] } and legacy [...] structures
-            const players = Array.isArray(json) ? json : (json?.top100 || []);
+            // Matches API response structure: { gamemode: "...", total: 3, top100: [...] }
+            let players = Array.isArray(json) ? json : (json?.top100 || []);
 
             if (!Array.isArray(players) || players.length === 0) {
-                out.innerHTML = '<div class="lb-empty">No data found.</div>';
+                out.innerHTML = '<div class="lb-empty">No players recorded for this gamemode yet.</div>';
                 return;
             }
+
+            // Ensure ladder is sorted highest to lowest ELO
+            players = players.slice().sort((a, b) => (Number(b.elo) || 0) - (Number(a.elo) || 0));
 
             const rankClass = (i) => {
                 if (i === 0) return 'rank gold';
@@ -393,9 +399,28 @@
                 return 'rank';
             };
 
-            let html = '<table><thead><tr><th>Rank</th><th>Player</th><th>ELO</th></tr></thead><tbody>';
+            let html = `
+              <div class="lb-meta-bar">
+                <span class="lb-total-count">Active Competitors: <strong>${json?.total ?? players.length}</strong></span>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                    <th>ELO</th>
+                    <th>Last Active</th>
+                  </tr>
+                </thead>
+                <tbody>
+            `;
+
             players.slice(0, 100).forEach((p, i) => {
-                html += `<tr>
+                const numericElo = Number(p.elo);
+                const formattedElo = !isNaN(numericElo) ? numericElo.toLocaleString() : escapeHtml(p.elo);
+
+                html += `
+                  <tr>
                     <td class="${rankClass(i)}">#${i + 1}</td>
                     <td>
                       <div class="player-cell">
@@ -403,16 +428,21 @@
                         <span class="player-name">${escapeHtml(p.username)}</span>
                       </div>
                     </td>
-                    <td><span class="elo-pill">${escapeHtml(p.elo)}</span></td>
-                  </tr>`;
+                    <td><span class="elo-pill">${formattedElo}</span></td>
+                    <td class="last-seen-cell">${escapeHtml(formatTimeAgo(p.lastUpdate))}</td>
+                  </tr>
+                `;
             });
-            out.innerHTML = html + '</tbody></table>';
+
+            html += '</tbody></table>';
+            out.innerHTML = html;
 
             const u = new URL(location.href);
-            u.searchParams.set('gamemode', gm);
+            u.searchParams.set('gamemode', lbActive);
             history.replaceState({}, '', u.toString());
         } catch (err) {
-            out.innerHTML = '<div class="lb-error">Error loading leaderboard.</div>';
+            console.error("Leaderboard fetch error:", err);
+            out.innerHTML = '<div class="lb-error">Failed to retrieve leaderboard data.</div>';
         }
     }
 
