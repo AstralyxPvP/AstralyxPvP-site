@@ -1,5 +1,5 @@
 (async function() {
-    const API_BASE = "https://astralworker.chessmrbeaston.workers.dev/api";
+    const API_BASE = "https://api.astralyxpvp.workers.dev/api";
     const IP = "play.astralyxpvp.org";
 
     const escapeHtml = (s) => (s ?? '').toString().replace(/[&<>"']/g, c => ({
