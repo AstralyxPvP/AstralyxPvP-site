@@ -240,17 +240,122 @@
     }
 
     // Discord live presence
-    const DISCORD_INVITE = "u8BFrpRwEg";
+    const DISCORD_GUILD_ID = "1477025023800901766";
     async function updateDiscordCount() {
-        const el = document.getElementById('heroDiscordCount');
-        if (!el) return;
+        const countEl = document.getElementById('heroDiscordCount');
+        const widget = document.getElementById('discordWidget');
+        if (!countEl && !widget) return;
+
         try {
-            const res = await fetch(`https://discord.com/api/v9/invites/${DISCORD_INVITE}?with_counts=true`);
+            const res = await fetch(`https://discord.com/api/guilds/${DISCORD_GUILD_ID}/widget.json`);
+            if (!res.ok) throw new Error(`Discord widget request failed: ${res.status}`);
             const data = await res.json();
-            const count = data?.approximate_presence_count;
-            if (typeof count === 'number') el.textContent = count;
+            const count = data?.presence_count;
+            if (typeof count !== 'number') throw new Error('Discord widget response did not include a presence count');
+            if (countEl) countEl.textContent = count.toLocaleString();
+            if (!widget) return;
+
+            const serverName = document.getElementById('discordWidgetName');
+            const onlineCount = document.getElementById('discordWidgetOnline');
+            const membersContainer = document.getElementById('discordWidgetMembers');
+            const channelsContainer = document.getElementById('discordWidgetChannels');
+            const widgetStatus = document.getElementById('discordWidgetStatus');
+            const inviteLink = document.getElementById('discordWidgetInvite');
+
+            serverName.textContent = data.name || 'AstralyxPvP Discord';
+            onlineCount.textContent = `${count.toLocaleString()} online right now`;
+            widgetStatus.textContent = 'Live data from Discord';
+            widget.dataset.state = 'ready';
+
+            if (data.instant_invite) {
+                try {
+                    const inviteUrl = new URL(data.instant_invite);
+                    if (inviteUrl.protocol === 'https:' && ['discord.gg', 'discord.com'].includes(inviteUrl.hostname)) {
+                        inviteLink.href = inviteUrl.href;
+                    }
+                } catch (error) {
+                    console.warn('Ignoring invalid Discord invite URL.', error);
+                }
+            }
+
+            membersContainer.replaceChildren();
+            const members = Array.isArray(data.members) ? data.members : [];
+            if (members.length === 0) {
+                const empty = document.createElement('span');
+                empty.className = 'discord-widget-muted';
+                empty.textContent = 'No online members are listed right now.';
+                membersContainer.appendChild(empty);
+            } else {
+                members.slice(0, 8).forEach(member => {
+                    const memberItem = document.createElement('div');
+                    memberItem.className = 'discord-widget-member';
+
+                    const avatar = document.createElement('span');
+                    avatar.className = 'discord-widget-avatar';
+                    const avatarUrl = member.avatar_url || member.avatar;
+                    if (typeof avatarUrl === 'string') {
+                        try {
+                            const parsedAvatar = new URL(avatarUrl);
+                            if (parsedAvatar.protocol === 'https:' && parsedAvatar.hostname === 'cdn.discordapp.com') {
+                                const image = document.createElement('img');
+                                image.src = parsedAvatar.href;
+                                image.alt = '';
+                                image.loading = 'lazy';
+                                avatar.appendChild(image);
+                            }
+                        } catch (error) {
+                            console.warn('Ignoring invalid Discord avatar URL.', error);
+                        }
+                    }
+                    if (!avatar.firstChild) avatar.textContent = (member.username || '?').slice(0, 1).toUpperCase();
+
+                    const details = document.createElement('span');
+                    details.className = 'discord-widget-member-details';
+                    const username = document.createElement('span');
+                    username.className = 'discord-widget-username';
+                    username.textContent = member.username || 'Discord member';
+                    const status = document.createElement('span');
+                    const allowedStatuses = ['online', 'idle', 'dnd'];
+                    const memberStatus = allowedStatuses.includes(member.status) ? member.status : 'online';
+                    status.className = `discord-widget-member-status ${memberStatus}`;
+                    status.textContent = memberStatus === 'dnd' ? 'Do not disturb' : memberStatus;
+                    details.append(username, status);
+                    memberItem.append(avatar, details);
+                    membersContainer.appendChild(memberItem);
+                });
+            }
+
+            channelsContainer.replaceChildren();
+            const channels = Array.isArray(data.channels) ? data.channels : [];
+            if (channels.length === 0) {
+                const empty = document.createElement('span');
+                empty.className = 'discord-widget-muted';
+                empty.textContent = 'No channels are listed by the Discord widget.';
+                channelsContainer.appendChild(empty);
+            } else {
+                channels
+                    .filter(channel => /^\d+$/.test(String(channel.id || '')))
+                    .sort((left, right) => (left.position || 0) - (right.position || 0))
+                    .forEach(channel => {
+                        const link = document.createElement('a');
+                        link.className = 'discord-widget-channel';
+                        link.href = `https://discord.com/channels/${data.id}/${channel.id}`;
+                        link.target = '_blank';
+                        link.rel = 'noopener noreferrer';
+                        link.textContent = channel.name || 'channel';
+                        channelsContainer.appendChild(link);
+                    });
+            }
         } catch (error) {
-            el.textContent = "—";
+            console.error('Discord widget unavailable:', error);
+            if (countEl) countEl.textContent = '—';
+            if (widget) {
+                widget.dataset.state = 'error';
+                document.getElementById('discordWidgetOnline').textContent = 'Live presence unavailable';
+                document.getElementById('discordWidgetStatus').textContent = 'Discord data is temporarily unavailable.';
+                document.getElementById('discordWidgetMembers').textContent = 'Member data could not be loaded.';
+                document.getElementById('discordWidgetChannels').textContent = 'Channel data could not be loaded.';
+            }
         }
     }
 
@@ -294,6 +399,8 @@
 
     // Leaderboard System
     let lbActive = null;
+    let lbType = 'elo';
+    let lbRequestId = 0;
 
     // Splits and cleans gamemode names (e.g. "swordffa" -> "SWORD FFA")
     function formatGMLabel(name) {
@@ -336,10 +443,17 @@
 
         const activeModes = Array.isArray(gms) ? gms.filter(Boolean) : [];
 
-        // If no modes exist in the backend, don't show any buttons
+        container.innerHTML = '';
+        const xpButton = document.createElement('button');
+        xpButton.type = 'button';
+        xpButton.className = 'gm-btn';
+        xpButton.dataset.boardType = 'xp';
+        xpButton.innerHTML = '<span class="gm-label">XP</span><span class="gm-status">GLOBAL</span>';
+        xpButton.addEventListener('click', selectXP);
+        container.appendChild(xpButton);
+
         if (activeModes.length === 0) {
-            container.innerHTML = '';
-            if (out) out.innerHTML = '<div class="lb-empty">No active gamemodes found.</div>';
+            selectXP();
             return;
         }
 
@@ -347,12 +461,12 @@
         const urlMatch = activeModes.find(gm => gm.toLowerCase() === (urlGm || '').toLowerCase());
         const initialActive = urlMatch || activeModes[0];
 
-        container.innerHTML = '';
         activeModes.forEach(gm => {
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'gm-btn';
             btn.classList.toggle('active', gm === initialActive);
+            btn.dataset.boardType = 'elo';
             btn.dataset.gm = gm;
             btn.innerHTML = `<span class="gm-label">${escapeHtml(formatGMLabel(gm))}</span><span class="gm-status">LIVE</span>`;
             
@@ -364,22 +478,84 @@
     }
 
     function selectGM(gm) {
+        lbType = 'elo';
         lbActive = gm;
         document.querySelectorAll('.gm-btn').forEach(b => {
-            b.classList.toggle('active', b.dataset.gm === gm);
+            b.classList.toggle('active', b.dataset.boardType === 'elo' && b.dataset.gm === gm);
+        });
+        refreshLB();
+    }
+
+    function selectXP() {
+        lbType = 'xp';
+        lbActive = null;
+        document.querySelectorAll('.gm-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.boardType === 'xp');
         });
         refreshLB();
     }
 
     async function refreshLB() {
         const out = document.getElementById('lb');
-        if (!out || !lbActive) return;
+        if (!out || (lbType === 'elo' && !lbActive)) return;
 
-        out.innerHTML = '<div class="lb-loading">Loading standings...</div>';
+        const requestId = ++lbRequestId;
+        const requestedType = lbType;
+        const requestedMode = lbActive;
+        out.innerHTML = `<div class="lb-loading">Loading ${lbType === 'xp' ? 'XP leaderboard' : 'standings'}...</div>`;
 
         try {
-            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(lbActive)}`);
+            if (requestedType === 'xp') {
+                const res = await fetch('https://astralyx-xp-bot.indiancoder3.workers.dev/api/leaderboard?limit=100');
+                if (!res.ok) throw new Error(`XP leaderboard request failed: ${res.status}`);
+                const { leaderboard = [] } = await res.json();
+                if (requestId !== lbRequestId) return;
+
+                if (!Array.isArray(leaderboard) || leaderboard.length === 0) {
+                    out.innerHTML = '<div class="lb-empty">No XP players recorded yet.</div>';
+                    return;
+                }
+
+                const rankClass = (i) => {
+                    if (i === 0) return 'rank gold';
+                    if (i === 1) return 'rank silver';
+                    if (i === 2) return 'rank bronze';
+                    return 'rank';
+                };
+                const rows = leaderboard.map((player, i) => {
+                    const playerName = player.minecraft_name || `Discord user ${player.discord_id}`;
+                    const avatar = player.minecraft_name
+                        ? `<img src="https://minotar.net/helm/${encodeURIComponent(player.minecraft_name)}/24.png" alt="" loading="lazy">`
+                        : '';
+                    return `
+                      <tr>
+                        <td class="${rankClass(i)}">#${i + 1}</td>
+                        <td><div class="player-cell">${avatar}<span class="player-name">${escapeHtml(playerName)}</span></div></td>
+                        <td><span class="xp-player-level">${Number(player.level).toLocaleString()}</span></td>
+                        <td><span class="elo-pill">${Number(player.xp).toLocaleString()} XP</span></td>
+                      </tr>
+                    `;
+                }).join('');
+
+                out.innerHTML = `
+                  <div class="lb-meta-bar">
+                    <span class="lb-total-count">Top XP Players: <strong>${leaderboard.length}</strong></span>
+                  </div>
+                  <table>
+                    <thead><tr><th>Rank</th><th>Player</th><th>Level</th><th>XP</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                  </table>
+                `;
+
+                const u = new URL(location.href);
+                u.searchParams.delete('gamemode');
+                history.replaceState({}, '', u.toString());
+                return;
+            }
+
+            const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(requestedMode)}`);
             const json = await res.json();
+            if (requestId !== lbRequestId) return;
 
             // Matches API response structure: { gamemode: "...", total: 3, top100: [...] }
             let players = Array.isArray(json) ? json : (json?.top100 || []);
@@ -438,9 +614,10 @@
             out.innerHTML = html;
 
             const u = new URL(location.href);
-            u.searchParams.set('gamemode', lbActive);
+            u.searchParams.set('gamemode', requestedMode);
             history.replaceState({}, '', u.toString());
         } catch (err) {
+            if (requestId !== lbRequestId) return;
             console.error("Leaderboard fetch error:", err);
             out.innerHTML = '<div class="lb-error">Failed to retrieve leaderboard data.</div>';
         }
