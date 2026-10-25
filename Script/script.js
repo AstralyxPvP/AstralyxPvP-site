@@ -61,27 +61,44 @@
             const mobileClose = container.querySelector('.mobile-close');
             const backdrop = container.querySelector('.nav-backdrop');
             
+            const mobileBreakpoint = 1100;
+            let menuReturnFocus = false;
+
             function openMenu() {
                 hamburger.classList.add('active');
-                if (window.innerWidth <= 860) {
+                hamburger.setAttribute('aria-expanded', 'true');
+                hamburger.setAttribute('aria-label', 'Close menu');
+                document.documentElement.classList.add('nav-open');
+                menuReturnFocus = true;
+                if (window.innerWidth <= mobileBreakpoint && navLinks.parentNode !== document.body) {
                     document.body.appendChild(navLinks);
                 }
                 requestAnimationFrame(() => {
                     navLinks.classList.add('active');
                     if (backdrop) backdrop.classList.add('active');
+                    const firstLink = navLinks.querySelector('a, .nav-dropdown-toggle');
+                    if (firstLink && window.innerWidth <= mobileBreakpoint) firstLink.focus({ preventScroll: true });
                 });
             }
-            
-            function closeMenu() {
+
+            function closeMenu(returnFocus = false) {
                 hamburger.classList.remove('active');
+                hamburger.setAttribute('aria-expanded', 'false');
+                hamburger.setAttribute('aria-label', 'Open menu');
                 navLinks.classList.remove('active');
                 if (backdrop) backdrop.classList.remove('active');
+                document.documentElement.classList.remove('nav-open');
+                navLinks.querySelectorAll('.nav-dropdown.open').forEach(dropdown => {
+                    dropdown.classList.remove('open');
+                    dropdown.querySelector('.nav-dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+                });
+                if (returnFocus && menuReturnFocus) hamburger.focus({ preventScroll: true });
                 setTimeout(() => {
-                    if (window.innerWidth <= 860 && navLinks.parentNode !== container.querySelector('nav')) {
-                        const nav = container.querySelector('nav');
-                        if (nav) nav.appendChild(navLinks);
+                    const nav = container.querySelector('nav');
+                    if (window.innerWidth <= mobileBreakpoint && nav && navLinks.parentNode !== nav) {
+                        nav.appendChild(navLinks);
                     }
-                }, 300);
+                }, 280);
             }
             
             if (hamburger && navLinks) {
@@ -94,11 +111,21 @@
                 });
             }
             if (mobileClose && navLinks) {
-                mobileClose.addEventListener('click', closeMenu);
+                mobileClose.addEventListener('click', () => closeMenu(true));
             }
             if (backdrop && navLinks) {
-                backdrop.addEventListener('click', closeMenu);
+                backdrop.addEventListener('click', () => closeMenu(true));
             }
+            if (navLinks) {
+                navLinks.querySelectorAll(':scope > a').forEach(link => {
+                    link.addEventListener('click', () => {
+                        if (window.innerWidth <= mobileBreakpoint) closeMenu();
+                    });
+                });
+            }
+            document.addEventListener('keydown', event => {
+                if (event.key === 'Escape' && navLinks.classList.contains('active')) closeMenu(true);
+            });
 
             // Group dropdowns
             container.querySelectorAll('.nav-dropdown').forEach(dropdown => {
@@ -107,14 +134,20 @@
                 if (!dropdownToggle || !dropdownMenu) return;
                 dropdownToggle.addEventListener('click', (e) => {
                     e.preventDefault();
-                    const isOpen = dropdown.classList.toggle('open');
-                    dropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+                    const isOpen = !dropdown.classList.contains('open');
+                    container.querySelectorAll('.nav-dropdown.open').forEach(openDropdown => {
+                        if (openDropdown === dropdown) return;
+                        openDropdown.classList.remove('open');
+                        openDropdown.querySelector('.nav-dropdown-toggle')?.setAttribute('aria-expanded', 'false');
+                    });
+                    dropdown.classList.toggle('open', isOpen);
+                    dropdownToggle.setAttribute('aria-expanded', String(isOpen));
                 });
                 dropdownMenu.querySelectorAll('a').forEach(item => {
                     item.addEventListener('click', () => {
                         dropdown.classList.remove('open');
                         dropdownToggle.setAttribute('aria-expanded', 'false');
-                        if (window.innerWidth <= 1024) closeMenu();
+                        if (window.innerWidth <= mobileBreakpoint) closeMenu();
                     });
                 });
                 if (dropdownMenu.querySelector('.active')) {
@@ -162,7 +195,16 @@
             window.addEventListener('scroll', checkScroll, { passive: true });
             checkScroll();
 
-            window.addEventListener('resize', checkWrap);
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > mobileBreakpoint) {
+                    document.documentElement.classList.remove('nav-open');
+                    navLinks.classList.remove('active');
+                    if (backdrop) backdrop.classList.remove('active');
+                    const nav = container.querySelector('nav');
+                    if (nav && navLinks.parentNode !== nav) nav.appendChild(navLinks);
+                }
+                checkWrap();
+            });
         } catch (error) {
             console.error('Navbar error:', error);
         }
@@ -239,8 +281,95 @@
         }
     }
 
-    // Discord live presence
+    // Discord widget data is public; Discord's widget API does not expose a bot flag.
     const DISCORD_GUILD_ID = "1477025023800901766";
+    const DISCORD_CHANNEL_GROUPS = [
+        { name: 'Welcome', channels: [
+            { id: '1477033060078850264', name: '👋 Welcome' },
+            { id: '1529028842188967977', name: '🎉 DesiBot Welcomer' },
+            { id: '1477033205017346259', name: '📢 Announcements' },
+            { id: '1499020216821088296', name: '📝 Information' },
+            { id: '1477033071076442165', name: '📜 Rules' },
+            { id: '1505240856138088501', name: '🎩 Staff updates' }
+        ] },
+        { name: 'Community', channels: [
+            { id: '1499021398285221939', name: '💬 General' },
+            { id: '1477032605277884558', name: '⚙️ Commands' },
+            { id: '1477032532360040530', name: '📸 Screenshots' },
+            { id: '1477032543441391717', name: '😂 Memes' },
+            { id: '1477032757052837969', name: '🎥 Media' },
+            { id: '1507631887957627000', name: '💬 AI chat' }
+        ] },
+        { name: 'Support', channels: [
+            { id: '1505521770600464625', name: '💬 AI support' },
+            { id: '1477032862892163113', name: '🎫 Create ticket' },
+            { id: '1477037371735281797', name: '🐞 Bug reports' },
+            { id: '1477042893574246502', name: '⚖️ Appeals' }
+        ] },
+        { name: 'More', channels: [
+            { id: '1499837756166246543', name: '📝 Forums' },
+            { id: '1477272147867996222', name: '🧩 Suggestions' },
+            { id: '1477272628149354697', name: '🎥 Media application' },
+            { id: '1477272661519368283', name: '🛡️ Staff application' },
+            { id: '1477272501699481642', name: '🧠 Question of the day' }
+        ] },
+        { name: 'Events & giveaways', channels: [
+            { id: '1477035122636095561', name: '🎉 Events' },
+            { id: '1477035141221060791', name: '🎊 Giveaways' },
+            { id: '1477035158770155743', name: '🏹 Tournaments' }
+        ] },
+        { name: 'Voice channels', channels: [
+            { id: '1477025025012793409', name: '🎙️ General VC', voice: true },
+            { id: '1483463058360893541', name: '🔊 Low Bit VC', voice: true },
+            { id: '1477036494890860706', name: '🎮 Gaming VC', voice: true },
+            { id: '1535916913534959616', name: '🎤 Group of 2', voice: true },
+            { id: '1535917001342586890', name: '🎤 Group of 3', voice: true },
+            { id: '1535917057638535248', name: '🎤 Group of 4', voice: true },
+            { id: '1535917087791259728', name: '🎤 Group of 5', voice: true },
+            { id: '1535917139674927184', name: '🎤 Group of 10', voice: true },
+            { id: '1477036566361931829', name: '💤 AFK', voice: true }
+        ] }
+    ];
+    const DISCORD_WIDGET_BOT_NAMES = new Set([
+        'appbot', 'astralyxpvp', 'authgg', 'beemo', 'disboard', 'dislucity'
+    ]);
+
+    function renderDiscordChannels(apiChannels = []) {
+        const container = document.getElementById('discordWidgetChannels');
+        if (!container) return;
+
+        const liveChannels = new Map(
+            apiChannels.filter(channel => /^\d+$/.test(String(channel.id || '')))
+                .map(channel => [String(channel.id), channel])
+        );
+        container.replaceChildren();
+
+        DISCORD_CHANNEL_GROUPS.forEach((group, groupIndex) => {
+            const details = document.createElement('details');
+            details.className = 'discord-widget-channel-group';
+            if (groupIndex === 0) details.open = true;
+
+            const summary = document.createElement('summary');
+            summary.textContent = `${group.name} (${group.channels.length})`;
+            details.appendChild(summary);
+
+            const links = document.createElement('div');
+            links.className = 'discord-widget-channel-list';
+            group.channels.forEach(channel => {
+                const liveChannel = liveChannels.get(channel.id);
+                const link = document.createElement('a');
+                link.className = channel.voice ? 'discord-widget-channel voice' : 'discord-widget-channel';
+                link.href = `https://discord.com/channels/${DISCORD_GUILD_ID}/${channel.id}`;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                link.textContent = (liveChannel?.name || channel.name).replace(/[┃│]/g, ' ').trim();
+                links.appendChild(link);
+            });
+            details.appendChild(links);
+            container.appendChild(details);
+        });
+    }
+
     async function updateDiscordCount() {
         const countEl = document.getElementById('heroDiscordCount');
         const widget = document.getElementById('discordWidget');
@@ -252,20 +381,28 @@
             const data = await res.json();
             const count = data?.presence_count;
             if (typeof count !== 'number') throw new Error('Discord widget response did not include a presence count');
+
             if (countEl) countEl.textContent = count.toLocaleString();
             if (!widget) return;
 
             const serverName = document.getElementById('discordWidgetName');
             const onlineCount = document.getElementById('discordWidgetOnline');
             const membersContainer = document.getElementById('discordWidgetMembers');
-            const channelsContainer = document.getElementById('discordWidgetChannels');
             const widgetStatus = document.getElementById('discordWidgetStatus');
             const inviteLink = document.getElementById('discordWidgetInvite');
+            const members = Array.isArray(data.members) ? data.members : [];
+            const humanMembers = members.filter(member =>
+                member.bot !== true && member.is_bot !== true &&
+                !DISCORD_WIDGET_BOT_NAMES.has(String(member.username || '').trim().toLowerCase())
+            );
+            const identifiableBots = members.length - humanMembers.length;
+            const visibleOnlineCount = Math.max(0, count - identifiableBots);
 
             serverName.textContent = data.name || 'AstralyxPvP Discord';
-            onlineCount.textContent = `${count.toLocaleString()} online right now`;
-            widgetStatus.textContent = 'Live data from Discord';
+            onlineCount.textContent = `${visibleOnlineCount.toLocaleString()} people online`;
+            widgetStatus.textContent = 'Live Discord presence · known bots excluded';
             widget.dataset.state = 'ready';
+            if (countEl) countEl.textContent = visibleOnlineCount.toLocaleString();
 
             if (data.instant_invite) {
                 try {
@@ -279,14 +416,13 @@
             }
 
             membersContainer.replaceChildren();
-            const members = Array.isArray(data.members) ? data.members : [];
-            if (members.length === 0) {
+            if (humanMembers.length === 0) {
                 const empty = document.createElement('span');
                 empty.className = 'discord-widget-muted';
-                empty.textContent = 'No online members are listed right now.';
+                empty.textContent = 'No non-bot members are listed as online right now.';
                 membersContainer.appendChild(empty);
             } else {
-                members.slice(0, 8).forEach(member => {
+                humanMembers.slice(0, 8).forEach(member => {
                     const memberItem = document.createElement('div');
                     memberItem.className = 'discord-widget-member';
 
@@ -325,27 +461,7 @@
                 });
             }
 
-            channelsContainer.replaceChildren();
-            const channels = Array.isArray(data.channels) ? data.channels : [];
-            if (channels.length === 0) {
-                const empty = document.createElement('span');
-                empty.className = 'discord-widget-muted';
-                empty.textContent = 'No channels are listed by the Discord widget.';
-                channelsContainer.appendChild(empty);
-            } else {
-                channels
-                    .filter(channel => /^\d+$/.test(String(channel.id || '')))
-                    .sort((left, right) => (left.position || 0) - (right.position || 0))
-                    .forEach(channel => {
-                        const link = document.createElement('a');
-                        link.className = 'discord-widget-channel';
-                        link.href = `https://discord.com/channels/${data.id}/${channel.id}`;
-                        link.target = '_blank';
-                        link.rel = 'noopener noreferrer';
-                        link.textContent = channel.name || 'channel';
-                        channelsContainer.appendChild(link);
-                    });
-            }
+            renderDiscordChannels(Array.isArray(data.channels) ? data.channels : []);
         } catch (error) {
             console.error('Discord widget unavailable:', error);
             if (countEl) countEl.textContent = '—';
@@ -354,7 +470,7 @@
                 document.getElementById('discordWidgetOnline').textContent = 'Live presence unavailable';
                 document.getElementById('discordWidgetStatus').textContent = 'Discord data is temporarily unavailable.';
                 document.getElementById('discordWidgetMembers').textContent = 'Member data could not be loaded.';
-                document.getElementById('discordWidgetChannels').textContent = 'Channel data could not be loaded.';
+                renderDiscordChannels();
             }
         }
     }
