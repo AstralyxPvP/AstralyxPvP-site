@@ -70,24 +70,27 @@
 
   </script>
   <style>
-    /* Specific styling for list items inside cards */
-    .feature-card ul {
-      text-align: left;
-      list-style: none;
-      margin-top: 15px;
+    .rules-toolbar { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 16px; }
+    .rules-toolbar input, .rules-toolbar select {
+      min-height: 46px; padding: 10px 14px; color: var(--text); background: #12080a;
+      border: 1px solid var(--border); border-radius: 6px; font: inherit;
     }
-    .feature-card li {
-      color: var(--muted);
-      font-size: 0.9rem;
-      margin-bottom: 10px;
-      display: flex;
-      gap: 10px;
-    }
-    .feature-card li::before {
-      content: "•";
-      color: var(--primary);
-      font-weight: bold;
-    }
+    .rules-toolbar input { flex: 1 1 260px; }
+    .rules-toolbar select { flex: 0 1 220px; }
+    .rules-toolbar input:focus, .rules-toolbar select:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .rules-count { color: var(--muted); font-size: 0.9rem; margin: 0 0 10px; }
+    .rules-table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 8px; }
+    .rules-table { width: 100%; min-width: 850px; border-collapse: collapse; text-align: left; }
+    .rules-table th, .rules-table td { padding: 13px 15px; border-bottom: 1px solid rgba(200, 16, 46, 0.18); vertical-align: top; }
+    .rules-table th { position: sticky; top: 0; z-index: 1; color: var(--gold); background: #17090c; font-size: 0.82rem; text-transform: uppercase; }
+    .rules-table td { color: var(--muted); font-size: 0.9rem; }
+    .rules-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.025); }
+    .rules-table tbody tr:hover { background: rgba(200, 16, 46, 0.1); }
+    .rules-table td:first-child { min-width: 280px; color: var(--text); font-weight: 600; }
+    .rules-table td:nth-child(2) { color: var(--gold); white-space: nowrap; }
+    .rules-table tr:last-child td { border-bottom: 0; }
+    .rules-note { margin-top: 14px; color: var(--muted); font-size: 0.88rem; }
+    @media (max-width: 600px) { .rules-toolbar select { flex: 1 1 100%; } }
   </style>
 </head>
 <body class="page-enter">
@@ -97,90 +100,57 @@
   <div class="page-content">
     <section class="features">
       <h1 class="section-title">Network <span class="text-primary inline-block relative z-front">Rules</span></h1>
-      <p class="lb-subtitle" class="mb-50">Play fair, respect others, and enjoy the grind. Breaking rules leads to mutes, kicks, or bans.</p>
+      <p class="lb-subtitle">Founded in 2026. Play fairly, respect the community, and check the punishment schedule before playing.</p>
 
-      <div class="features-grid">
-        
-        <div class="feature-card">
-          <div class="icon-box"><i class="fa-solid fa-shield-virus"></i></div>
-          <h3>Cheating & Clients</h3>
-          <ul>
-            <li>No hacked clients, macros, or autoclickers (including the F3+T inbuilt keybind trick).</li>
-            <li>No x-ray, ESP, or unfair texture packs.</li>
-            <li>Staff may request a Screenshare (SS) or log check.</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon-box"><i class="fa-solid fa-bug"></i></div>
-          <h3>Exploits & Bugs</h3>
-          <ul>
-            <li>No abusing glitches, dupes, or loopholes.</li>
-            <li>No bypassing combat systems or anti-cheats.</li>
-            <li>Report bugs to staff for potential rewards.</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon-box"><i class="fa-solid fa-handshake-slash"></i></div>
-          <h3>Fair Gameplay</h3>
-          <ul>
-            <li>No boosting, win-trading, or stat manipulation.</li>
-            <li>No cross-teaming in solo game modes.</li>
-            <li>No farming kills using alternate accounts.</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon-box"><i class="fa-solid fa-comment-slash"></i></div>
-          <h3>Chat Behavior</h3>
-          <ul>
-            <li>No hate speech, harassment, or doxxing.</li>
-            <li>No excessive spamming or advertising.</li>
-            <li>No impersonating staff or other players.</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon-box"><i class="fa-solid fa-user-lock"></i></div>
-          <h3>Account Safety</h3>
-          <ul>
-            <li>You are responsible for all actions on your account.</li>
-            <li>Ban evasion on alts results in a permanent IP ban.</li>
-            <li>Keep your account secure; do not share passwords.</li>
-          </ul>
-        </div>
-
-        <div class="feature-card">
-          <div class="icon-box"><i class="fa-solid fa-users"></i></div>
-          <h3>Community & Store</h3>
-          <ul>
-            <li>No chargebacks or payment fraud in the store.</li>
-            <li>No scams, malicious links, or fake giveaways.</li>
-            <li>Follow staff instructions in support tickets.</li>
-          </ul>
-        </div>
-        <div class="feature-card">
-        <div class="icon-box"><i class="fa-solid fa-cart-shopping"></i></div>
-        <h3>Store & Payments</h3>
-        <ul>
-            <li>No fraudulent payments or chargebacks. Doing so results in a network-wide ban.</li>
-            <li>All purchases are final. Refunds are only handled via official support tickets.</li>
-            <li>Virtual items may take up to 15 minutes to arrive in-game.</li>
-        </ul>
-        </div>
-
-        <div class="feature-card border-accent">
-        <div class="icon-box"><i class="fa-solid fa-circle-exclamation"></i></div>
-        <h3>Important Note</h3>
-        <ul>
-            <li>Rules are subject to change at any time to ensure fair play.</li>
-            <li>Not knowing a rule is not an excuse for breaking it.</li>
-            <li>Staff have the final say in all punishment disputes.</li>
-        </ul>
-        </div>
-
+      <div class="rules-toolbar" role="search">
+        <input type="search" id="ruleSearch" placeholder="Search rules or punishments" aria-label="Search rules or punishments">
+        <select id="ruleCategory" aria-label="Filter rules by category">
+          <option value="all">All categories</option>
+          <option value="gameplay">Gameplay</option>
+          <option value="chat">Chat</option>
+          <option value="community">Community</option>
+          <option value="safety">Safety</option>
+          <option value="exploits">Exploits</option>
+        </select>
       </div>
+      <p class="rules-count" id="rulesCount" aria-live="polite">Showing 28 rules</p>
+
+      <div class="rules-table-wrap">
+        <table class="rules-table">
+          <thead><tr><th scope="col">Offence</th><th scope="col">Category</th><th scope="col">1st offence</th><th scope="col">2nd offence</th><th scope="col">3rd offence</th></tr></thead>
+          <tbody id="rulesTableBody">
+            <tr data-category="exploits"><td>1. No hacked clients or unfair advantages</td><td>Exploits</td><td>30 day ban</td><td>Permanent ban</td><td>Permanent ban</td></tr>
+            <tr data-category="chat"><td>2. No swearing at other players</td><td>Chat</td><td>30 minute mute</td><td>3 hour mute</td><td>1 day mute</td></tr>
+            <tr data-category="chat"><td>3. No advertising other servers</td><td>Chat</td><td>6 month mute</td><td>12 month mute</td><td>Permanent mute</td></tr>
+            <tr data-category="chat"><td>4. No light advertising (telling other server names)</td><td>Chat</td><td>12 hour mute</td><td>3 day mute</td><td>7 day ban</td></tr>
+            <tr data-category="community"><td>5. No asking staff for items</td><td>Community</td><td>Warning</td><td>1 hour mute</td><td>6 hour mute</td></tr>
+            <tr data-category="chat"><td>6. No chat trolling (for example, fake free-rank messages)</td><td>Chat</td><td>1 hour mute</td><td>6 hour mute</td><td>1 day mute</td></tr>
+            <tr data-category="chat"><td>7. No flooding the chat (up to 4 messages)</td><td>Chat</td><td>30 minute mute</td><td>1 hour mute</td><td>6 hour mute</td></tr>
+            <tr data-category="community"><td>8. No inappropriate behaviour</td><td>Community</td><td>14 day mute</td><td>31 day mute</td><td>Permanent mute</td></tr>
+            <tr data-category="community"><td>9. No discrimination</td><td>Community</td><td>7 day mute</td><td>14 day mute</td><td>31 day ban</td></tr>
+            <tr data-category="community"><td>10. No referencing tragic events</td><td>Community</td><td>1 day mute</td><td>7 day mute</td><td>14 day ban</td></tr>
+            <tr data-category="safety"><td>11. No mute evading</td><td>Safety</td><td>3 day ban</td><td>7 day ban</td><td>14 day ban</td></tr>
+            <tr data-category="safety"><td>12. No ban evading</td><td>Safety</td><td>Permanent ban</td><td>Permanent ban</td><td>Permanent ban</td></tr>
+            <tr data-category="gameplay"><td>13. No teaming with or assisting hackers or rule breakers</td><td>Gameplay</td><td>14 day ban</td><td>30 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="gameplay"><td>14. No interrupting 1v1s</td><td>Gameplay</td><td>Warning</td><td>30 minute ban</td><td>2 hour ban</td></tr>
+            <tr data-category="community"><td>15. No inappropriate usernames</td><td>Community</td><td>Permanent ban</td><td>&mdash;</td><td>&mdash;</td></tr>
+            <tr data-category="community"><td>16. No inappropriate skins</td><td>Community</td><td>Warning, kick, and request to change skin</td><td>14 day ban</td><td>31 day ban</td></tr>
+            <tr data-category="chat"><td>17. No Discord links for other servers</td><td>Chat</td><td>7 day ban + 3 day mute</td><td>14 day ban + 17 day mute</td><td>Permanent ban + permanent mute</td></tr>
+            <tr data-category="exploits"><td>18. No bug exploiting</td><td>Exploits</td><td>14 day ban</td><td>30 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="community"><td>19. No threatening others</td><td>Community</td><td>7 day mute</td><td>14 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="chat"><td>20. No advertising social media</td><td>Chat</td><td>6 hour mute</td><td>1 day mute</td><td>7 day ban</td></tr>
+            <tr data-category="community"><td>21. No using a disease or disability as an insult</td><td>Community</td><td>3 day mute</td><td>7 day mute</td><td>14 day ban</td></tr>
+            <tr data-category="community"><td>22. No general rudeness</td><td>Community</td><td>Warning</td><td>30 minute mute</td><td>6 hour mute</td></tr>
+            <tr data-category="safety"><td>23. No doxxing others</td><td>Safety</td><td>Permanent ban; may be reported to local authorities if needed</td><td>Permanent ban; may be reported to local authorities if needed</td><td>Permanent ban; may be reported to local authorities if needed</td></tr>
+            <tr data-category="safety"><td>24. No DDoS threats</td><td>Safety</td><td>Permanent IP ban (no appeal)</td><td>&mdash;</td><td>&mdash;</td></tr>
+            <tr data-category="community"><td>25. No harassment or sexual harassment</td><td>Community</td><td>Warning</td><td>31 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="gameplay"><td>26. No running from 1v1s</td><td>Gameplay</td><td>Warning</td><td>7 day ban</td><td>31 day ban</td></tr>
+            <tr data-category="gameplay"><td>27. No escaping the boundary or camping on barriers</td><td>Gameplay</td><td>Warning</td><td>90 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="community"><td>28. No inappropriate behaviour (no tolerance)</td><td>Community</td><td>31 day mute</td><td>Permanent mute</td><td>Permanent ban</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="rules-note">For rule 28, a successful appeal of a second offence does not erase the offence. A later offence of the same nature is treated as the third offence and results in a permanent ban.</p>
 
       <div class="mt-60">
         <a href="https://discord.gg/u8BFrpRwEg" class="hero-btn">
@@ -212,5 +182,29 @@
     </div>
     <iframe src="/astralyxai" class="chat-dock-iframe"></iframe>
   </div>
+  <script>
+    const ruleSearch = document.getElementById('ruleSearch');
+    const ruleCategory = document.getElementById('ruleCategory');
+    const ruleRows = Array.from(document.querySelectorAll('#rulesTableBody tr'));
+    const rulesCount = document.getElementById('rulesCount');
+
+    function filterRules() {
+      const query = ruleSearch.value.trim().toLocaleLowerCase();
+      const category = ruleCategory.value;
+      let visibleCount = 0;
+
+      for (const row of ruleRows) {
+        const matchesQuery = row.textContent.toLocaleLowerCase().includes(query);
+        const matchesCategory = category === 'all' || row.dataset.category === category;
+        row.hidden = !matchesQuery || !matchesCategory;
+        if (!row.hidden) visibleCount += 1;
+      }
+
+      rulesCount.textContent = `Showing ${visibleCount} of ${ruleRows.length} rules`;
+    }
+
+    ruleSearch.addEventListener('input', filterRules);
+    ruleCategory.addEventListener('change', filterRules);
+  </script>
 </body>
 </html>
