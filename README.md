@@ -57,6 +57,19 @@ This project is built using static frontend assets and does not require complex 
 
 - Note that the AI, and some other features will not work on local Environment, as the AI uses environment variables to fetch the API Key. You need to store your key safely and link it into the code.
 
+## Server Status Data
+
+The status page gets Java server status from mcstatus.io and uses the existing status Worker only as a fallback. It stores real status checks in the `astralyxpvp-minecraft-status` D1 database; it does not display API request duration as Minecraft ping.
+
+AstralyxXP checks are sampled into the same D1 database in five-minute buckets. History starts when the migration is applied, so earlier periods remain unknown rather than being backfilled with invented data. The maintenance ribbon reads the public News feed and Forums Worker, then uses the same Gemini model as AstralyxAI to produce a one-line summary.
+
+Run the Pages Functions and D1 locally with:
+
+```bash
+npx wrangler d1 migrations apply astralyxpvp-minecraft-status --local
+npx wrangler pages dev . --port 8787
+```
+
 ## 🌐 Live Usage
 
 Explore the live platform directly at:
@@ -81,7 +94,7 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Emails:** [info@astralyxpvp.org](mailto:info@astralyxpvp.org), [indiancoder3@astralyxpvp.org](mailto:indiancoder3@astralyxpvp.org), [dreamlong@astralyxpvp.org](mailto:dreamlong@astralyxpvp.org), [al13n@astralyxpvp.org](mailto:al13n@astralyxpvp.org)
+* 📧 **Emails:** [info@astralyxpvp.int.yt](mailto:info@astralyxpvp.int.yt), [indiancoder3@astralyxpvp.int.yt](mailto:indiancoder3@astralyxpvp.int.yt), [dreamlong@astralyxpvp.int.yt](mailto:dreamlong@astralyxpvp.int.yt). Email setup for other staff is in progress.
 * 💬 **Discord Community:** [Join our Discord Server](https://discord.gg/u8BFrpRwEg)
 
 ---

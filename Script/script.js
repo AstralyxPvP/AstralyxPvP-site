@@ -250,33 +250,42 @@
         const heroPillText = document.getElementById('heroServerPillText');
 
         try {
-            const response = await fetch(`${API_BASE}?serverStatus=true`);
+            const response = await fetch('/api/minecraft-status', { cache: 'no-store' });
+            if (!response.ok) throw new Error(`Minecraft status request failed: ${response.status}`);
             const data = await response.json();
+            const players = data.players || {};
+            const playerCount = Number.isFinite(players.online) && Number.isFinite(players.max)
+                ? `${players.online}/${players.max}`
+                : null;
 
             if (data.online) {
                 if (navPill) {
                     navPill.className = 'server-pill online';
-                    navPill.textContent = `🟢 ${data.current}/${data.max} Online`;
+                    navPill.textContent = playerCount ? `🟢 ${playerCount} Online` : '🟢 Online';
                 }
-                if (heroPlayers) heroPlayers.textContent = `${data.current} / ${data.max}`;
+                if (heroPlayers) heroPlayers.textContent = playerCount ? playerCount.replace('/', ' / ') : 'Online';
                 if (heroStatusText) {
-                    const mode = (data.text || "").includes("Live") ? "Live" : "Fallback Probe";
-                    heroStatusText.textContent = `Online • ${data.version || "1.21"} (${mode})`;
+                    const source = data.source === 'backup' ? 'Backup status API' : 'mcstatus.io';
+                    heroStatusText.textContent = `Online${data.version ? ` • ${data.version}` : ''} (${source})`;
                 }
                 if (heroPill) heroPill.className = 'hero-pill status-pill online';
-                if (heroPillText) heroPillText.textContent = `${data.current}/${data.max} Online`;
+                if (heroPillText) heroPillText.textContent = playerCount ? `${playerCount} Online` : 'Server Online';
             } else {
                 if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
                 if (heroPlayers) heroPlayers.textContent = "Offline";
-                if (heroStatusText) heroStatusText.textContent = "Server is currently offline";
+                if (heroStatusText) {
+                    const source = data.source === 'backup' ? 'backup status API' : 'mcstatus.io';
+                    heroStatusText.textContent = `Offline • ${source}`;
+                }
                 if (heroPill) heroPill.className = 'hero-pill status-pill offline';
                 if (heroPillText) heroPillText.textContent = "Server Offline";
             }
         } catch (error) {
-            if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
-            if (heroPlayers) heroPlayers.textContent = "Offline";
+            console.error('Minecraft status unavailable:', error);
+            if (navPill) { navPill.className = 'server-pill'; navPill.textContent = 'Status unavailable'; }
+            if (heroPlayers) heroPlayers.textContent = "Status unavailable";
             if (heroStatusText) heroStatusText.textContent = "Unable to connect to status API";
-            if (heroPill) heroPill.className = 'hero-pill status-pill offline';
+            if (heroPill) heroPill.className = 'hero-pill status-pill';
             if (heroPillText) heroPillText.textContent = "Status Unavailable";
         }
     }

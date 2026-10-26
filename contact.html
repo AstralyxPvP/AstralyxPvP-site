@@ -208,13 +208,17 @@
     }
 
     .team-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       gap: 16px;
-      margin-bottom: 36px;
+      max-width: 860px;
+      margin: 0 auto 36px;
     }
 
     .team-card {
+      flex: 0 1 200px;
+      max-width: 200px;
       background: rgba(200, 16, 46, 0.06);
       border: 1px solid rgba(200, 16, 46, 0.18);
       border-radius: 16px;
@@ -392,7 +396,13 @@
 
     .join-list strong { color: var(--text); }
 
+    @media (max-width: 860px) {
+      .team-grid { max-width: 680px; }
+    }
+
     @media (max-width: 660px) {
+      .team-grid { max-width: 420px; }
+      .team-card { flex-basis: calc(50% - 8px); max-width: none; }
       .join-body { padding-left: 20px; }
     }
   </style>
@@ -434,8 +444,9 @@
           </div>
           <div class="contact-card-body">
             <p class="text-center"><strong>General Inquiries</strong></p>
+            <p class="text-center">Our email service is being set up. Only info@astralyxpvp.int.yt is currently available.</p>
             <div class="text-center mt-18">
-              <a href="mailto:info@astralyxpvp.org" class="email-button">
+              <a href="mailto:info@astralyxpvp.int.yt" class="email-button">
                 <i class="fa-solid fa-envelope"></i> Send Email
               </a>
             </div>
@@ -461,7 +472,7 @@
             <h3>DreamLong</h3>
             <p class="role">Developer &amp; Manager</p>
             <div class="team-links">
-              <a href="mailto:dreamlong@astralyxpvp.org"><i class="fa-solid fa-envelope"></i> Email</a>
+              <a href="mailto:dreamlong@astralyxpvp.int.yt"><i class="fa-solid fa-envelope"></i> Email</a>
               <a href="https://discord.com/users/1266380385084772496" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
             </div>
           </div>
@@ -470,7 +481,7 @@
             <h3>IndianCoder3</h3>
             <p class="role">Sr. Developer | AI, Web, Discord</p>
             <div class="team-links">
-              <a href="mailto:indiancoder3@astralyxpvp.org"><i class="fa-solid fa-envelope"></i> Email</a>
+              <a href="mailto:indiancoder3@astralyxpvp.int.yt"><i class="fa-solid fa-envelope"></i> Email</a>
               <a href="https://discord.com/users/1513925512118931551" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
             </div>
           </div>
@@ -479,7 +490,6 @@
             <h3>al13n</h3>
             <p class="role">Developer</p>
             <div class="team-links">
-              <a href="mailto:al13n@astralyxpvp.org"><i class="fa-solid fa-envelope"></i> Email</a>
               <a href="https://discord.com/users/1408720692752678965" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
             </div>
           </div>
@@ -488,7 +498,6 @@
             <h3>r3nz</h3>
             <p class="role">Jr. Developer</p>
             <div class="team-links">
-              <a href="mailto:r3nz@astralyxpvp.org"><i class="fa-solid fa-envelope"></i> Email</a>
               <a href="https://discord.com/users/1249249592000905341" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
             </div>
           </div>
@@ -524,7 +533,7 @@
           <details>
             <summary><span class="join-q-icon"><i class="fa-solid fa-clipboard-list"></i></span> How to Apply <i class="fa-solid fa-chevron-down join-caret"></i></summary>
             <div class="join-body">
-              <p>We only accept applications through our official Discord server. Join below, read the #apply rules, and open a ticket.</p>
+              <p>We only accept applications through our official Discord server. Join below, read the <a href="https://discord.com/channels/1477025023800901766/1477272661519368283/1500985949746626640" target="_blank" rel="noopener noreferrer">#apply rules</a>, and open a ticket.</p>
               <div class="text-center mt-18">
                 <a href="https://discord.gg/VKDcsrBCPe" target="_blank" class="discord-button">
                   <i class="fa-brands fa-discord"></i> Apply on Discord

@@ -94,6 +94,7 @@
       margin: 0;
       font-weight: 700;
     }
+    .status-message.unknown { color: var(--accent); }
 
     .status-right {
       text-align: left;
@@ -150,6 +151,10 @@
     .pulse-dot.offline {
       background: var(--primary);
       box-shadow: 0 0 10px var(--primary);
+    }
+    .pulse-dot.unknown {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent);
     }
 
     @keyframes pulseDot {
@@ -303,6 +308,61 @@
       line-height: 1.7;
       max-width: 60ch;
       margin: 0;
+    }
+
+    .maintenance-ribbon {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      width: 100%;
+      min-height: 44px;
+      padding: 8px 18px;
+      border-bottom: 1px solid rgba(255, 215, 0, 0.25);
+      background: linear-gradient(90deg, rgba(255, 215, 0, 0.13), rgba(0, 0, 0, 0.92));
+      color: var(--text);
+      font-size: 0.84rem;
+    }
+
+    .maintenance-ribbon[hidden] { display: none; }
+
+    .maintenance-ribbon > i {
+      flex: 0 0 auto;
+      color: var(--gold);
+    }
+
+    .maintenance-ribbon p {
+      min-width: 0;
+      flex: 1;
+      margin: 0;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .maintenance-ribbon button {
+      flex: 0 0 auto;
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 1.25rem;
+      cursor: pointer;
+    }
+
+    .maintenance-ribbon button:hover,
+    .maintenance-ribbon button:focus-visible {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+    }
+
+    @media (max-width: 480px) {
+      .maintenance-ribbon { padding: 7px 10px; font-size: 0.78rem; }
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .dash-countdown {
@@ -564,17 +624,6 @@
       flex-wrap: wrap;
     }
 
-    .dash-ping {
-      font-family: 'Fira Code', monospace;
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      background: rgba(0,0,0,0.4);
-      border: 1px solid var(--border);
-      padding: 5px 10px;
-      border-radius: 8px;
-      white-space: nowrap;
-    }
-
     .dash-status {
       display: inline-flex;
       align-items: center;
@@ -598,6 +647,12 @@
       color: var(--primary);
       background: rgba(200,16,46,0.1);
       border-color: rgba(200,16,46,0.4);
+    }
+
+    .dash-status.unknown {
+      color: var(--accent);
+      background: rgba(255,196,0,0.08);
+      border-color: rgba(255,196,0,0.35);
     }
 
     .dash-status .dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; animation: pulseDot 1.6s ease-in-out infinite; }
@@ -714,6 +769,12 @@
 </head>
 <body class="page-enter">
 
+  <div id="maintenanceRibbon" class="maintenance-ribbon" role="status" aria-live="polite">
+    <i class="fa-solid fa-wrench" aria-hidden="true"></i>
+    <p id="maintenanceSummary" title="Checking the latest News and Forums">Checking the latest News and Forums...</p>
+    <button id="hideMaintenanceRibbon" type="button" aria-label="Hide maintenance summary">&times;</button>
+  </div>
+
   <div id="navbar-placeholder"></div>
   <div>
     <div class="context-menu" id="contextMenu" aria-hidden="true">
@@ -762,9 +823,9 @@
       <div class="dash-hero" id="heroBanner">
         <div>
           <span class="dash-hero-tag"><span class="dot" id="heroIndicatorDot"></span><span id="heroIndicatorText">SYSTEM OVERVIEW</span></span>
-          <h3 class="dash-hero-title" id="heroTitle">All Systems Operational</h3>
+          <h3 class="dash-hero-title partial" id="heroTitle">Checking live services...</h3>
           <p class="dash-hero-desc" id="heroDescription">
-            All Astralyx Minecraft servers, Discord bots, and web applications are functioning normally without interruptions.
+            Current service status will appear as live checks finish.
           </p>
         </div>
         <div style="display:flex;align-items:center;gap:14px;flex-shrink:0;flex-wrap:wrap;">
@@ -792,23 +853,23 @@
       <div class="dash-stats">
         <div class="dash-stat">
           <div class="dash-stat-label"><span>Operational</span><span class="ico green"><i class="fa-solid fa-check"></i></span></div>
-          <div class="dash-stat-value"><span id="statOperational">0</span> <span class="unit">/ <span id="statTotal">5</span></span></div>
+          <div class="dash-stat-value"><span id="statOperational">—</span> <span class="unit">/ <span id="statTotal">6</span></span></div>
           <div class="dash-stat-sub green">Operational Status</div>
         </div>
         <div class="dash-stat">
           <div class="dash-stat-label"><span>Services Down</span><span class="ico red"><i class="fa-solid fa-xmark"></i></span></div>
-          <div class="dash-stat-value"><span id="statDown">0</span></div>
+          <div class="dash-stat-value"><span id="statDown">—</span></div>
           <div class="dash-stat-sub">Active outages</div>
         </div>
         <div class="dash-stat">
           <div class="dash-stat-label"><span>Avg Uptime</span><span class="ico amber"><i class="fa-solid fa-bolt"></i></span></div>
-          <div class="dash-stat-value"><span id="statAvgUptime">99.9%</span></div>
+          <div class="dash-stat-value"><span id="statAvgUptime">—</span></div>
           <div class="dash-stat-sub">Over 48 hours</div>
         </div>
         <div class="dash-stat">
-          <div class="dash-stat-label"><span>Avg Latency</span><span class="ico blue"><i class="fa-solid fa-clock"></i></span></div>
-          <div class="dash-stat-value"><span id="statAvgLatency">—</span> <span class="unit">ms</span></div>
-          <div class="dash-stat-sub green">Latest monitored ping</div>
+          <div class="dash-stat-label"><span>Live Checks</span><span class="ico blue"><i class="fa-solid fa-signal"></i></span></div>
+          <div class="dash-stat-value"><span id="statStatusAvailable">—</span> <span class="unit">/ <span id="statTotalLive">6</span></span></div>
+          <div class="dash-stat-sub">Responding right now</div>
         </div>
       </div>
 
@@ -827,7 +888,7 @@
       </div>
 
       <div class="dash-footer">
-        <span>Worker API: <span id="footerApiStatus" class="ok">Active</span></span>
+        <span>Worker API: <span id="footerApiStatus">Checking</span></span>
         <span>Last Sync: <span id="lastUpdateTimestamp">—</span></span>
       </div>
     </section>
@@ -835,7 +896,39 @@
 
   <script>
     // ======== STATUS PAGE - SERVER STATUS LOADER ========
-    const API_BASE = "https://astralyxpvp.chessmrbeaston.workers.dev/api/";
+    const MINECRAFT_STATUS_ENDPOINT = "/api/minecraft-status";
+    let minecraftStatusCache = null;
+    let minecraftStatusCacheAt = 0;
+    let minecraftStatusRequest = null;
+
+    async function fetchMinecraftStatus() {
+      if (minecraftStatusRequest) return minecraftStatusRequest;
+      if (minecraftStatusCache && Date.now() - minecraftStatusCacheAt < 30000) {
+        return minecraftStatusCache;
+      }
+
+      minecraftStatusRequest = (async () => {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 8000);
+        try {
+          const response = await fetch(MINECRAFT_STATUS_ENDPOINT, {
+            cache: 'no-store',
+            signal: controller.signal
+          });
+          if (!response.ok) throw new Error(`Minecraft status endpoint returned ${response.status}`);
+          const data = await response.json();
+          if (typeof data.online !== 'boolean') throw new Error('Minecraft status endpoint returned an invalid response');
+          minecraftStatusCache = data;
+          minecraftStatusCacheAt = Date.now();
+          return data;
+        } finally {
+          clearTimeout(timeoutId);
+          minecraftStatusRequest = null;
+        }
+      })();
+
+      return minecraftStatusRequest;
+    }
 
     async function loadServerStatus() {
       const statusMessage = document.getElementById('status-message');
@@ -853,48 +946,44 @@
 
       try {
         statusInfo.style.display = 'block';
+        const apiData = await fetchMinecraftStatus();
 
-        try {
-          const apiResponse = await fetch(`${API_BASE}?serverStatus=true`);
-          const apiData = await apiResponse.json();
-
-          if (apiData.online) {
-            setBadge('circle', '#00ff44');
-            statusMessage.textContent = 'Server Online';
-            statusMessage.className = 'status-message online';
-            statusDetails.innerHTML = `The server is running and ready for battle! <strong>${apiData.current}/${apiData.max}</strong> players are currently online. Jump in and start playing.`;
-            statusIndicator.textContent = 'ONLINE';
-            pulseIndicator.className = 'pulse-dot online';
-            playersRow.style.display = 'flex';
-            playersInfo.textContent = `${apiData.current}/${apiData.max} Players`;
-          } else {
-            setBadge('circle', '#c8102e');
-            statusMessage.textContent = 'Server Offline';
-            statusMessage.className = 'status-message offline';
-            statusDetails.innerHTML = `The server is currently offline. Please check back soon!`;
-            statusIndicator.textContent = 'OFFLINE';
-            pulseIndicator.className = 'pulse-dot offline';
-            playersRow.style.display = 'none';
-          }
-        } catch (error) {
-          console.error('API error:', error);
+        if (apiData.online) {
           setBadge('circle', '#00ff44');
           statusMessage.textContent = 'Server Online';
           statusMessage.className = 'status-message online';
-          statusDetails.innerHTML = `The server is running. Players are currently online. Jump in and start playing.`;
+          const players = apiData.players;
+          const playerCount = players && Number.isFinite(players.online) && Number.isFinite(players.max)
+            ? `${players.online}/${players.max}`
+            : null;
+          const version = apiData.version ? ` (${apiData.version})` : '';
+          const source = apiData.source === 'backup' ? 'the backup status API' : 'mcstatus.io';
+          statusDetails.textContent = playerCount
+            ? `The server is online${version} with ${playerCount} players. Live status via ${source}.`
+            : `The server is online${version} and ready for battle. Live status via ${source}.`;
           statusIndicator.textContent = 'ONLINE';
           pulseIndicator.className = 'pulse-dot online';
-          playersRow.style.display = 'flex';
-          playersInfo.textContent = 'Players Online';
+          playersRow.style.display = playerCount ? 'flex' : 'none';
+          if (playerCount) playersInfo.textContent = `${playerCount} Players`;
+        } else {
+          setBadge('circle', '#c8102e');
+          statusMessage.textContent = 'Server Offline';
+          statusMessage.className = 'status-message offline';
+          const source = apiData.source === 'backup' ? 'the backup status API' : 'mcstatus.io';
+          statusDetails.textContent = `The server is currently offline according to ${source}. Please check back soon.`;
+          statusIndicator.textContent = 'OFFLINE';
+          pulseIndicator.className = 'pulse-dot offline';
+          playersRow.style.display = 'none';
         }
       } catch (error) {
         console.error('Error loading server status:', error);
-        setBadge('circle', '#00ff44');
-        statusMessage.textContent = 'Server Online';
-        statusMessage.className = 'status-message online';
-        statusDetails.innerHTML = `The server is running and ready for battle! Jump in and start playing.`;
-        statusIndicator.textContent = 'ONLINE';
-        pulseIndicator.className = 'pulse-dot online';
+        setBadge('circle-question', '#ffc400');
+        statusMessage.textContent = 'Status Unavailable';
+        statusMessage.className = 'status-message unknown';
+        statusDetails.textContent = 'Could not reach the Minecraft status API. This does not necessarily mean the server is offline.';
+        statusIndicator.textContent = 'UNKNOWN';
+        pulseIndicator.className = 'pulse-dot unknown';
+        playersRow.style.display = 'none';
         statusInfo.style.display = 'block';
       }
     }
@@ -917,6 +1006,37 @@
     let timerInterval = null;
     let fetchInProgress = false;
     let refreshTimerId = null;
+    let currentMinecraftStatus = { online: null };
+    let currentXpStatus = { online: null };
+    let currentMinecraftHistory = [];
+    let currentXpHistory = [];
+
+    document.getElementById('hideMaintenanceRibbon').addEventListener('click', () => {
+      document.getElementById('maintenanceRibbon').hidden = true;
+    });
+
+    async function loadMaintenanceSummary() {
+      const summaryElement = document.getElementById('maintenanceSummary');
+      if (!summaryElement) return;
+
+      try {
+        const response = await fetch('/api/maintenance-summary', { cache: 'no-store' });
+        if (!response.ok) throw new Error(`Maintenance summary request failed: ${response.status}`);
+        const data = await response.json();
+        if (typeof data.summary !== 'string' || !data.summary.trim()) {
+          throw new Error('Maintenance summary response was invalid');
+        }
+        summaryElement.textContent = data.summary.replace(/\s+/g, ' ').trim();
+        summaryElement.title = summaryElement.textContent;
+      } catch (error) {
+        console.error('Could not load the maintenance summary:', error);
+        summaryElement.textContent = 'Maintenance notices are temporarily unavailable.';
+        summaryElement.title = summaryElement.textContent;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadMaintenanceSummary);
+    setInterval(loadMaintenanceSummary, 300000);
 
     function getHoursToShow() {
       // 48 hours on desktop (>640px), 36 hours on mobile (<=640px)
@@ -935,14 +1055,19 @@
         desc: 'Player stats, leaderboard sync, and backend'
       },
       discord_mod_bot: {
-        name: 'Discord Mod Bot',
+        name: 'DesiBot (Moderation)',
         icon: 'fa-shield-halved',
-        desc: 'Automated ticket management and server moderation'
+        desc: 'Discord moderation and automated community protection'
       },
       discord_ai_bot: {
-        name: 'Discord AI Bot',
+        name: 'AstralyxAI',
         icon: 'fa-robot',
         desc: 'Astralyx AI support assistant and player helper'
+      },
+      astralyx_xp: {
+        name: 'AstralyxXP',
+        icon: 'fa-star',
+        desc: 'XP leaderboard and player progression API'
       },
       website: {
         name: 'Website & Store',
@@ -978,10 +1103,14 @@
         const controller = new AbortController();
         const timeoutId = setTimeout(() => controller.abort(), 8000); // 8s timeout
 
-        const response = await fetch(DASH_API_URL, {
-          cache: 'no-store',
-          signal: controller.signal
-        });
+        const [response, minecraftStatus, xpStatus] = await Promise.all([
+          fetch(DASH_API_URL, {
+            cache: 'no-store',
+            signal: controller.signal
+          }),
+          checkMinecraftService(),
+          checkXpService()
+        ]);
         clearTimeout(timeoutId);
 
         if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -991,6 +1120,10 @@
           allHistory = data;
           // Use the API record's timestamp as the source of truth for refresh scheduling
           lastUpdatedAt = new Date(data[0].timestamp || Date.now());
+          currentMinecraftStatus = minecraftStatus;
+          currentXpStatus = xpStatus;
+          currentMinecraftHistory = Array.isArray(minecraftStatus.history) ? minecraftStatus.history : [];
+          currentXpHistory = Array.isArray(xpStatus.history) ? xpStatus.history : [];
           updateUI(data[0]);
           updateApiStatusBadge(true, "Live API Connected");
         } else {
@@ -1007,28 +1140,69 @@
       }
     }
 
-    function updateUI(latestRecord) {
+    async function checkMinecraftService() {
+      try {
+        return await fetchMinecraftStatus();
+      } catch (error) {
+        console.warn('Minecraft status API unavailable:', error);
+        return { online: null };
+      }
+    }
+
+    async function checkXpService() {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+      try {
+        const response = await fetch('/api/xp-status', {
+          cache: 'no-store',
+          signal: controller.signal
+        });
+        if (!response.ok) throw new Error(`AstralyxXP API returned ${response.status}`);
+        const data = await response.json();
+        if (typeof data.online !== 'boolean' && data.online !== null) {
+          throw new Error('AstralyxXP status endpoint returned an invalid status');
+        }
+        return {
+          online: data.online,
+          history: Array.isArray(data.history) ? data.history : []
+        };
+      } catch (error) {
+        console.warn('AstralyxXP API unavailable:', error);
+        return { online: null };
+      } finally {
+        clearTimeout(timeoutId);
+      }
+    }
+
+    function updateUI(latestRecord, minecraftStatus = currentMinecraftStatus, xpStatus = currentXpStatus) {
       const timestamp = lastUpdatedAt ? lastUpdatedAt : new Date();
       const formattedTime = timestamp.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
 
       document.getElementById('lastUpdateTimestamp').textContent = formattedTime;
 
-      const statuses = latestRecord.statuses || {};
+      const statuses = { ...(latestRecord.statuses || {}) };
+      statuses.mc_server_online = {
+        ...(statuses.mc_server_online || {}),
+        online: minecraftStatus.online
+      };
+      statuses.astralyx_xp = xpStatus;
       let opCount = 0, downCount = 0;
 
-      // Generate list dynamically based purely on the payload sent by worker
       const serviceKeys = Object.keys(statuses);
       let totalCount = serviceKeys.length;
 
       const servicesListContainer = document.getElementById('servicesList');
       servicesListContainer.innerHTML = '';
 
-      let uptimeSum = 0, uptimeCount = 0, latencySum = 0, latencyCount = 0;
+      let uptimeSum = 0, uptimeCount = 0, availableCount = 0;
 
       serviceKeys.forEach((key) => {
         const serviceData = statuses[key] || {};
         const isUp = serviceData.online === true;
-        if (isUp) opCount++; else downCount++;
+        const isDown = serviceData.online === false;
+        if (isUp) opCount++;
+        if (isDown) downCount++;
+        if (isUp) availableCount++;
 
         const meta = serviceMeta[key] || {
           name: key.replace(/_/g, ' ').toUpperCase(),
@@ -1036,21 +1210,35 @@
           desc: 'System component hooked via API'
         };
 
-        const uptimePct = calculate48HourUptime(key);
-        const currentPing = serviceData.ping;
-        const avgLatency = calculateAvgLatency(key);
-        const barsHTML = render48HourlyBars(key);
+        const hasHistory = meta.history !== false;
+        const history = key === 'mc_server_online'
+          ? currentMinecraftHistory.map(check => ({
+              timestamp: check.checkedAt,
+              statuses: { mc_server_online: { online: check.online } }
+            }))
+          : key === 'astralyx_xp'
+            ? currentXpHistory.map(check => ({
+                timestamp: check.checkedAt,
+                statuses: { astralyx_xp: { online: check.online } }
+              }))
+            : allHistory;
+        const uptimePct = hasHistory ? calculate48HourUptime(key, history) : null;
+        const barsHTML = hasHistory ? render48HourlyBars(key, history) : '';
 
-        uptimeSum += uptimePct; uptimeCount++;
-
-        const pingToShow = typeof currentPing === 'number' ? currentPing : (avgLatency > 0 ? avgLatency : null);
-        if (typeof pingToShow === 'number') { latencySum += pingToShow; latencyCount++; }
+        if (uptimePct !== null) {
+          uptimeSum += Number(uptimePct);
+          uptimeCount++;
+        }
 
         const statusHTML = isUp
           ? '<span class="dash-status up"><span class="dot"></span>Operational</span>'
-          : '<span class="dash-status down"><span class="dot"></span>Outage</span>';
+          : isDown
+            ? '<span class="dash-status down"><span class="dot"></span>Outage</span>'
+            : '<span class="dash-status unknown"><span class="dot"></span>Unavailable</span>';
 
-        const pingText = pingToShow !== null ? pingToShow + ' ms' : '— ms';
+        const historyLabel = hasHistory
+          ? `<span class="uptime">${uptimePct === null ? 'Collecting history' : `${uptimePct}% Uptime`}</span>`
+          : '<span class="uptime">History not available yet</span>';
 
         const cardHTML = `
           <div class="dash-card">
@@ -1062,18 +1250,13 @@
                   <p class="dash-card-desc">${meta.desc}</p>
                 </div>
               </div>
-              <div class="dash-card-meta">
-                <span class="dash-ping">⚡ ${pingText}</span>
-                ${statusHTML}
-              </div>
+              <div class="dash-card-meta">${statusHTML}</div>
             </div>
             <div class="dash-bars-head">
-              <span>48 Hours History</span>
-              <span class="uptime">${uptimePct}% Uptime</span>
+              <span>${hasHistory ? '48 Hours History' : 'Live API Check'}</span>
+              ${historyLabel}
             </div>
-            <div class="uptime-scroll">
-              ${barsHTML}
-            </div>
+            ${hasHistory ? `<div class="uptime-scroll">${barsHTML}</div>` : ''}
           </div>
         `;
         servicesListContainer.innerHTML += cardHTML;
@@ -1085,32 +1268,36 @@
         totalCount = 0;
       }
 
-      const avgUptime = uptimeCount > 0 ? (uptimeSum / uptimeCount).toFixed(1) : 0;
-      const avgLatencyMs = latencyCount > 0 ? Math.round(latencySum / latencyCount) : '—';
-
-      document.getElementById('statAvgUptime').textContent = avgUptime + '%';
-      document.getElementById('statAvgLatency').textContent = avgLatencyMs;
+      const avgUptime = uptimeCount > 0 ? `${(uptimeSum / uptimeCount).toFixed(1)}%` : '—';
+      document.getElementById('statAvgUptime').textContent = avgUptime;
+      document.getElementById('statStatusAvailable').textContent = availableCount;
+      document.getElementById('statTotalLive').textContent = serviceKeys.length;
 
       // Update Header Hero Banner
       const heroTitle = document.getElementById('heroTitle');
       const heroDescription = document.getElementById('heroDescription');
       const heroIndicatorDot = document.getElementById('heroIndicatorDot');
 
-      if (downCount === 0 && totalCount > 0) {
+      if (downCount === 0 && opCount === totalCount && totalCount > 0) {
         heroTitle.textContent = "All Systems Operational";
         heroTitle.className = "dash-hero-title ok";
-        heroDescription.textContent = "All mapped Astralyx services are returning successful pings to the worker node.";
+        heroDescription.textContent = "All monitored Astralyx services are responding to their live checks.";
         heroIndicatorDot.className = "dot ok";
       } else if (downCount > 0 && downCount < totalCount) {
         heroTitle.textContent = "Partial System Outage Detected";
         heroTitle.className = "dash-hero-title partial";
-        heroDescription.textContent = "Some network services are currently failing checks. Diagnostics are recorded by the worker.";
+        heroDescription.textContent = "Some services are down or unavailable. Check the service cards below for details.";
         heroIndicatorDot.className = "dot partial";
-      } else if (totalCount > 0) {
+      } else if (totalCount > 0 && downCount === totalCount) {
         heroTitle.textContent = "Major Infrastructure Outage";
         heroTitle.className = "dash-hero-title bad";
         heroDescription.textContent = "Critical system components are timing out or returning errors.";
         heroIndicatorDot.className = "dot bad";
+      } else if (totalCount > 0) {
+        heroTitle.textContent = "Some Statuses Unavailable";
+        heroTitle.className = "dash-hero-title partial";
+        heroDescription.textContent = "One or more live status APIs could not be reached. Unavailable checks are not treated as confirmed outages.";
+        heroIndicatorDot.className = "dot partial";
       }
 
       // Update stats grid numbers
@@ -1122,7 +1309,7 @@
       pinLatestTimelineMobile();
     }
 
-    function render48HourlyBars(serviceKey) {
+    function render48HourlyBars(serviceKey, history = allHistory) {
       const now = new Date();
       let barsHTML = '';
       const hoursToShow = getHoursToShow();
@@ -1133,17 +1320,19 @@
 
         const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000);
 
-        const recordsInHour = allHistory.filter(r => {
+        const recordsInHour = history.filter(r => {
           const t = new Date(r.timestamp);
           return t >= hourStart && t < hourEnd;
         });
 
-        let status = 'unknown';
-        if (recordsInHour.length > 0) {
-          status = 'operational';
-          const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] && r.statuses[serviceKey].online === false);
-          if (hasDown) status = 'down';
-        }
+        const observedStatuses = recordsInHour
+          .map(record => record.statuses?.[serviceKey]?.online)
+          .filter(status => typeof status === 'boolean');
+        const status = observedStatuses.includes(false)
+          ? 'down'
+          : observedStatuses.includes(true)
+            ? 'operational'
+            : 'unknown';
 
         let colorClass = 'unknown';
         let labelStatus = 'No Data Available';
@@ -1177,8 +1366,8 @@
       });
     }
 
-    function calculate48HourUptime(serviceKey) {
-      if (!allHistory || allHistory.length === 0) return 0;
+    function calculate48HourUptime(serviceKey, history = allHistory) {
+      if (!history || history.length === 0) return null;
       const hoursToShow = getHoursToShow();
       const now = new Date();
       let upHours = 0;
@@ -1189,30 +1378,23 @@
         hourStart.setMinutes(0, 0, 0);
         const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000);
 
-        const recordsInHour = allHistory.filter(r => {
+        const recordsInHour = history.filter(r => {
           const t = new Date(r.timestamp);
           return t >= hourStart && t < hourEnd;
         });
 
-        if (recordsInHour.length > 0) {
-          const hasDown = recordsInHour.some(r => r.statuses && r.statuses[serviceKey] && r.statuses[serviceKey].online === false);
+        const observedStatuses = recordsInHour
+          .map(record => record.statuses?.[serviceKey]?.online)
+          .filter(status => typeof status === 'boolean');
+
+        if (observedStatuses.length > 0) {
+          const hasDown = observedStatuses.includes(false);
           if (!hasDown) upHours++;
           totalHours++;
         }
       }
 
-      return totalHours > 0 ? ((upHours / totalHours) * 100).toFixed(1) : 0;
-    }
-
-    function calculateAvgLatency(serviceKey) {
-      if (!allHistory || allHistory.length === 0) return 0;
-      const latencies = allHistory
-        .filter(r => r.statuses && r.statuses[serviceKey] && typeof r.statuses[serviceKey].ping === 'number')
-        .map(r => r.statuses[serviceKey].ping);
-
-      if (latencies.length === 0) return 0;
-      const sum = latencies.reduce((a, b) => a + b, 0);
-      return Math.round(sum / latencies.length);
+      return totalHours === hoursToShow ? ((upHours / totalHours) * 100).toFixed(1) : null;
     }
 
     function resetCountdownTimer() {

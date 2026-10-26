@@ -18,6 +18,11 @@
       "binding": "DB",                         // accessed as env.DB in functions
       "database_name": "astralyx-db",
       "database_id": "REPLACE_WITH_YOUR_D1_ID" // ← done inside Cloudflare dash.
+    },
+    {
+      "binding": "MINECRAFT_STATUS_DB",
+      "database_name": "astralyxpvp-minecraft-status",
+      "database_id": "36495c19-e377-47ed-9b2a-c21f78803e75"
     }
   ],
 
