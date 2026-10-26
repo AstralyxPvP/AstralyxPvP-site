@@ -93,6 +93,10 @@ async function fetchChannelContent(channelId, botKey, limit = 50) {
 
     try {
       const res = await fetch(`https://discord.com/api/v10/guilds/${guildId}/members/${userId}`, { headers });
+      if (res.status === 401 || res.status === 404) {
+        memberRolesCache.set(userId, []);
+        return [];
+      }
       if (res.ok) {
         const memberData = await res.json();
         const roles = memberData.roles || [];
