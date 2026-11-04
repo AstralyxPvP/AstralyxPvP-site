@@ -2,11 +2,9 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "astralyxpvp",
   "compatibility_date": "2026-05-10",
+  "pages_build_output_dir": ".",
   "observability": {
     "enabled": true
-  },
-  "assets": {
-    "directory": "."
   },
   "compatibility_flags": [
     "nodejs_compat"
@@ -17,13 +15,18 @@
     {
       "binding": "DB",                         // accessed as env.DB in functions
       "database_name": "astralyx-db",
-      "database_id": "REPLACE_WITH_YOUR_D1_ID" // ← done inside Cloudflare dash.
+      "database_id": "34f12896-1924-4dd8-8566-9f1b0afeecc1"
     },
     {
       "binding": "MINECRAFT_STATUS_DB",
       "database_name": "astralyxpvp-minecraft-status",
-      "database_id": "36495c19-e377-47ed-9b2a-c21f78803e75"
+      "database_id": "c39b1a12-2c59-43b3-b9a7-266eccf4e42b"
     }
   ],
-
+  "services": [
+    {
+      "binding": "STATUS_MONITOR",
+      "service": "astralyxpvp-status-monitor"
+    }
+  ]
 }

@@ -1,0 +1,20 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "astralyxpvp-status-monitor",
+  "account_id": "c1beb56531bd5d8bbb898e22f7c46cc9",
+  "main": "src/index.js",
+  "compatibility_date": "2026-10-26",
+  "observability": {
+    "enabled": true
+  },
+  "triggers": {
+    "crons": ["*/5 * * * *"]
+  },
+  "d1_databases": [
+    {
+      "binding": "STATUS_DB",
+      "database_name": "astralyxpvp-minecraft-status",
+      "database_id": "c39b1a12-2c59-43b3-b9a7-266eccf4e42b"
+    }
+  ]
+}

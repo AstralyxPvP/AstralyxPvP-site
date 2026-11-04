@@ -54,7 +54,7 @@ export async function onRequestPost(context) {
 
   // 2. Audio Transcription Handler
   if (transcribeAudio && mimeType) {
-    const geminiModel = model || "gemini-3.1-flash-lite";
+    const geminiModel = "gemini-2.5-flash-lite";
     const cleanMimeType = mimeType.split(';')[0];
     
     try {
@@ -91,15 +91,74 @@ export async function onRequestPost(context) {
 
   // 3. Regular Chat Handler
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${env.GEMINI_API_KEY}`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ contents: messages.map(m => ({ role: m.role === 'user' ? 'user' : 'model', parts: [{ text: m.content }] })) })
-    });
+    const contents = messages.map(m => ({
+      role: m.role === 'user' ? 'user' : 'model',
+      parts: [{ text: m.content }]
+    }));
+    const allowedModels = [
+      "gemma-3-27b-it",
+      "gemma-3-4b-it",
+      "gemini-3.1-flash-lite",
+      "gemini-2.5-flash-lite"
+    ];
+    const requestedModel = allowedModels.includes(model) ? model : allowedModels[0];
+    const models = [requestedModel, ...allowedModels.filter(candidate => candidate !== requestedModel)];
+    let lastError = "The AI models did not return a response.";
+    let lastStatus = 502;
 
-    const data = await response.json();
+    for (const geminiModel of models) {
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 6000);
+      let response;
+      let data;
+      try {
+        response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(geminiModel)}:generateContent?key=${env.GEMINI_API_KEY}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          body: JSON.stringify({ contents })
+        });
+        data = await response.json().catch(() => ({}));
+      } catch (error) {
+        lastError = `The ${geminiModel} request failed: ${error.message}`;
+        lastStatus = 502;
+        continue;
+      } finally {
+        clearTimeout(timeout);
+      }
 
-    return new Response(JSON.stringify({ ...data, sessionToken: nextSessionToken }), {
+      const responseText = data.candidates?.[0]?.content?.parts
+        ?.map(part => part.text || "")
+        .join("")
+        .trim();
+      const visibleText = responseText
+        ?.replace(/<thinking>[\s\S]*?<\/thinking>/g, "")
+        .replace(/^.*CALL_FUNCTION:.*$/gm, "")
+        .replace(/<\/?answer>/g, "")
+        .trim();
+      const hasToolCall = /^.*CALL_FUNCTION:\s*\{.*\}\s*$/m.test(responseText || "");
+
+      if (response.ok && (visibleText || hasToolCall)) {
+        return new Response(JSON.stringify({ ...data, sessionToken: nextSessionToken }), {
+          headers: { "Content-Type": "application/json" }
+        });
+      }
+
+      lastError = data.error?.message || (response.ok
+        ? "The AI model returned an empty response."
+        : `The AI model request failed (${response.status}).`);
+      lastStatus = response.ok ? 502 : response.status;
+
+      if (![400, 404, 429, 500, 502, 503, 504].includes(response.status)) {
+        break;
+      }
+    }
+
+    return new Response(JSON.stringify({
+      error: { message: lastError },
+      sessionToken: nextSessionToken
+    }), {
+      status: lastStatus,
       headers: { "Content-Type": "application/json" }
     });
   } catch (e) {

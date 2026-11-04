@@ -1,5 +1,3 @@
-const PRIMARY_STATUS_URL = 'https://api.mcstatus.io/v2/status/java/play.astralyxpvp.org';
-const BACKUP_STATUS_URL = 'https://astralyxpvp.chessmrbeaston.workers.dev/api/?serverStatus=true';
 const CACHE_TTL_SECONDS = 60;
 const HISTORY_LIMIT = 600;
 
@@ -13,29 +11,28 @@ function jsonResponse(body, status = 200) {
   });
 }
 
-async function fetchStatus(url, source) {
+async function fetchStatus(statusMonitor) {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 7000);
+  const timeout = setTimeout(() => controller.abort(), 10_000);
   try {
-    const response = await fetch(url, { signal: controller.signal });
-    if (!response.ok) throw new Error(`${source} returned HTTP ${response.status}`);
+    const response = await statusMonitor.fetch('https://status-monitor/api/minecraft-status', {
+      signal: controller.signal
+    });
+    if (!response.ok) throw new Error(`Direct Minecraft status ping returned HTTP ${response.status}`);
     const payload = await response.json();
     if (typeof payload.online !== 'boolean') {
-      throw new Error(`${source} returned an invalid status`);
+      throw new Error('Direct Minecraft status ping returned an invalid status');
     }
 
-    const playersOnline = source === 'mcstatus.io' ? payload.players?.online : payload.current;
-    const playersMax = source === 'mcstatus.io' ? payload.players?.max : payload.max;
-
     return {
-      source,
+      source: 'java-server-ping',
       payload,
       online: payload.online,
-      playersOnline: Number.isFinite(playersOnline) ? playersOnline : null,
-      playersMax: Number.isFinite(playersMax) ? playersMax : null,
-      version: typeof payload.version === 'string'
-        ? payload.version
-        : payload.version?.name_clean || payload.version?.name_raw || payload.version?.name || null
+      playersOnline: Number.isFinite(payload.players?.online) ? payload.players.online : null,
+      playersMax: Number.isFinite(payload.players?.max) ? payload.players.max : null,
+      version: typeof payload.version === 'string' ? payload.version : null,
+      motd: typeof payload.motd === 'string' ? payload.motd : '',
+      error: typeof payload.error === 'string' ? payload.error : null
     };
   } finally {
     clearTimeout(timeout);
@@ -43,10 +40,8 @@ async function fetchStatus(url, source) {
 }
 
 export async function onRequestGet({ request, env }) {
-  if (!env.MINECRAFT_STATUS_DB) {
-    return jsonResponse({ error: 'Minecraft status database binding is missing' }, 503);
-  }
-
+  const statusDb = env.MINECRAFT_STATUS_DB;
+  const statusMonitor = env.STATUS_MONITOR;
   const cache = globalThis.caches?.default;
   const cacheKey = new Request(new URL('/api/minecraft-status', request.url));
   if (cache) {
@@ -60,57 +55,25 @@ export async function onRequestGet({ request, env }) {
 
   let status;
   try {
-    status = await fetchStatus(PRIMARY_STATUS_URL, 'mcstatus.io');
-    if (!status.online) {
-      try {
-        status = await fetchStatus(BACKUP_STATUS_URL, 'backup');
-      } catch (backupError) {
-        console.warn('Backup Minecraft status API failed; retaining mcstatus.io result.', backupError);
-      }
-    }
-  } catch (primaryError) {
-    console.warn('Primary Minecraft status API failed; trying backup.', primaryError);
-    try {
-      status = await fetchStatus(BACKUP_STATUS_URL, 'backup');
-    } catch (backupError) {
-      console.error('Both Minecraft status APIs failed.', backupError);
-      return jsonResponse({ error: 'Minecraft status is temporarily unavailable' }, 502);
-    }
+    if (!statusMonitor?.fetch) throw new Error('Direct Minecraft status worker binding is not configured');
+    status = await fetchStatus(statusMonitor);
+  } catch (error) {
+    console.error('Direct Minecraft status ping failed.', error);
+    return jsonResponse({ error: 'Minecraft status is temporarily unavailable' }, 502);
   }
 
   const checkedAt = new Date().toISOString();
-  const stored = await env.MINECRAFT_STATUS_DB.prepare(`
-    INSERT INTO minecraft_status_checks
-      (checked_at, source, online, players_online, players_max, version)
-    VALUES (?, ?, ?, ?, ?, ?)
-  `).bind(
-    checkedAt,
-    status.source,
-    status.online ? 1 : 0,
-    status.playersOnline,
-    status.playersMax,
-    status.version
-  ).run();
-
-  const { results } = await env.MINECRAFT_STATUS_DB.prepare(`
-    SELECT checked_at, source, online, players_online, players_max, version
-    FROM minecraft_status_checks
-    WHERE checked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-48 hours')
-    ORDER BY checked_at DESC
-    LIMIT ?
-  `).bind(HISTORY_LIMIT).all();
-
-  const response = jsonResponse({
-    id: stored.meta?.last_row_id ?? null,
-    checkedAt,
-    source: status.source,
-    online: status.online,
-    players: {
-      online: status.playersOnline,
-      max: status.playersMax
-    },
-    version: status.version,
-    history: results.map(row => ({
+  let id = null;
+  let history = [];
+  if (statusDb) {
+    const { results } = await statusDb.prepare(`
+      SELECT checked_at, source, online, players_online, players_max, version
+      FROM minecraft_status_checks
+      WHERE checked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-48 hours')
+      ORDER BY checked_at DESC
+      LIMIT ?
+    `).bind(HISTORY_LIMIT).all();
+    history = results.map(row => ({
       checkedAt: row.checked_at,
       source: row.source,
       online: row.online === 1,
@@ -119,7 +82,27 @@ export async function onRequestGet({ request, env }) {
         max: row.players_max
       },
       version: row.version
-    }))
+    }));
+  } else {
+    console.error('Minecraft status history is disabled: database binding is missing.');
+  }
+
+  const response = jsonResponse({
+    id,
+    checkedAt,
+    source: status.source,
+    online: status.online,
+    motd: status.motd,
+    error: status.error,
+    players: {
+      online: status.playersOnline,
+      max: status.playersMax
+    },
+    version: status.version,
+    historyAvailable: Boolean(statusDb),
+    history: Array.isArray(status.payload.history) && status.payload.history.length > 0
+      ? status.payload.history
+      : history
   });
 
   if (cache) {

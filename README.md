@@ -1,15 +1,14 @@
 
-[![GitHub license](https://img.shields.io/github/license/AstralyxPvP/AstralyxPvP-site?color=blue&logo=gnu)](LICENSE)
-[![Deployment Status](https://img.shields.io/github/check-runs/AstralyxPvP/AstralyxPvP-site/main?label=deployment&logo=github)](https://astralyxpvp.org)
-[![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?logo=cloudflare)](https://astralyxpvp.org)
-[![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?logo=html5&logoColor=white)](https://astralyxpvp.org)
-[![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?logo=google&logoColor=white)](https://astralyxpvp.org/astralyxai)
-[![Discord](https://img.shields.io/discord/1477025023800901766?logo=discord&logoColor=white&color=7389D8&label=discord)](https://discord.gg/u8BFrpRwEg)
-[![YouTube](https://img.shields.io/badge/YouTube-@AstralyxPvP-red?style=flat&logo=youtube&logoColor=white)](https://www.youtube.com/@AstralyxPvP)
-[![Status](https://img.shields.io/website?url=https%3A%2F%2Fastralyxpvp.org%2F&up_message=online&down_message=offline&logo=cloudflarepages
-)](https://astralyxpvp.org)
+[![GitHub license](https://img.shields.io/github/license/AstralyxPvP/AstralyxPvP-site?style=for-the-badge&color=blue&logo=gnu)](LICENSE)
+[![Deployment Status](https://img.shields.io/github/check-runs/AstralyxPvP/AstralyxPvP-site/main?style=for-the-badge&label=deployment&logo=github)](https://astralyxpvp.org)
+[![Cloudflare Pages](https://img.shields.io/badge/Deployed%20on-Cloudflare%20Pages-orange?style=for-the-badge&logo=cloudflare)](https://astralyxpvp.org)
+[![Technologies](https://img.shields.io/badge/Tech-HTML%20%7C%20CSS%20%7C%20JS-green?style=for-the-badge&logo=html5&logoColor=white)](https://astralyxpvp.org)
+[![AI Powered](https://img.shields.io/badge/AI%20Powered-Google%20Gemini-red?style=for-the-badge&logo=google&logoColor=white)](https://astralyxpvp.org/astralyxai)
+[![Discord](https://img.shields.io/discord/1477025023800901766?style=for-the-badge&logo=discord&logoColor=white&color=7389D8&label=discord)](https://discord.gg/u8BFrpRwEg)
+[![YouTube](https://img.shields.io/badge/YouTube-@AstralyxPvP-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@AstralyxPvP)
+[![Status](https://img.shields.io/website?url=https%3A%2F%2Fastralyxpvp.org%2F&style=for-the-badge&up_message=online&down_message=offline&logo=cloudflarepages)](https://astralyxpvp.org)
 
-[![GitHub Org's stars](https://img.shields.io/github/stars/astralyxpvp?logo=github&link=https%3A%2F%2Fgithub.com%2FAstralyxPvP%2F)](https://github.com/AstralyxPvP/)
+[![GitHub Org's stars](https://img.shields.io/github/stars/astralyxpvp?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FAstralyxPvP%2F)](https://github.com/AstralyxPvP/)
 ---
 
 # AstralyxPvP-site
@@ -59,9 +58,15 @@ This project is built using static frontend assets and does not require complex 
 
 ## Server Status Data
 
-The status page gets Java server status from mcstatus.io and uses the existing status Worker only as a fallback. It stores real status checks in the `astralyxpvp-minecraft-status` D1 database; it does not display API request duration as Minecraft ping.
+The status page uses a direct Minecraft Java Server List Ping from the Cloudflare status Worker. It resolves the published Minecraft SRV record, connects to its target over TCP, and reads the server's status response; it does not depend on mcstatus.io or display an HTTP request duration as game latency. The Worker samples live status into the `astralyxpvp-minecraft-status` D1 database every five minutes.
 
-AstralyxXP checks are sampled into the same D1 database in five-minute buckets. History starts when the migration is applied, so earlier periods remain unknown rather than being backfilled with invented data. The maintenance ribbon reads the public News feed and Forums Worker, then uses the same Gemini model as AstralyxAI to produce a one-line summary.
+AstralyxXP checks are sampled into the same D1 database in five-minute buckets. History starts when the migration is applied, so earlier periods remain unknown rather than being backfilled with invented data. The status-page AI reads recent News posts, all Forums category/subcategory post feeds, and the 20 newest Discord announcements, alongside the exact current UTC/Asia-Kolkata time and direct Minecraft status history. It summarizes Minecraft launch/status updates and ignores unrelated website-only fixes.
+
+The status-page “Know More” control expands a short AI-generated paragraph in place; it does not redirect to News.
+
+AstralyxAI text generation uses only Gemma and Gemini Flash-Lite models. The real-time voice endpoint is unavailable because its supported live model is outside that allowlist.
+
+AstralyxAI can load the full News/Forums/Discord heading catalog, including the complete Forums category and subcategory hierarchy, then make a second lookup for a selected News post, Forum thread, or Discord announcement.
 
 Run the Pages Functions and D1 locally with:
 
@@ -75,6 +80,18 @@ npx wrangler pages dev . --port 8787
 Explore the live platform directly at:
 
 👉 **[https://astralyxpvp.org](https://astralyxpvp.org)**
+
+Minecraft connection details:
+
+* **Java Edition:** `play.astralyxpvp.org`
+* **Bedrock Edition:** `bedrock.astralyxpvp.org`, port `8167`
+* **Discord invite:** [https://astralyxpvp.org/joindc](https://astralyxpvp.org/joindc)
+* **Service status:** [https://astralyxpvp.org/status](https://astralyxpvp.org/status)
+
+The Pages `_redirects` file maps the clean status route to `status.html` and the
+Discord short link to the current invite. The `status.astralyxpvp.org` hostname
+also redirects to the clean status route when that hostname is connected to this
+Pages project in DNS.
 
 ## 🤝 Contributing
 
@@ -94,7 +111,17 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Emails:** [info@astralyxpvp.int.yt](mailto:info@astralyxpvp.int.yt), [indiancoder3@astralyxpvp.int.yt](mailto:indiancoder3@astralyxpvp.int.yt), [dreamlong@astralyxpvp.int.yt](mailto:dreamlong@astralyxpvp.int.yt). Email setup for other staff is in progress.
+* 📧 **Main contact email:** [astralyxnetwork@gmail.com](mailto:astralyxnetwork@gmail.com). The email setup is in progress.
+
+### Status history monitor
+
+The `status-monitor-worker/` Worker writes Minecraft and AstralyxXP health samples to the `astralyxpvp-minecraft-status` D1 database every five minutes and prunes samples older than seven days. Deploy or update the scheduled Worker with:
+
+```sh
+npx wrangler deploy --config status-monitor-worker/wrangler.jsonc
+```
+
+Its D1 schema is managed by the site migrations in `migrations/`. The Pages project also needs the `MINECRAFT_STATUS_DB` D1 binding configured from the root `wrangler.jsonc`.
 * 💬 **Discord Community:** [Join our Discord Server](https://discord.gg/u8BFrpRwEg)
 
 ---

@@ -126,6 +126,9 @@
     }
 
     .info-row:last-child { margin-bottom: 0; }
+    .info-row.status-insight-row { align-items: flex-start; gap: 16px; }
+    .info-row.status-insight-row .info-value { max-width: 70%; text-align: right; }
+    .info-row.status-insight-row[hidden] { display: none; }
 
     .info-label { color: var(--muted); }
 
@@ -310,20 +313,35 @@
       margin: 0;
     }
 
-    .maintenance-ribbon {
-      display: flex;
+    .page-content > .maintenance-ribbon {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
       align-items: center;
       gap: 12px;
-      width: 100%;
-      min-height: 44px;
-      padding: 8px 18px;
-      border-bottom: 1px solid rgba(255, 215, 0, 0.25);
-      background: linear-gradient(90deg, rgba(255, 215, 0, 0.13), rgba(0, 0, 0, 0.92));
+      width: min(1040px, calc(100% - 48px));
+      min-height: 58px;
+      margin: 36px auto 8px;
+      padding: 10px 16px;
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 12px;
+      background: linear-gradient(110deg, rgba(255, 215, 0, 0.13), rgba(0, 0, 0, 0.88));
       color: var(--text);
       font-size: 0.84rem;
     }
 
     .maintenance-ribbon[hidden] { display: none; }
+    .page-content > .maintenance-ribbon + .status-section { padding-top: 24px; }
+    .dash-timeline-insight {
+      margin: 0 0 16px;
+      padding: 14px 16px;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      background: rgba(200, 16, 46, 0.1);
+      color: var(--text);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+    .dash-timeline-insight[hidden] { display: none; }
 
     .maintenance-ribbon > i {
       flex: 0 0 auto;
@@ -332,12 +350,61 @@
 
     .maintenance-ribbon p {
       min-width: 0;
-      flex: 1;
       margin: 0;
       color: var(--text-muted);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
+    }
+
+    .maintenance-ribbon .maintenance-more {
+      padding: 7px 11px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--gold);
+      font: inherit;
+      font-size: 0.76rem;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .maintenance-ribbon .maintenance-details {
+      grid-column: 2 / -1;
+      margin: -2px 0 4px;
+      color: var(--text);
+      font-size: 0.86rem;
+      line-height: 1.5;
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+    }
+
+    .maintenance-ribbon .maintenance-details[hidden] { display: none; }
+
+    .maintenance-ribbon .maintenance-more[aria-expanded="true"] {
+      background: rgba(255, 215, 0, 0.12);
+      color: var(--text);
+    }
+
+    .maintenance-ribbon .maintenance-more:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+
+    /* Keep a clear disclosure row on narrow screens. */
+    @media (max-width: 480px) {
+      .page-content > .maintenance-ribbon {
+        grid-template-columns: auto minmax(0, 1fr) auto auto;
+        gap: 8px;
+      }
+      .maintenance-ribbon .maintenance-details { grid-column: 1 / -1; }
+    }
+
+    .maintenance-ribbon .maintenance-more:hover {
+      background: rgba(255, 215, 0, 0.12);
+      color: var(--text);
     }
 
     .maintenance-ribbon button {
@@ -359,10 +426,7 @@
     }
 
     @media (max-width: 480px) {
-      .maintenance-ribbon { padding: 7px 10px; font-size: 0.78rem; }
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      .page-content > .maintenance-ribbon { width: calc(100% - 32px); padding: 8px 10px; font-size: 0.78rem; }
     }
 
     .dash-countdown {
@@ -769,12 +833,6 @@
 </head>
 <body class="page-enter">
 
-  <div id="maintenanceRibbon" class="maintenance-ribbon" role="status" aria-live="polite">
-    <i class="fa-solid fa-wrench" aria-hidden="true"></i>
-    <p id="maintenanceSummary" title="Checking the latest News and Forums">Checking the latest News and Forums...</p>
-    <button id="hideMaintenanceRibbon" type="button" aria-label="Hide maintenance summary">&times;</button>
-  </div>
-
   <div id="navbar-placeholder"></div>
   <div>
     <div class="context-menu" id="contextMenu" aria-hidden="true">
@@ -784,6 +842,13 @@
     <a href="/rules"><i class="fa-solid fa-scroll"></i>View rules</a>
   </div>
   <div class="page-content">
+    <div id="maintenanceRibbon" class="maintenance-ribbon" role="status" aria-live="polite">
+      <i class="fa-solid fa-wrench" aria-hidden="true"></i>
+      <p id="maintenanceSummary" title="Checking News, Forums, and Discord Announcements">Checking News, Forums, and Discord Announcements...</p>
+      <button class="maintenance-more" id="maintenanceMore" type="button" aria-expanded="false" aria-controls="maintenanceDetails">Know More</button>
+      <button id="hideMaintenanceRibbon" type="button" aria-label="Hide maintenance summary">&times;</button>
+      <p class="maintenance-details" id="maintenanceDetails" hidden></p>
+    </div>
     <section class="status-section">
       <div class="status-container">
         <div class="status-main">
@@ -800,6 +865,14 @@
           <div class="info-row">
             <span class="info-label">Status:</span>
             <span class="info-value"><span class="pulse-dot" id="pulse-indicator"></span><span id="status-indicator">Unknown</span></span>
+          </div>
+          <div class="info-row status-insight-row" id="minecraftInsightRow" hidden>
+            <span class="info-label">AI status insight:</span>
+            <span class="info-value" id="minecraftInsight"></span>
+          </div>
+          <div class="info-row status-insight-row" id="expectedResolutionRow" hidden>
+            <span class="info-label">Expected resolution:</span>
+            <span class="info-value" id="expectedResolution"></span>
           </div>
           <div class="info-row" id="players-row" style="display: none;">
             <span class="info-label">Players Online:</span>
@@ -880,6 +953,7 @@
           <span><i class="lg-down"></i> Outage</span>
         </div>
       </div>
+      <p class="dash-timeline-insight" id="minecraftTimelineInsight" hidden></p>
 
       <div class="dash-services" id="servicesList">
         <div class="dash-skeleton"></div>
@@ -897,6 +971,7 @@
   <script>
     // ======== STATUS PAGE - SERVER STATUS LOADER ========
     const MINECRAFT_STATUS_ENDPOINT = "/api/minecraft-status";
+    let maintenanceSummaryData = null;
     let minecraftStatusCache = null;
     let minecraftStatusCacheAt = 0;
     let minecraftStatusRequest = null;
@@ -940,6 +1015,25 @@
       const playersRow = document.getElementById('players-row');
       const playersInfo = document.getElementById('players-info');
 
+      function renderStatusInsight() {
+        const insightRow = document.getElementById('minecraftInsightRow');
+        const insight = document.getElementById('minecraftInsight');
+        const resolutionRow = document.getElementById('expectedResolutionRow');
+        const resolution = document.getElementById('expectedResolution');
+        if (insightRow && typeof maintenanceSummaryData?.minecraftInsight === 'string') {
+          insight.textContent = maintenanceSummaryData.minecraftInsight;
+          insightRow.hidden = false;
+        }
+        if (resolutionRow && !minecraftStatusCache?.online
+          && typeof maintenanceSummaryData?.expectedResolution === 'string'
+          && maintenanceSummaryData.expectedResolution.trim()) {
+          resolution.textContent = maintenanceSummaryData.expectedResolution;
+          resolutionRow.hidden = false;
+        } else if (resolutionRow) {
+          resolutionRow.hidden = true;
+        }
+      }
+
       function setBadge(icon, color) {
         statusBadge.innerHTML = '<i class="fa-solid fa-' + icon + '" style="color:' + color + ';"></i>';
       }
@@ -957,10 +1051,9 @@
             ? `${players.online}/${players.max}`
             : null;
           const version = apiData.version ? ` (${apiData.version})` : '';
-          const source = apiData.source === 'backup' ? 'the backup status API' : 'mcstatus.io';
           statusDetails.textContent = playerCount
-            ? `The server is online${version} with ${playerCount} players. Live status via ${source}.`
-            : `The server is online${version} and ready for battle. Live status via ${source}.`;
+            ? `The Minecraft Java server responded to a direct status ping${version}, with ${playerCount} players.`
+            : `The Minecraft Java server responded to a direct status ping${version} and is online.`;
           statusIndicator.textContent = 'ONLINE';
           pulseIndicator.className = 'pulse-dot online';
           playersRow.style.display = playerCount ? 'flex' : 'none';
@@ -969,12 +1062,14 @@
           setBadge('circle', '#c8102e');
           statusMessage.textContent = 'Server Offline';
           statusMessage.className = 'status-message offline';
-          const source = apiData.source === 'backup' ? 'the backup status API' : 'mcstatus.io';
-          statusDetails.textContent = `The server is currently offline according to ${source}. Please check back soon.`;
+          statusDetails.textContent = apiData.error
+            ? `The direct Minecraft Java status ping did not receive a response (${apiData.error}).`
+            : 'The direct Minecraft Java status ping did not receive a response. Please check back soon.';
           statusIndicator.textContent = 'OFFLINE';
           pulseIndicator.className = 'pulse-dot offline';
           playersRow.style.display = 'none';
         }
+        renderStatusInsight();
       } catch (error) {
         console.error('Error loading server status:', error);
         setBadge('circle-question', '#ffc400');
@@ -1010,28 +1105,82 @@
     let currentXpStatus = { online: null };
     let currentMinecraftHistory = [];
     let currentXpHistory = [];
+    let currentMinecraftHistoryAvailable = true;
+    let currentXpHistoryAvailable = true;
 
     document.getElementById('hideMaintenanceRibbon').addEventListener('click', () => {
       document.getElementById('maintenanceRibbon').hidden = true;
+    });
+
+    const maintenanceMoreButton = document.getElementById('maintenanceMore');
+    const maintenanceDetails = document.getElementById('maintenanceDetails');
+    maintenanceMoreButton.addEventListener('click', () => {
+      const expanded = maintenanceMoreButton.getAttribute('aria-expanded') === 'true';
+      maintenanceMoreButton.setAttribute('aria-expanded', String(!expanded));
+      maintenanceMoreButton.textContent = expanded ? 'Know More' : 'Show Less';
+      maintenanceDetails.hidden = expanded;
     });
 
     async function loadMaintenanceSummary() {
       const summaryElement = document.getElementById('maintenanceSummary');
       if (!summaryElement) return;
 
-      try {
-        const response = await fetch('/api/maintenance-summary', { cache: 'no-store' });
-        if (!response.ok) throw new Error(`Maintenance summary request failed: ${response.status}`);
-        const data = await response.json();
-        if (typeof data.summary !== 'string' || !data.summary.trim()) {
-          throw new Error('Maintenance summary response was invalid');
+      let lastError;
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const response = await fetch('/api/maintenance-summary', { cache: 'no-store' });
+          if (!response.ok) throw new Error(`Maintenance summary request failed: ${response.status}`);
+          const data = await response.json();
+          if (typeof data.summary !== 'string' || !data.summary.trim()) {
+            throw new Error('Maintenance summary response was invalid');
+          }
+          summaryElement.textContent = data.summary.replace(/\s+/g, ' ').trim();
+          summaryElement.title = summaryElement.textContent;
+          maintenanceDetails.textContent = typeof data.details === 'string' && data.details.trim()
+            ? data.details.replace(/\s+/g, ' ').trim()
+            : summaryElement.textContent;
+          maintenanceSummaryData = data;
+          renderMinecraftInsightFromSummary();
+          return;
+        } catch (error) {
+          lastError = error;
+          if (attempt === 0) await new Promise(resolve => setTimeout(resolve, 1500));
         }
-        summaryElement.textContent = data.summary.replace(/\s+/g, ' ').trim();
-        summaryElement.title = summaryElement.textContent;
-      } catch (error) {
-        console.error('Could not load the maintenance summary:', error);
-        summaryElement.textContent = 'Maintenance notices are temporarily unavailable.';
-        summaryElement.title = summaryElement.textContent;
+      }
+      console.error('Could not load the maintenance summary:', lastError);
+      summaryElement.textContent = 'Maintenance notices are temporarily unavailable.';
+      summaryElement.title = summaryElement.textContent;
+      maintenanceDetails.textContent = summaryElement.textContent;
+    }
+
+    function renderMinecraftInsightFromSummary() {
+      const insightRow = document.getElementById('minecraftInsightRow');
+      const insight = document.getElementById('minecraftInsight');
+      const resolutionRow = document.getElementById('expectedResolutionRow');
+      const resolution = document.getElementById('expectedResolution');
+      if (typeof maintenanceSummaryData?.minecraftInsight === 'string' && insightRow && insight) {
+        insight.textContent = maintenanceSummaryData.minecraftInsight;
+        insightRow.hidden = false;
+        const timelineInsight = document.getElementById('minecraftTimelineInsight');
+        if (timelineInsight) {
+          timelineInsight.textContent = maintenanceSummaryData.minecraftInsight;
+          timelineInsight.hidden = false;
+        }
+      }
+      if (resolutionRow && resolution
+        && minecraftStatusCache?.online === false
+        && typeof maintenanceSummaryData?.expectedResolution === 'string'
+        && maintenanceSummaryData.expectedResolution.trim()) {
+        const resolutionDate = new Date(maintenanceSummaryData.expectedResolution);
+        resolution.textContent = Number.isNaN(resolutionDate.getTime())
+          ? maintenanceSummaryData.expectedResolution
+          : new Intl.DateTimeFormat('en-IN', {
+            dateStyle: 'long',
+            timeZone: 'Asia/Kolkata'
+          }).format(resolutionDate);
+        resolutionRow.hidden = false;
+      } else if (resolutionRow) {
+        resolutionRow.hidden = true;
       }
     }
 
@@ -1124,6 +1273,8 @@
           currentXpStatus = xpStatus;
           currentMinecraftHistory = Array.isArray(minecraftStatus.history) ? minecraftStatus.history : [];
           currentXpHistory = Array.isArray(xpStatus.history) ? xpStatus.history : [];
+          currentMinecraftHistoryAvailable = minecraftStatus.historyAvailable !== false;
+          currentXpHistoryAvailable = xpStatus.historyAvailable !== false;
           updateUI(data[0]);
           updateApiStatusBadge(true, "Live API Connected");
         } else {
@@ -1164,7 +1315,8 @@
         }
         return {
           online: data.online,
-          history: Array.isArray(data.history) ? data.history : []
+          history: Array.isArray(data.history) ? data.history : [],
+          historyAvailable: data.historyAvailable !== false
         };
       } catch (error) {
         console.warn('AstralyxXP API unavailable:', error);
@@ -1238,7 +1390,10 @@
 
         const historyLabel = hasHistory
           ? `<span class="uptime">${uptimePct === null ? 'Collecting history' : `${uptimePct}% Uptime`}</span>`
-          : '<span class="uptime">History not available yet</span>';
+          : `<span class="uptime">${(key === 'mc_server_online' && !currentMinecraftHistoryAvailable)
+            || (key === 'astralyx_xp' && !currentXpHistoryAvailable)
+            ? 'History storage unavailable'
+            : 'History not available yet'}</span>`;
 
         const cardHTML = `
           <div class="dash-card">

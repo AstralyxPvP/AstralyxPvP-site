@@ -114,11 +114,11 @@
     var H = window.location.hostname;
     var canonicalDomain = 'astralyxpvp.org';
     if (H === 'www.astralyxpvp.org' || H === 'www.astralyxpvp.int.yt') {
-      window.location.replace('https://' + canonicalDomain + window.location.pathname + window.location.search);
+      window.location.replace('https://' + canonicalDomain + window.location.pathname + window.location.search + window.location.hash);
     } else if (H === 'news.astralyxpvp.org' || H === 'news.astralyxpvp.int.yt') {
-      window.location.replace('https://' + canonicalDomain + '/news' + window.location.pathname);
+      window.location.replace('https://' + canonicalDomain + '/news.html' + window.location.search + window.location.hash);
     } else if (H === 'status.astralyxpvp.org' || H === 'status.astralyxpvp.int.yt') {
-      window.location.replace('https://' + canonicalDomain + '/status' + window.location.pathname);
+      window.location.replace('https://' + canonicalDomain + '/status' + window.location.search + window.location.hash);
     }
   </script>
   

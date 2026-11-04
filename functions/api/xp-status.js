@@ -1,7 +1,6 @@
 const XP_STATUS_URL = 'https://astralyx-xp-bot.indiancoder3.workers.dev/api/leaderboard?limit=1';
 const CACHE_TTL_SECONDS = 60;
 const HISTORY_LIMIT = 600;
-const SAMPLE_INTERVAL_MS = 5 * 60 * 1000;
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -14,10 +13,7 @@ function jsonResponse(body, status = 200) {
 }
 
 export async function onRequestGet({ request, env }) {
-  if (!env.MINECRAFT_STATUS_DB) {
-    return jsonResponse({ error: 'Status history database binding is missing' }, 503);
-  }
-
+  const statusDb = env.MINECRAFT_STATUS_DB;
   const cache = globalThis.caches?.default;
   const cacheKey = new Request(new URL('/api/xp-status', request.url));
   if (cache) {
@@ -47,33 +43,30 @@ export async function onRequestGet({ request, env }) {
   }
 
   const checkedAt = new Date().toISOString();
-  const sampleBucket = Math.floor(Date.now() / SAMPLE_INTERVAL_MS);
-  await env.MINECRAFT_STATUS_DB.prepare(`
-    INSERT INTO astralyx_xp_status_checks (checked_at, sample_bucket, source, online)
-    VALUES (?, ?, 'astralyx-xp', ?)
-    ON CONFLICT(sample_bucket) DO UPDATE SET
-      checked_at = excluded.checked_at,
-      source = excluded.source,
-      online = excluded.online
-  `).bind(checkedAt, sampleBucket, online === null ? null : Number(online)).run();
-
-  const { results } = await env.MINECRAFT_STATUS_DB.prepare(`
-    SELECT checked_at, source, online
-    FROM astralyx_xp_status_checks
-    WHERE checked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-48 hours')
-    ORDER BY checked_at DESC
-    LIMIT ?
-  `).bind(HISTORY_LIMIT).all();
+  let history = [];
+  if (statusDb) {
+    const { results } = await statusDb.prepare(`
+      SELECT checked_at, source, online
+      FROM astralyx_xp_status_checks
+      WHERE checked_at >= strftime('%Y-%m-%dT%H:%M:%fZ', 'now', '-48 hours')
+      ORDER BY checked_at DESC
+      LIMIT ?
+    `).bind(HISTORY_LIMIT).all();
+    history = results.map(row => ({
+      checkedAt: row.checked_at,
+      source: row.source,
+      online: row.online === null ? null : row.online === 1
+    }));
+  } else {
+    console.error('AstralyxXP status history is disabled: database binding is missing.');
+  }
 
   const response = jsonResponse({
     checkedAt,
     source: 'astralyx-xp',
     online,
-    history: results.map(row => ({
-      checkedAt: row.checked_at,
-      source: row.source,
-      online: row.online === null ? null : row.online === 1
-    }))
+    historyAvailable: Boolean(statusDb),
+    history
   });
 
   if (cache) {

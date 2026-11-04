@@ -1,13 +1,3 @@
-// Generates a secure session token
-async function createSessionToken(secret) {
-  const data = `session_${Date.now()}`;
-  const encoder = new TextEncoder();
-  const key = await crypto.subtle.importKey("raw", encoder.encode(secret), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
-  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(data));
-  const hashHex = Array.from(new Uint8Array(signature)).map(b => b.toString(16).padStart(2, '0')).join('');
-  return `${data}.${hashHex}`;
-}
-
 // Securely verifies the session token
 async function verifySessionToken(token, secret) {
   if (!token || !token.startsWith('session_') || !token.includes('.')) {
@@ -52,69 +42,10 @@ export async function onRequest(context) {
     return new Response("Unauthorized", { status: 403 });
   }
 
-  // Create a Cloudflare WebSocket Pair
-  const [client, server] = Object.values(new WebSocketPair());
-  server.accept();
-
-  // Establish connection to Google's Multimodal Live API endpoint
-  const geminiWsUrl = `wss://generativelanguage.googleapis.com/ws/google.ai.generativelanguage.v1beta.GenerativeService.BidiGenerateContent?key=${env.GEMINI_API_KEY}`;
-  const geminiWs = new WebSocket(geminiWsUrl);
-
-  // Set up the bidirectional stream proxy
-  geminiWs.onopen = () => {
-    // Send the mandatory initial setup frame once connected to Google
-    const setupFrame = {
-      setup: {
-        model: "models/gemini-2.5-flash-native-audio",
-        generationConfig: {
-          responseModalities: ["AUDIO"],
-          speechConfig: {
-            voiceConfig: {
-              prebuiltVoiceConfig: {
-                voiceName: "Kore" // Options: Puck, Charon, Kore, Fenrir, Aoede
-              }
-            }
-          }
-        },
-        systemInstruction: {
-          parts: [{ text: "You are AstralyxAI, the interactive voice core for the AstralyxPvP Minecraft server. Respond conversationally, concisely, and naturally. You are speaking directly through a real-time voice call." }]
-        }
-      }
-    };
-    geminiWs.send(JSON.stringify(setupFrame));
-  };
-
-  // Pipeline client audio chunks and events to Gemini
-  server.addEventListener("message", (event) => {
-    if (geminiWs.readyState === WebSocket.OPEN) {
-      geminiWs.send(event.data);
-    }
-  });
-
-  // Pipeline Gemini audio feedback back to the browser
-  geminiWs.addEventListener("message", (event) => {
-    if (server.readyState === WebSocket.OPEN) {
-      server.send(event.data);
-    }
-  });
-
-  // Handle stream terminations cleanly
-  const closeAll = () => {
-    try { server.close(); } catch(_) {}
-    try { geminiWs.close(); } catch(_) {}
-  };
-
-  server.addEventListener("close", closeAll);
-  server.addEventListener("error", closeAll);
-  geminiWs.addEventListener("close", closeAll);
-  geminiWs.addEventListener("error", closeAll);
-
-  // Generate the next session token to pass back via a header
-  const nextSessionToken = await createSessionToken(env.TURNSTILE_SECRET_KEY);
-
-  return new Response(null, {
-    status: 101,
-    webSocket: client,
-    headers: { "X-Next-Session-Token": nextSessionToken }
+  return new Response(JSON.stringify({
+    error: "Real-time voice is unavailable because it requires a model outside the configured Gemma and Flash-Lite set."
+  }), {
+    status: 503,
+    headers: { "Content-Type": "application/json; charset=utf-8" }
   });
 }

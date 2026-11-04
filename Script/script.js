@@ -265,8 +265,7 @@
                 }
                 if (heroPlayers) heroPlayers.textContent = playerCount ? playerCount.replace('/', ' / ') : 'Online';
                 if (heroStatusText) {
-                    const source = data.source === 'backup' ? 'Backup status API' : 'mcstatus.io';
-                    heroStatusText.textContent = `Online${data.version ? ` • ${data.version}` : ''} (${source})`;
+                    heroStatusText.textContent = `Online${data.version ? ` • ${data.version}` : ''} (direct Java ping)`;
                 }
                 if (heroPill) heroPill.className = 'hero-pill status-pill online';
                 if (heroPillText) heroPillText.textContent = playerCount ? `${playerCount} Online` : 'Server Online';
@@ -274,8 +273,7 @@
                 if (navPill) { navPill.className = 'server-pill offline'; navPill.textContent = '🔴 Offline'; }
                 if (heroPlayers) heroPlayers.textContent = "Offline";
                 if (heroStatusText) {
-                    const source = data.source === 'backup' ? 'backup status API' : 'mcstatus.io';
-                    heroStatusText.textContent = `Offline • ${source}`;
+                    heroStatusText.textContent = 'Offline • direct Java ping';
                 }
                 if (heroPill) heroPill.className = 'hero-pill status-pill offline';
                 if (heroPillText) heroPillText.textContent = "Server Offline";
