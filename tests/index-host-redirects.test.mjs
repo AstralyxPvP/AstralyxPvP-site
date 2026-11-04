@@ -55,6 +55,14 @@ test('Bedrock connection address and port are published', () => {
 });
 
 test('Homepage advertises the PvP bots and Crystal PvP arena', () => {
-  assert.match(indexHtml, /PvP bot fights/i);
+  assert.match(indexHtml, /PvP bots in supported arenas, including Crystal PvP/i);
   assert.match(indexHtml, /Crystal PvP/i);
+});
+
+test('Join Server opens an accessible Java and Bedrock edition picker', () => {
+  assert.match(indexHtml, /<button class="hero-btn"[^>]+aria-haspopup="dialog"[^>]+onclick="openJoinServerDialog\(\)"/);
+  assert.match(indexHtml, /id="joinServerDialog"[^>]+aria-labelledby="joinServerTitle"/);
+  assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org"[^>]+data-edition="Java Edition"/);
+  assert.match(indexHtml, /data-copy-server="bedrock\.astralyxpvp\.org"[^>]+data-edition="Bedrock Edition"/);
+  assert.match(indexHtml, /Port <strong>8167<\/strong>/);
 });

@@ -791,6 +791,42 @@ window.copyServerIP = function() {
     });
 };
 
+window.openJoinServerDialog = function() {
+    const dialog = document.getElementById('joinServerDialog');
+    if (!dialog || typeof dialog.showModal !== 'function') {
+        console.error('Join server edition picker is unavailable.');
+        return;
+    }
+    dialog.showModal();
+};
+
+document.addEventListener('click', async event => {
+    if (!(event.target instanceof Element)) return;
+    const option = event.target.closest('[data-copy-server]');
+    if (!option) return;
+
+    const status = document.getElementById('joinServerStatus');
+    const edition = option.dataset.edition;
+    if (!status || !edition) {
+        console.error('Join server edition picker is missing its status or edition label.');
+        return;
+    }
+    try {
+        await navigator.clipboard.writeText(option.dataset.copyServer);
+        status.textContent = `${edition} address copied.`;
+        option.classList.add('copied');
+        setTimeout(() => option.classList.remove('copied'), 1400);
+    } catch (error) {
+        console.error(`Failed to copy ${edition} address:`, error);
+        status.textContent = `Copy failed. Select the ${edition} address above and copy it manually.`;
+    }
+});
+
+document.addEventListener('click', event => {
+    const dialog = document.getElementById('joinServerDialog');
+    if (dialog && event.target === dialog) dialog.close();
+});
+
 document.addEventListener('click', e => {
     const btn = e.target.closest('[data-menu-copy]');
     if (btn) window.copyServerIP();

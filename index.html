@@ -143,10 +143,10 @@
             <p class="hud-value" id="heroPlayers">Checking...</p>
             <p class="hud-sub" id="heroStatusText">Connecting...</p>
           </div>
-          <div class="hud-card bottom" onclick="copyServerIP()">
-            <p class="hud-label">Server address</p>
-            <p class="hud-value">play.astralyxpvp.org</p>
-            <p class="hud-sub">Click the IP to copy &amp; queue your next session</p>
+          <div class="hud-card bottom">
+            <p class="hud-label">Join the server</p>
+            <p class="hud-value">Java + Bedrock</p>
+            <p class="hud-sub">Choose your edition with Join Server</p>
           </div>
         </div>
         <div class="hero-text">
@@ -162,15 +162,14 @@
           </div>
           <h1>AstralyxPvP</h1>
           <p class="hero-tagline"><span id="heroTag"></span><span class="tag-caret">&nbsp;</span></p>
-          <p class="hero-desc">Step into the arena of <strong>AstralyxPvP</strong>, an intense <strong>India-based 1.9+ FFA PvP server</strong> built for players who crave fast-paced combat and skill-based battles. Whether you're a seasoned fighter or just starting your PvP journey, this is where you prove your dominance.</p>
-          <p><strong>PvP bot fights:</strong> Challenge our combat bots in supported arenas, including Crystal PvP. They use the arena's available gear and fight alongside real players.</p>
-          <p><strong>Bedrock Edition:</strong> <code>bedrock.astralyxpvp.org</code> · Port <code>8167</code></p>
+          <p class="hero-desc">Step into the arena of <strong>AstralyxPvP</strong>, an intense <strong>India-based 1.9+ FFA PvP server</strong> with fast-paced battles, live ELO, and PvP bots in supported arenas, including Crystal PvP. Prove your dominance against players and bots alike.</p>
           <div class="actions">
-            <div class="hero-btn" onclick="copyServerIP()">
+            <button class="hero-btn" type="button" aria-haspopup="dialog" aria-controls="joinServerDialog"
+                    onclick="openJoinServerDialog()">
               <i class="fa-solid fa-server" style="color:var(--red);font-size:0.8rem"></i>
-              <span id="server-ip">play.astralyxpvp.org</span>
-              <i class="fa-regular fa-copy btn-copy-icon"></i>
-            </div>
+              <span>Join Server</span>
+              <i class="fa-solid fa-chevron-right btn-copy-icon" aria-hidden="true"></i>
+            </button>
             <a class="hero-btn discord-btn" href="https://discord.gg/u8BFrpRwEg" target="_blank">
               <i class="fa-brands fa-discord"></i> Discord
             </a>
@@ -178,6 +177,45 @@
         </div>
       </div>
     </section>
+
+    <dialog class="join-server-dialog" id="joinServerDialog" aria-labelledby="joinServerTitle">
+      <div class="join-dialog-content">
+        <div class="join-dialog-heading">
+          <div>
+            <p class="join-dialog-eyebrow">CHOOSE YOUR EDITION</p>
+            <h2 id="joinServerTitle">Join AstralyxPvP</h2>
+          </div>
+          <button class="join-dialog-close" type="button" aria-label="Close edition picker"
+                  onclick="document.getElementById('joinServerDialog').close()">
+            <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="join-dialog-intro">Select your Minecraft edition to copy the server address.</p>
+        <div class="join-options">
+          <button class="join-option" type="button" data-copy-server="play.astralyxpvp.org"
+                  data-edition="Java Edition">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-computer" aria-hidden="true"></i> Java Edition</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>play.astralyxpvp.org</code>
+            <span class="join-option-hint">Java 1.9+</span>
+          </button>
+          <button class="join-option" type="button" data-copy-server="bedrock.astralyxpvp.org"
+                  data-edition="Bedrock Edition">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Bedrock Edition</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>bedrock.astralyxpvp.org</code>
+            <span class="join-option-hint">Port <strong>8167</strong></span>
+          </button>
+        </div>
+        <p class="join-dialog-status" id="joinServerStatus" role="status" aria-live="polite">
+          Bedrock players: enter the address and port in their separate fields.
+        </p>
+      </div>
+    </dialog>
 
     <section class="discord-live-section" aria-labelledby="discordWidgetName">
       <div class="discord-live-card" id="discordWidget" aria-live="polite">
@@ -276,9 +314,9 @@
       <div class="steps-grid">
         <div class="step-card">
           <span class="step-number">01</span>
-          <div class="step-icon"><i class="fa-solid fa-copy"></i></div>
-          <h3>Copy the IP</h3>
-          <p>Click the <strong>play.astralyxpvp.org</strong> button above — it copies automatically. You can also right-click anywhere on the page.</p>
+          <div class="step-icon"><i class="fa-solid fa-server"></i></div>
+          <h3>Choose your edition</h3>
+          <p>Click <strong>Join Server</strong> and choose Java or Bedrock. For Bedrock, enter port <strong>8167</strong> in the port field.</p>
         </div>
         <div class="step-card">
           <span class="step-number">02</span>
@@ -293,7 +331,6 @@
           <p>Jump into the <strong>FFA arena</strong>, duel in 1v1s, and track your rise through the live ELO leaderboard. Every fight counts.</p>
         </div>
       </div>
-      <p class="bedrock-join"><strong>Bedrock Edition:</strong> Address <code>bedrock.astralyxpvp.org</code> · Port <code>8167</code></p>
     </section>
 
     <section class="faq-section">
@@ -327,7 +364,7 @@
         <details class="faq-item">
           <summary>How do I join the server?</summary>
           <div class="faq-answer">
-            <p>Copy the IP <strong>play.astralyxpvp.org</strong>, open Minecraft &gt; Multiplayer &gt; Add Server, paste it in, and hit Join. You can also right-click anywhere on the site to copy the IP instantly.</p>
+            <p>Click <strong>Join Server</strong>, choose your Minecraft edition, then add the copied address in Minecraft. Bedrock players should also enter port <strong>8167</strong>.</p>
           </div>
         </details>
         <details class="faq-item">
