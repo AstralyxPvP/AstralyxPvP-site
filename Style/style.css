@@ -975,15 +975,21 @@ a.hero-pill.discord-pill:hover {
   overscroll-behavior: contain;
   padding: 0;
   color: var(--text);
-  background: linear-gradient(155deg, #1d080d, #090506 72%);
-  border: 1px solid rgba(200, 16, 46, 0.55);
+  color-scheme: dark;
+  background:
+    radial-gradient(120% 90% at 50% -10%, rgba(200, 16, 46, 0.16), transparent 58%),
+    linear-gradient(180deg, #171114 0%, #0b0809 100%);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 22px;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.75), 0 0 36px rgba(200, 16, 46, 0.18);
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.82),
+    0 0 0 1px rgba(255, 255, 255, 0.02) inset,
+    inset 0 1px 0 rgba(255, 215, 0, 0.16);
 }
 
 .join-server-dialog::backdrop {
-  background: rgba(5, 2, 4, 0.78);
-  backdrop-filter: blur(5px);
+  background: rgba(3, 1, 2, 0.72);
+  backdrop-filter: blur(8px) saturate(0.85);
 }
 
 .join-dialog-content {
@@ -1031,7 +1037,7 @@ a.hero-pill.discord-pill:hover {
 
 .join-dialog-intro {
   margin: 12px 0 18px;
-  color: var(--text-muted);
+  color: #b8b0b2;
   font-size: 0.9rem;
   line-height: 1.55;
 }
@@ -1048,10 +1054,11 @@ a.hero-pill.discord-pill:hover {
   padding: 0;
   color: var(--text);
   text-align: left;
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(200, 16, 46, 0.3);
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.055), rgba(255, 255, 255, 0.028));
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
-  transition: background var(--t-fast) ease, border-color var(--t-fast) ease, transform var(--t-fast) ease;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  transition: background var(--t-fast) ease, border-color var(--t-fast) ease, box-shadow var(--t-fast) ease, transform var(--t-fast) ease;
 }
 
 .join-option-main {
@@ -1069,8 +1076,9 @@ a.hero-pill.discord-pill:hover {
 
 .join-option:hover,
 .join-option:focus-within {
-  background: rgba(200, 16, 46, 0.12);
-  border-color: rgba(255, 215, 0, 0.55);
+  background: linear-gradient(135deg, rgba(200, 16, 46, 0.16), rgba(255, 215, 0, 0.055));
+  border-color: rgba(255, 215, 0, 0.42);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   transform: translateY(-1px);
 }
 
@@ -1101,7 +1109,14 @@ a.hero-pill.discord-pill:hover {
 }
 
 .join-option-copy {
-  color: var(--red);
+  color: var(--gold);
+  opacity: 0.8;
+  transition: opacity var(--t-fast) ease;
+}
+
+.join-option:hover .join-option-copy,
+.join-option:focus-within .join-option-copy {
+  opacity: 1;
 }
 
 .join-option code {
@@ -1132,17 +1147,17 @@ a.hero-pill.discord-pill:hover {
   padding: 3px 8px;
   font-size: 0.72rem;
   font-family: 'Fira Code', monospace;
-  color: var(--text);
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 215, 0, 0.35);
+  color: var(--gold);
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.28);
   border-radius: 6px;
   cursor: pointer;
   transition: all var(--t-fast) ease;
 }
 
 .join-port-copy-btn:hover {
-  background: rgba(255, 215, 0, 0.2);
-  border-color: var(--gold);
+  background: rgba(255, 215, 0, 0.16);
+  border-color: rgba(255, 215, 0, 0.55);
   color: #fff;
 }
 
@@ -1155,7 +1170,7 @@ a.hero-pill.discord-pill:hover {
 .join-dialog-status {
   min-height: 1.35em;
   margin-top: 16px;
-  color: var(--text-muted);
+  color: #b8b0b2;
   font-size: 0.76rem;
   line-height: 1.5;
 }
