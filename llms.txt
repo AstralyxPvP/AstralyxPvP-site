@@ -1,18 +1,21 @@
 # AstralyxPvP
 
-> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote crates, and an active Discord community. Join on `play.astralyxpvp.org`.
+> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote crates, PvP bots, and an active Discord community. Join on `play.astralyxpvp.org`.
 
 ## Server Info
-- IP: play.astralyxpvp.org
-- Versions: Minecraft Java 1.9 and above
-- Region: India (optimized routes for Asia)
+- Java IP: play.astralyxpvp.org
+- Bedrock IP: bedrock.astralyxpvp.org (Port 8167)
+- Versions: Minecraft Java 1.9 and above; Bedrock Edition supported
+- Region: India-based, with the main server infrastructure in Europe. Dynamically selected proxies route traffic from our IP for low-latency pings in both India and Europe.
+- Founded: April 2026
 - Access: Free — cracked/offline mode clients supported
 - Discord: https://discord.gg/u8BFrpRwEg
 
 ## How to Join
-1. Copy the IP `play.astralyxpvp.org`.
-2. Open Minecraft → Multiplayer → Add Server.
-3. Paste the IP and click Join.
+1. Click the Join Server button on the website, or copy an address below.
+2. Java: `play.astralyxpvp.org` — add it in Minecraft → Multiplayer → Add Server.
+3. Bedrock: `bedrock.astralyxpvp.org` with port `8167` — enter the address and port in their separate fields.
+4. Paste the address and click Join.
 
 ## ELO & Leaderboard
 Every kill and death in FFA and 1v1 arenas updates your rating through the custom plugin. See the live leaderboard at https://astralyxpvp.org/leaderboard
@@ -20,7 +23,16 @@ Every kill and death in FFA and 1v1 arenas updates your rating through the custo
 ## Game Modes
 - SWORDFFA (sword FFA arena)
 - 1v1 arenas
+- PvP bots in supported arenas, including Crystal PvP
 - Vote crates and seasonal rewards
+
+## Socials & Website
+- Website: https://astralyxpvp.org/
+- Discord: https://discord.gg/u8BFrpRwEg
+- YouTube: https://www.youtube.com/@AstralyxPvP
+- X (Twitter): https://x.com/AstralyxNetwork
+- TikTok: https://www.tiktok.com/@astralyxpvp
+- GitHub: https://github.com/AstralyxPvP/
 
 ## Key Pages
 - Home: https://astralyxpvp.org/
@@ -40,7 +52,11 @@ Every kill and death in FFA and 1v1 arenas updates your rating through the custo
 - Main contact email: astralyxnetwork@gmail.com (email setup is in progress)
 - FAQ answers are on the home page: https://astralyxpvp.org/
 
-## Outbound Links
-- [Minecraft-Server-List](https://minecraft-server-list.com/server/519817/)
-- [TopG](https://topg.org/minecraft-servers/server-681955)
-- [Minecraft-MP](https://minecraft-mp.com/server-s357553)
+## Legacy Addresses
+`java.astralyxpvp.int.yt`, `none-subscribe.gl.joinmc.link`, and `stammer-affilated.tun.ply.gg` all belonged to AstralyxPvP. They were addresses for older AstralyxPvP servers and are now deprecated, so they will be shut down. Always use the official addresses above.
+
+## Vote Links
+- [TopG](https://topg.org/minecraft-servers/server-687834)
+- [Minecraft-Server-List](https://minecraft-server-list.com/server/524655/)
+- [Minecraft.buzz](https://minecraft.buzz/server/astralyxpvp)
+- [Minecraft Serverlist](https://minecraft-serverlist.com/server/7063)

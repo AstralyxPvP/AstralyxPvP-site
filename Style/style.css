@@ -965,9 +965,14 @@ a.hero-pill.discord-pill:hover {
 
 .join-server-dialog {
   width: min(440px, calc(100vw - 32px));
+  height: fit-content;
   max-width: none;
   max-height: calc(100vh - 32px);
+  margin: auto;
+  position: fixed;
+  inset: 0;
   overflow: auto;
+  overscroll-behavior: contain;
   padding: 0;
   color: var(--text);
   background: linear-gradient(155deg, #1d080d, #090506 72%);
@@ -1038,24 +1043,40 @@ a.hero-pill.discord-pill:hover {
 
 .join-option {
   display: grid;
-  gap: 9px;
+  gap: 0;
   width: 100%;
-  padding: 15px 16px;
+  padding: 0;
   color: var(--text);
   text-align: left;
   background: rgba(255, 255, 255, 0.035);
   border: 1px solid rgba(200, 16, 46, 0.3);
   border-radius: 14px;
-  cursor: pointer;
   transition: background var(--t-fast) ease, border-color var(--t-fast) ease, transform var(--t-fast) ease;
 }
 
+.join-option-main {
+  display: grid;
+  gap: 9px;
+  width: 100%;
+  padding: 15px 16px 9px;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
 .join-option:hover,
-.join-option:focus-visible {
+.join-option:focus-within {
   background: rgba(200, 16, 46, 0.12);
   border-color: rgba(255, 215, 0, 0.55);
-  outline: none;
   transform: translateY(-1px);
+}
+
+.join-option-main:focus-visible {
+  outline-offset: -3px;
+  border-radius: 13px;
 }
 
 .join-option.copied {
@@ -1090,6 +1111,11 @@ a.hero-pill.discord-pill:hover {
 }
 
 .join-option-hint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 16px 14px;
   color: var(--text-muted);
   font-size: 0.76rem;
 }
@@ -1097,6 +1123,33 @@ a.hero-pill.discord-pill:hover {
 .join-option-hint strong {
   color: var(--gold);
   font-family: 'Fira Code', monospace;
+}
+
+.join-port-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 8px;
+  font-size: 0.72rem;
+  font-family: 'Fira Code', monospace;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all var(--t-fast) ease;
+}
+
+.join-port-copy-btn:hover {
+  background: rgba(255, 215, 0, 0.2);
+  border-color: var(--gold);
+  color: #fff;
+}
+
+.join-port-copy-btn.copied {
+  border-color: rgba(61, 220, 132, 0.7);
+  background: rgba(61, 220, 132, 0.2);
+  color: #a7f3d0;
 }
 
 .join-dialog-status {
@@ -2443,6 +2496,16 @@ footer::before {
 .footer-meta { display: flex; flex-direction: column; gap: 3px; }
 .footer-meta p { color: #666; font-size: 0.65rem; }
 .footer-updated { margin-top: 2px; }
+.footer-commit-link {
+  color: #666;
+  text-decoration: none;
+  transition: color var(--t-fast) ease;
+}
+.footer-commit-link:hover,
+.footer-commit-link:focus-visible {
+  color: #999;
+  text-decoration: underline;
+}
 
 .credits { margin-top: 25px; font-size: 0.6rem; color: #777; letter-spacing: 1px; padding-bottom: 5px; }
 .credits a { color: var(--gold); text-decoration: none; font-weight: 700; }

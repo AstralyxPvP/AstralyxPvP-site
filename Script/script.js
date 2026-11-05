@@ -210,6 +210,15 @@
         }
     }
 
+    // Fallback if the GitHub commits API is unavailable or rate-limited.
+    function showCommitFallback(link) {
+        const d = new Date(document.lastModified);
+        const formatted = Number.isNaN(d.getTime())
+            ? null
+            : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+        link.textContent = formatted ? `Last updated: ${formatted}` : 'Last updated: see commit history';
+    }
+
     // Dynamic Footer Initialization
     async function initFooter() {
         const container = document.getElementById('footer');
@@ -232,6 +241,26 @@
             });
             const yearEl = container.querySelector('#year');
             if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+            const commitLink = container.querySelector('#footerLastCommitLink');
+            if (commitLink) {
+                fetch('https://api.github.com/repos/AstralyxPvP/AstralyxPvP-site/commits?per_page=1')
+                    .then(res => res.ok ? res.json() : null)
+                    .then(data => {
+                        if (Array.isArray(data) && data.length > 0 && data[0].commit && data[0].commit.committer) {
+                            const dateStr = data[0].commit.committer.date;
+                            const d = new Date(dateStr);
+                            const formatted = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                            commitLink.textContent = `Last updated: ${formatted}`;
+                            if (data[0].html_url) {
+                                commitLink.href = data[0].html_url;
+                            }
+                        } else {
+                            showCommitFallback(commitLink);
+                        }
+                    })
+                    .catch(() => showCommitFallback(commitLink));
+            }
 
         } catch (error) {
             console.error('Footer error:', error);
@@ -802,6 +831,24 @@ window.openJoinServerDialog = function() {
 
 document.addEventListener('click', async event => {
     if (!(event.target instanceof Element)) return;
+
+    const portBtn = event.target.closest('[data-copy-port]');
+    if (portBtn) {
+        event.stopPropagation();
+        const port = portBtn.dataset.copyPort;
+        const status = document.getElementById('joinServerStatus');
+        try {
+            await navigator.clipboard.writeText(port);
+            if (status) status.textContent = `Bedrock port ${port} copied.`;
+            portBtn.classList.add('copied');
+            setTimeout(() => portBtn.classList.remove('copied'), 1400);
+        } catch (error) {
+            console.error('Failed to copy port:', error);
+            if (status) status.textContent = `Copy failed. Manually enter port ${port}.`;
+        }
+        return;
+    }
+
     const option = event.target.closest('[data-copy-server]');
     if (!option) return;
 
@@ -814,8 +861,9 @@ document.addEventListener('click', async event => {
     try {
         await navigator.clipboard.writeText(option.dataset.copyServer);
         status.textContent = `${edition} address copied.`;
-        option.classList.add('copied');
-        setTimeout(() => option.classList.remove('copied'), 1400);
+        const card = option.closest('.join-option') || option;
+        card.classList.add('copied');
+        setTimeout(() => card.classList.remove('copied'), 1400);
     } catch (error) {
         console.error(`Failed to copy ${edition} address:`, error);
         status.textContent = `Copy failed. Select the ${edition} address above and copy it manually.`;

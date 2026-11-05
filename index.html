@@ -4,6 +4,8 @@
   <title>AstralyxPvP | Home </title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="theme-color" content="#C8102E" />
   <meta name="google-site-verification" content="kYWtU-P7VA6R31WMyTMMOKQ2ZHby0qlITXmdnE-xNZA" />
   <meta name="google-site-verification" content="dwWOJSf9PK5NvguaxcjVUYJCZK2Ehc_ZpdgavYEGgcs" />
   <meta name="google-site-verification" content="5x4oetuwUCYoInPARiV5ebPUEToLUzxiI1MfjvNc128" />
@@ -18,6 +20,8 @@
     "name": "AstralyxPvP",
     "description": "An intense India-based 1.9+ FFA Minecraft PvP server tracking custom skill-based ELO standings.",
     "url": "https://astralyxpvp.org",
+    "image": "https://astralyxpvp.org/Assets/logo-compress.png",
+    "foundingDate": "2026-04",
     "game": {
       "@type": "VideoGame",
       "name": "Minecraft",
@@ -28,7 +32,14 @@
       "@type": "QuantitativeValue",
       "description": "Active Minecraft players currently engaged in FFA and 1v1 arenas"
     },
-    "serverStatus": "schema.org"
+    "serverStatus": "Online",
+    "sameAs": [
+      "https://discord.gg/u8BFrpRwEg",
+      "https://www.youtube.com/@AstralyxPvP",
+      "https://x.com/AstralyxNetwork",
+      "https://www.tiktok.com/@astralyxpvp",
+      "https://github.com/AstralyxPvP/"
+    ]
   }
   </script>
   <script type="application/ld+json">
@@ -65,7 +76,15 @@
         "name": "Where is the server hosted?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "AstralyxPvP is hosted in India with optimized routes, giving players across Asia great pings and a stable experience."
+          "text": "AstralyxPvP is an Indian-based server with its main infrastructure currently in Europe. Dynamically selected network proxies from our IP route traffic optimally, giving low-latency pings for players in both India and Europe."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happened to old domains like java.astralyxpvp.int.yt and tunnel links?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "java.astralyxpvp.int.yt, none-subscribe.gl.joinmc.link, and stammer-affilated.tun.ply.gg all belonged to AstralyxPvP. They were addresses for older AstralyxPvP servers and are now deprecated, so they will be shut down. Use play.astralyxpvp.org for Java and bedrock.astralyxpvp.org on port 8167 for Bedrock."
         }
       },
       {
@@ -73,7 +92,7 @@
         "name": "How do I join the server?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Copy the IP play.astralyxpvp.org, open Minecraft Multiplayer, Add Server, paste it in, and hit Join."
+          "text": "Click Join Server, choose Java or Bedrock, then add the copied address in Minecraft. Java players use play.astralyxpvp.org. Bedrock players use bedrock.astralyxpvp.org with port 8167."
         }
       },
       {
@@ -108,6 +127,11 @@
   <meta property="og:image" content="https://astralyxpvp.org/Assets/logo-compress.png" />
   <meta property="og:url" content="https://astralyxpvp.org" />
   <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AstralyxPvP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AstralyxPvP - The Ultimate 1.9 FFA PvP Battlefield" />
+  <meta name="twitter:description" content="Join AstralyxPvP, the premier India-based 1.9+ FFA PvP server with live ELO, vote crates, and PvP bots." />
+  <meta name="twitter:image" content="https://astralyxpvp.org/Assets/logo-compress.png" />
   <link rel="stylesheet" href="Style/style.css">
   
   <script>
@@ -192,24 +216,33 @@
         </div>
         <p class="join-dialog-intro">Select your Minecraft edition to copy the server address.</p>
         <div class="join-options">
-          <button class="join-option" type="button" data-copy-server="play.astralyxpvp.org"
-                  data-edition="Java Edition">
-            <span class="join-option-top">
-              <span class="join-option-title"><i class="fa-solid fa-computer" aria-hidden="true"></i> Java Edition</span>
-              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
-            </span>
-            <code>play.astralyxpvp.org</code>
+          <div class="join-option" data-edition="Java Edition">
+            <button class="join-option-main" type="button" data-copy-server="play.astralyxpvp.org"
+                    data-edition="Java Edition" aria-label="Copy Java Edition address play.astralyxpvp.org">
+              <span class="join-option-top">
+                <span class="join-option-title"><i class="fa-solid fa-computer" aria-hidden="true"></i> Java Edition</span>
+                <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+              </span>
+              <code>play.astralyxpvp.org</code>
+            </button>
             <span class="join-option-hint">Java 1.9+</span>
-          </button>
-          <button class="join-option" type="button" data-copy-server="bedrock.astralyxpvp.org"
-                  data-edition="Bedrock Edition">
-            <span class="join-option-top">
-              <span class="join-option-title"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Bedrock Edition</span>
-              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+          </div>
+          <div class="join-option" data-edition="Bedrock Edition">
+            <button class="join-option-main" type="button" data-copy-server="bedrock.astralyxpvp.org"
+                    data-edition="Bedrock Edition" aria-label="Copy Bedrock Edition address bedrock.astralyxpvp.org">
+              <span class="join-option-top">
+                <span class="join-option-title"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Bedrock Edition</span>
+                <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+              </span>
+              <code>bedrock.astralyxpvp.org</code>
+            </button>
+            <span class="join-option-hint">
+              <span>Port <strong>8167</strong></span>
+              <button class="join-port-copy-btn" type="button" data-copy-port="8167" title="Copy port only" aria-label="Copy Bedrock port 8167">
+                <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy Port
+              </button>
             </span>
-            <code>bedrock.astralyxpvp.org</code>
-            <span class="join-option-hint">Port <strong>8167</strong></span>
-          </button>
+          </div>
         </div>
         <p class="join-dialog-status" id="joinServerStatus" role="status" aria-live="polite">
           Bedrock players: enter the address and port in their separate fields.
@@ -296,7 +329,7 @@
         <div class="feature-card">
           <div class="icon-box"><i class="fa-solid fa-wifi"></i></div>
           <h3>Great Pings</h3>
-          <p>Hosted in India with optimized routes for <strong>low latency</strong> across ASIA, giving you a competitive edge in every fight.</p>
+          <p>Our main server runs in <strong>Europe</strong>, with dynamic proxies for <strong>low latency</strong> across India and Europe — giving you a competitive edge in every fight.</p>
         </div>
 
         <div class="feature-card">
@@ -358,7 +391,13 @@
         <details class="faq-item">
           <summary>Where is the server hosted?</summary>
           <div class="faq-answer">
-            <p>AstralyxPvP is hosted in <strong>India</strong> with optimized routes, giving players across Asia great pings and a stable, competitive experience.</p>
+            <p>AstralyxPvP is an <strong>Indian-based</strong> server with its main server infrastructure currently located in <strong>Europe</strong>. We use intelligent, dynamically selected network proxies routed straight from our IP so that traffic routes optimally — delivering fast, low-latency pings for players connecting from both India and Europe.</p>
+          </div>
+        </details>
+        <details class="faq-item">
+          <summary>What happened to old domains like java.astralyxpvp.int.yt and tunnel links?</summary>
+          <div class="faq-answer">
+            <p>All of those addresses — <code>java.astralyxpvp.int.yt</code>, <code>none-subscribe.gl.joinmc.link</code>, and <code>stammer-affilated.tun.ply.gg</code> — belonged to AstralyxPvP. They were addresses for our older servers and are now deprecated, so they will be shut down and should not be used. Always use our official addresses: <strong>play.astralyxpvp.org</strong> for Java Edition and <strong>bedrock.astralyxpvp.org</strong> (Port <strong>8167</strong>) for Bedrock Edition.</p>
           </div>
         </details>
         <details class="faq-item">

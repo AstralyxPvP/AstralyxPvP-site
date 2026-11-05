@@ -35,7 +35,7 @@ AstralyxPvP is an intense, India-based 1.9+ FFA (Free-For-All) Minecraft PvP ser
 This project leverages a combination of modern frontend web technologies and secure cloud services:
 
 * **Frontend Development:** Vanilla HTML5, CSS3 (including `@media` layouts), and native JavaScript.
-* **Hosting & Deployment:** Cloudflare Pages (primary `astralyxpvp.org`, backup `astralyxpvp.int.yt`).
+* **Hosting & Deployment:** Cloudflare Pages (primary `astralyxpvp.org`). The older `astralyxpvp.int.yt` domain is a legacy redirect only — it is not a game server address.
 * **AI Integration:** Google Family of AI Models via the Gemini API (for AstralyxAI feature).
 * **Security & Verification:** Cloudflare Turnstile bot protection.
 * **Version Control:** Git & GitHub for repository management.
