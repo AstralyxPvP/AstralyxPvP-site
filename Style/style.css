@@ -2085,6 +2085,47 @@ tbody tr:hover .elo-pill {
 
 .doc-block p strong { color: var(--text); }
 
+.doc-block h4 {
+  margin: 18px 0 8px;
+  color: var(--text);
+  font: 700 0.78rem 'Fira Code', monospace;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.doc-block ul {
+  margin: 8px 0 14px;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+
+.doc-block ul li {
+  position: relative;
+  padding: 4px 0 4px 20px;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.doc-block ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--red);
+}
+
+.doc-block ul li strong { color: var(--text); }
+
+.doc-block a {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.doc-block a:hover { color: var(--text); }
+
+.doc-block em { color: var(--text-muted); }
+
 /* ============================================================
    DOC ACTION BAR & COLLAPSIBLE
    ============================================================ */

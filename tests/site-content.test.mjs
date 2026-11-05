@@ -10,6 +10,8 @@ const footerHtml = await read('Assets/footer.html');
 const scriptJs = await read('Script/script.js');
 const sitemapXml = await read('sitemap.xml');
 const llmsTxt = await read('llms.txt');
+const termsHtml = await read('terms.html');
+const privacyHtml = await read('privacy.html');
 
 const voteLinks = [
   'https://topg.org/minecraft-servers/server-687834',
@@ -85,4 +87,21 @@ test('structured data links the same social profiles', () => {
     assert.ok(indexHtml.includes(link), `index.html structured data should include ${link}`);
   }
   assert.match(indexHtml, /"foundingDate": "2026-04"/);
+});
+
+test('legal pages carry the current terms and privacy policy', () => {
+  for (const html of [termsHtml, privacyHtml]) {
+    assert.match(html, /Last Updated: 5 November 2026/);
+    assert.match(html, /NebulaGames/);
+    assert.match(html, /astralyxnetwork@gmail\.com/);
+  }
+  assert.match(termsHtml, /unregistered community project/);
+  assert.match(termsHtml, /International Legal Compliance &amp; Governing Law/);
+  assert.match(termsHtml, /No Gambling or Paid Lotteries/);
+  assert.match(privacyHtml, /independent development project/);
+  assert.match(privacyHtml, /Digital Personal Data Protection Act, 2023/);
+  assert.match(privacyHtml, /Federal Decree-Law No\. 45 of 2021/);
+  assert.match(privacyHtml, /General Data Protection Regulation \(GDPR\)/);
+  assert.doesNotMatch(privacyHtml, /not directed at children under 13/);
+  assert.doesNotMatch(termsHtml, /Effective 25 October 2026/);
 });
