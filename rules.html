@@ -77,39 +77,82 @@
     .rules-toolbar select { flex: 0 1 220px; }
     .rules-toolbar input:focus, .rules-toolbar select:focus { outline: 2px solid var(--gold); outline-offset: 2px; }
     .rules-count { max-width: 1200px; margin: 0 auto 12px; color: var(--muted); font-size: 0.88rem; text-align: left; }
-    .rules-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; max-width: 1200px; margin: 0 auto; text-align: left; }
-    .rule-card {
-      min-width: 0;
-      padding: 20px;
-      border: 1px solid rgba(200, 16, 46, 0.2);
+    .rules-table-wrap {
+      max-width: 1200px;
+      margin: 0 auto;
+      overflow: hidden;
+      border: 1px solid rgba(255, 215, 0, 0.14);
       border-radius: 18px;
-      background: linear-gradient(145deg, rgba(28, 8, 12, 0.9), rgba(8, 5, 7, 0.88));
-      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.18);
-      transition: border-color 180ms ease, transform 180ms ease, box-shadow 180ms ease;
+      background: rgba(8, 5, 7, 0.78);
+      box-shadow: 0 16px 46px rgba(0, 0, 0, 0.25);
+      text-align: left;
     }
-    .rule-card:hover { transform: translateY(-2px); border-color: rgba(255, 215, 0, 0.28); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.26); }
-    .rule-card[hidden] { display: none; }
-    .rule-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
-    .rule-card h2 { display: flex; gap: 10px; margin: 0; color: var(--text); font-size: 1rem; line-height: 1.45; text-align: left; }
-    .rule-number { flex: 0 0 auto; color: var(--gold); font: 800 0.78rem 'Fira Code', monospace; }
-    .rule-category { flex: 0 0 auto; padding: 4px 9px; border: 1px solid rgba(255, 215, 0, 0.18); border-radius: 999px; background: rgba(255, 215, 0, 0.06); color: var(--gold); font-size: 0.68rem; font-weight: 700; }
-    .rule-description { margin: -5px 0 15px; color: var(--muted); font-size: 0.84rem; line-height: 1.6; }
-    .rule-penalties { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
-    .rule-penalty { min-width: 0; padding: 10px; border: 1px solid rgba(255, 255, 255, 0.055); border-radius: 12px; background: rgba(255, 255, 255, 0.025); }
-    .rule-penalty h3 { margin: 0 0 6px; color: var(--muted); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
-    .rule-penalty p { margin: 0; color: var(--text); font-size: 0.78rem; line-height: 1.45; overflow-wrap: anywhere; }
-    .rule-penalty:last-child p { color: #ffb6a8; }
+    .rules-table { width: 100%; border-collapse: separate; border-spacing: 0; table-layout: fixed; }
+    .rules-table thead th:first-child { width: 34%; }
+    .rules-table thead th:nth-child(2) { width: 14%; }
+    .rules-table thead th:nth-child(n + 3) { width: 17.33%; }
+    .rules-table th, .rules-table td { padding: 13px 15px; border-bottom: 1px solid rgba(255, 255, 255, 0.065); vertical-align: top; }
+    .rules-table thead th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      padding-block: 14px;
+      background: linear-gradient(120deg, #211014, #150b0e);
+      color: var(--gold);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .rules-table thead th:first-child { border-top-left-radius: 18px; }
+    .rules-table thead th:last-child { border-top-right-radius: 18px; }
+    .rules-table tbody tr { transition: background 160ms ease; }
+    .rules-table tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.018); }
+    .rules-table tbody tr:hover { background: rgba(200, 16, 46, 0.09); }
+    .rules-table tbody tr[hidden] { display: none; }
+    .rules-table tbody tr:last-child th, .rules-table tbody tr:last-child td { border-bottom: 0; }
+    .rules-table tbody th { color: var(--text); font-size: 0.86rem; font-weight: 650; line-height: 1.5; }
+    .rule-number { display: inline-block; min-width: 28px; margin-right: 5px; color: var(--gold); font: 800 0.7rem 'Fira Code', monospace; }
+    .rule-description { display: block; margin: 7px 0 0 34px; color: var(--muted); font-size: 0.76rem; font-weight: 400; line-height: 1.55; }
+    .rules-table td { color: var(--text); font-size: 0.8rem; line-height: 1.5; overflow-wrap: anywhere; }
+    .rules-table td:nth-child(2) { white-space: nowrap; }
+    .rule-category { display: inline-block; padding: 4px 9px; border: 1px solid rgba(255, 215, 0, 0.17); border-radius: 999px; background: rgba(255, 215, 0, 0.055); color: var(--gold); font-size: 0.67rem; font-weight: 700; }
+    .rules-table td:nth-child(4) { color: #ffe3a1; }
+    .rules-table td:nth-child(5) { color: #ffb6a8; }
     .rules-note { max-width: 1200px; margin: 14px auto 0; color: var(--muted); font-size: 0.88rem; text-align: left; }
-    @media (max-width: 900px) { .rules-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 600px) {
-      .rules-toolbar select { flex: 1 1 100%; }
-      .rule-card { padding: 16px; }
-      .rule-card-header { flex-direction: column-reverse; gap: 8px; }
-      .rule-penalties { grid-template-columns: 1fr; }
-      .rule-penalty { display: grid; grid-template-columns: minmax(84px, 0.35fr) minmax(0, 1fr); gap: 10px; align-items: start; }
-      .rule-penalty h3 { margin: 2px 0 0; }
+    @media (max-width: 900px) {
+      .rules-table thead th, .rules-table th, .rules-table td { padding-inline: 10px; }
+      .rules-table tbody th { font-size: 0.8rem; }
+      .rules-table td { font-size: 0.74rem; }
     }
-    @media (prefers-reduced-motion: reduce) { .rule-card { transition: none; } .rule-card:hover { transform: none; } }
+    @media (max-width: 700px) {
+      .rules-toolbar select { flex: 1 1 100%; }
+      .rules-table-wrap { border-radius: 14px; }
+      .rules-table, .rules-table tbody { display: block; width: 100%; }
+      .rules-table { min-width: 0; max-width: 100%; table-layout: auto; }
+      .rules-table thead { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+      .rules-table tbody tr {
+        display: grid;
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0 10px;
+        padding: 12px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.065);
+      }
+      .rules-table tbody tr:last-child { border-bottom: 0; }
+      .rules-table tbody th { grid-column: 1 / -1; width: auto; padding: 0 0 9px; font-size: 0.82rem; }
+      .rule-description { margin-left: 0; }
+      .rules-table td { padding: 8px 9px; border: 1px solid rgba(255, 255, 255, 0.055); background: rgba(255, 255, 255, 0.025); font-size: 0.76rem; }
+      .rules-table td:nth-child(2) { grid-column: 1 / -1; justify-self: start; margin-bottom: 9px; padding: 0; border: 0; background: none; }
+      .rules-table td:nth-child(n + 3) { grid-column: 1 / -1; display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 10px; }
+      .rules-table td:nth-child(n + 3)::before { color: var(--muted); font-size: 0.63rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+      .rules-table td:nth-child(3)::before { content: "1st offence"; }
+      .rules-table td:nth-child(4)::before { content: "2nd offence"; }
+      .rules-table td:nth-child(5)::before { content: "3rd offence"; }
+    }
+    @media (prefers-reduced-motion: reduce) { .rules-table tbody tr { transition: none; } }
   </style>
 </head>
 <body class="page-enter">
@@ -134,128 +177,42 @@
       </div>
       <p class="rules-count" id="rulesCount" aria-live="polite">Showing 30 rules</p>
 
-      <div class="rules-grid" id="rulesGrid">
-        <article class="rule-card" data-category="exploits">
-          <header class="rule-card-header"><h2><span class="rule-number">01</span>No hacked clients or unfair advantages</h2><span class="rule-category">Exploits</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>30 day ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>Permanent ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">02</span>No swearing at other players</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>30 minute mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>3 hour mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>1 day mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">03</span>No advertising other servers</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>6 month mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>12 month mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">04</span>No light advertising (telling other server names)</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>12 hour mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>3 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>7 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">05</span>No asking staff for items</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>1 hour mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>6 hour mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">06</span>No chat trolling (for example, fake free-rank messages)</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>1 hour mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>6 hour mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>1 day mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">07</span>No flooding the chat (up to 4 messages)</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>30 minute mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>1 hour mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>6 hour mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">08</span>No inappropriate behaviour</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>14 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>31 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">09</span>No discrimination</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>7 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>14 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>31 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">10</span>No referencing tragic events</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>1 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>7 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>14 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="safety">
-          <header class="rule-card-header"><h2><span class="rule-number">11</span>No mute evading</h2><span class="rule-category">Safety</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>3 day ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>7 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>14 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="safety">
-          <header class="rule-card-header"><h2><span class="rule-number">12</span>No ban evading</h2><span class="rule-category">Safety</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Permanent ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>Permanent ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="gameplay">
-          <header class="rule-card-header"><h2><span class="rule-number">13</span>No teaming with or assisting hackers or rule breakers</h2><span class="rule-category">Gameplay</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>14 day ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>30 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="gameplay">
-          <header class="rule-card-header"><h2><span class="rule-number">14</span>No interrupting 1v1s</h2><span class="rule-category">Gameplay</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>30 minute ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>2 hour ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">15</span>No inappropriate usernames</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Permanent ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>&mdash;</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>&mdash;</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">16</span>No inappropriate skins</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning, kick, and request to change skin</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>14 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>31 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">17</span>No Discord links for other servers</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>7 day ban + 3 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>14 day ban + 17 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban + permanent mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="exploits">
-          <header class="rule-card-header"><h2><span class="rule-number">18</span>No bug exploiting</h2><span class="rule-category">Exploits</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>14 day ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>30 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">19</span>No threatening others</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>7 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>14 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="chat">
-          <header class="rule-card-header"><h2><span class="rule-number">20</span>No advertising social media</h2><span class="rule-category">Chat</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>6 hour mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>1 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>7 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">21</span>No using a disease or disability as an insult</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>3 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>7 day mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>14 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">22</span>No general rudeness</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>30 minute mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>6 hour mute</p></div></div>
-        </article>
-        <article class="rule-card" data-category="safety">
-          <header class="rule-card-header"><h2><span class="rule-number">23</span>No doxxing others</h2><span class="rule-category">Safety</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Permanent ban; may be reported to local authorities if needed</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>Permanent ban; may be reported to local authorities if needed</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban; may be reported to local authorities if needed</p></div></div>
-        </article>
-        <article class="rule-card" data-category="safety">
-          <header class="rule-card-header"><h2><span class="rule-number">24</span>No DDoS threats</h2><span class="rule-category">Safety</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Permanent IP ban (no appeal)</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>&mdash;</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>&mdash;</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">25</span>No harassment or sexual harassment</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>31 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="gameplay">
-          <header class="rule-card-header"><h2><span class="rule-number">26</span>No running from 1v1s</h2><span class="rule-category">Gameplay</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>7 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>31 day ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="gameplay">
-          <header class="rule-card-header"><h2><span class="rule-number">27</span>No escaping the boundary or camping on barriers</h2><span class="rule-category">Gameplay</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Warning</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>90 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">28</span>No inappropriate behaviour (no tolerance)</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>31 day mute</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>Permanent mute</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
-        <article class="rule-card" data-category="safety">
-          <header class="rule-card-header"><h2><span class="rule-number">29</span>No sexual threats</h2><span class="rule-category">Safety</span></header>
-          <p class="rule-description">Sexually threatening or intimidating another person is prohibited, even when claimed as a joke. Under applicable UAE cybercrime laws, violations are treated with utmost severity and may result in a formal police report.</p>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Permanent ban</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>Permanent blacklist from the entire community if the first ban was appealed and the behaviour is repeated</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>&mdash;</p></div></div>
-        </article>
-        <article class="rule-card" data-category="community">
-          <header class="rule-card-header"><h2><span class="rule-number">30</span>No offensive or inappropriate structures</h2><span class="rule-category">Community</span></header>
-          <div class="rule-penalties"><div class="rule-penalty"><h3>1st offence</h3><p>Verbal warning and immediate removal of the structure</p></div><div class="rule-penalty"><h3>2nd offence</h3><p>31 day ban</p></div><div class="rule-penalty"><h3>3rd offence</h3><p>Permanent ban</p></div></div>
-        </article>
+      <div class="rules-table-wrap">
+        <table class="rules-table">
+          <thead><tr><th scope="col">Rule</th><th scope="col">Category</th><th scope="col">1st offence</th><th scope="col">2nd offence</th><th scope="col">3rd offence</th></tr></thead>
+          <tbody id="rulesTableBody">
+            <tr data-category="exploits"><th scope="row"><span class="rule-number">01</span>No hacked clients or unfair advantages</th><td><span class="rule-category">Exploits</span></td><td>30 day ban</td><td>Permanent ban</td><td>Permanent ban</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">02</span>No swearing at other players</th><td><span class="rule-category">Chat</span></td><td>30 minute mute</td><td>3 hour mute</td><td>1 day mute</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">03</span>No advertising other servers</th><td><span class="rule-category">Chat</span></td><td>6 month mute</td><td>12 month mute</td><td>Permanent mute</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">04</span>No light advertising (telling other server names)</th><td><span class="rule-category">Chat</span></td><td>12 hour mute</td><td>3 day mute</td><td>7 day ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">05</span>No asking staff for items</th><td><span class="rule-category">Community</span></td><td>Warning</td><td>1 hour mute</td><td>6 hour mute</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">06</span>No chat trolling (for example, fake free-rank messages)</th><td><span class="rule-category">Chat</span></td><td>1 hour mute</td><td>6 hour mute</td><td>1 day mute</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">07</span>No flooding the chat (up to 4 messages)</th><td><span class="rule-category">Chat</span></td><td>30 minute mute</td><td>1 hour mute</td><td>6 hour mute</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">08</span>No inappropriate behaviour</th><td><span class="rule-category">Community</span></td><td>14 day mute</td><td>31 day mute</td><td>Permanent mute</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">09</span>No discrimination</th><td><span class="rule-category">Community</span></td><td>7 day mute</td><td>14 day mute</td><td>31 day ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">10</span>No referencing tragic events</th><td><span class="rule-category">Community</span></td><td>1 day mute</td><td>7 day mute</td><td>14 day ban</td></tr>
+            <tr data-category="safety"><th scope="row"><span class="rule-number">11</span>No mute evading</th><td><span class="rule-category">Safety</span></td><td>3 day ban</td><td>7 day ban</td><td>14 day ban</td></tr>
+            <tr data-category="safety"><th scope="row"><span class="rule-number">12</span>No ban evading</th><td><span class="rule-category">Safety</span></td><td>Permanent ban</td><td>Permanent ban</td><td>Permanent ban</td></tr>
+            <tr data-category="gameplay"><th scope="row"><span class="rule-number">13</span>No teaming with or assisting hackers or rule breakers</th><td><span class="rule-category">Gameplay</span></td><td>14 day ban</td><td>30 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="gameplay"><th scope="row"><span class="rule-number">14</span>No interrupting 1v1s</th><td><span class="rule-category">Gameplay</span></td><td>Warning</td><td>30 minute ban</td><td>2 hour ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">15</span>No inappropriate usernames</th><td><span class="rule-category">Community</span></td><td>Permanent ban</td><td>&mdash;</td><td>&mdash;</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">16</span>No inappropriate skins</th><td><span class="rule-category">Community</span></td><td>Warning, kick, and request to change skin</td><td>14 day ban</td><td>31 day ban</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">17</span>No Discord links for other servers</th><td><span class="rule-category">Chat</span></td><td>7 day ban + 3 day mute</td><td>14 day ban + 17 day mute</td><td>Permanent ban + permanent mute</td></tr>
+            <tr data-category="exploits"><th scope="row"><span class="rule-number">18</span>No bug exploiting</th><td><span class="rule-category">Exploits</span></td><td>14 day ban</td><td>30 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">19</span>No threatening others</th><td><span class="rule-category">Community</span></td><td>7 day mute</td><td>14 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="chat"><th scope="row"><span class="rule-number">20</span>No advertising social media</th><td><span class="rule-category">Chat</span></td><td>6 hour mute</td><td>1 day mute</td><td>7 day ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">21</span>No using a disease or disability as an insult</th><td><span class="rule-category">Community</span></td><td>3 day mute</td><td>7 day mute</td><td>14 day ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">22</span>No general rudeness</th><td><span class="rule-category">Community</span></td><td>Warning</td><td>30 minute mute</td><td>6 hour mute</td></tr>
+            <tr data-category="safety"><th scope="row"><span class="rule-number">23</span>No doxxing others</th><td><span class="rule-category">Safety</span></td><td>Permanent ban; may be reported to local authorities if needed</td><td>Permanent ban; may be reported to local authorities if needed</td><td>Permanent ban; may be reported to local authorities if needed</td></tr>
+            <tr data-category="safety"><th scope="row"><span class="rule-number">24</span>No DDoS threats</th><td><span class="rule-category">Safety</span></td><td>Permanent IP ban (no appeal)</td><td>&mdash;</td><td>&mdash;</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">25</span>No harassment or sexual harassment</th><td><span class="rule-category">Community</span></td><td>Warning</td><td>31 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="gameplay"><th scope="row"><span class="rule-number">26</span>No running from 1v1s</th><td><span class="rule-category">Gameplay</span></td><td>Warning</td><td>7 day ban</td><td>31 day ban</td></tr>
+            <tr data-category="gameplay"><th scope="row"><span class="rule-number">27</span>No escaping the boundary or camping on barriers</th><td><span class="rule-category">Gameplay</span></td><td>Warning</td><td>90 day ban</td><td>Permanent ban</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">28</span>No inappropriate behaviour (no tolerance)</th><td><span class="rule-category">Community</span></td><td>31 day mute</td><td>Permanent mute</td><td>Permanent ban</td></tr>
+            <tr data-category="safety"><th scope="row"><span class="rule-number">29</span>No sexual threats<span class="rule-description">Sexually threatening or intimidating another person is prohibited, even when claimed as a joke. Under applicable UAE cybercrime laws, violations are treated with utmost severity and may result in a formal police report.</span></th><td><span class="rule-category">Safety</span></td><td>Permanent ban</td><td>Permanent blacklist from the entire community if the first ban was appealed and the behaviour is repeated</td><td>&mdash;</td></tr>
+            <tr data-category="community"><th scope="row"><span class="rule-number">30</span>No offensive or inappropriate structures</th><td><span class="rule-category">Community</span></td><td>Verbal warning and immediate removal of the structure</td><td>31 day ban</td><td>Permanent ban</td></tr>
+          </tbody>
+        </table>
       </div>
       <p class="rules-note">For rule 28, a successful appeal of a second offence does not erase the offence. A later offence of the same nature is treated as the third offence and results in a permanent ban.</p>
 
@@ -292,7 +249,7 @@
   <script>
     const ruleSearch = document.getElementById('ruleSearch');
     const ruleCategory = document.getElementById('ruleCategory');
-    const ruleCards = Array.from(document.querySelectorAll('#rulesGrid .rule-card'));
+    const ruleRows = Array.from(document.querySelectorAll('#rulesTableBody tr'));
     const rulesCount = document.getElementById('rulesCount');
 
     function filterRules() {
@@ -300,14 +257,14 @@
       const category = ruleCategory.value;
       let visibleCount = 0;
 
-      for (const card of ruleCards) {
-        const matchesQuery = card.textContent.toLocaleLowerCase().includes(query);
-        const matchesCategory = category === 'all' || card.dataset.category === category;
-        card.hidden = !matchesQuery || !matchesCategory;
-        if (!card.hidden) visibleCount += 1;
+      for (const row of ruleRows) {
+        const matchesQuery = row.textContent.toLocaleLowerCase().includes(query);
+        const matchesCategory = category === 'all' || row.dataset.category === category;
+        row.hidden = !matchesQuery || !matchesCategory;
+        if (!row.hidden) visibleCount += 1;
       }
 
-      rulesCount.textContent = `Showing ${visibleCount} of ${ruleCards.length} rules`;
+      rulesCount.textContent = `Showing ${visibleCount} of ${ruleRows.length} rules`;
     }
 
     ruleSearch.addEventListener('input', filterRules);

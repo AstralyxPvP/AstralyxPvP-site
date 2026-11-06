@@ -41,11 +41,13 @@ test('vote page uses local provider logos where available', () => {
 });
 
 test('rules page lists all 30 rules with penalties for the latest additions', () => {
-  assert.equal((rulesHtml.match(/<article class="rule-card" data-category=/g) ?? []).length, 30);
-  assert.match(rulesHtml, /29<\/span>No sexual threats/);
+  assert.equal((rulesHtml.match(/<tr data-category=/g) ?? []).length, 30);
+  assert.match(rulesHtml, /<table class="rules-table">/);
+  assert.match(rulesHtml, /<th scope="col">1st offence<\/th>/);
+  assert.match(rulesHtml, /<span class="rule-number">29<\/span>No sexual threats/);
   assert.match(rulesHtml, /Permanent blacklist from the entire community/);
   assert.match(rulesHtml, /formal police report/);
-  assert.match(rulesHtml, /30<\/span>No offensive or inappropriate structures/);
+  assert.match(rulesHtml, /<span class="rule-number">30<\/span>No offensive or inappropriate structures/);
   assert.match(rulesHtml, /Verbal warning and immediate removal of the structure/);
   assert.match(rulesHtml, /31 day ban/);
   assert.match(rulesHtml, /Permanent ban/);
