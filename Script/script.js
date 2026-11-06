@@ -165,10 +165,12 @@
             // Adjust main content padding
             const nav = container.querySelector('nav');
             const mainContent = document.querySelector('.page-content');
+            function updateMainPadding() {
+                const navTop = Number.parseFloat(getComputedStyle(nav).top) || 0;
+                mainContent.style.paddingTop = `${Math.ceil(navTop + nav.offsetHeight + 24)}px`;
+            }
             if (nav && mainContent) {
-                requestAnimationFrame(() => {
-                    mainContent.style.paddingTop = `${nav.offsetHeight}px`;
-                });
+                requestAnimationFrame(updateMainPadding);
             }
 
             // Double-decker wrap detection
@@ -182,7 +184,7 @@
                     if (items[i].offsetTop > firstTop) { wrapped = true; break; }
                 }
                 if (nav) nav.classList.toggle('double-decker', wrapped);
-                if (mainContent && nav) mainContent.style.paddingTop = nav.offsetHeight + 'px';
+                if (mainContent && nav) updateMainPadding();
             }
             var ro = new ResizeObserver(checkWrap);
             if (navLinks) ro.observe(navLinks);

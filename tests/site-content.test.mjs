@@ -32,6 +32,11 @@ test('shared head loads the site script only once', () => {
   assert.equal((headHtml.match(/<script src="Script\/script\.js"><\/script>/g) ?? []).length, 1);
 });
 
+test('main content clears the fixed navbar including its top offset', () => {
+  assert.match(scriptJs, /parseFloat\(getComputedStyle\(nav\)\.top\)/);
+  assert.match(scriptJs, /Math\.ceil\(navTop \+ nav\.offsetHeight \+ 24\)/);
+});
+
 test('footer publishes all social profiles and the April 2026 founding date', () => {
   for (const link of [
     'https://www.youtube.com/@AstralyxPvP',
