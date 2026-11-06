@@ -28,6 +28,16 @@ test('vote page lists every official voting site', () => {
   }
 });
 
+test('vote page uses local provider logos where available', () => {
+  for (const logo of [
+    'Assets/vote-sites/topg.png',
+    'Assets/vote-sites/minecraft-server-list.ico',
+    'Assets/vote-sites/minecraft-buzz.png'
+  ]) {
+    assert.ok(voteHtml.includes(logo), `vote.html should use ${logo}`);
+  }
+});
+
 test('shared head loads the site script only once', () => {
   assert.equal((headHtml.match(/<script src="Script\/script\.js"><\/script>/g) ?? []).length, 1);
 });
