@@ -13,6 +13,7 @@ const sitemapXml = await read('sitemap.xml');
 const llmsTxt = await read('llms.txt');
 const termsHtml = await read('terms.html');
 const privacyHtml = await read('privacy.html');
+const rulesHtml = await read('rules.html');
 
 const voteLinks = [
   'https://topg.org/minecraft-servers/server-687834',
@@ -31,11 +32,24 @@ test('vote page lists every official voting site', () => {
 test('vote page uses local provider logos where available', () => {
   for (const logo of [
     'Assets/vote-sites/topg.png',
-    'Assets/vote-sites/minecraft-server-list.ico',
-    'Assets/vote-sites/minecraft-buzz.png'
+    'Assets/vote-sites/minecraft-server-list.png',
+    'Assets/vote-sites/minecraft-buzz.png',
+    'Assets/vote-sites/minecraft-serverlist.png'
   ]) {
     assert.ok(voteHtml.includes(logo), `vote.html should use ${logo}`);
   }
+});
+
+test('rules page lists all 30 rules with penalties for the latest additions', () => {
+  assert.equal((rulesHtml.match(/<article class="rule-card" data-category=/g) ?? []).length, 30);
+  assert.match(rulesHtml, /29<\/span>No sexual threats/);
+  assert.match(rulesHtml, /Permanent blacklist from the entire community/);
+  assert.match(rulesHtml, /formal police report/);
+  assert.match(rulesHtml, /30<\/span>No offensive or inappropriate structures/);
+  assert.match(rulesHtml, /Verbal warning and immediate removal of the structure/);
+  assert.match(rulesHtml, /31 day ban/);
+  assert.match(rulesHtml, /Permanent ban/);
+  assert.match(rulesHtml, /Showing 30 rules/);
 });
 
 test('shared head loads the site script only once', () => {
