@@ -36,6 +36,206 @@
   <meta property="og:url" content="astralyxpvp.org" />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="Style/style.css">
+  <style>
+    .vote-page {
+      --vote-line: rgba(255, 215, 0, 0.14);
+      padding: calc(var(--nav-h) + 52px) 5% 76px;
+      background:
+        radial-gradient(ellipse at 50% 0, rgba(200, 16, 46, 0.2), transparent 58%),
+        radial-gradient(ellipse at 50% 36%, rgba(255, 215, 0, 0.055), transparent 65%);
+    }
+
+    .vote-wrap { width: min(100%, 1040px); margin: 0 auto; }
+    .vote-hero { margin: 0 auto 34px; text-align: center; }
+    .vote-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--gold);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .vote-page .section-title {
+      margin: 0 0 24px;
+      font-size: clamp(2.2rem, 5.5vw, 4rem);
+      line-height: 1;
+    }
+    .vote-page .section-title::before { display: none; }
+    .vote-page .section-title::after { bottom: -13px; }
+    .vote-intro {
+      max-width: 580px;
+      margin: 0 auto;
+      color: var(--muted);
+      font-size: clamp(0.98rem, 2vw, 1.1rem);
+      line-height: 1.65;
+    }
+
+    .vote-how {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-bottom: 26px;
+      overflow: hidden;
+      border: 1px solid var(--vote-line);
+      border-radius: 16px;
+      background: rgba(9, 5, 6, 0.78);
+    }
+    .vote-how-step {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-height: 76px;
+      padding: 14px 20px;
+    }
+    .vote-how-step + .vote-how-step { border-left: 1px solid var(--vote-line); }
+    .vote-step-number {
+      display: grid;
+      flex: 0 0 34px;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      border: 1px solid rgba(255, 215, 0, 0.32);
+      border-radius: 50%;
+      color: var(--gold);
+      font-size: 0.82rem;
+      font-weight: 800;
+    }
+    .vote-how-step strong { display: block; color: var(--text); font-size: 0.88rem; }
+    .vote-how-step span:last-child { color: var(--muted); font-size: 0.78rem; line-height: 1.4; }
+
+    .vote-section-heading {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 16px;
+      margin: 0 0 14px;
+      text-align: left;
+    }
+    .vote-section-heading h2 {
+      margin: 0;
+      color: var(--text);
+      font-family: var(--font-display);
+      font-size: clamp(1.25rem, 3vw, 1.65rem);
+    }
+    .vote-section-heading p { margin: 0; color: var(--muted); font-size: 0.84rem; }
+    .vote-cards { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+    .vote-card {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 0;
+      min-height: 112px;
+      padding: 18px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 110, 70, 0.25);
+      border-radius: 15px;
+      background: linear-gradient(130deg, rgba(77, 18, 19, 0.56), rgba(12, 8, 8, 0.92) 68%);
+      color: var(--text);
+      text-align: left;
+      text-decoration: none;
+      transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+    }
+    .vote-card:hover {
+      transform: translateY(-3px);
+      border-color: rgba(255, 215, 0, 0.58);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3), 0 0 24px rgba(200, 16, 46, 0.12);
+    }
+    .vote-card:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+    .vote-card-icon {
+      display: grid;
+      flex: 0 0 48px;
+      width: 48px;
+      height: 48px;
+      place-items: center;
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 13px;
+      background: rgba(255, 215, 0, 0.08);
+      color: var(--gold);
+      font-size: 1.15rem;
+    }
+    .vote-card-copy { flex: 1; min-width: 0; }
+    .vote-card-copy strong {
+      display: block;
+      margin-bottom: 5px;
+      overflow-wrap: anywhere;
+      font-size: 1rem;
+      font-weight: 750;
+    }
+    .vote-card-copy span { display: block; color: var(--muted); font-size: 0.78rem; }
+    .vote-card-action {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 9px;
+      background: linear-gradient(115deg, #ffd700, #ffae00);
+      color: #160c00;
+      font-size: 0.76rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+
+    .vote-rewards {
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 22px;
+      margin-top: 26px;
+      padding: 22px;
+      border: 1px solid var(--vote-line);
+      border-radius: 15px;
+      background: rgba(9, 5, 6, 0.72);
+      text-align: left;
+    }
+    .vote-rewards h2 {
+      margin: 0 0 8px;
+      color: var(--gold);
+      font-family: var(--font-display);
+      font-size: 1.04rem;
+    }
+    .vote-rewards p { margin: 0; color: var(--muted); font-size: 0.86rem; line-height: 1.6; }
+    .vote-reward-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 14px; align-content: center; }
+    .vote-reward-item { display: flex; align-items: center; gap: 9px; color: var(--text); font-size: 0.82rem; }
+    .vote-reward-item i { width: 16px; color: var(--gold); text-align: center; }
+    .vote-help {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 17px 0 0;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .vote-help a { color: var(--gold); text-underline-offset: 3px; }
+
+    @media (max-width: 700px) {
+      .vote-page { padding: calc(var(--nav-h) + 35px) 5% 52px; }
+      .vote-hero { margin-bottom: 26px; }
+      .vote-how { grid-template-columns: 1fr; }
+      .vote-how-step { min-height: 64px; padding: 11px 15px; }
+      .vote-how-step + .vote-how-step { border-top: 1px solid var(--vote-line); border-left: 0; }
+      .vote-section-heading { align-items: start; flex-direction: column; gap: 4px; }
+      .vote-cards { grid-template-columns: 1fr; gap: 11px; }
+      .vote-card { min-height: 96px; padding: 14px; gap: 12px; }
+      .vote-card-icon { flex-basis: 42px; width: 42px; height: 42px; }
+      .vote-card-action { padding: 9px 10px; font-size: 0.72rem; }
+      .vote-rewards { grid-template-columns: 1fr; gap: 17px; padding: 18px; }
+    }
+    @media (max-width: 390px) {
+      .vote-card { flex-wrap: wrap; }
+      .vote-card-action { margin-left: 54px; }
+      .vote-reward-list { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .vote-card { transition: none; }
+      .vote-card:hover { transform: none; }
+    }
+  </style>
   <script>
     async function loadHead() {
       try {
@@ -69,60 +269,74 @@
 
   <div id="navbar-placeholder"></div>
 
-  <div class="page-content">
-    <section class="lb-section">
-      <h1 class="section-title">Support <span class="text-primary">AstralyxPvP</span></h1>
-      <p class="lb-subtitle">Vote daily to earn rewards and help us grow.</p>
+  <main class="page-content vote-page">
+    <div class="vote-wrap">
+      <header class="vote-hero">
+        <p class="vote-eyebrow"><i class="fa-solid fa-heart"></i> Support the server</p>
+        <h1 class="section-title">Your vote. <span class="text-primary">Our next level.</span></h1>
+        <p class="vote-intro">Help more players find AstralyxPvP. Vote on the server lists below, then join in-game to claim your rewards.</p>
+      </header>
 
-      <div class="lb-panel p-0 overflow-hidden">
-        <div class="vote-grid">
-          <div class="vote-panel-side">
-            <h3 class="vote-heading">Daily Rewards</h3>
-            <ul class="vote-list">
-              <li>
-                <i class="fa-solid fa-coins"></i>
-                <span>Earn <strong class="text-white">coins, keys, and exclusive cosmetics</strong> every time you vote.</span>
-              </li>
-              <li>
-                <i class="fa-solid fa-gift"></i>
-                <span>Open <strong class="text-white">vote crates</strong> for rare gear, rank XP, and seasonal items.</span>
-              </li>
-              <li>
-                <i class="fa-solid fa-fire"></i>
-                <span>Maintain <strong class="text-white">vote streaks</strong> — longer streaks unlock better rewards.</span>
-              </li>
-              <li>
-                <i class="fa-solid fa-trophy"></i>
-                <span>Compete for <strong class="text-white">top voter</strong> recognition in Discord each month.</span>
-              </li>
-            </ul>
-          </div>
-          <div class="vote-links-col">
-            <h3 class="vote-heading">Voting Links</h3>
-            <a class="vote-link" href="https://topg.org/minecraft-servers/server-687834" target="_blank" rel="noopener noreferrer">
-              <span><i class="fa-solid fa-ranking-star"></i> TopG</span>
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
-            <a class="vote-link" href="https://minecraft-server-list.com/server/524655/" target="_blank" rel="noopener noreferrer">
-              <span><i class="fa-solid fa-list-check"></i> Minecraft-Server-List</span>
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
-            <a class="vote-link" href="https://minecraft.buzz/server/astralyxpvp" target="_blank" rel="noopener noreferrer">
-              <span><i class="fa-solid fa-bolt"></i> Minecraft.buzz</span>
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
-            <a class="vote-link" href="https://minecraft-serverlist.com/server/7063" target="_blank" rel="noopener noreferrer">
-              <span><i class="fa-solid fa-trophy"></i> Minecraft Serverlist</span>
-              <i class="fa-solid fa-arrow-up-right-from-square"></i>
-            </a>
-            <div class="vote-disclaimer border-top">
-              After voting, join the server and claim your rewards in-game. If a vote does not register, contact staff in Discord with proof.
-            </div>
-          </div>
+      <div class="vote-how" aria-label="How voting works">
+        <div class="vote-how-step">
+          <span class="vote-step-number">1</span>
+          <span><strong>Choose a listing</strong><span>Open any vote site below</span></span>
+        </div>
+        <div class="vote-how-step">
+          <span class="vote-step-number">2</span>
+          <span><strong>Submit your vote</strong><span>Follow that site's instructions</span></span>
+        </div>
+        <div class="vote-how-step">
+          <span class="vote-step-number">3</span>
+          <span><strong>Claim in-game</strong><span>Join AstralyxPvP for rewards</span></span>
         </div>
       </div>
-    </section>
-  </div>
+
+      <section aria-labelledby="vote-sites-title">
+        <div class="vote-section-heading">
+          <h2 id="vote-sites-title">Pick a vote site</h2>
+          <p>Every vote helps new players discover the server.</p>
+        </div>
+        <div class="vote-cards">
+          <a class="vote-card" href="https://topg.org/minecraft-servers/server-687834" target="_blank" rel="noopener noreferrer">
+            <span class="vote-card-icon"><i class="fa-solid fa-ranking-star"></i></span>
+            <span class="vote-card-copy"><strong>TopG</strong><span>Vote for AstralyxPvP on TopG</span></span>
+            <span class="vote-card-action">Vote now <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+          <a class="vote-card" href="https://minecraft-server-list.com/server/524655/" target="_blank" rel="noopener noreferrer">
+            <span class="vote-card-icon"><i class="fa-solid fa-list-check"></i></span>
+            <span class="vote-card-copy"><strong>Minecraft Server List</strong><span>Find us on Minecraft-Server-List</span></span>
+            <span class="vote-card-action">Vote now <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+          <a class="vote-card" href="https://minecraft.buzz/server/astralyxpvp" target="_blank" rel="noopener noreferrer">
+            <span class="vote-card-icon"><i class="fa-solid fa-bolt"></i></span>
+            <span class="vote-card-copy"><strong>Minecraft.buzz</strong><span>Support us on Minecraft.buzz</span></span>
+            <span class="vote-card-action">Vote now <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+          <a class="vote-card" href="https://minecraft-serverlist.com/server/7063" target="_blank" rel="noopener noreferrer">
+            <span class="vote-card-icon"><i class="fa-solid fa-trophy"></i></span>
+            <span class="vote-card-copy"><strong>Minecraft Serverlist</strong><span>Vote for us on Serverlist</span></span>
+            <span class="vote-card-action">Vote now <i class="fa-solid fa-arrow-up-right-from-square" aria-hidden="true"></i></span>
+          </a>
+        </div>
+      </section>
+
+      <section class="vote-rewards" aria-labelledby="vote-rewards-title">
+        <div>
+          <h2 id="vote-rewards-title">Good things come to voters</h2>
+          <p>Voting can earn in-game coins, keys, cosmetics, and access to vote crates. Keep your streak going and look out for monthly top-voter recognition in Discord.</p>
+        </div>
+        <div class="vote-reward-list">
+          <span class="vote-reward-item"><i class="fa-solid fa-coins"></i> Coins &amp; keys</span>
+          <span class="vote-reward-item"><i class="fa-solid fa-box-open"></i> Vote crates</span>
+          <span class="vote-reward-item"><i class="fa-solid fa-wand-sparkles"></i> Cosmetics</span>
+          <span class="vote-reward-item"><i class="fa-solid fa-fire"></i> Vote streaks</span>
+        </div>
+      </section>
+
+      <p class="vote-help">Vote not credited? Join our <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener noreferrer">Discord</a> and contact staff with proof of your vote.</p>
+    </div>
+  </main>
   <div>
     <div class="context-menu" id="contextMenu" aria-hidden="true">
     <button type="button" data-menu-copy><i class="fa-solid fa-copy"></i>Copy server IP</button>

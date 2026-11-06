@@ -7,6 +7,7 @@ const read = file => readFile(new URL(`../${file}`, import.meta.url), 'utf8');
 const indexHtml = await read('index.html');
 const voteHtml = await read('vote.html');
 const footerHtml = await read('Assets/footer.html');
+const headHtml = await read('Assets/head.html');
 const scriptJs = await read('Script/script.js');
 const sitemapXml = await read('sitemap.xml');
 const llmsTxt = await read('llms.txt');
@@ -25,6 +26,10 @@ test('vote page lists every official voting site', () => {
     assert.ok(voteHtml.includes(link), `vote.html should link to ${link}`);
     assert.ok(llmsTxt.includes(link), `llms.txt should link to ${link}`);
   }
+});
+
+test('shared head loads the site script only once', () => {
+  assert.equal((headHtml.match(/<script src="Script\/script\.js"><\/script>/g) ?? []).length, 1);
 });
 
 test('footer publishes all social profiles and the April 2026 founding date', () => {
