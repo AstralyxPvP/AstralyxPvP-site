@@ -40,6 +40,11 @@ test('vote page uses local provider logos where available', () => {
   }
 });
 
+test('vote page lists only Cosmetics and Vote Keys as rewards', () => {
+  assert.match(voteHtml, /Voting only gives in-game <strong>Cosmetics<\/strong> and <strong>Vote Keys<\/strong>/);
+  assert.doesNotMatch(voteHtml, /Coins &amp; keys|Vote crates|Vote streaks/);
+});
+
 test('rules page lists all 30 rules with penalties for the latest additions', () => {
   assert.equal((rulesHtml.match(/<tr data-category=/g) ?? []).length, 30);
   assert.match(rulesHtml, /<table class="rules-table">/);

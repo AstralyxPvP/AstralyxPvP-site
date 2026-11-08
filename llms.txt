@@ -1,6 +1,6 @@
 # AstralyxPvP
 
-> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote crates, PvP bots, and an active Discord community. Join on `play.astralyxpvp.org`.
+> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote keys, PvP bots, and an active Discord community. Join on `play.astralyxpvp.org`.
 
 ## Server Info
 - Java IP: play.astralyxpvp.org
@@ -22,7 +22,7 @@ Every kill and death in FFA and 1v1 arenas updates your rating through the custo
 - SWORDFFA (sword FFA arena)
 - 1v1 arenas
 - PvP bots in supported arenas, including Crystal PvP
-- Vote crates and seasonal rewards
+- Vote keys and cosmetics
 
 ## Socials & Website
 - Website: https://astralyxpvp.org/
