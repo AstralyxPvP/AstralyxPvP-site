@@ -68,7 +68,7 @@
         "name": "Which Minecraft version does the server support?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Java players can join at play.astralyxpvp.org. Bedrock players can join at bedrock.astralyxpvp.org on port 8167."
+          "text": "Java players can join at play.astralyxpvp.org with Minecraft Java Edition 1.9 or newer."
         }
       },
       {
@@ -84,7 +84,7 @@
         "name": "What happened to old domains like java.astralyxpvp.int.yt and tunnel links?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "java.astralyxpvp.int.yt, none-subscribe.gl.joinmc.link, and stammer-affilated.tun.ply.gg all belonged to AstralyxPvP. They were addresses for older AstralyxPvP servers and are now deprecated, so they will be shut down. Use play.astralyxpvp.org for Java and bedrock.astralyxpvp.org on port 8167 for Bedrock."
+          "text": "java.astralyxpvp.int.yt, none-subscribe.gl.joinmc.link, and stammer-affilated.tun.ply.gg all belonged to AstralyxPvP. They were addresses for older AstralyxPvP servers and are now deprecated, so they will be shut down. Use play.astralyxpvp.org to join."
         }
       },
       {
@@ -92,7 +92,7 @@
         "name": "How do I join the server?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Click Join Server, choose Java or Bedrock, then add the copied address in Minecraft. Java players use play.astralyxpvp.org. Bedrock players use bedrock.astralyxpvp.org with port 8167."
+          "text": "Click Join Server, then add the copied address in Minecraft. Java players use play.astralyxpvp.org."
         }
       },
       {
@@ -169,8 +169,8 @@
           </div>
           <div class="hud-card bottom">
             <p class="hud-label">Join the server</p>
-            <p class="hud-value">Java + Bedrock</p>
-            <p class="hud-sub">Choose your edition with Join Server</p>
+            <p class="hud-value">Java 1.9+</p>
+            <p class="hud-sub">Copy the server address with Join Server</p>
           </div>
         </div>
         <div class="hero-text">
@@ -206,15 +206,15 @@
       <div class="join-dialog-content">
         <div class="join-dialog-heading">
           <div>
-            <p class="join-dialog-eyebrow">CHOOSE YOUR EDITION</p>
+            <p class="join-dialog-eyebrow">JAVA EDITION</p>
             <h2 id="joinServerTitle">Join AstralyxPvP</h2>
           </div>
-          <button class="join-dialog-close" type="button" aria-label="Close edition picker"
+          <button class="join-dialog-close" type="button" aria-label="Close server address dialog"
                   onclick="document.getElementById('joinServerDialog').close()">
             <i class="fa-solid fa-xmark" aria-hidden="true"></i>
           </button>
         </div>
-        <p class="join-dialog-intro">Select your Minecraft edition to copy the server address.</p>
+        <p class="join-dialog-intro">Copy the server address and add it in Minecraft.</p>
         <div class="join-options">
           <div class="join-option" data-edition="Java Edition">
             <button class="join-option-main" type="button" data-copy-server="play.astralyxpvp.org"
@@ -227,26 +227,8 @@
             </button>
             <span class="join-option-hint">Java 1.9+</span>
           </div>
-          <div class="join-option" data-edition="Bedrock Edition">
-            <button class="join-option-main" type="button" data-copy-server="bedrock.astralyxpvp.org"
-                    data-edition="Bedrock Edition" aria-label="Copy Bedrock Edition address bedrock.astralyxpvp.org">
-              <span class="join-option-top">
-                <span class="join-option-title"><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> Bedrock Edition</span>
-                <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
-              </span>
-              <code>bedrock.astralyxpvp.org</code>
-            </button>
-            <span class="join-option-hint">
-              <span>Port <strong>8167</strong></span>
-              <button class="join-port-copy-btn" type="button" data-copy-port="8167" title="Copy port only" aria-label="Copy Bedrock port 8167">
-                <i class="fa-regular fa-copy" aria-hidden="true"></i> Copy Port
-              </button>
-            </span>
-          </div>
         </div>
-        <p class="join-dialog-status" id="joinServerStatus" role="status" aria-live="polite">
-          Bedrock players: enter the address and port in their separate fields.
-        </p>
+        <p class="join-dialog-status" id="joinServerStatus" role="status" aria-live="polite"></p>
       </div>
     </dialog>
 
@@ -348,8 +330,8 @@
         <div class="step-card">
           <span class="step-number">01</span>
           <div class="step-icon"><i class="fa-solid fa-server"></i></div>
-          <h3>Choose your edition</h3>
-          <p>Click <strong>Join Server</strong> and choose Java or Bedrock. For Bedrock, enter port <strong>8167</strong> in the port field.</p>
+          <h3>Copy the server address</h3>
+          <p>Click <strong>Join Server</strong> to copy the Java Edition address, then paste it into Minecraft.</p>
         </div>
         <div class="step-card">
           <span class="step-number">02</span>
@@ -385,7 +367,7 @@
         <details class="faq-item">
           <summary>Which Minecraft version does the server support?</summary>
           <div class="faq-answer">
-            <p>Java Edition players can connect at <strong>play.astralyxpvp.org</strong>. Bedrock Edition players can connect at <strong>bedrock.astralyxpvp.org</strong> on port <strong>8167</strong>.</p>
+            <p>Java Edition players can connect at <strong>play.astralyxpvp.org</strong> using Minecraft Java Edition 1.9 or newer.</p>
           </div>
         </details>
         <details class="faq-item">
@@ -397,13 +379,13 @@
         <details class="faq-item">
           <summary>What happened to old domains like java.astralyxpvp.int.yt and tunnel links?</summary>
           <div class="faq-answer">
-            <p>All of those addresses — <code>java.astralyxpvp.int.yt</code>, <code>none-subscribe.gl.joinmc.link</code>, and <code>stammer-affilated.tun.ply.gg</code> — belonged to AstralyxPvP. They were addresses for our older servers and are now deprecated, so they will be shut down and should not be used. Always use our official addresses: <strong>play.astralyxpvp.org</strong> for Java Edition and <strong>bedrock.astralyxpvp.org</strong> (Port <strong>8167</strong>) for Bedrock Edition.</p>
+            <p>All of those addresses — <code>java.astralyxpvp.int.yt</code>, <code>none-subscribe.gl.joinmc.link</code>, and <code>stammer-affilated.tun.ply.gg</code> — belonged to AstralyxPvP. They were addresses for our older servers and are now deprecated, so they will be shut down and should not be used. Always use our official address: <strong>play.astralyxpvp.org</strong>.</p>
           </div>
         </details>
         <details class="faq-item">
           <summary>How do I join the server?</summary>
           <div class="faq-answer">
-            <p>Click <strong>Join Server</strong>, choose your Minecraft edition, then add the copied address in Minecraft. Bedrock players should also enter port <strong>8167</strong>.</p>
+            <p>Click <strong>Join Server</strong>, then add the copied address in Minecraft.</p>
           </div>
         </details>
         <details class="faq-item">

@@ -84,7 +84,6 @@ Explore the live platform directly at:
 Minecraft connection details:
 
 * **Java Edition:** `play.astralyxpvp.org`
-* **Bedrock Edition:** `bedrock.astralyxpvp.org`, port `8167`
 * **Discord invite:** [https://astralyxpvp.org/joindc](https://astralyxpvp.org/joindc)
 * **Service status:** [https://astralyxpvp.org/status](https://astralyxpvp.org/status)
 

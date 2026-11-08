@@ -1140,33 +1140,6 @@ a.hero-pill.discord-pill:hover {
   font-family: 'Fira Code', monospace;
 }
 
-.join-port-copy-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 3px 8px;
-  font-size: 0.72rem;
-  font-family: 'Fira Code', monospace;
-  color: var(--gold);
-  background: rgba(255, 215, 0, 0.08);
-  border: 1px solid rgba(255, 215, 0, 0.28);
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all var(--t-fast) ease;
-}
-
-.join-port-copy-btn:hover {
-  background: rgba(255, 215, 0, 0.16);
-  border-color: rgba(255, 215, 0, 0.55);
-  color: #fff;
-}
-
-.join-port-copy-btn.copied {
-  border-color: rgba(61, 220, 132, 0.7);
-  background: rgba(61, 220, 132, 0.2);
-  color: #a7f3d0;
-}
-
 .join-dialog-status {
   min-height: 1.35em;
   margin-top: 16px;

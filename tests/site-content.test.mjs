@@ -95,7 +95,7 @@ test('join picker markup never nests a button inside another button', () => {
     }
   }
   assert.equal(depth, 0, 'index.html has unmatched <button> tags');
-  assert.match(indexHtml, /data-copy-server="bedrock\.astralyxpvp\.org"[\s\S]*?<\/button>[\s\S]*?data-copy-port="8167"/);
+  assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org"/);
 });
 
 test('homepage FAQ explains hosting and legacy server addresses', () => {

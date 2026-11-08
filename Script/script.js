@@ -834,23 +834,6 @@ window.openJoinServerDialog = function() {
 document.addEventListener('click', async event => {
     if (!(event.target instanceof Element)) return;
 
-    const portBtn = event.target.closest('[data-copy-port]');
-    if (portBtn) {
-        event.stopPropagation();
-        const port = portBtn.dataset.copyPort;
-        const status = document.getElementById('joinServerStatus');
-        try {
-            await navigator.clipboard.writeText(port);
-            if (status) status.textContent = `Bedrock port ${port} copied.`;
-            portBtn.classList.add('copied');
-            setTimeout(() => portBtn.classList.remove('copied'), 1400);
-        } catch (error) {
-            console.error('Failed to copy port:', error);
-            if (status) status.textContent = `Copy failed. Manually enter port ${port}.`;
-        }
-        return;
-    }
-
     const option = event.target.closest('[data-copy-server]');
     if (!option) return;
 

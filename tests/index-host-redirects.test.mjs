@@ -49,9 +49,8 @@ test('Join Discord alias and clean status route are configured for Pages', () =>
   assert.match(redirects, /^\/status \/status\.html 200$/m);
 });
 
-test('Bedrock connection address and port are published', () => {
-  assert.match(indexHtml, /bedrock\.astralyxpvp\.org/);
-  assert.match(indexHtml, /8167/);
+test('Java connection address is published', () => {
+  assert.match(indexHtml, /play\.astralyxpvp\.org/);
 });
 
 test('Homepage advertises the PvP bots and Crystal PvP arena', () => {
@@ -59,10 +58,8 @@ test('Homepage advertises the PvP bots and Crystal PvP arena', () => {
   assert.match(indexHtml, /Crystal PvP/i);
 });
 
-test('Join Server opens an accessible Java and Bedrock edition picker', () => {
+test('Join Server opens an accessible Java address copier', () => {
   assert.match(indexHtml, /<button class="hero-btn"[^>]+aria-haspopup="dialog"[^>]+onclick="openJoinServerDialog\(\)"/);
   assert.match(indexHtml, /id="joinServerDialog"[^>]+aria-labelledby="joinServerTitle"/);
   assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org"[^>]+data-edition="Java Edition"/);
-  assert.match(indexHtml, /data-copy-server="bedrock\.astralyxpvp\.org"[^>]+data-edition="Bedrock Edition"/);
-  assert.match(indexHtml, /Port <strong>8167<\/strong>/);
 });
