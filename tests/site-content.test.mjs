@@ -87,6 +87,19 @@ test('footer last-updated link is populated from the GitHub commits API', () => 
   assert.match(scriptJs, /html_url/);
 });
 
+test('leaderboard displays full names for every gamemode', () => {
+  const labels = {
+    swordffa: 'Sword FFA',
+    macepvpffa: 'Mace PvP FFA',
+    nethpotffa: 'Netherite Pot FFA',
+    uhcffa: 'Lifesteal PvP FFA',
+    kothffa: 'Crystal PvP FFA'
+  };
+  for (const [key, label] of Object.entries(labels)) {
+    assert.ok(scriptJs.includes(`${key}: '${label}'`), `leaderboard should map ${key} to ${label}`);
+  }
+});
+
 test('join picker markup never nests a button inside another button', () => {
   const tagPattern = /<button\b[^>]*>|<\/button>/gi;
   let depth = 0;

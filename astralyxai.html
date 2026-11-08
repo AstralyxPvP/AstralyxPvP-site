@@ -575,6 +575,19 @@
     let activeSessionToken = null;
     const API_BASE = "https://api.astralyxpvp.workers.dev/api";
     const XP_LEADERBOARD_URL = "https://astralyx-xp-bot.indiancoder3.workers.dev/api/leaderboard";
+    const GAMEMODE_DISPLAY_NAMES = {
+      swordffa: 'Sword FFA',
+      macepvpffa: 'Mace PvP FFA',
+      nethpotffa: 'Netherite Pot FFA',
+      uhcffa: 'Lifesteal PvP FFA',
+      kothffa: 'Crystal PvP FFA'
+    };
+
+    function gamemodeDisplayName(name) {
+      const key = String(name || '').trim().toLowerCase();
+      if (GAMEMODE_DISPLAY_NAMES[key]) return GAMEMODE_DISPLAY_NAMES[key];
+      return key.replace(/(ffa|pvp|pot)/gi, ' $1').replace(/\s+/g, ' ').trim().toUpperCase();
+    }
 
     // Updated System Prompt keeping all original punishments/details with Multi-Query configurations
     // Enhanced System Prompt with Comprehensive Server Knowledge Base
@@ -634,7 +647,7 @@ If a user asks why they should play here:
 ## 5. Server Details
 
 - Connection IP: play.astralyxpvp.org
-- Leaderboard gamemodes: Sword FFA, Mace PvP FFA, Nether Pot FFA, UHC FFA, and KOTH FFA, plus a global XP leaderboard. This list is dynamic — always verify current gamemodes and standings with fetchAllLeaderboards before answering.
+- Leaderboard gamemodes: Sword FFA, Mace PvP FFA, Netherite Pot FFA, Lifesteal PvP FFA, and Crystal PvP FFA, plus a global XP leaderboard. This list is dynamic — always verify current gamemodes and standings with fetchAllLeaderboards before answering.
 - Maintenance and live service status: check current News, Forums, Discord announcements, and the live status tool; do not rely on static prompt state.
 - Discord account linking: Join server -> /linkaccount -> in Discord: /link <ingamename> <code>
 - Email setup is in progress. The main contact email is astralyxnetwork@gmail.com. Do not invent individual staff email addresses.
@@ -835,8 +848,8 @@ Owner > Co-Owner > Sr. Developer > Developer & Manager > Developer > Jr. Develop
         })
         .join(', ');
       return top
-        ? `[LIVE ${gamemode.toUpperCase()} LEADERBOARD: ${top}]`
-        : `[LIVE ${gamemode.toUpperCase()} LEADERBOARD: No records found]`;
+        ? `[LIVE ${gamemodeDisplayName(gamemode)} LEADERBOARD: ${top}]`
+        : `[LIVE ${gamemodeDisplayName(gamemode)} LEADERBOARD: No records found]`;
     }
 
     async function fetchGamemodes() {
@@ -882,7 +895,7 @@ Owner > Co-Owner > Sr. Developer > Developer & Manager > Developer > Jr. Develop
       );
       const eloResults = settled.map((result, index) => result.status === 'fulfilled'
         ? result.value
-        : `[LIVE ${gamemodes[index].toUpperCase()} LEADERBOARD: unavailable]`);
+        : `[LIVE ${gamemodeDisplayName(gamemodes[index])} LEADERBOARD: unavailable]`);
 
       let xpResult = '[LIVE GLOBAL XP LEADERBOARD: unavailable]';
       try {
@@ -891,7 +904,8 @@ Owner > Co-Owner > Sr. Developer > Developer & Manager > Developer > Jr. Develop
         console.error('XP leaderboard lookup failed:', error);
       }
 
-      return `[LIVE ALL LEADERBOARDS; current gamemodes: ${gamemodes.length ? gamemodes.join(', ') : 'none found'}; ${eloResults.join(' ')} ${xpResult}]`;
+      const gamemodeNames = gamemodes.map(gamemodeDisplayName);
+      return `[LIVE ALL LEADERBOARDS; current gamemodes: ${gamemodeNames.length ? gamemodeNames.join(', ') : 'none found'}; ${eloResults.join(' ')} ${xpResult}]`;
     }
 
     const FunctionRegistry = {

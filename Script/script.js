@@ -557,10 +557,19 @@
     let lbRequestId = 0;
 
     // Splits and cleans gamemode names (e.g. "swordffa" -> "SWORD FFA")
+    const GAMEMODE_LABELS = {
+        swordffa: 'Sword FFA',
+        macepvpffa: 'Mace PvP FFA',
+        nethpotffa: 'Netherite Pot FFA',
+        uhcffa: 'Lifesteal PvP FFA',
+        kothffa: 'Crystal PvP FFA'
+    };
+
     function formatGMLabel(name) {
         if (!name) return '';
-        let str = name.trim();
-        str = str.replace(/(ffa|pvp|pot)/gi, ' $1');
+        const key = name.trim().toLowerCase();
+        if (GAMEMODE_LABELS[key]) return GAMEMODE_LABELS[key];
+        let str = key.replace(/(ffa|pvp|pot)/gi, ' $1');
         return str.replace(/\s+/g, ' ').trim().toUpperCase();
     }
 

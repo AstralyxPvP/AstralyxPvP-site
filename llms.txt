@@ -19,9 +19,14 @@
 Every kill and death in FFA and 1v1 arenas updates your rating through the custom plugin. See the live leaderboard at https://astralyxpvp.org/leaderboard
 
 ## Game Modes
-- SWORDFFA (sword FFA arena)
+- Sword FFA
+- Mace PvP FFA
+- Netherite Pot FFA
+- Lifesteal PvP FFA
+- Crystal PvP FFA
 - 1v1 arenas
 - PvP bots in supported arenas, including Crystal PvP
+- Global XP leaderboard
 - Vote keys and cosmetics
 
 ## Socials & Website
