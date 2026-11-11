@@ -961,37 +961,97 @@ document.addEventListener('click', event => {
     if (dialog && event.target === dialog) dialog.close();
 });
 
-// Staff mail popup
-window.openStaffMailDialog = function(person) {
-    const dialog = document.getElementById('staffMailDialog');
-    if (!dialog || typeof dialog.showModal !== 'function') {
-        console.error('Staff mail dialog is unavailable.');
+// Per-person mail popup
+const PERSON_MAIL = {
+    frostrax: {
+        name: 'Frostrax',
+        role: 'Owner',
+        roleMail: 'owner@astralyxpvp.org',
+        personalMail: 'frostrax@astralyxpvp.org'
+    },
+    xcleaver: {
+        name: 'xCleaver',
+        role: 'Co-Owner',
+        roleMail: 'co-owner@astralyxpvp.org',
+        personalMail: 'xcleaver@astralyxpvp.org'
+    },
+    dreamlong: {
+        name: 'DreamLong',
+        role: 'Manager',
+        roleMail: 'manager@astralyxpvp.org',
+        personalMail: 'dreamlong@astralyxpvp.org'
+    },
+    indiancoder3: {
+        name: 'IndianCoder3',
+        role: 'Sr. Developer',
+        roleMail: 'seniordev@astralyxpvp.org',
+        personalMail: 'indiancoder3@astralyxpvp.org'
+    },
+    vox: {
+        name: 'Vox.Dev',
+        role: 'Developer',
+        roleMail: 'developer@astralyxpvp.org',
+        personalMail: 'vox@astralyxpvp.org'
+    },
+    r3nz: {
+        name: 'R3NZ',
+        role: 'Jr. Developer',
+        roleMail: 'juniordev@astralyxpvp.org',
+        personalMail: 'r3nz@astralyxpvp.org'
+    },
+    jailbreaksix1234: {
+        name: 'JailBreakSix1234',
+        role: 'Admin',
+        roleMail: 'admin@astralyxpvp.org',
+        personalMail: 'jailbreaksix1234@astralyxpvp.org'
+    }
+};
+
+window.openPersonMailDialog = function(person) {
+    const data = PERSON_MAIL[person];
+    const dialog = document.getElementById('personMailDialog');
+    if (!data || !dialog || typeof dialog.showModal !== 'function') {
+        console.error('Person mail dialog is unavailable.');
         return;
     }
-    const status = document.getElementById('staffMailStatus');
+
+    const title = document.getElementById('personMailTitle');
+    const roleLabel = document.getElementById('personMailRole');
+    const roleMail = document.getElementById('personRoleMail');
+    const personalMail = document.getElementById('personPersonalMail');
+    const roleButton = document.getElementById('personRoleMailCopy');
+    const personalButton = document.getElementById('personPersonalMailCopy');
+    const status = document.getElementById('personMailStatus');
+
+    if (title) title.textContent = data.name;
+    if (roleLabel) roleLabel.textContent = data.role.toUpperCase();
+    if (roleMail) roleMail.textContent = data.roleMail;
+    if (personalMail) personalMail.textContent = data.personalMail;
+    if (roleButton) {
+        roleButton.dataset.copyMail = data.roleMail;
+        roleButton.setAttribute('aria-label', `Copy ${data.name}'s role email ${data.roleMail}`);
+    }
+    if (personalButton) {
+        personalButton.dataset.copyMail = data.personalMail;
+        personalButton.setAttribute('aria-label', `Copy ${data.name}'s personal email ${data.personalMail}`);
+    }
     if (status) status.textContent = '';
     if (!dialog.open) dialog.showModal();
-    if (!person) return;
-    const row = dialog.querySelector(`[data-person="${person}"]`);
-    if (!row) return;
-    row.classList.add('highlighted');
-    row.scrollIntoView({ block: 'nearest' });
-    setTimeout(() => row.classList.remove('highlighted'), 1800);
 };
 
 document.addEventListener('click', async event => {
     if (!(event.target instanceof Element)) return;
 
-    const opener = event.target.closest('[data-open-staff-mail]');
+    const opener = event.target.closest('[data-person-mail]');
     if (opener) {
-        window.openStaffMailDialog(opener.dataset.openStaffMail || '');
+        window.openPersonMailDialog(opener.dataset.personMail);
         return;
     }
 
     const mail = event.target.closest('[data-copy-mail]');
     if (!mail) return;
 
-    const status = document.getElementById('staffMailStatus');
+    const status = document.getElementById('personMailStatus');
     try {
         await navigator.clipboard.writeText(mail.dataset.copyMail);
         if (status) status.textContent = `${mail.dataset.copyMail} copied.`;
@@ -999,13 +1059,13 @@ document.addEventListener('click', async event => {
         card.classList.add('copied');
         setTimeout(() => card.classList.remove('copied'), 1400);
     } catch (error) {
-        console.error('Failed to copy staff email:', error);
+        console.error('Failed to copy email:', error);
         if (status) status.textContent = 'Copy failed. Select the address and copy it manually.';
     }
 });
 
 document.addEventListener('click', event => {
-    const dialog = document.getElementById('staffMailDialog');
+    const dialog = document.getElementById('personMailDialog');
     if (dialog && event.target === dialog) dialog.close();
 });
 

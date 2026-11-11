@@ -134,7 +134,7 @@ test('homepage FAQ publishes the correct server IP and port', () => {
 test('contact page uses info@ for general contact and keeps personal mail in the popup', () => {
   assert.match(contactHtml, /mailto:info@astralyxpvp\.org/);
   assert.doesNotMatch(contactHtml, /sign in at/i);
-  for (const group of ['info@', 'owner@', 'co-owner@', 'developer@', 'juniordev@', 'management@', 'admin@']) {
+  for (const group of ['info@', 'owner@', 'co-owner@', 'developer@', 'seniordev@', 'juniordev@', 'manager@', 'management@', 'admin@']) {
     assert.ok(contactHtml.includes(`${group}astralyxpvp.org`), `contact page should list ${group}astralyxpvp.org`);
   }
   const emailCard = contactHtml.slice(
@@ -142,10 +142,22 @@ test('contact page uses info@ for general contact and keeps personal mail in the
     contactHtml.indexOf('<div class="team-section-title"')
   );
   assert.doesNotMatch(emailCard, /vox@astralyxpvp\.org|r3nz@astralyxpvp\.org|jailbreaksix1234@astralyxpvp\.org/);
-  assert.match(contactHtml, /id="staffMailDialog"/);
-  assert.match(contactHtml, /data-open-staff-mail/);
-  assert.match(contactHtml, /Owner, Frostrax/);
-  assert.match(contactHtml, /Co-Owner, xCleaver/);
+  assert.match(contactHtml, /id="personMailDialog"/);
+  assert.match(contactHtml, /data-person-mail/);
+  assert.doesNotMatch(contactHtml, /data-open-staff-mail/);
+  assert.doesNotMatch(contactHtml, /<button[^>]*>\s*<i class="fa-solid fa-envelope"><\/i> Staff Mail/);
+  for (const pair of [
+    ['owner@astralyxpvp.org', 'frostrax@astralyxpvp.org'],
+    ['co-owner@astralyxpvp.org', 'xcleaver@astralyxpvp.org'],
+    ['manager@astralyxpvp.org', 'dreamlong@astralyxpvp.org'],
+    ['seniordev@astralyxpvp.org', 'indiancoder3@astralyxpvp.org'],
+    ['developer@astralyxpvp.org', 'vox@astralyxpvp.org'],
+    ['juniordev@astralyxpvp.org', 'r3nz@astralyxpvp.org'],
+    ['admin@astralyxpvp.org', 'jailbreaksix1234@astralyxpvp.org']
+  ]) {
+    assert.ok(scriptJs.includes(pair[0]), `script should contain role mail ${pair[0]}`);
+    assert.ok(scriptJs.includes(pair[1]), `script should contain personal mail ${pair[1]}`);
+  }
 });
 
 test('sitemap lists indexable pages and skips redirect/noindex pages', () => {
