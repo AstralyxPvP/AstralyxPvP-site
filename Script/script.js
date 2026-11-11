@@ -615,6 +615,14 @@
         xpButton.addEventListener('click', selectXP);
         container.appendChild(xpButton);
 
+        const killsButton = document.createElement('button');
+        killsButton.type = 'button';
+        killsButton.className = 'gm-btn';
+        killsButton.dataset.boardType = 'kills';
+        killsButton.innerHTML = '<span class="gm-label">KILLS</span><span class="gm-status">GLOBAL</span>';
+        killsButton.addEventListener('click', selectKills);
+        container.appendChild(killsButton);
+
         if (activeModes.length === 0) {
             selectXP();
             return;
@@ -658,6 +666,15 @@
         refreshLB();
     }
 
+    function selectKills() {
+        lbType = 'kills';
+        lbActive = null;
+        document.querySelectorAll('.gm-btn').forEach(b => {
+            b.classList.toggle('active', b.dataset.boardType === 'kills');
+        });
+        refreshLB();
+    }
+
     async function refreshLB() {
         const out = document.getElementById('lb');
         if (!out || (lbType === 'elo' && !lbActive)) return;
@@ -665,7 +682,12 @@
         const requestId = ++lbRequestId;
         const requestedType = lbType;
         const requestedMode = lbActive;
-        out.innerHTML = `<div class="lb-loading">Loading ${lbType === 'xp' ? 'XP leaderboard' : 'standings'}...</div>`;
+        const boardLabel = lbType === 'xp'
+            ? 'XP leaderboard'
+            : lbType === 'kills'
+                ? 'kills leaderboard'
+                : 'standings';
+        out.innerHTML = `<div class="lb-loading">Loading ${boardLabel}...</div>`;
 
         try {
             if (requestedType === 'xp') {
@@ -716,6 +738,65 @@
                 return;
             }
 
+            if (requestedType === 'kills') {
+                const res = await fetch(`${API_BASE}?leaderboard=kills`);
+                if (!res.ok) throw new Error(`Kills leaderboard request failed: ${res.status}`);
+                const json = await res.json();
+                if (requestId !== lbRequestId) return;
+
+                const players = Array.isArray(json) ? json : (json?.top100 || []);
+                if (!Array.isArray(players) || players.length === 0) {
+                    out.innerHTML = '<div class="lb-empty">No kill records yet. Play a round or let the server sync.</div>';
+                    return;
+                }
+
+                const rankClass = (i) => {
+                    if (i === 0) return 'rank gold';
+                    if (i === 1) return 'rank silver';
+                    if (i === 2) return 'rank bronze';
+                    return 'rank';
+                };
+
+                const rows = players.slice(0, 100).map((p, i) => {
+                    const kills = Number(p.kills) || 0;
+                    const deaths = Number(p.deaths) || 0;
+                    const kdr = (p.kdr !== undefined && p.kdr !== null)
+                        ? Number(p.kdr)
+                        : (deaths > 0 ? kills / deaths : kills);
+
+                    return `
+                      <tr>
+                        <td class="${rankClass(i)}">#${i + 1}</td>
+                        <td>
+                          <div class="player-cell">
+                            <img src="https://minotar.net/helm/${encodeURIComponent(p.username)}/24.png" alt="" loading="lazy">
+                            <span class="player-name">${escapeHtml(p.username)}</span>
+                          </div>
+                        </td>
+                        <td><span class="elo-pill">${kills.toLocaleString()}</span></td>
+                        <td>${deaths.toLocaleString()}</td>
+                        <td>${Number.isFinite(kdr) ? kdr.toFixed(2) : '—'}</td>
+                        <td>${escapeHtml(p.rank || 'Unranked')}</td>
+                      </tr>
+                    `;
+                }).join('');
+
+                out.innerHTML = `
+                  <div class="lb-meta-bar">
+                    <span class="lb-total-count">Tracked Players: <strong>${json?.total ?? players.length}</strong></span>
+                  </div>
+                  <table>
+                    <thead><tr><th>#</th><th>Player</th><th>Kills</th><th>Deaths</th><th>K/D</th><th>Title</th></tr></thead>
+                    <tbody>${rows}</tbody>
+                  </table>
+                `;
+
+                const u = new URL(location.href);
+                u.searchParams.delete('gamemode');
+                history.replaceState({}, '', u.toString());
+                return;
+            }
+
             const res = await fetch(`${API_BASE}?leaderboard=${encodeURIComponent(requestedMode)}`);
             const json = await res.json();
             if (requestId !== lbRequestId) return;
@@ -748,6 +829,9 @@
                     <th>Rank</th>
                     <th>Player</th>
                     <th>ELO</th>
+                    <th>Kills</th>
+                    <th>K/D</th>
+                    <th>Title</th>
                     <th>Last Active</th>
                   </tr>
                 </thead>
@@ -757,6 +841,11 @@
             players.slice(0, 100).forEach((p, i) => {
                 const numericElo = Number(p.elo);
                 const formattedElo = !isNaN(numericElo) ? numericElo.toLocaleString() : escapeHtml(p.elo);
+                const kills = Number(p.kills) || 0;
+                const deaths = Number(p.deaths) || 0;
+                const kdr = (p.kdr !== undefined && p.kdr !== null)
+                    ? Number(p.kdr)
+                    : (deaths > 0 ? kills / deaths : kills);
 
                 html += `
                   <tr>
@@ -768,7 +857,10 @@
                       </div>
                     </td>
                     <td><span class="elo-pill">${formattedElo}</span></td>
-                    <td class="last-seen-cell">${escapeHtml(formatTimeAgo(p.lastUpdate))}</td>
+                    <td>${kills.toLocaleString()}</td>
+                    <td>${Number.isFinite(kdr) ? kdr.toFixed(2) : '—'}</td>
+                    <td>${escapeHtml(p.rank || '—')}</td>
+                    <td class="last-seen-cell">${escapeHtml(formatTimeAgo(p.updatedAt || p.lastUpdate))}</td>
                   </tr>
                 `;
             });
