@@ -83,7 +83,7 @@ Explore the live platform directly at:
 
 Minecraft connection details:
 
-* **Java Edition:** `play.astralyxpvp.org`
+* **Java Edition:** `play.astralyxpvp.org:25565`
 * **Discord invite:** [https://astralyxpvp.org/joindc](https://astralyxpvp.org/joindc)
 * **Service status:** [https://astralyxpvp.org/status](https://astralyxpvp.org/status)
 
@@ -110,7 +110,7 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Main contact email:** [admin@astralyxpvp.org](mailto:admin@astralyxpvp.org). Staff mailboxes are hosted on AstralyxMail at [mail.astralyxpvp.org](https://mail.astralyxpvp.org).
+* 📧 **Main contact email:** [info@astralyxpvp.org](mailto:info@astralyxpvp.org). Staff mailboxes are hosted on AstralyxMail at [mail.astralyxpvp.org](https://mail.astralyxpvp.org).
 
 ### Status history monitor
 

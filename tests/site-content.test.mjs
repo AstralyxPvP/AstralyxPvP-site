@@ -14,6 +14,7 @@ const llmsTxt = await read('llms.txt');
 const termsHtml = await read('terms.html');
 const privacyHtml = await read('privacy.html');
 const rulesHtml = await read('rules.html');
+const contactHtml = await read('contact.html');
 
 const voteLinks = [
   'https://topg.org/minecraft-servers/server-687834',
@@ -113,7 +114,7 @@ test('join picker markup never nests a button inside another button', () => {
     }
   }
   assert.equal(depth, 0, 'index.html has unmatched <button> tags');
-  assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org"/);
+  assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org:25565"/);
 });
 
 test('homepage FAQ explains hosting and legacy server addresses', () => {
@@ -121,6 +122,30 @@ test('homepage FAQ explains hosting and legacy server addresses', () => {
   assert.match(indexHtml, /java\.astralyxpvp\.int\.yt/);
   assert.match(indexHtml, /none-subscribe\.gl\.joinmc\.link/);
   assert.match(indexHtml, /stammer-affilated\.tun\.ply\.gg/);
+});
+
+test('homepage FAQ publishes the correct server IP and port', () => {
+  assert.match(indexHtml, /What is the server IP\?/);
+  assert.match(indexHtml, /play\.astralyxpvp\.org:25565/);
+  assert.doesNotMatch(indexHtml, /25567/);
+  assert.doesNotMatch(scriptJs, /25567/);
+});
+
+test('contact page uses info@ for general contact and keeps personal mail in the popup', () => {
+  assert.match(contactHtml, /mailto:info@astralyxpvp\.org/);
+  assert.doesNotMatch(contactHtml, /sign in at/i);
+  for (const group of ['info@', 'owner@', 'co-owner@', 'developer@', 'juniordev@', 'management@', 'admin@']) {
+    assert.ok(contactHtml.includes(`${group}astralyxpvp.org`), `contact page should list ${group}astralyxpvp.org`);
+  }
+  const emailCard = contactHtml.slice(
+    contactHtml.indexOf('<!-- Email Card -->'),
+    contactHtml.indexOf('<div class="team-section-title"')
+  );
+  assert.doesNotMatch(emailCard, /vox@astralyxpvp\.org|r3nz@astralyxpvp\.org|jailbreaksix1234@astralyxpvp\.org/);
+  assert.match(contactHtml, /id="staffMailDialog"/);
+  assert.match(contactHtml, /data-open-staff-mail/);
+  assert.match(contactHtml, /Owner, Frostrax/);
+  assert.match(contactHtml, /Co-Owner, xCleaver/);
 });
 
 test('sitemap lists indexable pages and skips redirect/noindex pages', () => {
@@ -147,7 +172,7 @@ test('legal pages carry the current terms and privacy policy', () => {
   for (const html of [termsHtml, privacyHtml]) {
     assert.match(html, /Last Updated: 5 November 2026/);
     assert.match(html, /NebulaGames/);
-    assert.match(html, /admin@astralyxpvp\.org/);
+    assert.match(html, /info@astralyxpvp\.org/);
   }
   assert.match(termsHtml, /unregistered community project/);
   assert.match(termsHtml, /International Legal Compliance &amp; Governing Law/);

@@ -1,9 +1,9 @@
 # AstralyxPvP
 
-> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote keys, PvP bots, and an active Discord community. Join on `play.astralyxpvp.org`.
+> AstralyxPvP is a free India-based Java 1.9+ FFA Minecraft PvP server with custom skill-based ELO, live leaderboards, vote keys, PvP bots, and an active Discord community. Join on `play.astralyxpvp.org:25565`.
 
 ## Server Info
-- Java IP: play.astralyxpvp.org
+- Java IP: play.astralyxpvp.org:25565
 - Versions: Minecraft Java 1.9 and above
 - Region: India-based, with the main server infrastructure in Europe. Dynamically selected proxies route traffic from our IP for low-latency pings in both India and Europe.
 - Founded: April 2026
@@ -12,7 +12,7 @@
 
 ## How to Join
 1. Click the Join Server button on the website, or copy the address below.
-2. Java: `play.astralyxpvp.org` — add it in Minecraft → Multiplayer → Add Server.
+2. Java: `play.astralyxpvp.org:25565` — add it in Minecraft → Multiplayer → Add Server.
 3. Paste the address and click Join.
 
 ## ELO & Leaderboard
@@ -52,8 +52,10 @@ Every kill and death in FFA and 1v1 arenas updates your rating through the custo
 
 ## Support
 - Discord: https://discord.gg/u8BFrpRwEg
-- Main contact email: admin@astralyxpvp.org
-- Staff email (AstralyxMail): https://mail.astralyxpvp.org — owner@, co-owner@, developer@, admin@, management@, vox@, r3nz@, jailbreaksix1234@ (all @astralyxpvp.org)
+- Main contact email: info@astralyxpvp.org
+- Group emails (all @astralyxpvp.org): info@, owner@, co-owner@, developer@, juniordev@, management@, admin@
+- Individual staff addresses are listed in the Staff Mail popup at https://astralyxpvp.org/contact
+- Staff email (AstralyxMail): https://mail.astralyxpvp.org
 - FAQ answers are on the home page: https://astralyxpvp.org/
 
 ## Legacy Addresses

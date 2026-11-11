@@ -13,27 +13,42 @@
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "GameServer",
-    "name": "AstralyxPvP",
-    "description": "An intense India-based 1.9+ FFA Minecraft PvP server tracking custom skill-based ELO standings.",
-    "url": "https://astralyxpvp.org",
-    "game": {
-      "@type": "VideoGame",
-      "name": "Minecraft",
-      "playMode": "MultiPlayer",
-      "gamePlatform": "PC game"
-    },
-    "playersOnline": {
-      "@type": "QuantitativeValue",
-      "description": "Active Minecraft players currently engaged in FFA and 1v1 arenas"
-    },
-    "serverStatus": "schema.org"
+    "@type": "ContactPage",
+    "name": "Contact AstralyxPvP",
+    "url": "https://astralyxpvp.org/contact",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "AstralyxPvP",
+      "url": "https://astralyxpvp.org",
+      "email": "info@astralyxpvp.org",
+      "contactPoint": [
+        {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "info@astralyxpvp.org",
+          "url": "https://astralyxpvp.org/contact",
+          "availableLanguage": ["English", "Hindi"]
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "technical support",
+          "email": "developer@astralyxpvp.org",
+          "url": "https://astralyxpvp.org/contact"
+        },
+        {
+          "@type": "ContactPoint",
+          "contactType": "management",
+          "email": "management@astralyxpvp.org",
+          "url": "https://astralyxpvp.org/contact"
+        }
+      ]
+    }
   }
   </script>
   <meta property="og:title" content="AstralyxPvP - Contact Us" />
   <meta property="og:description" content="Get in touch with AstralyxPvP — Discord, email, and more." />
-  <meta property="og:image" content="astralyxpvp.org/Assets/logo-compress.png" />
-  <meta property="og:url" content="astralyxpvp.org" />
+  <meta property="og:image" content="https://astralyxpvp.org/Assets/logo-compress.png" />
+  <meta property="og:url" content="https://astralyxpvp.org/contact" />
   <meta property="og:type" content="website" />
   <link rel="stylesheet" href="Style/style.css">
   <script>
@@ -305,7 +320,9 @@
       line-height: 1.4;
     }
 
-    .team-card a {
+    .team-card a,
+    .team-card button {
+      font-family: inherit;
       font-size: 0.78rem;
       color: var(--gold);
       text-decoration: none;
@@ -316,18 +333,12 @@
       border-radius: 999px;
       background: rgba(255, 215, 0, 0.08);
       border: 1px solid rgba(255, 215, 0, 0.15);
+      cursor: pointer;
       transition: background var(--t-fast) ease, color var(--t-fast) ease;
     }
 
-    .team-card a.text-link {
-      display: inline;
-      padding: 0;
-      border: none;
-      background: none;
-      text-decoration: underline;
-    }
-
-    .team-card a:hover {
+    .team-card a:hover,
+    .team-card button:hover {
       background: rgba(255, 215, 0, 0.18);
       color: #fff;
     }
@@ -436,6 +447,23 @@
 
     .join-list strong { color: var(--text); }
 
+    .staff-mail-dialog {
+      width: min(520px, calc(100vw - 32px));
+    }
+
+    .staff-mail-dialog .join-option-title {
+      font-size: 0.9rem;
+    }
+
+    .staff-mail-dialog .join-option code {
+      font-size: 0.8rem;
+    }
+
+    .staff-mail-dialog .join-option.highlighted {
+      border-color: rgba(255, 215, 0, 0.8);
+      box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.4), 0 10px 26px rgba(0, 0, 0, 0.3);
+    }
+
     @media (max-width: 860px) {
       .team-grid { max-width: 680px; }
     }
@@ -484,18 +512,24 @@
           </div>
           <div class="contact-card-body">
             <p><strong>General Inquiries</strong></p>
-            <p>Contact us at <a href="mailto:admin@astralyxpvp.org" class="text-accent">admin@astralyxpvp.org</a>.</p>
-            <p class="mt-10"><strong>Role-specific emails</strong> <span class="text-muted">(sign in at <a href="https://mail.astralyxpvp.org" target="_blank" rel="noopener" class="text-accent">mail.astralyxpvp.org</a>)</span></p>
+            <p>Contact us at <a href="mailto:info@astralyxpvp.org" class="text-accent">info@astralyxpvp.org</a>.</p>
+            <p class="mt-10"><strong>Group emails</strong></p>
             <ul class="contact-email-list">
+              <li><i class="fa-solid fa-circle-info"></i> <a href="mailto:info@astralyxpvp.org">info@astralyxpvp.org</a> <span>General</span></li>
               <li><i class="fa-solid fa-crown"></i> <a href="mailto:owner@astralyxpvp.org">owner@astralyxpvp.org</a> <span>Owner</span></li>
               <li><i class="fa-solid fa-star"></i> <a href="mailto:co-owner@astralyxpvp.org">co-owner@astralyxpvp.org</a> <span>Co-Owner</span></li>
               <li><i class="fa-solid fa-code"></i> <a href="mailto:developer@astralyxpvp.org">developer@astralyxpvp.org</a> <span>Developer</span></li>
-              <li><i class="fa-solid fa-user-shield"></i> <a href="mailto:admin@astralyxpvp.org">admin@astralyxpvp.org</a> <span>Admin</span></li>
+              <li><i class="fa-solid fa-code-branch"></i> <a href="mailto:juniordev@astralyxpvp.org">juniordev@astralyxpvp.org</a> <span>Jr. Developer</span></li>
               <li><i class="fa-solid fa-user-tie"></i> <a href="mailto:management@astralyxpvp.org">management@astralyxpvp.org</a> <span>Management</span></li>
-              <li><i class="fa-solid fa-code-branch"></i> <a href="mailto:vox@astralyxpvp.org">vox@astralyxpvp.org</a> <span>al13n (Voxy)</span></li>
-              <li><i class="fa-solid fa-code-branch"></i> <a href="mailto:r3nz@astralyxpvp.org">r3nz@astralyxpvp.org</a> <span>r3nz</span></li>
-              <li><i class="fa-solid fa-user-shield"></i> <a href="mailto:jailbreaksix1234@astralyxpvp.org">jailbreaksix1234@astralyxpvp.org</a> <span>jailbreaksix1234</span></li>
+              <li><i class="fa-solid fa-user-shield"></i> <a href="mailto:admin@astralyxpvp.org">admin@astralyxpvp.org</a> <span>Admin</span></li>
             </ul>
+            <p class="mt-18"><strong>Contact a team member directly</strong></p>
+            <p>Open staff mail to copy the personal address of a specific person.</p>
+            <div class="mt-18">
+              <button type="button" class="email-button" data-open-staff-mail>
+                <i class="fa-solid fa-envelope"></i> Staff Mail
+              </button>
+            </div>
           </div>
         </div>
 
@@ -505,58 +539,64 @@
             <img src="Assets/Frostrax-discord.png" alt="Frostrax" loading="lazy">
             <h3>Frostrax</h3>
             <p class="role">Owner</p>
-            <a href="https://discord.com/users/1280607539167236179" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-            <a href="mailto:owner@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+            <div class="team-links">
+              <a href="https://discord.com/users/1280607539167236179" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
+              <button type="button" data-open-staff-mail="frostrax"><i class="fa-solid fa-envelope"></i> Email</button>
+            </div>
           </div>
           <div class="team-card">
             <img src="Assets/xCleaver-discord.png" alt="xCleaver" loading="lazy">
             <h3>xCleaver</h3>
             <p class="role">Co-Owner</p>
-            <a href="https://discord.com/users/1351510631588696128" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-            <a href="mailto:co-owner@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+            <div class="team-links">
+              <a href="https://discord.com/users/1351510631588696128" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
+              <button type="button" data-open-staff-mail="xcleaver"><i class="fa-solid fa-envelope"></i> Email</button>
+            </div>
           </div>
           <div class="team-card">
             <img src="Assets/DreamLong.webp" alt="DreamLong" loading="lazy">
             <h3>DreamLong</h3>
-            <p class="role">Developer &amp; Manager</p>
+            <p class="role">Manager</p>
             <div class="team-links">
               <a href="https://discord.com/users/1266380385084772496" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-              <a href="mailto:developer@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+              <button type="button" data-open-staff-mail="dreamlong"><i class="fa-solid fa-envelope"></i> Email</button>
             </div>
           </div>
           <div class="team-card">
             <img src="Assets/IndianCoder3.webp" alt="IndianCoder3" loading="lazy">
             <h3>IndianCoder3</h3>
-            <p class="role">Sr. Developer | AI, Web, Discord</p>
+            <p class="role">Sr. Developer</p>
             <div class="team-links">
               <a href="https://discord.com/users/1513925512118931551" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-              <a href="mailto:developer@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+              <button type="button" data-open-staff-mail="indiancoder3"><i class="fa-solid fa-envelope"></i> Email</button>
             </div>
           </div>
           <div class="team-card">
-            <img src="Assets/Voxy.webp" alt="al13n" loading="lazy">
-            <h3>al13n</h3>
+            <img src="Assets/Voxy.webp" alt="Vox.Dev" loading="lazy">
+            <h3>Vox.Dev</h3>
             <p class="role">Developer</p>
             <div class="team-links">
               <a href="https://discord.com/users/1408720692752678965" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-              <a href="mailto:vox@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+              <button type="button" data-open-staff-mail="vox"><i class="fa-solid fa-envelope"></i> Email</button>
             </div>
           </div>
           <div class="team-card">
-            <img src="Assets/r3nz.webp" alt="r3nz" loading="lazy">
-            <h3>r3nz</h3>
+            <img src="Assets/r3nz.webp" alt="R3NZ" loading="lazy">
+            <h3>R3NZ</h3>
             <p class="role">Jr. Developer</p>
             <div class="team-links">
               <a href="https://discord.com/users/1249249592000905341" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-              <a href="mailto:r3nz@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+              <button type="button" data-open-staff-mail="r3nz"><i class="fa-solid fa-envelope"></i> Email</button>
             </div>
           </div>
           <div class="team-card">
-            <img src="Assets/Jailbreaksix-discord.png" alt="jailbreaksix1234" loading="lazy">
-            <h3>jailbreaksix1234</h3>
+            <img src="Assets/Jailbreaksix-discord.png" alt="JailBreakSix1234" loading="lazy">
+            <h3>JailBreakSix1234</h3>
             <p class="role">Admin</p>
-            <a href="https://discord.com/users/1111020795657994471" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
-            <a href="mailto:jailbreaksix1234@astralyxpvp.org" class="text-link"><i class="fa-solid fa-envelope"></i> Email</a>
+            <div class="team-links">
+              <a href="https://discord.com/users/1111020795657994471" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i> Discord</a>
+              <button type="button" data-open-staff-mail="jailbreaksix1234"><i class="fa-solid fa-envelope"></i> Email</button>
+            </div>
           </div>
         </div>
 
@@ -601,6 +641,95 @@
   </main>
 
 </div>
+
+  <dialog class="join-server-dialog staff-mail-dialog" id="staffMailDialog" aria-labelledby="staffMailTitle">
+    <div class="join-dialog-content">
+      <div class="join-dialog-heading">
+        <div>
+          <p class="join-dialog-eyebrow">DIRECT CONTACT</p>
+          <h2 id="staffMailTitle">Staff Mail</h2>
+        </div>
+        <button class="join-dialog-close" type="button" aria-label="Close staff mail dialog"
+                onclick="document.getElementById('staffMailDialog').close()">
+          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
+        </button>
+      </div>
+      <p class="join-dialog-intro">Tap a staff member's address to copy it.</p>
+      <div class="join-options">
+        <div class="join-option" data-person="frostrax">
+          <button class="join-option-main" type="button" data-copy-mail="frostrax@astralyxpvp.org"
+                  aria-label="Copy Frostrax's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-crown" aria-hidden="true"></i> Owner, Frostrax</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>frostrax@astralyxpvp.org</code>
+          </button>
+        </div>
+        <div class="join-option" data-person="xcleaver">
+          <button class="join-option-main" type="button" data-copy-mail="xcleaver@astralyxpvp.org"
+                  aria-label="Copy xCleaver's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-star" aria-hidden="true"></i> Co-Owner, xCleaver</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>xcleaver@astralyxpvp.org</code>
+          </button>
+        </div>
+        <div class="join-option" data-person="dreamlong">
+          <button class="join-option-main" type="button" data-copy-mail="dreamlong@astralyxpvp.org"
+                  aria-label="Copy DreamLong's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-user-tie" aria-hidden="true"></i> Manager, DreamLong</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>dreamlong@astralyxpvp.org</code>
+          </button>
+        </div>
+        <div class="join-option" data-person="indiancoder3">
+          <button class="join-option-main" type="button" data-copy-mail="indiancoder3@astralyxpvp.org"
+                  aria-label="Copy IndianCoder3's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-code" aria-hidden="true"></i> Sr. Developer, IndianCoder3</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>indiancoder3@astralyxpvp.org</code>
+          </button>
+        </div>
+        <div class="join-option" data-person="vox">
+          <button class="join-option-main" type="button" data-copy-mail="vox@astralyxpvp.org"
+                  aria-label="Copy Vox.Dev's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-code-branch" aria-hidden="true"></i> Developer, Vox.Dev</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>vox@astralyxpvp.org</code>
+          </button>
+        </div>
+        <div class="join-option" data-person="r3nz">
+          <button class="join-option-main" type="button" data-copy-mail="r3nz@astralyxpvp.org"
+                  aria-label="Copy R3NZ's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-code" aria-hidden="true"></i> Jr. Developer, R3NZ</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>r3nz@astralyxpvp.org</code>
+          </button>
+        </div>
+        <div class="join-option" data-person="jailbreaksix1234">
+          <button class="join-option-main" type="button" data-copy-mail="jailbreaksix1234@astralyxpvp.org"
+                  aria-label="Copy JailBreakSix1234's email address">
+            <span class="join-option-top">
+              <span class="join-option-title"><i class="fa-solid fa-user-shield" aria-hidden="true"></i> Admin, JailBreakSix1234</span>
+              <i class="fa-regular fa-copy join-option-copy" aria-hidden="true"></i>
+            </span>
+            <code>jailbreaksix1234@astralyxpvp.org</code>
+          </button>
+        </div>
+      </div>
+      <p class="join-dialog-status" id="staffMailStatus" role="status" aria-live="polite"></p>
+    </div>
+  </dialog>
 
   <div class="context-menu" id="contextMenu" aria-hidden="true">
     <button type="button" data-menu-copy><i class="fa-solid fa-copy"></i>Copy server IP</button>

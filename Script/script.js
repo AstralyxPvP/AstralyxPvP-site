@@ -1,6 +1,6 @@
 (async function() {
     const API_BASE = "https://api.astralyxpvp.workers.dev/api";
-    const IP = "play.astralyxpvp.org";
+    const IP = "play.astralyxpvp.org:25565";
 
     const escapeHtml = (s) => (s ?? '').toString().replace(/[&<>"']/g, c => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -917,7 +917,7 @@ function toggleChatDock() {
 
 // Clipboard IP Copy
 window.copyServerIP = function() {
-    const serverIP = "play.astralyxpvp.org";
+    const serverIP = "play.astralyxpvp.org:25565";
     navigator.clipboard.writeText(serverIP).catch(err => {
         console.error("Failed to copy IP:", err);
     });
@@ -958,6 +958,54 @@ document.addEventListener('click', async event => {
 
 document.addEventListener('click', event => {
     const dialog = document.getElementById('joinServerDialog');
+    if (dialog && event.target === dialog) dialog.close();
+});
+
+// Staff mail popup
+window.openStaffMailDialog = function(person) {
+    const dialog = document.getElementById('staffMailDialog');
+    if (!dialog || typeof dialog.showModal !== 'function') {
+        console.error('Staff mail dialog is unavailable.');
+        return;
+    }
+    const status = document.getElementById('staffMailStatus');
+    if (status) status.textContent = '';
+    if (!dialog.open) dialog.showModal();
+    if (!person) return;
+    const row = dialog.querySelector(`[data-person="${person}"]`);
+    if (!row) return;
+    row.classList.add('highlighted');
+    row.scrollIntoView({ block: 'nearest' });
+    setTimeout(() => row.classList.remove('highlighted'), 1800);
+};
+
+document.addEventListener('click', async event => {
+    if (!(event.target instanceof Element)) return;
+
+    const opener = event.target.closest('[data-open-staff-mail]');
+    if (opener) {
+        window.openStaffMailDialog(opener.dataset.openStaffMail || '');
+        return;
+    }
+
+    const mail = event.target.closest('[data-copy-mail]');
+    if (!mail) return;
+
+    const status = document.getElementById('staffMailStatus');
+    try {
+        await navigator.clipboard.writeText(mail.dataset.copyMail);
+        if (status) status.textContent = `${mail.dataset.copyMail} copied.`;
+        const card = mail.closest('.join-option') || mail;
+        card.classList.add('copied');
+        setTimeout(() => card.classList.remove('copied'), 1400);
+    } catch (error) {
+        console.error('Failed to copy staff email:', error);
+        if (status) status.textContent = 'Copy failed. Select the address and copy it manually.';
+    }
+});
+
+document.addEventListener('click', event => {
+    const dialog = document.getElementById('staffMailDialog');
     if (dialog && event.target === dialog) dialog.close();
 });
 
