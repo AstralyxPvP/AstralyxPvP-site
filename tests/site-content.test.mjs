@@ -15,6 +15,7 @@ const termsHtml = await read('terms.html');
 const privacyHtml = await read('privacy.html');
 const rulesHtml = await read('rules.html');
 const contactHtml = await read('contact.html');
+const notFoundHtml = await read('404.html');
 
 const voteLinks = [
   'https://topg.org/minecraft-servers/server-687834',
@@ -101,6 +102,12 @@ test('leaderboard displays full names for every gamemode', () => {
   }
 });
 
+test('leaderboard shows title values on XP, kills, and ELO boards', () => {
+  assert.match(scriptJs, /<th>Rank<\/th><th>Player<\/th><th>Level<\/th><th>XP<\/th><th>Title<\/th>/);
+  assert.match(scriptJs, /<th>#<\/th><th>Player<\/th><th>Kills<\/th><th>Deaths<\/th><th>K\/D<\/th><th>Title<\/th>/);
+  assert.match(scriptJs, /<th>ELO<\/th>\s*<th>Kills<\/th>\s*<th>Deaths<\/th>\s*<th>K\/D<\/th>\s*<th>Title<\/th>/);
+});
+
 test('join picker markup never nests a button inside another button', () => {
   const tagPattern = /<button\b[^>]*>|<\/button>/gi;
   let depth = 0;
@@ -127,8 +134,20 @@ test('homepage FAQ explains hosting and legacy server addresses', () => {
 test('homepage FAQ publishes the correct server IP and port', () => {
   assert.match(indexHtml, /What is the server IP\?/);
   assert.match(indexHtml, /play\.astralyxpvp\.org:25565/);
+  assert.match(indexHtml, /Please do not chase random ports — we use the 25565 port\./);
   assert.doesNotMatch(indexHtml, /25567/);
   assert.doesNotMatch(scriptJs, /25567/);
+});
+
+test('404 page is noindex and works from nested missing paths', () => {
+  assert.match(notFoundHtml, /<base href="\/">/);
+  assert.match(notFoundHtml, /<meta name="robots" content="noindex, follow" \/>/);
+  assert.match(notFoundHtml, /href="\/Style\/style\.css"/);
+  assert.match(notFoundHtml, /src="\/Script\/script\.js"/);
+  assert.match(notFoundHtml, /id="navbar-placeholder"/);
+  assert.match(notFoundHtml, /id="footer"/);
+  assert.match(notFoundHtml, /href="\/">/);
+  assert.doesNotMatch(notFoundHtml, /play\.astralyxpvp\.org:25565/);
 });
 
 test('contact page uses info@ for general contact and keeps personal mail in the popup', () => {

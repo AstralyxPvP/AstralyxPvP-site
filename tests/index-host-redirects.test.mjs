@@ -61,5 +61,5 @@ test('Homepage advertises the PvP bots and Crystal PvP arena', () => {
 test('Join Server opens an accessible Java address copier', () => {
   assert.match(indexHtml, /<button class="hero-btn"[^>]+aria-haspopup="dialog"[^>]+onclick="openJoinServerDialog\(\)"/);
   assert.match(indexHtml, /id="joinServerDialog"[^>]+aria-labelledby="joinServerTitle"/);
-  assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org"[^>]+data-edition="Java Edition"/);
+  assert.match(indexHtml, /data-copy-server="play\.astralyxpvp\.org:25565"[^>]+data-edition="Java Edition"/);
 });

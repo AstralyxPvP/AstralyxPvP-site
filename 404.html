@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found (404) | AstralyxPvP</title>
+  <meta name="description" content="This AstralyxPvP page could not be found. Head back to the homepage, browse the leaderboard, or join the community on Discord." />
+  <meta name="robots" content="noindex, follow" />
+  <meta name="theme-color" content="#C8102E" />
+  <meta name="application-name" content="AstralyxPvP" />
+  <meta property="og:title" content="Page Not Found (404) | AstralyxPvP" />
+  <meta property="og:description" content="This page could not be found. Respawn at the homepage and keep playing." />
+  <meta property="og:image" content="https://astralyxpvp.org/Assets/logo-compress.png" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="AstralyxPvP" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Page Not Found (404) | AstralyxPvP" />
+  <meta name="twitter:description" content="This page could not be found. Respawn at the homepage and keep playing." />
+  <meta name="twitter:image" content="https://astralyxpvp.org/Assets/logo-compress.png" />
+  <link rel="icon" type="image/png" href="/Assets/favicon-96x96.png" sizes="96x96" />
+  <link rel="icon" type="image/svg+xml" href="/Assets/favicon.svg" />
+  <link rel="shortcut icon" href="/Assets/favicon.ico" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/Assets/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-title" content="AstralyxPvP" />
+  <link rel="manifest" href="/Assets/site.webmanifest" />
+  <link rel="stylesheet" href="/Style/style.css">
+</head>
+<body class="page-enter">
+
+  <div id="navbar-placeholder"></div>
+
+  <main class="page-content error-page">
+    <div class="wrap error-wrap">
+      <section class="panel error-panel" aria-labelledby="error-title">
+        <span class="error-kicker"><i class="fa-solid fa-compass" aria-hidden="true"></i>Map chunk not found</span>
+        <p class="error-code" aria-hidden="true">404</p>
+        <h1 class="error-title" id="error-title">You fell out of <span>the world</span></h1>
+        <p class="error-text">
+          The page you are looking for does not exist, may have moved, or the link has a typo.
+          Do not worry — respawning is free. Pick a destination below and jump back in.
+        </p>
+
+        <div class="error-actions">
+          <a class="hero-btn error-home" href="/"><i class="fa-solid fa-house" aria-hidden="true"></i> Respawn at spawn</a>
+          <a class="hero-btn" href="/leaderboard.html"><i class="fa-solid fa-ranking-star" aria-hidden="true"></i> Leaderboard</a>
+          <a class="hero-btn discord-btn" href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener"><i class="fa-brands fa-discord" aria-hidden="true"></i> Join Discord</a>
+        </div>
+
+        <nav class="error-links" aria-label="Popular AstralyxPvP pages">
+          <a class="error-link" href="/status.html"><i class="fa-solid fa-heart-pulse" aria-hidden="true"></i> Server Status</a>
+          <a class="error-link" href="/vote.html"><i class="fa-solid fa-check-to-slot" aria-hidden="true"></i> Vote</a>
+          <a class="error-link" href="/rules.html"><i class="fa-solid fa-scroll" aria-hidden="true"></i> Rules</a>
+          <a class="error-link" href="/support.html"><i class="fa-solid fa-life-ring" aria-hidden="true"></i> Support</a>
+          <a class="error-link" href="/announcements.html"><i class="fa-solid fa-bullhorn" aria-hidden="true"></i> Announcements</a>
+          <a class="error-link" href="/hallOfFame.html"><i class="fa-solid fa-trophy" aria-hidden="true"></i> Hall of Fame</a>
+          <a class="error-link" href="/store.html"><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> Store</a>
+          <a class="error-link" href="/contact.html"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Contact</a>
+        </nav>
+
+        <p class="error-tip">
+          Looking for the server? Check the <a href="/#faq">homepage FAQ</a> for the official connection address.
+        </p>
+      </section>
+    </div>
+  </main>
+
+  <div class="context-menu" id="contextMenu" aria-hidden="true">
+    <button type="button" data-menu-copy><i class="fa-solid fa-copy"></i>Copy server IP</button>
+    <a href="/leaderboard"><i class="fa-solid fa-ranking-star"></i>Open leaderboard</a>
+    <a href="https://discord.gg/u8BFrpRwEg" target="_blank" rel="noopener"><i class="fa-brands fa-discord"></i>Join Discord</a>
+    <a href="/rules"><i class="fa-solid fa-scroll"></i>View rules</a>
+  </div>
+
+  <div id="footer"></div>
+
+  <button id="backToTop" onclick="scrollToTop()" title="Back to top" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </button>
+
+  <button id="chatWidgetBtn" onclick="toggleChatDock()" title="Chat with AstralyxAI" aria-label="Chat with AstralyxAI">
+    <i class="fa-solid fa-comments"></i>
+  </button>
+
+  <div id="chatDock">
+    <div class="chat-dock-header">
+      <span>AstralyxAI Assistant</span>
+      <button onclick="toggleChatDock()" class="chat-close-btn" aria-label="Close chat">&times;</button>
+    </div>
+    <iframe src="/astralyxai" class="chat-dock-iframe" title="Astralyx AI Chat"></iframe>
+  </div>
+
+  <script src="/Script/script.js"></script>
+</body>
+</html>

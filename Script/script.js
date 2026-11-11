@@ -590,6 +590,23 @@
         }
     }
 
+    async function loadStatsMap() {
+        try {
+            const res = await fetch(`${API_BASE}?leaderboard=kills`);
+            if (!res.ok) return new Map();
+            const json = await res.json();
+            const players = Array.isArray(json) ? json : (json?.top100 || []);
+            return new Map(
+                players
+                    .filter(player => player?.username)
+                    .map(player => [String(player.username).toLowerCase(), player])
+            );
+        } catch (err) {
+            console.error("Stats map load error:", err);
+            return new Map();
+        }
+    }
+
     async function initLeaderboard() {
         const container = document.getElementById('gm');
         const out = document.getElementById('lb');
@@ -691,7 +708,10 @@
 
         try {
             if (requestedType === 'xp') {
-                const res = await fetch('https://astralyx-xp-bot.indiancoder3.workers.dev/api/leaderboard?limit=100');
+                const [res, statsMap] = await Promise.all([
+                    fetch('https://astralyx-xp-bot.indiancoder3.workers.dev/api/leaderboard?limit=100'),
+                    loadStatsMap()
+                ]);
                 if (!res.ok) throw new Error(`XP leaderboard request failed: ${res.status}`);
                 const { leaderboard = [] } = await res.json();
                 if (requestId !== lbRequestId) return;
@@ -709,6 +729,8 @@
                 };
                 const rows = leaderboard.map((player, i) => {
                     const playerName = player.minecraft_name || `Discord user ${player.discord_id}`;
+                    const stats = statsMap.get(String(playerName).toLowerCase());
+                    const title = stats?.rank || 'Warrior';
                     const avatar = player.minecraft_name
                         ? `<img src="https://minotar.net/helm/${encodeURIComponent(player.minecraft_name)}/24.png" alt="" loading="lazy">`
                         : '';
@@ -718,6 +740,7 @@
                         <td><div class="player-cell">${avatar}<span class="player-name">${escapeHtml(playerName)}</span></div></td>
                         <td><span class="xp-player-level">${Number(player.level).toLocaleString()}</span></td>
                         <td><span class="elo-pill">${Number(player.xp).toLocaleString()} XP</span></td>
+                        <td>${escapeHtml(title)}</td>
                       </tr>
                     `;
                 }).join('');
@@ -727,7 +750,7 @@
                     <span class="lb-total-count">Top XP Players: <strong>${leaderboard.length}</strong></span>
                   </div>
                   <table>
-                    <thead><tr><th>Rank</th><th>Player</th><th>Level</th><th>XP</th></tr></thead>
+                    <thead><tr><th>Rank</th><th>Player</th><th>Level</th><th>XP</th><th>Title</th></tr></thead>
                     <tbody>${rows}</tbody>
                   </table>
                 `;
@@ -776,7 +799,7 @@
                         <td><span class="elo-pill">${kills.toLocaleString()}</span></td>
                         <td>${deaths.toLocaleString()}</td>
                         <td>${Number.isFinite(kdr) ? kdr.toFixed(2) : '—'}</td>
-                        <td>${escapeHtml(p.rank || 'Unranked')}</td>
+                        <td>${escapeHtml(p.rank || 'Warrior')}</td>
                       </tr>
                     `;
                 }).join('');
@@ -830,6 +853,7 @@
                     <th>Player</th>
                     <th>ELO</th>
                     <th>Kills</th>
+                    <th>Deaths</th>
                     <th>K/D</th>
                     <th>Title</th>
                     <th>Last Active</th>
@@ -858,8 +882,9 @@
                     </td>
                     <td><span class="elo-pill">${formattedElo}</span></td>
                     <td>${kills.toLocaleString()}</td>
+                    <td>${deaths.toLocaleString()}</td>
                     <td>${Number.isFinite(kdr) ? kdr.toFixed(2) : '—'}</td>
-                    <td>${escapeHtml(p.rank || '—')}</td>
+                    <td>${escapeHtml(p.rank || 'Warrior')}</td>
                     <td class="last-seen-cell">${escapeHtml(formatTimeAgo(p.updatedAt || p.lastUpdate))}</td>
                   </tr>
                 `;
