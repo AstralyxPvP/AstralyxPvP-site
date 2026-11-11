@@ -147,6 +147,7 @@ test('contact page uses info@ for general contact and keeps personal mail in the
   assert.match(contactHtml, /data-person-mail/);
   assert.doesNotMatch(contactHtml, /data-open-staff-mail/);
   assert.doesNotMatch(contactHtml, /<button[^>]*>\s*<i class="fa-solid fa-envelope"><\/i> Staff Mail/);
+  assert.doesNotMatch(contactHtml, /developer@astralyxpvp\.org/);
   for (const pair of [
     ['owner@astralyxpvp.org', 'frostrax@astralyxpvp.org'],
     ['co-owner@astralyxpvp.org', 'xcleaver@astralyxpvp.org'],
