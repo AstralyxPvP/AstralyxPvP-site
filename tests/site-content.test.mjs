@@ -134,14 +134,15 @@ test('homepage FAQ publishes the correct server IP and port', () => {
 test('contact page uses info@ for general contact and keeps personal mail in the popup', () => {
   assert.match(contactHtml, /mailto:info@astralyxpvp\.org/);
   assert.doesNotMatch(contactHtml, /sign in at/i);
-  for (const group of ['info@', 'owner@', 'co-owner@', 'developer@', 'seniordev@', 'juniordev@', 'manager@', 'management@', 'admin@']) {
+  for (const group of ['info@', 'development@', 'management@']) {
     assert.ok(contactHtml.includes(`${group}astralyxpvp.org`), `contact page should list ${group}astralyxpvp.org`);
   }
   const emailCard = contactHtml.slice(
     contactHtml.indexOf('<!-- Email Card -->'),
     contactHtml.indexOf('<div class="team-section-title"')
   );
-  assert.doesNotMatch(emailCard, /vox@astralyxpvp\.org|r3nz@astralyxpvp\.org|jailbreaksix1234@astralyxpvp\.org/);
+  assert.doesNotMatch(emailCard, /owner@astralyxpvp\.org|co-owner@astralyxpvp\.org|developer@astralyxpvp\.org|seniordev@astralyxpvp\.org|juniordev@astralyxpvp\.org|manager@astralyxpvp\.org|admin@astralyxpvp\.org/);
+  assert.doesNotMatch(emailCard, /vox@astralyxpvp\.org|r3nz@astralyxpvp\.org|jailbreaksix1234@astralyxpvp\.org|indiancoder3@astralyxpvp\.org|dreamlong@astralyxpvp\.org/);
   assert.match(contactHtml, /id="personMailDialog"/);
   assert.match(contactHtml, /data-person-mail/);
   assert.doesNotMatch(contactHtml, /data-open-staff-mail/);

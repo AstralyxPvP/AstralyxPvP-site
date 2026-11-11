@@ -53,7 +53,7 @@ Every kill and death in FFA and 1v1 arenas updates your rating through the custo
 ## Support
 - Discord: https://discord.gg/u8BFrpRwEg
 - Main contact email: info@astralyxpvp.org
-- Group emails (all @astralyxpvp.org): info@, owner@, co-owner@, developer@, juniordev@, management@, admin@
+- Group emails (all @astralyxpvp.org): info@, development@, management@
 - Individual staff addresses are listed in the Staff Mail popup at https://astralyxpvp.org/contact
 - Staff email (AstralyxMail): https://mail.astralyxpvp.org
 - FAQ answers are on the home page: https://astralyxpvp.org/
