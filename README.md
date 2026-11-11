@@ -110,7 +110,7 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Main contact email:** [astralyxnetwork@gmail.com](mailto:astralyxnetwork@gmail.com). The email setup is in progress.
+* 📧 **Main contact email:** [admin@astralyxpvp.org](mailto:admin@astralyxpvp.org). Staff mailboxes are hosted on AstralyxMail at [mail.astralyxpvp.org](https://mail.astralyxpvp.org).
 
 ### Status history monitor
 

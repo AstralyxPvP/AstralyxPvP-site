@@ -147,7 +147,7 @@ test('legal pages carry the current terms and privacy policy', () => {
   for (const html of [termsHtml, privacyHtml]) {
     assert.match(html, /Last Updated: 5 November 2026/);
     assert.match(html, /NebulaGames/);
-    assert.match(html, /astralyxnetwork@gmail\.com/);
+    assert.match(html, /admin@astralyxpvp\.org/);
   }
   assert.match(termsHtml, /unregistered community project/);
   assert.match(termsHtml, /International Legal Compliance &amp; Governing Law/);
