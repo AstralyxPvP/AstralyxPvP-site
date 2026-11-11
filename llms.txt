@@ -24,6 +24,7 @@ Every kill and death in FFA and 1v1 arenas updates your rating through the custo
 - Netherite Pot FFA
 - Lifesteal PvP FFA
 - Crystal PvP FFA
+- Sumo FFA
 - 1v1 arenas
 - PvP bots in supported arenas, including Crystal PvP
 - Global XP leaderboard

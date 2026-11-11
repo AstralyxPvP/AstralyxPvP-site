@@ -562,7 +562,8 @@
         macepvpffa: 'Mace PvP FFA',
         nethpotffa: 'Netherite Pot FFA',
         uhcffa: 'Lifesteal PvP FFA',
-        kothffa: 'Crystal PvP FFA'
+        kothffa: 'Crystal PvP FFA',
+        sumoffa: 'Sumo FFA'
     };
 
     function formatGMLabel(name) {

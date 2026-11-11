@@ -95,7 +95,8 @@ test('leaderboard displays full names for every gamemode', () => {
     macepvpffa: 'Mace PvP FFA',
     nethpotffa: 'Netherite Pot FFA',
     uhcffa: 'Lifesteal PvP FFA',
-    kothffa: 'Crystal PvP FFA'
+    kothffa: 'Crystal PvP FFA',
+    sumoffa: 'Sumo FFA'
   };
   for (const [key, label] of Object.entries(labels)) {
     assert.ok(scriptJs.includes(`${key}: '${label}'`), `leaderboard should map ${key} to ${label}`);

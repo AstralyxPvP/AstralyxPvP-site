@@ -27,7 +27,7 @@ test('AstralyxAI reads every current ELO leaderboard and the global XP leaderboa
 });
 
 test('AstralyxAI uses the full gamemode names', () => {
-  for (const name of ['Sword FFA', 'Mace PvP FFA', 'Netherite Pot FFA', 'Lifesteal PvP FFA', 'Crystal PvP FFA']) {
+  for (const name of ['Sword FFA', 'Mace PvP FFA', 'Netherite Pot FFA', 'Lifesteal PvP FFA', 'Crystal PvP FFA', 'Sumo FFA']) {
     assert.ok(html.includes(name), `AstralyxAI should know ${name}`);
   }
   assert.doesNotMatch(html, /Nether Pot FFA|UHC FFA|KOTH FFA/);
