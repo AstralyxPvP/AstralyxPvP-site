@@ -15,6 +15,9 @@ const termsHtml = await read('terms.html');
 const privacyHtml = await read('privacy.html');
 const rulesHtml = await read('rules.html');
 const contactHtml = await read('contact.html');
+const creditsHtml = await read('credits-web.html');
+const astralyxaiHtml = await read('astralyxai.html');
+const hallOfFameHtml = await read('hallOfFame.html');
 const notFoundHtml = await read('404.html');
 
 const voteLinks = [
@@ -162,7 +165,7 @@ test('contact page uses info@ for general contact and keeps personal mail in the
     contactHtml.indexOf('<div class="team-section-title"')
   );
   assert.doesNotMatch(emailCard, /owner@astralyxpvp\.org|co-owner@astralyxpvp\.org|developer@astralyxpvp\.org|seniordev@astralyxpvp\.org|juniordev@astralyxpvp\.org|manager@astralyxpvp\.org|admin@astralyxpvp\.org/);
-  assert.doesNotMatch(emailCard, /vox@astralyxpvp\.org|r3nz@astralyxpvp\.org|jailbreaksix1234@astralyxpvp\.org|indiancoder3@astralyxpvp\.org|dreamlong@astralyxpvp\.org/);
+  assert.doesNotMatch(emailCard, /r3nz@astralyxpvp\.org|jailbreaksix1234@astralyxpvp\.org|indiancoder3@astralyxpvp\.org|dreamlong@astralyxpvp\.org/);
   assert.match(contactHtml, /id="personMailDialog"/);
   assert.match(contactHtml, /data-person-mail/);
   assert.doesNotMatch(contactHtml, /data-open-staff-mail/);
@@ -173,13 +176,26 @@ test('contact page uses info@ for general contact and keeps personal mail in the
     ['co-owner@astralyxpvp.org', 'xcleaver@astralyxpvp.org'],
     ['manager@astralyxpvp.org', 'dreamlong@astralyxpvp.org'],
     ['seniordev@astralyxpvp.org', 'indiancoder3@astralyxpvp.org'],
-    ['developer@astralyxpvp.org', 'vox@astralyxpvp.org'],
     ['juniordev@astralyxpvp.org', 'r3nz@astralyxpvp.org'],
     ['admin@astralyxpvp.org', 'jailbreaksix1234@astralyxpvp.org']
   ]) {
     assert.ok(scriptJs.includes(pair[0]), `script should contain role mail ${pair[0]}`);
     assert.ok(scriptJs.includes(pair[1]), `script should contain personal mail ${pair[1]}`);
   }
+});
+
+test('former developer references are removed', () => {
+  for (const [name, content] of [
+    ['contact page', contactHtml],
+    ['credits page', creditsHtml],
+    ['AstralyxAI page', astralyxaiHtml],
+    ['hall of fame page', hallOfFameHtml],
+    ['site script', scriptJs]
+  ]) {
+    assert.doesNotMatch(content, /AL13N|Al13n|Voxy|Vox\.Dev/i, `${name} should not mention the former developer`);
+  }
+  assert.doesNotMatch(contactHtml, /1408720692752678965/);
+  assert.doesNotMatch(scriptJs, /vox@astralyxpvp\.org/);
 });
 
 test('sitemap lists indexable pages and skips redirect/noindex pages', () => {

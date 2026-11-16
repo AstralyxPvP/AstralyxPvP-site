@@ -1013,12 +1013,6 @@ const PERSON_MAIL = {
         roleMail: 'seniordev@astralyxpvp.org',
         personalMail: 'indiancoder3@astralyxpvp.org'
     },
-    vox: {
-        name: 'Vox.Dev',
-        role: 'Developer',
-        roleMail: 'developer@astralyxpvp.org',
-        personalMail: 'vox@astralyxpvp.org'
-    },
     r3nz: {
         name: 'R3NZ',
         role: 'Jr. Developer',
