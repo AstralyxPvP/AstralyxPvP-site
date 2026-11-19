@@ -7,11 +7,13 @@
 [![Discord](https://img.shields.io/discord/1477025023800901766?style=for-the-badge&logo=discord&logoColor=white&color=7389D8&label=discord)](https://discord.gg/u8BFrpRwEg)
 [![YouTube](https://img.shields.io/badge/YouTube-@AstralyxPvP-red?style=for-the-badge&logo=youtube&logoColor=white)](https://www.youtube.com/@AstralyxPvP)
 [![Status](https://img.shields.io/website?url=https%3A%2F%2Fastralyxpvp.org%2F&style=for-the-badge&up_message=online&down_message=offline&logo=cloudflarepages)](https://astralyxpvp.org)
-
+![Commits](https://img.shields.io/github/commit-activity/t/AstralyxPvP/AstralyxPvP-site?style=for-the-badge&label=total%20commits&logo=github&logoColor=white&color=blue)
+[![Milestone](https://img.shields.io/badge/🎉_Milestone-600_Commits_Reached!-brightgreen?style=for-the-badge)](https://github.com/AstralyxPvP/AstralyxPvP-site/commits/main)
 [![GitHub Org's stars](https://img.shields.io/github/stars/astralyxpvp?style=for-the-badge&logo=github&link=https%3A%2F%2Fgithub.com%2FAstralyxPvP%2F)](https://github.com/AstralyxPvP/)
+
 ---
 
-# AstralyxPvP-site
+# AstralyxPvP
 
 ![AstralyxPvP Logo](https://astralyxpvp.org/Assets/logo.png)
 
@@ -110,11 +112,11 @@ This project is licensed under the **GNU GPL v3 License**. Check out the [LICENS
 
 If you have questions, suggestions, or need support, reach out to the development team:
 
-* 📧 **Main contact email:** [info@astralyxpvp.org](mailto:info@astralyxpvp.org). Staff mailboxes are hosted on AstralyxMail at [mail.astralyxpvp.org](https://mail.astralyxpvp.org).
+* 📧 **Main contact email:** [info@astralyxpvp.org](mailto:info@astralyxpvp.org).
 
 ### Status history monitor
 
-The `status-monitor-worker/` Worker writes Minecraft and AstralyxXP health samples to the `astralyxpvp-minecraft-status` D1 database every five minutes and prunes samples older than seven days. Deploy or update the scheduled Worker with:
+The Status Monitor Worker writes Minecraft and AstralyxXP health samples to the `astralyxpvp-minecraft-status` D1 database every five minutes and prunes samples older than seven days. Deploy or update the scheduled Worker with:
 
 ```sh
 npx wrangler deploy --config status-monitor-worker/wrangler.jsonc
